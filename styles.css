@@ -81,12 +81,15 @@ body {
     transform: translateY(105vh) translateX(0);
     opacity: 0;
   }
+
   8% {
     opacity: 0.8;
   }
+
   90% {
     opacity: 0.35;
   }
+
   to {
     transform: translateY(-12vh) translateX(88px);
     opacity: 0;
@@ -236,6 +239,7 @@ body {
   border: 1px solid rgba(220, 237, 132, 0.14);
   background: rgba(6, 9, 6, 0.6);
   text-align: center;
+  transition: 200ms ease;
 }
 
 .symbol-glyph {
@@ -401,8 +405,15 @@ body {
 }
 
 @keyframes breathe {
-  0%,100% { transform: scale(1); opacity: 0.72; }
-  50% { transform: scale(1.05); opacity: 1; }
+  0%,100% {
+    transform: scale(1);
+    opacity: 0.72;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
 
 .command-readouts {
@@ -414,6 +425,7 @@ body {
   padding: 12px 14px;
   border: 1px solid rgba(220, 237, 132, 0.12);
   background: rgba(0,0,0,0.2);
+  transition: 200ms ease;
 }
 
 .readout span {
@@ -672,6 +684,77 @@ body {
 
 .toast-message.show {
   transform: translateX(-50%) translateY(0);
+}
+
+[data-lore] {
+  cursor: crosshair;
+}
+
+.symbol-item,
+.readout,
+.ritual-btn,
+.invoke-btn,
+.sealed-trigger,
+.lore-circle {
+  position: relative;
+}
+
+.symbol-item:hover,
+.readout:hover {
+  border-color: rgba(220, 237, 132, 0.5);
+  box-shadow: 0 0 28px rgba(163, 198, 74, 0.12);
+}
+
+.hover-liturgy {
+  position: fixed;
+  z-index: 999;
+  max-width: 360px;
+  padding: 13px 15px;
+  border: 1px solid rgba(220, 237, 132, 0.42);
+  background:
+    linear-gradient(135deg, rgba(5, 8, 5, 0.97), rgba(12, 18, 10, 0.94)),
+    radial-gradient(circle at top left, rgba(163, 198, 74, 0.12), transparent 45%);
+  color: var(--rot-bright);
+  box-shadow: 0 0 32px rgba(163, 198, 74, 0.16);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(14px, 14px);
+  transition: opacity 160ms ease;
+}
+
+.hover-liturgy.show {
+  opacity: 1;
+}
+
+.lore-circle {
+  display: grid;
+  place-items: center;
+  z-index: 5;
+  background: radial-gradient(circle, rgba(163, 198, 74, 0.08), transparent 68%);
+}
+
+.lore-circle span {
+  width: 9px;
+  height: 9px;
+  display: block;
+  border-radius: 50%;
+  background: rgba(220, 237, 132, 0.58);
+  box-shadow: 0 0 18px rgba(220, 237, 132, 0.35);
+  opacity: 0;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.lore-circle:hover span {
+  opacity: 1;
+  transform: scale(1.3);
+}
+
+.lore-circle:hover {
+  border-color: rgba(220, 237, 132, 0.58);
+  box-shadow: inset 0 0 24px rgba(163, 198, 74, 0.1), 0 0 24px rgba(163, 198, 74, 0.12);
 }
 
 @media (max-width: 1180px) {
