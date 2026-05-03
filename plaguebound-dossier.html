@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The Septicarium | Plaguebound Dossier</title>
+
+  <meta
+    name="description"
+    content="Datavault 01 of The Septicarium. The Plaguebound Dossier. First active entry: Mortivus Classarion."
+  />
+
+  <style>
+    :root {
+      --bg-0: #030402;
+      --bg-1: #070a06;
+      --bg-2: #0d140c;
+      --panel: rgba(8, 12, 8, 0.88);
+      --panel-2: rgba(11, 17, 10, 0.74);
+      --line: rgba(186, 220, 92, 0.2);
+      --line-strong: rgba(186, 220, 92, 0.48);
+      --rot: #a3c64a;
+      --rot-bright: #dced84;
+      --bone: #ddd7bc;
+      --bone-dim: #aaa483;
+      --brass: #8e7b42;
+      --rust: #582216;
+      --blood: #2f0c0b;
+      --shadow: 0 0 50px rgba(163, 198, 74, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      background:
+        radial-gradient(circle at 15% 18%, rgba(88, 34, 22, 0.18), transparent 26%),
+        radial-gradient(circle at 78% 10%, rgba(163, 198, 74, 0.09), transparent 20%),
+        linear-gradient(135deg, var(--bg-0), var(--bg-1) 40%, var(--bg-0) 100%);
+      font-family: Georgia, "Times New Roman", serif;
+      overflow-x: hidden;
+    }
+
+    .void-haze {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.62) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.7));
+      z-index: 0;
+    }
+
+    .rot-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 92px 92px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 82%);
+    }
+
+    .spore-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .spore {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(220, 237, 132, 0.44);
+      box-shadow: 0 0 12px rgba(220, 237, 132, 0.46);
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateY(105vh) translateX(0);
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 0.8;
+      }
+
+      90% {
+        opacity: 0.35;
+      }
+
+      to {
+        transform: translateY(-12vh) translateX(88px);
+        opacity: 0;
+      }
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 6, 4, 0.92);
+      backdrop-filter: blur(10px);
+      color: var(--bone-dim);
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .topbar a {
+      color: var(--rot-bright);
+      text-decoration: none;
+    }
+
+    .topbar a:hover {
+      text-decoration: underline;
+    }
+
+    .site-shell {
+      position: relative;
+      z-index: 2;
+      width: min(1320px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 90px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .tag {
+      color: var(--rot-bright);
+      border: 1px solid rgba(220, 237, 132, 0.28);
+      padding: 6px 10px;
+      background: rgba(0, 0, 0, 0.28);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero,
+    .panel,
+    .entry-card,
+    .index-node,
+    .identity-module,
+    .archive-verdict {
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(8, 12, 8, 0.94), rgba(4, 6, 4, 0.88)),
+        radial-gradient(circle at top left, rgba(142, 123, 66, 0.1), transparent 42%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .panel::before,
+    .entry-card::before,
+    .index-node::before,
+    .identity-module::before,
+    .archive-verdict::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(163, 198, 74, 0.06), transparent 24%),
+        linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.03), transparent);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 0.82fr;
+      gap: 26px;
+      padding: 30px;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--rot);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+    }
+
+    .subtitle {
+      margin: 14px 0 16px;
+      color: var(--rot-bright);
+      font-size: clamp(1.15rem, 2.5vw, 2rem);
+      font-style: italic;
+    }
+
+    .lead {
+      max-width: 920px;
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+      line-height: 1.72;
+      color: var(--bone);
+    }
+
+    .lead.dim {
+      color: var(--bone-dim);
+    }
+
+    .lead span {
+      color: var(--rot-bright);
+    }
+
+    .hero-sigil {
+      display: grid;
+      place-items: center;
+      min-height: 320px;
+    }
+
+    .dossier-seal {
+      position: relative;
+      width: min(330px, 100%);
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      cursor: crosshair;
+      filter: drop-shadow(0 0 40px rgba(163, 198, 74, 0.14));
+    }
+
+    .seal-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(220, 237, 132, 0.24);
+    }
+
+    .seal-ring.outer {
+      inset: 0;
+      border-style: dashed;
+      animation: rotateSlow 44s linear infinite;
+    }
+
+    .seal-ring.middle {
+      inset: 15%;
+      border-color: rgba(142, 123, 66, 0.42);
+      animation: rotateReverse 34s linear infinite;
+    }
+
+    .seal-ring.inner {
+      inset: 31%;
+      border-color: rgba(220, 237, 132, 0.48);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .seal-core {
+      position: relative;
+      z-index: 3;
+      width: 122px;
+      height: 122px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(220, 237, 132, 0.64);
+      color: var(--rot-bright);
+      font-size: 2.2rem;
+      letter-spacing: 0.08em;
+      background:
+        radial-gradient(circle, rgba(163, 198, 74, 0.18), rgba(6, 10, 5, 0.94) 60%);
+      box-shadow: inset 0 0 30px rgba(163, 198, 74, 0.08);
+    }
+
+    .seal-node {
+      position: absolute;
+      z-index: 4;
+      padding: 4px 8px;
+      border: 1px solid rgba(220, 237, 132, 0.18);
+      background: rgba(0,0,0,0.3);
+      color: var(--bone-dim);
+      font-family: Arial, sans-serif;
+      font-size: 0.57rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .n1 { top: 8%; left: 41%; }
+    .n2 { top: 31%; right: 4%; }
+    .n3 { bottom: 17%; right: 13%; }
+    .n4 { bottom: 8%; left: 38%; }
+    .n5 { bottom: 17%; left: 10%; }
+    .n6 { top: 31%; left: 4%; }
+
+    @keyframes rotateSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateReverse {
+      to { transform: rotate(-360deg); }
+    }
+
+    @keyframes breathe {
+      0%,100% {
+        transform: scale(1);
+        opacity: 0.72;
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+    }
+
+    .section-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .identity-module h2,
+    .entry-card h2,
+    .archive-verdict h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 3vw, 2.9rem);
+      line-height: 1.03;
+    }
+
+    .panel p,
+    .identity-module p,
+    .entry-card p,
+    .archive-verdict p,
+    .index-node p,
+    .entry-line p {
+      color: var(--bone-dim);
+      line-height: 1.72;
+    }
+
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .dossier-principles {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .principle {
+      padding: 14px;
+      border: 1px solid rgba(220, 237, 132, 0.13);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .principle span {
+      display: block;
+      color: var(--rot);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .principle strong {
+      display: block;
+      color: var(--bone);
+      line-height: 1.4;
+    }
+
+    .identity-module {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .classification-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .class-btn,
+    .invoke-btn,
+    .entry-link {
+      border: 1px solid rgba(220, 237, 132, 0.24);
+      background: rgba(0,0,0,0.28);
+      color: var(--bone);
+      padding: 12px 14px;
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .class-btn:hover,
+    .invoke-btn:hover,
+    .entry-link:hover {
+      border-color: rgba(220, 237, 132, 0.56);
+      color: var(--rot-bright);
+      background: rgba(163, 198, 74, 0.08);
+    }
+
+    .classification-output {
+      min-height: 108px;
+      padding: 18px;
+      border: 1px solid rgba(220, 237, 132, 0.14);
+      background:
+        linear-gradient(135deg, rgba(4, 7, 4, 0.92), rgba(12, 18, 10, 0.8));
+      color: var(--bone);
+      line-height: 1.72;
+    }
+
+    .classification-output strong {
+      color: var(--rot-bright);
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .index-node {
+      padding: 20px;
+      min-height: 260px;
+      transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+    }
+
+    .index-node:hover {
+      transform: translateY(-8px);
+      border-color: var(--line-strong);
+      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
+    }
+
+    .index-node small {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .index-node h3 {
+      margin: 0 0 12px;
+      font-size: 1.45rem;
+      line-height: 1.08;
+    }
+
+    .active-entry {
+      border-color: rgba(220, 237, 132, 0.44);
+    }
+
+    .entry-card {
+      padding: 26px;
+      margin-bottom: 18px;
+    }
+
+    .entry-title-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 20px;
+    }
+
+    .entry-title-row h2 {
+      font-size: clamp(2.4rem, 5vw, 4.8rem);
+      letter-spacing: -0.045em;
+      margin-bottom: 4px;
+    }
+
+    .entry-subtitle {
+      color: var(--rot-bright);
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.55rem);
+      margin: 0;
+    }
+
+    .mortivus-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .data-slab {
+      display: grid;
+      gap: 10px;
+    }
+
+    .data-row {
+      padding: 13px 14px;
+      border: 1px solid rgba(220, 237, 132, 0.12);
+      background: rgba(0,0,0,0.2);
+    }
+
+    .data-row span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--rot);
+      font-family: Arial, sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .data-row strong {
+      display: block;
+      color: var(--bone);
+      font-size: 1rem;
+      line-height: 1.42;
+    }
+
+    .entry-lines {
+      display: grid;
+      gap: 14px;
+    }
+
+    .entry-line {
+      padding: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.12);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .entry-line h3 {
+      margin: 0 0 8px;
+      color: var(--bone);
+      font-size: 1.25rem;
+      line-height: 1.15;
+    }
+
+    .archive-verdict {
+      padding: 24px;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--rot);
+    }
+
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .verdict-box {
+      padding: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.13);
+      background: rgba(0,0,0,0.2);
+    }
+
+    .verdict-box span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rot);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .verdict-box strong {
+      display: block;
+      color: var(--bone);
+      line-height: 1.45;
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      width: min(1320px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 46px;
+      border-top: 1px solid rgba(220, 237, 132, 0.12);
+      color: var(--bone-dim);
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+
+    .hover-liturgy {
+      position: fixed;
+      z-index: 999;
+      max-width: 360px;
+      padding: 13px 15px;
+      border: 1px solid rgba(220, 237, 132, 0.42);
+      background:
+        linear-gradient(135deg, rgba(5, 8, 5, 0.97), rgba(12, 18, 10, 0.94)),
+        radial-gradient(circle at top left, rgba(163, 198, 74, 0.12), transparent 45%);
+      color: var(--rot-bright);
+      box-shadow: 0 0 32px rgba(163, 198, 74, 0.16);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(14px, 14px);
+      transition: opacity 160ms ease;
+    }
+
+    .hover-liturgy.show {
+      opacity: 1;
+    }
+
+    [data-lore] {
+      cursor: crosshair;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .dossier-grid,
+      .mortivus-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .index-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .classification-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .verdict-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .site-shell,
+      .site-footer {
+        width: min(100% - 18px, 1320px);
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 16vw, 4.8rem);
+      }
+
+      .index-grid,
+      .classification-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .entry-title-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="spore-field" aria-hidden="true"></div>
+  <div class="void-haze" aria-hidden="true"></div>
+  <div class="rot-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div>DATAVAULT // 01 // PLAGUEBOUND DOSSIER</div>
+    <div><a href="index.html">RETURN TO COMMAND DECK</a> // THE SEPTICARIUM</div>
+  </header>
+
+  <main class="site-shell">
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULT // 01</p>
+        <h1>PLAGUEBOUND DOSSIER</h1>
+        <p class="subtitle">Names preserved until they become useful infections.</p>
+
+        <p class="lead">
+          This datavault contains the internal classifications, command contradictions, plague-lineage records,
+          oath fragments, ascension omens, and identity disputes of those bound to
+          <span>The Rotfather’s Vanguard</span>.
+        </p>
+
+        <p class="lead dim">
+          The Plaguebound Dossier does not produce clean biography. Clean biography is for the living,
+          the obedient, and the soon-forgotten. Here, a warrior is recorded by what clings to him:
+          titles, symptoms, witnesses, wounds, contradictions, and the rot that refuses to leave his name.
+        </p>
+      </div>
+
+      <div class="hero-sigil">
+        <div
+          class="dossier-seal"
+          id="dossierSeal"
+          data-lore="The Dossier Seal does not verify identity. It preserves contradiction until contradiction becomes doctrine."
+        >
+          <div class="seal-ring outer"></div>
+          <div class="seal-ring middle"></div>
+          <div class="seal-ring inner"></div>
+          <div class="seal-core">XIV</div>
+
+          <div class="seal-node n1">NAME</div>
+          <div class="seal-node n2">OATH</div>
+          <div class="seal-node n3">ROT</div>
+          <div class="seal-node n4">TALLY</div>
+          <div class="seal-node n5">FLESH</div>
+          <div class="seal-node n6">OMEN</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dossier-grid">
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">DATAVAULT PURPOSE</p>
+          <span class="tag">INTERNAL RECORD</span>
+        </div>
+
+        <h2>What the Dossier Is</h2>
+
+        <p>
+          The Plaguebound Dossier is the Septicarium’s registry of those who serve, infect, command,
+          contradict, endure, and transform beneath the shadow of Mortivus Classarion.
+        </p>
+
+        <p>
+          It records plaguebound figures not by rank alone, but by devotional pressure:
+          what they survived, what they spread, what they lost, what they became, and what the archive
+          suspects they are becoming.
+        </p>
+
+        <div class="dossier-principles">
+          <div
+            class="principle"
+            data-lore="The Dossier accepts contradiction because contradiction is often the first sign of ascension."
+          >
+            <span>Principle I</span>
+            <strong>Rank is less reliable than symptom.</strong>
+          </div>
+
+          <div
+            class="principle"
+            data-lore="Names are preserved because names can carry infection long after flesh has failed."
+          >
+            <span>Principle II</span>
+            <strong>A title is only useful when it continues to rot.</strong>
+          </div>
+
+          <div
+            class="principle"
+            data-lore="Witness accounts are not corrected. They are allowed to decay beside one another."
+          >
+            <span>Principle III</span>
+            <strong>Conflicting records may all be true in the warp’s shadow.</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">DATAVAULT LORE</p>
+          <span class="tag">CENSURED HISTORY</span>
+        </div>
+
+        <h2>Why It Was Built</h2>
+
+        <p>
+          The first Plaguebound Dossier was not written by a scribe. It was assembled from failed orders,
+          corrupted vox returns, stained armor manifests, confessions extracted from dying serfs,
+          and the muttering of plague-censers aboard <span style="color: var(--rot-bright);">The Rotfather’s Mercy</span>.
+        </p>
+
+        <p>
+          Mortivus permitted the archive to continue because the Dossier served a purpose beyond memory.
+          It watched the host from within. It studied loyalty as a contagion. It tracked which warriors merely
+          obeyed and which had begun to ripen toward something stranger.
+        </p>
+
+        <p>
+          In time, the datavault became less a roster and more an omen-engine. It does not simply ask
+          who serves the Vanguard. It asks who among them is closest to being claimed, transformed,
+          elevated, or erased.
+        </p>
+      </article>
+    </section>
+
+    <section class="identity-module">
+      <div class="section-kicker">
+        <p class="eyebrow">UNIQUE MODULE</p>
+        <span class="tag">RITE OF UNCERTAIN STATION</span>
+      </div>
+
+      <h2>Attempt Classification</h2>
+
+      <p>
+        The Septicarium permits no final classification of Mortivus Classarion. Select a station and the
+        archive will return what it allows. Certainty is denied by design.
+      </p>
+
+      <div class="classification-grid">
+        <button class="class-btn" data-class="champion">Plague Champion</button>
+        <button class="class-btn" data-class="contagion">Lord of Contagion</button>
+        <button class="class-btn" data-class="blightlord">Blightlord Ascendant</button>
+        <button class="class-btn" data-class="deathshroud">Deathshroud-Linked</button>
+        <button class="class-btn" data-class="daemon">Daemonhood Petition</button>
+      </div>
+
+      <div class="classification-output" id="classificationOutput">
+        <strong>CLASSIFICATION STATE:</strong> Unsettled. The archive refuses stable rank. Mortivus remains recorded as Blessed by Nurgle.
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">DOSSIER INDEX</p>
+        <span class="tag">ENTRIES</span>
+      </div>
+
+      <h2>Bound Entries</h2>
+
+      <p>
+        The datavault is incomplete by design. Some entries remain sealed. Some have not yet earned names.
+        Some names have begun to earn bodies.
+      </p>
+    </section>
+
+    <section class="index-grid">
+      <article class="index-node active-entry">
+        <small>ENTRY // 001 // ACTIVE</small>
+        <h3>Mortivus Classarion</h3>
+        <p>
+          Plague Champion of uncertain station. Commander, omen-bearer, occult tactician,
+          and aspirant toward daemonhood.
+        </p>
+        <a class="entry-link" href="#mortivus">Open Entry</a>
+      </article>
+
+      <article class="index-node">
+        <small>ENTRY // 002 // SEALED</small>
+        <h3>The Rotfather’s Vanguard</h3>
+        <p>
+          Warhost structure, plague doctrine, internal rites, and contradictory muster records.
+        </p>
+        <button class="entry-link sealed-entry">Await Clearance</button>
+      </article>
+
+      <article class="index-node">
+        <small>ENTRY // 003 // SEALED</small>
+        <h3>The Rotfather’s Mercy</h3>
+        <p>
+          Vessel-lore, command decks, devotional machinery, plague-hold anatomy, and shipborne omens.
+        </p>
+        <button class="entry-link sealed-entry">Await Clearance</button>
+      </article>
+
+      <article class="index-node">
+        <small>ENTRY // 004 // UNNAMED</small>
+        <h3>Lieutenants Unrecorded</h3>
+        <p>
+          Future plaguebound champions, tally-keepers, surgeons, blightlords, and oath-rotted servants.
+        </p>
+        <button class="entry-link sealed-entry">Await Clearance</button>
+      </article>
+    </section>
+
+    <section class="entry-card" id="mortivus">
+      <div class="entry-title-row">
+        <div>
+          <p class="eyebrow">ENTRY // 001</p>
+          <h2>Mortivus Classarion</h2>
+          <p class="entry-subtitle">Blessed by Nurgle. Unsettled in rank. Ripening toward apotheosis.</p>
+        </div>
+
+        <span class="tag">CLASSIFICATION DISPUTED</span>
+      </div>
+
+      <p>
+        Mortivus Classarion is recorded as a Plague Champion by the oldest surviving tally-stains,
+        yet later records refuse agreement. Some name him a Lord of Contagion. Some place him among
+        Blightlord elites. A few forbidden witness-fragments imply he has stood where only the Deathshroud
+        should stand. The Septicarium confirms none of these accounts. It preserves them all.
+      </p>
+
+      <div class="mortivus-grid">
+        <div class="data-slab">
+          <div
+            class="data-row"
+            data-lore="The archive denies final station because Mortivus himself appears to weaponize uncertainty."
+          >
+            <span>Recorded Station</span>
+            <strong>Plague Champion // Rank Unsettled</strong>
+          </div>
+
+          <div
+            class="data-row"
+            data-lore="The title survives because those who use it tend to die before correcting themselves."
+          >
+            <span>Common Designation</span>
+            <strong>Blessed by Nurgle</strong>
+          </div>
+
+          <div
+            class="data-row"
+            data-lore="His command is not merely tactical. It is liturgical, biological, and psychological."
+          >
+            <span>Command Nature</span>
+            <strong>Cunning, occult, spiritually corrosive</strong>
+          </div>
+
+          <div
+            class="data-row"
+            data-lore="Mortivus does not pursue daemonhood as reward. He appears to treat it as proof."
+          >
+            <span>Ascension Vector</span>
+            <strong>Daemonhood aspiration // unconfirmed progress</strong>
+          </div>
+
+          <div
+            class="data-row"
+            data-lore="The doctrine targets the soul first, the flesh second, and command structure always."
+          >
+            <span>Preferred Doctrine</span>
+            <strong>Spiritual decay, biological corruption, occult rot</strong>
+          </div>
+
+          <div
+            class="data-row"
+            data-lore="The host follows prophecy, but the archive suspects the prophecy may be following him."
+          >
+            <span>Prophetic Status</span>
+            <strong>Bearer of a private plague-omen</strong>
+          </div>
+        </div>
+
+        <div class="entry-lines">
+          <div class="entry-line">
+            <h3>Appearance in the Records</h3>
+            <p>
+              Mortivus appears most often where classification has already failed. His armor is described
+              as command plate, terminator plate, corpse-shrine, rusted reliquary, and living wound depending
+              on the witness. No single description has survived contact with him unaltered.
+            </p>
+          </div>
+
+          <div class="entry-line">
+            <h3>Command Method</h3>
+            <p>
+              He favors attrition, contamination, morale collapse, and ritualized pressure. Mortivus does not
+              merely seek to defeat an enemy position. He seeks to teach it that its fall began before the first
+              shot was fired.
+            </p>
+          </div>
+
+          <div class="entry-line">
+            <h3>Occult Tendency</h3>
+            <p>
+              Unlike crude champions who mistake decay for simple ruin, Mortivus studies rot as a metaphysical
+              law. He reads infection as scripture, counts symptoms as omens, and treats every battlefield
+              as a body waiting to confess.
+            </p>
+          </div>
+
+          <div class="entry-line">
+            <h3>Daemonhood Aspiration</h3>
+            <p>
+              The Dossier does not state that Mortivus will ascend. It states that many records behave as if
+              his ascension has already begun. Several entries written before major engagements contain titles
+              not yet earned, wounds not yet taken, and victories not yet fought.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="archive-verdict">
+      <div class="section-kicker">
+        <p class="eyebrow">SEPTICARIUM VERDICT</p>
+        <span class="tag">ENTRY STATUS</span>
+      </div>
+
+      <h2>The Archive Refuses Closure</h2>
+
+      <p>
+        Mortivus Classarion is not filed as a finished subject. He is filed as a developing contamination.
+        His name remains active, unstable, and watched by the Dossier.
+      </p>
+
+      <p>
+        The Septicarium recognizes him as Plague Champion, commander, omen-bearer, and aspirant,
+        but denies all attempts to make the record clean. Clean records are Imperial habits.
+        The Death Guard know better.
+      </p>
+
+      <div class="verdict-grid">
+        <div class="verdict-box">
+          <span>Threat Nature</span>
+          <strong>Spiritual corrosion before physical annihilation.</strong>
+        </div>
+
+        <div class="verdict-box">
+          <span>Archive Concern</span>
+          <strong>Identity instability may indicate favor, mutation, or pending ascension.</strong>
+        </div>
+
+        <div class="verdict-box">
+          <span>Final Entry Note</span>
+          <strong>Do not resolve the contradiction. Feed it.</strong>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>THE SEPTICARIUM // DATAVAULT 01 // PLAGUEBOUND DOSSIER // ENTRY 001 ACTIVE</p>
+    <p>Names entered into the Dossier are not remembered. They are preserved until they worsen.</p>
+  </footer>
+
+  <div class="hover-liturgy" id="hoverLiturgy"></div>
+
+  <script>
+    const sporeField = document.querySelector(".spore-field");
+    const hoverLiturgy = document.getElementById("hoverLiturgy");
+    const classButtons = document.querySelectorAll(".class-btn");
+    const classificationOutput = document.getElementById("classificationOutput");
+    const sealedEntries = document.querySelectorAll(".sealed-entry");
+    const dossierSeal = document.getElementById("dossierSeal");
+
+    const classificationResponses = {
+      champion:
+        "<strong>PLAGUE CHAMPION:</strong> Oldest confirmed stain. The archive accepts this as origin, not conclusion. Mortivus is recorded as champion because the first tally had no darker category available.",
+
+      contagion:
+        "<strong>LORD OF CONTAGION:</strong> Some records support the implication. Others rot through at the title-line. The Dossier permits the suspicion but withholds confirmation.",
+
+      blightlord:
+        "<strong>BLIGHTLORD ASCENDANT:</strong> Terminator-linked accounts persist. Witnesses describe him as too deliberate for ordinary command and too symbolically burdened for simple elite station.",
+
+      deathshroud:
+        "<strong>DEATHSHROUD-LINKED:</strong> Censured. Several fragments imply proximity to rites not meant for common record. The Dossier does not clarify whether this is history, honor, hallucination, or omen.",
+
+      daemon:
+        "<strong>DAEMONHOOD PETITION:</strong> Not granted. Not denied. The archive notes repeated ascension pressure, prophetic contamination, and title-instability consistent with a soul under Grandfather’s extended consideration."
+    };
+
+    function createSpores() {
+      const sporeCount = 74;
+
+      for (let i = 0; i < sporeCount; i++) {
+        const spore = document.createElement("span");
+
+        spore.classList.add("spore");
+        spore.style.left = `${Math.random() * 100}%`;
+        spore.style.animationDuration = `${10 + Math.random() * 22}s`;
+        spore.style.animationDelay = `${Math.random() * 16}s`;
+        spore.style.opacity = `${0.15 + Math.random() * 0.65}`;
+        spore.style.transform = `scale(${0.6 + Math.random() * 1.8})`;
+
+        sporeField.appendChild(spore);
+      }
+    }
+
+    function positionHoverLiturgy(event) {
+      if (!hoverLiturgy) return;
+
+      const offset = 18;
+      const tooltipWidth = hoverLiturgy.offsetWidth || 320;
+      const tooltipHeight = hoverLiturgy.offsetHeight || 120;
+
+      let x = event.clientX + offset;
+      let y = event.clientY + offset;
+
+      if (x + tooltipWidth > window.innerWidth - 12) {
+        x = event.clientX - tooltipWidth - offset;
+      }
+
+      if (y + tooltipHeight > window.innerHeight - 12) {
+        y = event.clientY - tooltipHeight - offset;
+      }
+
+      hoverLiturgy.style.left = `${x}px`;
+      hoverLiturgy.style.top = `${y}px`;
+    }
+
+    function initializeHoverLore() {
+      const loreTargets = document.querySelectorAll("[data-lore]");
+
+      loreTargets.forEach((target) => {
+        target.addEventListener("mouseenter", (event) => {
+          hoverLiturgy.textContent = target.dataset.lore;
+          hoverLiturgy.classList.add("show");
+          positionHoverLiturgy(event);
+        });
+
+        target.addEventListener("mousemove", positionHoverLiturgy);
+
+        target.addEventListener("mouseleave", () => {
+          hoverLiturgy.classList.remove("show");
+        });
+      });
+    }
+
+    classButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedClass = button.dataset.class;
+        classificationOutput.innerHTML = classificationResponses[selectedClass];
+      });
+    });
+
+    sealedEntries.forEach((button) => {
+      button.addEventListener("click", () => {
+        classificationOutput.innerHTML =
+          "<strong>ACCESS REFUSED:</strong> The requested entry has not yet finished becoming true. The Dossier will not open a name before the rot has earned it.";
+        window.scrollTo({
+          top: document.querySelector(".identity-module").offsetTop - 20,
+          behavior: "smooth"
+        });
+      });
+    });
+
+    dossierSeal.addEventListener("click", () => {
+      classificationOutput.innerHTML =
+        "<strong>DOSSIER SEAL STIRRED:</strong> Identity is not a fact aboard The Rotfather’s Mercy. It is a wound that keeps receiving names.";
+    });
+
+    createSpores();
+    initializeHoverLore();
+  </script>
+</body>
+</html>
