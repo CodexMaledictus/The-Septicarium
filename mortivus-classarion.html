@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The Septicarium | Mortivus Classarion</title>
+
+  <meta
+    name="description"
+    content="The Mortivus Classarion name-crypt. Plague Champion of uncertain station, Blessed by Nurgle, commander of The Rotfather’s Vanguard."
+  />
+
+  <style>
+    :root {
+      --bg-0: #020302;
+      --bg-1: #070906;
+      --bg-2: #10160c;
+      --panel: rgba(7, 10, 7, 0.9);
+      --line: rgba(191, 224, 92, 0.2);
+      --line-strong: rgba(191, 224, 92, 0.52);
+      --rot: #a3c64a;
+      --rot-bright: #dced84;
+      --bone: #ddd7bc;
+      --bone-dim: #aaa483;
+      --brass: #8f7d43;
+      --rust: #5a2417;
+      --blood: #2b0d0a;
+      --deep-red: #190604;
+      --shadow: 0 0 60px rgba(163, 198, 74, 0.11);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      background:
+        radial-gradient(circle at 14% 12%, rgba(90, 36, 23, 0.22), transparent 28%),
+        radial-gradient(circle at 78% 9%, rgba(163, 198, 74, 0.1), transparent 22%),
+        radial-gradient(circle at 50% 55%, rgba(20, 60, 20, 0.16), transparent 36%),
+        linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, #010201 100%);
+      font-family: Georgia, "Times New Roman", serif;
+      overflow-x: hidden;
+    }
+
+    .void-haze,
+    .rot-grid,
+    .spore-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .void-haze {
+      z-index: 0;
+      background:
+        radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.68) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.76));
+    }
+
+    .rot-grid {
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
+      background-size: 96px 96px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
+    }
+
+    .spore-field {
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .spore {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(220, 237, 132, 0.44);
+      box-shadow: 0 0 12px rgba(220, 237, 132, 0.46);
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateY(105vh) translateX(0);
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 0.8;
+      }
+
+      90% {
+        opacity: 0.35;
+      }
+
+      to {
+        transform: translateY(-12vh) translateX(88px);
+        opacity: 0;
+      }
+    }
+
+    .boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(27, 42, 18, 0.82), rgba(0,0,0,0.98) 64%),
+        linear-gradient(135deg, #020302, #070906);
+      transition: opacity 700ms ease, visibility 700ms ease;
+    }
+
+    .boot-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .boot-box {
+      width: min(860px, calc(100% - 32px));
+      border: 1px solid rgba(220, 237, 132, 0.28);
+      background: rgba(3, 5, 3, 0.72);
+      box-shadow: 0 0 70px rgba(163, 198, 74, 0.12);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .boot-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.035),
+          rgba(255,255,255,0.035) 1px,
+          transparent 1px,
+          transparent 8px
+        );
+      opacity: 0.12;
+    }
+
+    .boot-title {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 20px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .boot-lines {
+      position: relative;
+      z-index: 1;
+      min-height: 220px;
+      color: var(--bone);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .boot-lines p {
+      margin: 0 0 8px;
+    }
+
+    .boot-button {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      border: 1px solid rgba(220, 237, 132, 0.3);
+      background: rgba(0,0,0,0.35);
+      color: var(--bone);
+      padding: 12px 16px;
+      font-family: Arial, sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+    }
+
+    .boot-button:hover {
+      border-color: rgba(220, 237, 132, 0.62);
+      color: var(--rot-bright);
+      background: rgba(163, 198, 74, 0.08);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 6, 4, 0.94);
+      backdrop-filter: blur(10px);
+      color: var(--bone-dim);
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .topbar a {
+      color: var(--rot-bright);
+      text-decoration: none;
+    }
+
+    .topbar a:hover {
+      text-decoration: underline;
+    }
+
+    .site-shell {
+      position: relative;
+      z-index: 2;
+      width: min(1360px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 90px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .tag {
+      color: var(--rot-bright);
+      border: 1px solid rgba(220, 237, 132, 0.28);
+      padding: 6px 10px;
+      background: rgba(0, 0, 0, 0.3);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero,
+    .panel,
+    .name-slab,
+    .weapon-card,
+    .event-card,
+    .rite-panel,
+    .horror-panel {
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(8, 12, 8, 0.94), rgba(4, 6, 4, 0.88)),
+        radial-gradient(circle at top left, rgba(142, 123, 66, 0.1), transparent 42%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .panel::before,
+    .name-slab::before,
+    .weapon-card::before,
+    .event-card::before,
+    .rite-panel::before,
+    .horror-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(163, 198, 74, 0.06), transparent 24%),
+        linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.03), transparent);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 0.72fr;
+      gap: 28px;
+      padding: 32px;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--rot);
+      min-height: 620px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(3.4rem, 8vw, 7.2rem);
+      line-height: 0.86;
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      margin: 18px 0 18px;
+      color: var(--rot-bright);
+      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      font-style: italic;
+    }
+
+    .lead {
+      max-width: 980px;
+      margin: 0 0 13px;
+      font-size: 1.06rem;
+      line-height: 1.75;
+      color: var(--bone);
+    }
+
+    .lead.dim {
+      color: var(--bone-dim);
+    }
+
+    .lead span {
+      color: var(--rot-bright);
+    }
+
+    .hero-icon {
+      display: grid;
+      place-items: center;
+    }
+
+    .mortivus-seal {
+      position: relative;
+      width: min(390px, 100%);
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      cursor: crosshair;
+      filter: drop-shadow(0 0 50px rgba(163, 198, 74, 0.16));
+    }
+
+    .seal-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(220, 237, 132, 0.24);
+    }
+
+    .outer {
+      inset: 0;
+      border-style: dashed;
+      animation: rotateSlow 45s linear infinite;
+    }
+
+    .middle {
+      inset: 14%;
+      border-color: rgba(142, 123, 66, 0.42);
+      animation: rotateReverse 34s linear infinite;
+    }
+
+    .inner {
+      inset: 29%;
+      border-color: rgba(220, 237, 132, 0.48);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .seal-core {
+      position: relative;
+      z-index: 3;
+      width: 142px;
+      height: 142px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(220, 237, 132, 0.68);
+      color: var(--rot-bright);
+      font-size: 2.15rem;
+      letter-spacing: 0.08em;
+      text-align: center;
+      background:
+        radial-gradient(circle, rgba(163, 198, 74, 0.18), rgba(6, 10, 5, 0.94) 60%);
+      box-shadow: inset 0 0 30px rgba(163, 198, 74, 0.08);
+    }
+
+    .seal-label {
+      position: absolute;
+      z-index: 4;
+      padding: 4px 8px;
+      border: 1px solid rgba(220, 237, 132, 0.18);
+      background: rgba(0,0,0,0.3);
+      color: var(--bone-dim);
+      font-family: Arial, sans-serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .l1 { top: 8%; left: 39%; }
+    .l2 { top: 25%; right: 5%; }
+    .l3 { bottom: 25%; right: 4%; }
+    .l4 { bottom: 8%; left: 37%; }
+    .l5 { bottom: 25%; left: 5%; }
+    .l6 { top: 25%; left: 4%; }
+
+    @keyframes rotateSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateReverse {
+      to { transform: rotate(-360deg); }
+    }
+
+    @keyframes breathe {
+      0%,100% {
+        transform: scale(1);
+        opacity: 0.72;
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+    }
+
+    .section-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel,
+    .rite-panel,
+    .horror-panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .rite-panel h2,
+    .horror-panel h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 1.03;
+    }
+
+    .panel p,
+    .name-slab p,
+    .weapon-card p,
+    .event-card p,
+    .rite-panel p,
+    .horror-panel p,
+    .timeline-item p {
+      color: var(--bone-dim);
+      line-height: 1.72;
+    }
+
+    .identity-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .name-slab {
+      padding: 15px;
+      min-height: 132px;
+      transition: 220ms ease;
+    }
+
+    .name-slab:hover {
+      border-color: var(--line-strong);
+      box-shadow: 0 0 42px rgba(163, 198, 74, 0.12);
+      transform: translateY(-4px);
+    }
+
+    .name-slab span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rot);
+      font-family: Arial, sans-serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .name-slab strong {
+      color: var(--bone);
+      line-height: 1.42;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .timeline-item {
+      padding: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.13);
+      background: rgba(0,0,0,0.2);
+    }
+
+    .timeline-item h3,
+    .weapon-card h3,
+    .event-card h3 {
+      margin: 0 0 8px;
+      color: var(--bone);
+      line-height: 1.15;
+      font-size: 1.28rem;
+    }
+
+    .timeline-item span,
+    .weapon-card span,
+    .event-card span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .weapon-grid,
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .weapon-card,
+    .event-card {
+      padding: 18px;
+      min-height: 280px;
+    }
+
+    .rite-panel {
+      border-left: 4px solid var(--rot);
+    }
+
+    .rite-grid {
+      display: grid;
+      grid-template-columns: 0.86fr 1.14fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .rite-buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rite-button,
+    .entry-link,
+    .horror-button {
+      border: 1px solid rgba(220, 237, 132, 0.24);
+      background: rgba(0,0,0,0.28);
+      color: var(--bone);
+      padding: 12px 14px;
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .rite-button:hover,
+    .entry-link:hover,
+    .horror-button:hover {
+      border-color: rgba(220, 237, 132, 0.56);
+      color: var(--rot-bright);
+      background: rgba(163, 198, 74, 0.08);
+    }
+
+    .rite-output {
+      min-height: 330px;
+      padding: 18px;
+      border: 1px solid rgba(220, 237, 132, 0.14);
+      background:
+        linear-gradient(135deg, rgba(4, 7, 4, 0.95), rgba(12, 18, 10, 0.82));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rite-output::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.025),
+          rgba(255,255,255,0.025) 1px,
+          transparent 1px,
+          transparent 8px
+        );
+      opacity: 0.16;
+    }
+
+    .rite-output h3,
+    .rite-output p {
+      position: relative;
+      z-index: 1;
+    }
+
+    .rite-output h3 {
+      margin: 0 0 12px;
+      color: var(--rot-bright);
+      font-size: 1.6rem;
+      line-height: 1.1;
+    }
+
+    .pressure-wrap {
+      margin-top: 16px;
+    }
+
+    .pressure-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: var(--bone-dim);
+    }
+
+    .pressure-meter {
+      height: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.16);
+      background: rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    .pressure-fill {
+      height: 100%;
+      width: 9%;
+      background: linear-gradient(90deg, #511a14, #98b843, var(--rot-bright));
+      transition: width 450ms ease;
+    }
+
+    .horror-panel {
+      background:
+        linear-gradient(135deg, rgba(15, 4, 3, 0.9), rgba(4, 6, 4, 0.9)),
+        radial-gradient(circle at top left, rgba(163, 198, 74, 0.1), transparent 42%);
+      border-color: rgba(130, 37, 24, 0.56);
+    }
+
+    .horror-content {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(130, 37, 24, 0.48);
+      background: rgba(0,0,0,0.24);
+    }
+
+    .horror-content.open {
+      display: block;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0 0;
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      width: min(1360px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 46px;
+      border-top: 1px solid rgba(220, 237, 132, 0.12);
+      color: var(--bone-dim);
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+
+    .hover-liturgy {
+      position: fixed;
+      z-index: 999;
+      max-width: 380px;
+      padding: 13px 15px;
+      border: 1px solid rgba(220, 237, 132, 0.42);
+      background:
+        linear-gradient(135deg, rgba(5, 8, 5, 0.97), rgba(12, 18, 10, 0.94)),
+        radial-gradient(circle at top left, rgba(163, 198, 74, 0.12), transparent 45%);
+      color: var(--rot-bright);
+      box-shadow: 0 0 32px rgba(163, 198, 74, 0.16);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(14px, 14px);
+      transition: opacity 160ms ease;
+    }
+
+    .hover-liturgy.show {
+      opacity: 1;
+    }
+
+    [data-lore] {
+      cursor: crosshair;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .two-col,
+      .rite-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .identity-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .weapon-grid,
+      .event-grid,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .site-shell,
+      .site-footer {
+        width: min(100% - 18px, 1360px);
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 16vw, 4.8rem);
+      }
+
+      .identity-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-kicker {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="boot-screen" id="bootScreen">
+    <div class="boot-box">
+      <p class="boot-title">NAME-CRYPT IGNITION // SUBJECT: MORTIVUS CLASSARION</p>
+      <div class="boot-lines" id="bootLines"></div>
+      <button class="boot-button" id="enterButton">Permit the Name to Open</button>
+    </div>
+  </div>
+
+  <div class="spore-field" aria-hidden="true"></div>
+  <div class="void-haze" aria-hidden="true"></div>
+  <div class="rot-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div>NAME-CRYPT // MORTIVUS CLASSARION // CLASSIFICATION DISPUTED</div>
+    <div>
+      <a href="plaguebound-dossier.html">RETURN TO PLAGUEBOUND DOSSIER</a>
+      //
+      <a href="index.html">COMMAND DECK</a>
+    </div>
+  </header>
+
+  <main class="site-shell">
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">PLAGUEBOUND DOSSIER // NAME-CRYPT UNSEALED</p>
+        <h1>Mortivus Classarion</h1>
+        <p class="subtitle">“Blessed by Nurgle. Unfinished by design.”</p>
+
+        <p class="lead">
+          Mortivus Classarion is the plaguebound commander of <span>The Rotfather’s Vanguard</span>,
+          a Plague Champion of uncertain station whose records refuse stable classification.
+          Some name him Lord of Contagion. Some place him among Blightlord elites. A few censured
+          fragments imply proximity to rites not meant for common record.
+        </p>
+
+        <p class="lead dim">
+          The Septicarium confirms only this: Mortivus is cunning, occult, biologically patient,
+          spiritually corrosive, and drawn toward daemonhood by a private plague-prophecy whose origin
+          remains either hidden, infected, or deliberately unfinished.
+        </p>
+
+        <div class="footer-links">
+          <a class="entry-link" href="#origin">Origin</a>
+          <a class="entry-link" href="#armor">Armor</a>
+          <a class="entry-link" href="#weapons">Weapons</a>
+          <a class="entry-link" href="#tactics">Tactics</a>
+          <a class="entry-link" href="#rite">Unfinished Title</a>
+        </div>
+      </div>
+
+      <div class="hero-icon">
+        <div
+          class="mortivus-seal"
+          id="mortivusSeal"
+          data-lore="The seal does not decide what Mortivus is. It watches what he is becoming."
+        >
+          <div class="seal-ring outer"></div>
+          <div class="seal-ring middle"></div>
+          <div class="seal-ring inner"></div>
+          <div class="seal-core">M.C.</div>
+          <div class="seal-label l1">PLAGUE</div>
+          <div class="seal-label l2">OMEN</div>
+          <div class="seal-label l3">COMMAND</div>
+          <div class="seal-label l4">ASCENT</div>
+          <div class="seal-label l5">ROT</div>
+          <div class="seal-label l6">XIV</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="identity-grid">
+      <article class="name-slab" data-lore="Oldest surviving designation, but not necessarily final.">
+        <span>Recorded Station</span>
+        <strong>Plague Champion // station unstable</strong>
+      </article>
+
+      <article class="name-slab" data-lore="Used by allies, captives, and dying vox-recorders.">
+        <span>Common Title</span>
+        <strong>Blessed by Nurgle</strong>
+      </article>
+
+      <article class="name-slab" data-lore="He leads by pressure, patience, and ritualized corrosion.">
+        <span>Command Style</span>
+        <strong>Attritional, occult, spiritually invasive</strong>
+      </article>
+
+      <article class="name-slab" data-lore="The prophecy is obeyed by the host, but may be obeying him.">
+        <span>Prophetic Vector</span>
+        <strong>Private plague-omen</strong>
+      </article>
+
+      <article class="name-slab" data-lore="The archive cannot determine whether the armor changed or witnesses failed.">
+        <span>Armor Record</span>
+        <strong>Disputed plague plate</strong>
+      </article>
+
+      <article class="name-slab" data-lore="Not granted, not denied, not safely ignored.">
+        <span>Ascension Status</span>
+        <strong>Daemonhood pressure detected</strong>
+      </article>
+    </section>
+
+    <section class="two-col" id="origin">
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">ORIGIN THREADS</p>
+          <span class="tag">CONTRADICTION PRESERVED</span>
+        </div>
+
+        <h2>The Name Before the Rot</h2>
+
+        <p>
+          The Dossier refuses a single origin for Mortivus Classarion. This is not administrative failure.
+          It is considered part of the record.
+        </p>
+
+        <p>
+          One origin-thread claims he was once a lesser champion within a plague company that broke away
+          after a disastrous campaign of slow attrition, where Mortivus alone understood that the failure
+          had not been defeat but instruction. Another suggests he rose from a Blightlord cohort whose
+          command structure collapsed during a boarding action aboard an Imperial shrine-vessel. A third,
+          more doubtful strand claims he was never promoted at all, but simply continued issuing orders
+          after every superior had become either corpse, vector, or shrine.
+        </p>
+
+        <p>
+          All versions agree on the same pattern: Mortivus survived by reading decay better than others read
+          maps. Where commanders saw stalled assaults, he saw ripening pressure. Where others counted losses,
+          he counted openings. Where lesser champions prayed for favor, Mortivus studied the exact moment
+          when faith, flesh, and command all began to soften.
+        </p>
+      </article>
+
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">EARLY ASCENT</p>
+          <span class="tag">ROOKIE TO CHAMPION</span>
+        </div>
+
+        <h2>How He Rose</h2>
+
+        <p>
+          Mortivus did not rise by speed, spectacle, or madness. He rose by endurance and memory.
+          The first recorded accounts mark him as a quiet executioner of contaminated orders,
+          a warrior who carried out hopeless advances without complaint and returned with details
+          no one else had thought to collect.
+        </p>
+
+        <p>
+          He noted which enemy prayers became frantic first. He remembered which officers lied about
+          casualty reports. He studied which kinds of fear spread faster through infantry, clergy,
+          transhuman elites, and mutant auxiliaries. By the time others noticed his ambition,
+          he had already turned observation into doctrine.
+        </p>
+
+        <p>
+          His earliest followers did not gather because he promised glory. They gathered because battles
+          around him began to feel inevitable. Fortresses did not simply fall. They seemed to realize
+          they had been falling for weeks.
+        </p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">HISTORY OF COMMAND</p>
+        <span class="tag">SELECTED DEVELOPMENT</span>
+      </div>
+
+      <h2>From Plaguebound Aspirant to Warhost Master</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <span>First Noted Pattern</span>
+          <h3>The Ledger of Refused Retreats</h3>
+          <p>
+            Mortivus first appears in usable records during a campaign where withdrawal orders repeatedly
+            failed to reach his position. Later analysis suggests the vox errors were real. Later still,
+            the Septicarium questioned whether the errors had been permitted. Mortivus held the line long
+            enough for the enemy’s relief force to become trapped inside its own quarantine perimeter.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <span>Rise Among the Plaguebound</span>
+          <h3>The Seven Bell Advance</h3>
+          <p>
+            In one disputed engagement, Mortivus ordered no charge until seven corrupted bell tones had echoed
+            across the battlefield. Each bell coincided with a different collapse: supply, morale, command,
+            sanitation, liturgy, ammunition discipline, and finally hope. When the advance began, resistance
+            had already become ceremonial.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <span>Formation Pressure</span>
+          <h3>The Rotfather’s Vanguard Coheres</h3>
+          <p>
+            The warhost that became The Rotfather’s Vanguard did not form through a clean oath ceremony.
+            It collected around Mortivus like infection around heat. Survivors, plague marines, failed rivals,
+            oath-rotted specialists, and lesser champions entered his orbit because his campaigns produced
+            something more valuable than victory: recurrence.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <span>Current Condition</span>
+          <h3>The Unfinished Apotheosis</h3>
+          <p>
+            Mortivus now commands as one who believes every campaign is part of a greater petition.
+            Whether he seeks daemonhood, is being led toward it, or is being used as bait by powers beyond
+            his comprehension remains unresolved. The Dossier records only increasing pressure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="two-col" id="armor">
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">ARMOR RECORD</p>
+          <span class="tag">PANOPLY DISPUTED</span>
+        </div>
+
+        <h2>The Unresolved Panoply</h2>
+
+        <p>
+          Mortivus’ armor is one of the Dossier’s most persistent contradictions. Some witnesses describe
+          rotted power plate thick with devotional corrosion, horned vents, cracked lenses, chain-hung censers,
+          and layers of scripture scratched into rust. Others insist he moves in a heavier silhouette:
+          terminator mass, Blightlord density, corpse-shrine posture, and a gait like a walking reliquary.
+        </p>
+
+        <p>
+          The Septicarium does not resolve this. The armor may have changed. The witnesses may have failed.
+          The warp may have made both accounts true. The most consistent details are the bells, the cracked
+          plague halo behind the helm, and a breastplate marked with tally-wounds that appear deeper after
+          every major engagement.
+        </p>
+
+        <p>
+          Internal designation: <span style="color: var(--rot-bright);">The Unresolved Panoply</span>.
+          Not because the armor lacks identity, but because its identity is still working.
+        </p>
+      </article>
+
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">IDEOLOGY</p>
+          <span class="tag">OCCULT ROT DOCTRINE</span>
+        </div>
+
+        <h2>What Mortivus Believes</h2>
+
+        <p>
+          Mortivus does not view rot as mere destruction. To him, decay is proof that all false separation
+          eventually fails. Armor, flesh, oath, wall, empire, memory, and soul all pretend to be sealed.
+          Nurgle teaches that nothing is sealed forever.
+        </p>
+
+        <p>
+          His doctrine begins with spiritual decay. Break certainty first. Then biological corruption finds
+          easier passage. Then command structure becomes a host. An army that still has guns may already be
+          dead if it has begun to doubt the meaning of firing them.
+        </p>
+
+        <p>
+          This makes Mortivus dangerous even among the Death Guard. He does not merely endure. He interprets.
+          He does not simply infect. He studies what infection reveals.
+        </p>
+      </article>
+    </section>
+
+    <section class="panel" id="weapons">
+      <div class="section-kicker">
+        <p class="eyebrow">WEAPONS AND RELICS</p>
+        <span class="tag">ARMAMENT CLASSIFICATION</span>
+      </div>
+
+      <h2>The Tools That Follow His Name</h2>
+
+      <div class="weapon-grid">
+        <article class="weapon-card">
+          <span>Primary Relic</span>
+          <h3>The Mercy-Sickle</h3>
+          <p>
+            A plague-cleaver or manreaper-like weapon depending on the account, curved as if made to harvest
+            both flesh and certainty. Wounds caused by the blade are described as strangely quiet. Victims
+            often stop screaming before they stop moving, as though pain has been translated into acceptance.
+          </p>
+        </article>
+
+        <article class="weapon-card">
+          <span>Sidearm</span>
+          <h3>The Rite-Spitter</h3>
+          <p>
+            A corrupted bolt weapon recorded in several forms: combi-bolter, plague-belcher, or rusted
+            sidearm bound with censers. Its ammunition is less consistent than its effect. Survivors report
+            impact trauma followed by devotional hallucination, fever, and the scent of wet iron bells.
+          </p>
+        </article>
+
+        <article class="weapon-card">
+          <span>Occult Implement</span>
+          <h3>The Tally Chain</h3>
+          <p>
+            A chain of plague-marked tokens, broken oath seals, teeth, shell fragments, and corroded nameplates.
+            Mortivus has been observed touching it before refusing retreats, sparing enemies, or ordering
+            contaminations that seemed tactically unnecessary until much later.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">ABILITIES</p>
+          <span class="tag">OBSERVED EFFECTS</span>
+        </div>
+
+        <h2>What the Dossier Attributes to Him</h2>
+
+        <p>
+          Mortivus is not classified as a sorcerer by stable record, yet battlefield accounts repeatedly assign
+          occult consequences to his presence. Vox channels sour. Enemy catechisms mispronounce themselves.
+          Wounded soldiers become calm at moments when panic would be more rational.
+        </p>
+
+        <p>
+          The safest interpretation is that Mortivus combines Death Guard resilience, plagueborn physiology,
+          disciplined tactical patience, and Nurgle-favored symbolism so effectively that witnesses describe
+          the result as witchcraft.
+        </p>
+
+        <p>
+          The unsafe interpretation is that the witnesses are correct.
+        </p>
+      </article>
+
+      <article class="panel" id="tactics">
+        <div class="section-kicker">
+          <p class="eyebrow">BATTLE TACTICS</p>
+          <span class="tag">THEORY OF RUIN</span>
+        </div>
+
+        <h2>How Mortivus Makes War</h2>
+
+        <p>
+          Mortivus favors pressure over speed. He will allow an enemy to hold ground if holding that ground
+          deepens their infection, exhausts their command discipline, or convinces them that survival remains
+          possible.
+        </p>
+
+        <p>
+          His assaults often follow a pattern: isolate belief, contaminate routine, interrupt command,
+          let fear become procedure, then advance when resistance has become an empty ritual.
+        </p>
+
+        <p>
+          The Rotfather’s Vanguard under Mortivus is therefore not simply a plague force. It is an argument:
+          that all resistance is temporary, all purity is theatrical, and all fortresses are already bodies.
+        </p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">VICTORIES AND DEFEATS</p>
+        <span class="tag">CENSURED BATTLE MEMORY</span>
+      </div>
+
+      <h2>Selected Campaign Stains</h2>
+
+      <div class="event-grid">
+        <article class="event-card">
+          <span>Victory</span>
+          <h3>The Mournbell Boarding</h3>
+          <p>
+            Mortivus led a boarding action against a shrine-transport whose defenders had sealed themselves
+            behind layered purity wards. He did not breach the chapel first. He contaminated the bell system.
+            By the time the doors opened, the defenders believed the bells were calling them to procession.
+          </p>
+        </article>
+
+        <article class="event-card">
+          <span>Victory</span>
+          <h3>The Coughing of Karthax Minor</h3>
+          <p>
+            A fortified moon fell without decisive bombardment. Mortivus targeted water rites, ration chants,
+            and corpse disposal schedules. The garrison maintained military posture for six days after spiritual
+            defeat, which the Dossier considers an impressive but irrelevant delay.
+          </p>
+        </article>
+
+        <article class="event-card">
+          <span>Defeat</span>
+          <h3>The Pallid Reversal</h3>
+          <p>
+            Mortivus once misread enemy retreat as collapse. It was bait. The Vanguard suffered losses in a
+            killing field prepared with rare discipline. Mortivus survived, ordered no denial of failure, and
+            later used the names of the dead as tactical headings in future plans.
+          </p>
+        </article>
+
+        <article class="event-card">
+          <span>Defeat</span>
+          <h3>The Unanswered Seventh Bell</h3>
+          <p>
+            In one campaign, the expected seventh collapse never occurred. Enemy morale held beyond prediction.
+            Mortivus withdrew rather than waste the host. This remains one of the few records where the Dossier
+            admits surprise.
+          </p>
+        </article>
+
+        <article class="event-card">
+          <span>Unresolved</span>
+          <h3>The Strife-Locked Fragments</h3>
+          <p>
+            References to the Strife System remain restricted to confirmed battle records only. The Dossier
+            preserves several scars from those engagements, but does not treat that system as its own mythology.
+          </p>
+        </article>
+
+        <article class="event-card">
+          <span>Omen</span>
+          <h3>The Name Written Before Battle</h3>
+          <p>
+            Several victory tallies attributed to Mortivus appear to have been logged before the battles they
+            describe. The Septicarium refuses to identify this as prophecy, clerical failure, or warp contamination.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="rite-panel" id="rite">
+      <div class="section-kicker">
+        <p class="eyebrow">SPECIAL SECTION</p>
+        <span class="tag">THE RITE OF THE UNFINISHED TITLE</span>
+      </div>
+
+      <h2>What Is Mortivus Becoming?</h2>
+
+      <p>
+        Mortivus’ most unique feature is not his rank. It is the instability around his rank.
+        The Dossier treats this uncertainty as sacred pressure. Click the seals below and the archive will
+        reveal what each title sees when it looks at him.
+      </p>
+
+      <div class="rite-grid">
+        <div class="rite-buttons">
+          <button class="rite-button" data-rite="champion">Plague Champion</button>
+          <button class="rite-button" data-rite="contagion">Lord of Contagion</button>
+          <button class="rite-button" data-rite="blightlord">Blightlord Ascendant</button>
+          <button class="rite-button" data-rite="deathshroud">Deathshroud-Linked</button>
+          <button class="rite-button" data-rite="prophet">Plague-Prophet</button>
+          <button class="rite-button" data-rite="daemon">Daemon Prince Becoming</button>
+          <button class="rite-button" data-rite="refuse">Refuse Classification</button>
+        </div>
+
+        <div class="rite-output" id="riteOutput">
+          <h3>CLASSIFICATION UNOPENED</h3>
+          <p>
+            The archive refuses to resolve Mortivus before the rot has finished its work.
+            Select a title. The Dossier will disagree with itself in a useful direction.
+          </p>
+
+          <div class="pressure-wrap">
+            <div class="pressure-head">
+              <span>Ascension Pressure</span>
+              <strong id="pressureValue">9%</strong>
+            </div>
+            <div class="pressure-meter">
+              <div class="pressure-fill" id="pressureFill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="horror-panel">
+      <div class="section-kicker">
+        <p class="eyebrow">CENSURED CHAMBER</p>
+        <span class="tag">DISTURBING FRAGMENT</span>
+      </div>
+
+      <h2>The Mercy He Gave</h2>
+
+      <p>
+        This section belongs here as a warning, but later it should become its own Rot Scripture page.
+        Mortivus needs one story so disturbing that visitors understand why his followers do not speak
+        of his mercy as kindness.
+      </p>
+
+      <button class="horror-button" id="openHorror">Unseal the Fragment</button>
+
+      <div class="horror-content" id="horrorContent">
+        <p>
+          The chapel had survived the shelling. That was the mistake. Its roof still held. Its saints still stared
+          downward through cracked glass. Its congregation still believed survival meant judgment had passed them by.
+        </p>
+
+        <p>
+          Mortivus entered without haste and ordered no slaughter. Instead, he commanded the doors sealed from the outside
+          and the wounded carried in. Enemy wounded. Vanguard wounded. Civilians. Priests. One by one, all were placed
+          beneath the same broken saints.
+        </p>
+
+        <p>
+          For seven hours the chapel heard only breathing. Then coughing. Then prayer. Then apology. By dawn, the survivors
+          no longer knew whose pain belonged to whom. Mortivus called this mercy: not the ending of suffering, but the removal
+          of loneliness from it.
+        </p>
+
+        <p>
+          The Dossier marks this as the first confirmed expression of Mortivus’ mature doctrine. He does not merely corrupt
+          flesh. He corrupts the meaning of comfort.
+        </p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">FINAL DOSSIER STATEMENT</p>
+        <span class="tag">ENTRY REMAINS ACTIVE</span>
+      </div>
+
+      <h2>The Name Has Not Finished Becoming</h2>
+
+      <p>
+        Mortivus Classarion remains the central contradiction of The Rotfather’s Vanguard. He is recorded as champion,
+        commander, omen-bearer, doctrinal architect, failed classification, and possible ascension vector.
+      </p>
+
+      <p>
+        The Septicarium does not close his entry because a closed entry is a clean thing.
+        Mortivus is not clean. Mortivus is not concluded. Mortivus is being counted.
+      </p>
+
+      <div class="footer-links">
+        <a class="entry-link" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
+        <a class="entry-link" href="index.html">Return to Command Deck</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>THE SEPTICARIUM // MORTIVUS CLASSARION // NAME-CRYPT ACTIVE // CLASSIFICATION DISPUTED</p>
+    <p>Do not resolve the contradiction. Feed it.</p>
+  </footer>
+
+  <div class="hover-liturgy" id="hoverLiturgy"></div>
+
+  <script>
+    const bootScreen = document.getElementById("bootScreen");
+    const bootLines = document.getElementById("bootLines");
+    const enterButton = document.getElementById("enterButton");
+    const sporeField = document.querySelector(".spore-field");
+    const hoverLiturgy = document.getElementById("hoverLiturgy");
+    const riteButtons = document.querySelectorAll(".rite-button");
+    const riteOutput = document.getElementById("riteOutput");
+    const pressureFill = document.getElementById("pressureFill");
+    const pressureValue = document.getElementById("pressureValue");
+    const openHorror = document.getElementById("openHorror");
+    const horrorContent = document.getElementById("horrorContent");
+    const mortivusSeal = document.getElementById("mortivusSeal");
+
+    let pressure = 9;
+
+    const bootSequence = [
+      "Opening Name-Crypt...",
+      "Subject: Mortivus Classarion.",
+      "Station: disputed.",
+      "Known designation: Blessed by Nurgle.",
+      "Origin record: contaminated.",
+      "Armor record: contradictory.",
+      "Ascension pressure: present.",
+      "Daemonhood petition: not granted, not denied.",
+      "Warning: the subject resists clean classification.",
+      "The name may now be permitted to open."
+    ];
+
+    const riteResponses = {
+      champion: {
+        title: "PLAGUE CHAMPION",
+        body:
+          "The oldest surviving stain calls Mortivus a Plague Champion. This is accepted as origin, not conclusion. He leads as one who began among champions and learned to make rank less important than inevitability.",
+        pressure: 14
+      },
+      contagion: {
+        title: "LORD OF CONTAGION",
+        body:
+          "Some records show a silhouette too heavy for ordinary station, advancing with the gravity of contagion made command. The Dossier allows the suspicion but refuses confirmation.",
+        pressure: 23
+      },
+      blightlord: {
+        title: "BLIGHTLORD ASCENDANT",
+        body:
+          "Terminator-linked accounts persist. Witnesses describe him as a walking shrine of swollen plate, too deliberate for common command and too symbolically burdened for simple elite station.",
+        pressure: 34
+      },
+      deathshroud: {
+        title: "DEATHSHROUD-LINKED",
+        body:
+          "Censured fragments imply proximity to rites and formations not meant for lesser record. Whether honor, hallucination, stolen authority, or omen, the association remains dangerous.",
+        pressure: 48
+      },
+      prophet: {
+        title: "PLAGUE-PROPHET",
+        body:
+          "Mortivus does not preach loudly. He makes battlefields confess. His prophecy is tactical, biological, spiritual, and patient. He reads infection as scripture and treats morale collapse as revelation.",
+        pressure: 61
+      },
+      daemon: {
+        title: "DAEMON PRINCE BECOMING",
+        body:
+          "The Dossier does not claim ascension. It records pressure. Titles appearing before they are earned. Victories logged before they occur. Armor descriptions that contradict causality. A soul under extended consideration.",
+        pressure: 77
+      },
+      refuse: {
+        title: "CLASSIFICATION REFUSED",
+        body:
+          "Correct. To decide Mortivus too early would be an Imperial habit. The Death Guard know better. Let the contradiction swell. Let the name worsen. Let the tally continue.",
+        pressure: 88
+      }
+    };
+
+    function runBootSequence() {
+      let index = 0;
+
+      const interval = setInterval(() => {
+        if (index >= bootSequence.length) {
+          clearInterval(interval);
+          return;
+        }
+
+        const line = document.createElement("p");
+        line.textContent = `// ${bootSequence[index]}`;
+        bootLines.appendChild(line);
+        index += 1;
+      }, 280);
+    }
+
+    function closeBoot() {
+      bootScreen.classList.add("hidden");
+    }
+
+    function createSpores() {
+      const sporeCount = 86;
+
+      for (let i = 0; i < sporeCount; i++) {
+        const spore = document.createElement("span");
+
+        spore.classList.add("spore");
+        spore.style.left = `${Math.random() * 100}%`;
+        spore.style.animationDuration = `${10 + Math.random() * 22}s`;
+        spore.style.animationDelay = `${Math.random() * 16}s`;
+        spore.style.opacity = `${0.15 + Math.random() * 0.65}`;
+        spore.style.transform = `scale(${0.6 + Math.random() * 1.8})`;
+
+        sporeField.appendChild(spore);
+      }
+    }
+
+    function setPressure(value) {
+      pressure = Math.max(pressure, value);
+      pressureFill.style.width = `${pressure}%`;
+      pressureValue.textContent = `${pressure}%`;
+    }
+
+    function renderRite(type) {
+      const response = riteResponses[type];
+
+      riteOutput.innerHTML = `
+        <h3>${response.title}</h3>
+        <p>${response.body}</p>
+        <div class="pressure-wrap">
+          <div class="pressure-head">
+            <span>Ascension Pressure</span>
+            <strong id="pressureValue">${Math.max(pressure, response.pressure)}%</strong>
+          </div>
+          <div class="pressure-meter">
+            <div class="pressure-fill" id="pressureFill" style="width: ${Math.max(pressure, response.pressure)}%;"></div>
+          </div>
+        </div>
+      `;
+
+      pressure = Math.max(pressure, response.pressure);
+    }
+
+    function positionHoverLiturgy(event) {
+      if (!hoverLiturgy) return;
+
+      const offset = 18;
+      const tooltipWidth = hoverLiturgy.offsetWidth || 340;
+      const tooltipHeight = hoverLiturgy.offsetHeight || 120;
+
+      let x = event.clientX + offset;
+      let y = event.clientY + offset;
+
+      if (x + tooltipWidth > window.innerWidth - 12) {
+        x = event.clientX - tooltipWidth - offset;
+      }
+
+      if (y + tooltipHeight > window.innerHeight - 12) {
+        y = event.clientY - tooltipHeight - offset;
+      }
+
+      hoverLiturgy.style.left = `${x}px`;
+      hoverLiturgy.style.top = `${y}px`;
+    }
+
+    function initializeHoverLore() {
+      const loreTargets = document.querySelectorAll("[data-lore]");
+
+      loreTargets.forEach((target) => {
+        target.addEventListener("mouseenter", (event) => {
+          hoverLiturgy.textContent = target.dataset.lore;
+          hoverLiturgy.classList.add("show");
+          positionHoverLiturgy(event);
+        });
+
+        target.addEventListener("mousemove", positionHoverLiturgy);
+
+        target.addEventListener("mouseleave", () => {
+          hoverLiturgy.classList.remove("show");
+        });
+      });
+    }
+
+    enterButton.addEventListener("click", closeBoot);
+
+    riteButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        renderRite(button.dataset.rite);
+      });
+    });
+
+    openHorror.addEventListener("click", () => {
+      horrorContent.classList.toggle("open");
+      openHorror.textContent = horrorContent.classList.contains("open")
+        ? "Seal the Fragment"
+        : "Unseal the Fragment";
+    });
+
+    mortivusSeal.addEventListener("click", () => {
+      renderRite("refuse");
+      document.querySelector("#rite").scrollIntoView({ behavior: "smooth" });
+    });
+
+    runBootSequence();
+    createSpores();
+    initializeHoverLore();
+  </script>
+</body>
+</html>
