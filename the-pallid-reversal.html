@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The Septicarium | The Pallid Reversal</title>
+
+  <meta
+    name="description"
+    content="The Pallid Reversal, a restricted Septicarium battle record concerning Mortivus Classarion’s greatest known defeat against an Ork warhost."
+  />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Spectral:wght@400;500;600;700&display=swap');
+
+    :root {
+      --black: #010201;
+      --void: #030402;
+      --scrap: #17180f;
+      --scrap2: #252414;
+      --iron: #2c2b21;
+      --panel: rgba(12, 14, 9, 0.95);
+      --panel2: rgba(18, 20, 12, 0.9);
+      --ork: #7fa342;
+      --ork2: #b9d95f;
+      --rot: #d6e27b;
+      --pallid: #d8d1b7;
+      --bone: #ded8bf;
+      --bone2: #aaa486;
+      --amber: #d3be74;
+      --brass: #8b7641;
+      --rust: #8a3d1f;
+      --blood: #4a150f;
+      --red: #9b3a22;
+      --line: rgba(214, 227, 123, 0.2);
+      --line2: rgba(214, 227, 123, 0.5);
+      --green-shadow: 0 0 70px rgba(127, 163, 66, 0.14);
+      --red-shadow: 0 0 70px rgba(120, 49, 26, 0.24);
+      --amber-shadow: 0 0 60px rgba(211, 190, 116, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      font-family: "Spectral", Georgia, serif;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(127, 163, 66, 0.16), transparent 28%),
+        radial-gradient(circle at 84% 9%, rgba(138, 61, 31, 0.18), transparent 24%),
+        radial-gradient(circle at 50% 60%, rgba(214, 227, 123, 0.08), transparent 42%),
+        linear-gradient(135deg, #020301, #080a05 50%, #010201);
+    }
+
+    body::selection {
+      background: rgba(214, 227, 123, 0.22);
+      color: var(--rot);
+    }
+
+    .boot-screen,
+    .void-haze,
+    .scrap-grid,
+    .spore-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .void-haze {
+      z-index: 0;
+      background:
+        radial-gradient(circle at center, transparent 32%, rgba(0,0,0,0.78) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.14), rgba(0,0,0,0.88));
+    }
+
+    .scrap-grid {
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(214,227,123,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(214,227,123,0.012) 1px, transparent 1px);
+      background-size: 96px 96px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
+    }
+
+    .spore-field {
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .spore {
+      position: absolute;
+      width: 4px;
+      height: 15px;
+      border-radius: 999px;
+      background: linear-gradient(to bottom, rgba(185,217,95,0.04), rgba(185,217,95,0.34), rgba(185,217,95,0));
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-14vh) translateX(0); opacity: 0; }
+      8% { opacity: 0.58; }
+      92% { opacity: 0.22; }
+      to { transform: translateY(114vh) translateX(22px); opacity: 0; }
+    }
+
+    @keyframes rotateSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes crawl {
+      to { stroke-dashoffset: -180; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.34; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes scan {
+      0%, 100% { transform: translateY(-40px); opacity: 0.12; }
+      50% { transform: translateY(96px); opacity: 0.86; }
+    }
+
+    .boot-screen {
+      z-index: 9999;
+      pointer-events: auto;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(28, 38, 18, 0.92), rgba(0,0,0,0.98) 66%),
+        linear-gradient(135deg, #030402, #0a0c06);
+      transition: opacity 760ms ease, visibility 760ms ease;
+    }
+
+    .boot-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .boot-box {
+      width: min(1180px, calc(100% - 32px));
+      padding: 30px;
+      border: 1px solid rgba(185, 217, 95, 0.28);
+      background:
+        linear-gradient(135deg, rgba(6, 8, 5, 0.94), rgba(15, 17, 10, 0.88)),
+        radial-gradient(circle at top left, rgba(127, 163, 66, 0.1), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(138, 61, 31, 0.12), transparent 38%);
+      box-shadow: 0 0 90px rgba(127, 163, 66, 0.14);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .boot-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.028),
+          rgba(255,255,255,0.028) 1px,
+          transparent 1px,
+          transparent 9px
+        );
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .boot-title {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 18px;
+      color: var(--ork2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .boot-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .boot-scrap {
+      min-height: 360px;
+      border: 1px solid rgba(185, 217, 95, 0.14);
+      background:
+        radial-gradient(circle at center, rgba(127,163,66,0.08), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(138,61,31,0.08), transparent 42%),
+        rgba(0,0,0,0.22);
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .boot-scrap::before,
+    .boot-scrap::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      border: 1px dashed rgba(185, 217, 95, 0.18);
+    }
+
+    .boot-scrap::before {
+      width: 285px;
+      height: 285px;
+      animation: rotateSlow 35s linear infinite;
+    }
+
+    .boot-scrap::after {
+      width: 212px;
+      height: 212px;
+      animation: rotateSlow 23s linear infinite reverse;
+    }
+
+    .boot-svg {
+      position: relative;
+      z-index: 2;
+      width: min(340px, 92%);
+      filter: drop-shadow(0 0 30px rgba(185,217,95,0.16));
+    }
+
+    .boot-node {
+      opacity: 0.25;
+      transition: 260ms ease;
+    }
+
+    .boot-node.active {
+      opacity: 1;
+      filter: drop-shadow(0 0 12px rgba(214,227,123,0.6));
+    }
+
+    .boot-lines {
+      min-height: 305px;
+      color: var(--bone);
+      line-height: 1.74;
+      font-size: 1rem;
+    }
+
+    .boot-lines p {
+      margin: 0 0 8px;
+    }
+
+    .boot-button {
+      margin-top: 18px;
+      border: 1px solid rgba(185, 217, 95, 0.3);
+      background: rgba(0,0,0,0.34);
+      color: var(--bone);
+      padding: 12px 16px;
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+    }
+
+    .boot-button:hover {
+      color: var(--rot);
+      border-color: rgba(214, 227, 123, 0.58);
+      background: rgba(127, 163, 66, 0.09);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 8, 5, 0.94);
+      backdrop-filter: blur(10px);
+      color: var(--bone2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .topbar a {
+      color: var(--ork2);
+      text-decoration: none;
+    }
+
+    .topbar a:hover {
+      color: var(--rot);
+      text-decoration: underline;
+    }
+
+    .site-shell {
+      position: relative;
+      z-index: 2;
+      width: min(1500px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 90px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--ork2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .tag {
+      color: var(--ork2);
+      border: 1px solid rgba(185, 217, 95, 0.24);
+      background: rgba(0,0,0,0.24);
+      padding: 6px 10px;
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero,
+    .panel,
+    .ork-slab,
+    .scrap-panel,
+    .story-panel,
+    .phase-panel,
+    .elite-panel,
+    .record-panel,
+    .trap-panel,
+    .verdict-panel,
+    .subcrypt-card {
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(12, 14, 9, 0.95), rgba(8, 9, 6, 0.9)),
+        radial-gradient(circle at top left, rgba(127, 163, 66, 0.08), transparent 42%);
+      box-shadow: var(--green-shadow);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .panel::before,
+    .ork-slab::before,
+    .scrap-panel::before,
+    .story-panel::before,
+    .phase-panel::before,
+    .elite-panel::before,
+    .record-panel::before,
+    .trap-panel::before,
+    .verdict-panel::before,
+    .subcrypt-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(127, 163, 66, 0.055), transparent 24%),
+        radial-gradient(circle at 92% 96%, rgba(138, 61, 31, 0.05), transparent 28%),
+        linear-gradient(120deg, transparent, rgba(185, 217, 95, 0.024), transparent);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 24px;
+      padding: 30px;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--ork);
+      align-items: stretch;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: clamp(3rem, 7.4vw, 7rem);
+      line-height: 0.86;
+      letter-spacing: -0.05em;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      margin: 18px 0;
+      color: var(--rot);
+      font-size: clamp(1.16rem, 2.6vw, 2.05rem);
+      font-style: italic;
+      line-height: 1.2;
+    }
+
+    .lead {
+      margin: 0 0 13px;
+      color: var(--bone);
+      font-size: 1.05rem;
+      line-height: 1.76;
+    }
+
+    .lead.dim {
+      color: var(--bone2);
+    }
+
+    .lead span {
+      color: var(--rot);
+      font-weight: 600;
+    }
+
+    .button,
+    .entry-link,
+    .phase-button,
+    .record-button,
+    .trap-btn,
+    .trap-choice,
+    .sealed-entry,
+    .vox-button,
+    .close-vox {
+      border: 1px solid rgba(185, 217, 95, 0.26);
+      background: rgba(0,0,0,0.28);
+      color: var(--bone);
+      padding: 12px 14px;
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .button:hover,
+    .entry-link:hover,
+    .phase-button:hover,
+    .phase-button.active,
+    .record-button:hover,
+    .record-button.active,
+    .trap-btn:hover,
+    .trap-choice:hover,
+    .trap-choice.active,
+    .sealed-entry:hover,
+    .vox-button:hover,
+    .close-vox:hover {
+      border-color: rgba(214, 227, 123, 0.58);
+      color: var(--rot);
+      background: rgba(127, 163, 66, 0.09);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-visual {
+      padding: 18px;
+      border: 1px solid rgba(185,217,95,0.14);
+      background:
+        radial-gradient(circle at center, rgba(127,163,66,0.05), transparent 42%),
+        rgba(0,0,0,0.18);
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      min-height: 640px;
+    }
+
+    .hero-visual h3 {
+      margin: 0;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.28rem;
+    }
+
+    .hero-visual p {
+      margin: 0;
+      color: var(--bone2);
+      line-height: 1.65;
+    }
+
+    .scrap-svg,
+    .glyph-svg,
+    .battle-svg,
+    .trap-svg {
+      width: 100%;
+      min-height: 460px;
+      filter: drop-shadow(0 0 28px rgba(127,163,66,0.12));
+    }
+
+    .path-flow {
+      stroke-dasharray: 8 10;
+      animation: crawl 17s linear infinite;
+    }
+
+    .scan-line {
+      animation: scan 5s ease-in-out infinite;
+    }
+
+    .section-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel,
+    .scrap-panel,
+    .story-panel,
+    .phase-panel,
+    .elite-panel,
+    .record-panel,
+    .trap-panel,
+    .verdict-panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .scrap-panel h2,
+    .story-panel h2,
+    .phase-panel h2,
+    .elite-panel h2,
+    .record-panel h2,
+    .trap-panel h2,
+    .verdict-panel h2 {
+      margin: 0 0 12px;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.03;
+      font-weight: 800;
+    }
+
+    .panel p,
+    .scrap-panel p,
+    .story-panel p,
+    .phase-panel p,
+    .elite-panel p,
+    .record-panel p,
+    .trap-panel p,
+    .verdict-panel p,
+    .ork-slab p,
+    .subcrypt-card p,
+    .document-output p,
+    .phase-output p,
+    .log-entry p {
+      color: var(--bone2);
+      line-height: 1.76;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .ork-grid,
+    .asset-grid,
+    .subcrypt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .ork-slab,
+    .asset-card,
+    .subcrypt-card {
+      padding: 18px;
+      min-height: 270px;
+      transition: 240ms ease;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(12, 14, 9, 0.95), rgba(8, 9, 6, 0.9)),
+        radial-gradient(circle at top left, rgba(127, 163, 66, 0.08), transparent 42%);
+      box-shadow: var(--green-shadow);
+    }
+
+    .asset-card {
+      min-height: 220px;
+    }
+
+    .ork-slab:hover,
+    .asset-card:hover,
+    .subcrypt-card:hover {
+      transform: translateY(-7px);
+      border-color: var(--line2);
+      box-shadow: 0 0 46px rgba(127, 163, 66, 0.12);
+    }
+
+    .ork-slab span,
+    .asset-card span,
+    .subcrypt-card span,
+    .profile-card span,
+    .phase-output span,
+    .document-output span,
+    .trap-stat span,
+    .log-entry span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ork2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .ork-slab h3,
+    .asset-card h3,
+    .subcrypt-card h3,
+    .phase-output h3,
+    .document-output h3,
+    .log-entry h3 {
+      margin: 0 0 8px;
+      color: var(--bone);
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.24rem;
+      line-height: 1.12;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .profile-card {
+      padding: 14px;
+      border: 1px solid rgba(185,217,95,0.13);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .profile-card strong {
+      font-weight: normal;
+      color: var(--bone);
+      line-height: 1.45;
+    }
+
+    .phase-buttons,
+    .record-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .phase-output,
+    .document-output {
+      min-height: 430px;
+      border: 1px solid rgba(185,217,95,0.14);
+      background:
+        linear-gradient(135deg, rgba(8,10,7,0.93), rgba(13,16,10,0.86)),
+        radial-gradient(circle at bottom right, rgba(127,163,66,0.06), transparent 42%);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-output::before,
+    .document-output::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.026),
+          rgba(255,255,255,0.026) 1px,
+          transparent 1px,
+          transparent 9px
+        );
+      opacity: 0.1;
+    }
+
+    .story-chapter {
+      padding: 18px;
+      border-left: 3px solid rgba(185,217,95,0.38);
+      background: rgba(0,0,0,0.16);
+      margin: 14px 0;
+    }
+
+    .story-chapter h3 {
+      margin: 0 0 10px;
+      color: var(--bone);
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.35rem;
+    }
+
+    .story-chapter p {
+      margin: 0 0 12px;
+    }
+
+    .story-chapter p:last-child {
+      margin-bottom: 0;
+    }
+
+    .trap-grid {
+      display: grid;
+      grid-template-columns: 0.42fr 0.58fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .trap-console,
+    .trap-output {
+      border: 1px solid rgba(185,217,95,0.14);
+      background: rgba(0,0,0,0.18);
+      padding: 16px;
+    }
+
+    .trap-choices {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0 18px;
+    }
+
+    .trap-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .trap-stat {
+      padding: 12px;
+      border: 1px solid rgba(185,217,95,0.12);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .meter {
+      height: 12px;
+      border: 1px solid rgba(185,217,95,0.14);
+      background: rgba(0,0,0,0.34);
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blood), var(--ork), var(--rot));
+      width: 30%;
+      transition: width 300ms ease;
+    }
+
+    .log {
+      display: grid;
+      gap: 10px;
+      max-height: 520px;
+      overflow: auto;
+      padding-right: 6px;
+    }
+
+    .log-entry {
+      padding: 14px;
+      border-left: 3px solid rgba(185,217,95,0.38);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .floating-vox {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 90;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .vox-button {
+      box-shadow: 0 0 24px rgba(127, 163, 66, 0.16);
+    }
+
+    .vox-drawer {
+      position: fixed;
+      right: 18px;
+      bottom: 76px;
+      z-index: 95;
+      width: min(460px, calc(100% - 24px));
+      border: 1px solid rgba(185, 217, 95, 0.2);
+      background:
+        linear-gradient(135deg, rgba(8, 10, 7, 0.97), rgba(15, 18, 12, 0.94)),
+        radial-gradient(circle at top left, rgba(127,163,66,0.08), transparent 42%);
+      box-shadow: 0 0 38px rgba(127, 163, 66, 0.14);
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 260ms ease;
+      overflow: hidden;
+    }
+
+    .vox-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .vox-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(185, 217, 95, 0.12);
+      color: var(--ork2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.22);
+    }
+
+    .vox-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .vox-transmission {
+      padding: 14px;
+      border-left: 3px solid rgba(185, 217, 95, 0.38);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .vox-transmission span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ork2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .vox-transmission p {
+      margin: 0;
+      color: var(--bone2);
+      line-height: 1.65;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 120;
+      transform: translateX(-50%) translateY(120px);
+      max-width: calc(100% - 28px);
+      padding: 14px 18px;
+      border: 1px solid rgba(214, 227, 123, 0.34);
+      background: rgba(6, 7, 5, 0.96);
+      color: var(--rot);
+      box-shadow: 0 0 28px rgba(127, 163, 66, 0.14);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: transform 280ms ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      width: min(1500px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 46px;
+      border-top: 1px solid rgba(185, 217, 95, 0.12);
+      color: var(--bone2);
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+
+    @media (max-width: 1240px) {
+      .hero,
+      .two-col,
+      .boot-grid,
+      .trap-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ork-grid,
+      .asset-grid,
+      .subcrypt-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .trap-stat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .site-shell,
+      .site-footer {
+        width: min(100% - 18px, 1500px);
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.8rem, 14vw, 4.4rem);
+      }
+
+      .section-kicker {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="boot-screen" id="bootScreen">
+    <div class="boot-box">
+      <p class="boot-title">Scrap-Vox Recovery // Pallid Reversal // Ork War-Record Under Septicarium Seal</p>
+
+      <div class="boot-grid">
+        <div class="boot-scrap">
+          <svg class="boot-svg" viewBox="0 0 360 360" role="img" aria-label="Recovered scrap glyph engine">
+            <defs>
+              <radialGradient id="bootGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#b9d95f" stop-opacity="0.5"/>
+                <stop offset="50%" stop-color="#7fa342" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <circle cx="180" cy="180" r="132" fill="url(#bootGlow)" />
+            <path d="M180 42 L292 112 L264 268 L102 292 L62 134 Z" fill="rgba(0,0,0,0.32)" stroke="rgba(185,217,95,0.42)" stroke-width="2" />
+            <path d="M180 92 L248 132 L236 236 L130 256 L108 150 Z" fill="rgba(0,0,0,0.38)" stroke="rgba(185,217,95,0.28)" stroke-width="2" />
+
+            <circle cx="180" cy="178" r="52" fill="rgba(127,163,66,0.12)" stroke="rgba(214,227,123,0.34)" />
+            <path d="M154 168 C168 146 196 146 210 168 C220 184 208 206 180 222 C152 206 144 184 154 168 Z" fill="rgba(185,217,95,0.15)" stroke="rgba(185,217,95,0.38)" />
+            <path d="M132 230 L228 130 M132 130 L228 230" stroke="rgba(138,61,31,0.44)" stroke-width="5" stroke-linecap="round" />
+
+            <circle class="boot-node" id="node1" cx="180" cy="42" r="7" fill="#b9d95f"/>
+            <circle class="boot-node" id="node2" cx="292" cy="112" r="7" fill="#b9d95f"/>
+            <circle class="boot-node" id="node3" cx="264" cy="268" r="7" fill="#b9d95f"/>
+            <circle class="boot-node" id="node4" cx="102" cy="292" r="7" fill="#b9d95f"/>
+            <circle class="boot-node" id="node5" cx="62" cy="134" r="7" fill="#b9d95f"/>
+            <circle class="boot-node" id="node6" cx="180" cy="180" r="9" fill="#d6e27b"/>
+
+            <path d="M76 278 C130 230 176 216 226 228 C260 236 292 210 318 176" fill="none" stroke="rgba(185,217,95,0.34)" stroke-width="4" stroke-dasharray="8 10" />
+            <text x="180" y="342" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">RETREAT CLASSIFICATION INVALID</text>
+          </svg>
+        </div>
+
+        <div>
+          <div class="boot-lines" id="bootLines"></div>
+          <button class="boot-button" id="enterButton">Open the Defeat Record</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spore-field" aria-hidden="true"></div>
+  <div class="void-haze" aria-hidden="true"></div>
+  <div class="scrap-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div>Sealed Battle Fragment // The Pallid Reversal // Mortivus Classarion</div>
+    <div>
+      <a href="mortivus-classarion.html">Return to Mortivus</a>
+      //
+      <a href="plaguebound-dossier.html">Plaguebound Dossier</a>
+      //
+      <a href="index.html">Command Deck</a>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Restricted Defeat Record // Ork Warhost Contact</p>
+        <h1>The Pallid Reversal</h1>
+        <p class="subtitle">“He mistook Ork withdrawal for weakness. The greenskins made a lesson of him.”</p>
+
+        <p class="lead">
+          This sub-crypt preserves the greatest known wound in the history of <span>Mortivus Classarion</span>. The record does not diminish him by admitting defeat. It explains what the defeat made of him. Before the Pallid Reversal, Mortivus believed he could always distinguish panic from collapse, courage from delusion, retreat from bait.
+        </p>
+
+        <p class="lead dim">
+          The Orks taught him otherwise. Not as cowards. Not as fools. Not as beasts running from plague. They withdrew because they wanted a better fight. They gave ground because a more brutal, more cunning shape waited behind it. They let Mortivus follow because Orks understand something many commanders forget: a battle is not only won by holding ground. Sometimes it is won by making the enemy excited enough to step where the killing is best.
+        </p>
+
+        <p class="lead dim">
+          The Septicarium marks this record as foundational. Mortivus did not simply lose warriors here. He lost certainty. From this reversal came the colder, slower, more suspicious commander whose mercy would later become more feared than slaughter.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button" href="#orks">Enemy File</a>
+          <a class="button" href="#warboss">Warboss</a>
+          <a class="button" href="#elite">Elite Unit</a>
+          <a class="button" href="#story">Full Story</a>
+          <a class="button" href="#phases">Battle Phases</a>
+          <a class="button" href="#scrap-records">Scrap Records</a>
+          <a class="button" href="#trap-engine">Trap Engine</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <p class="eyebrow">Recovered Scrap-Glyph Map</p>
+        <h3>Da Pallid Krump // Kill-Lure Formation</h3>
+        <p>
+          Ork glyph logic is not clean, but it is not meaningless. The map below is reconstructed from scrap-metal markers, grot-carved warning plates, fungal residue, and intercepted Ork vox-howl fragments.
+        </p>
+
+        <svg class="scrap-svg" viewBox="0 0 760 520" role="img" aria-label="Ork kill-lure battle map">
+          <defs>
+            <radialGradient id="scrapGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#b9d95f" stop-opacity="0.52"/>
+              <stop offset="52%" stop-color="#7fa342" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect x="28" y="28" width="704" height="464" rx="28" fill="rgba(0,0,0,0.24)" stroke="rgba(185,217,95,0.16)" />
+          <circle cx="380" cy="250" r="145" fill="url(#scrapGlow)" />
+          <path d="M88 112 L232 86 L318 180 L270 324 L110 346 L58 222 Z" fill="rgba(127,163,66,0.08)" stroke="rgba(185,217,95,0.32)" stroke-width="2" />
+          <path d="M472 110 L650 92 L704 232 L642 374 L468 358 L426 210 Z" fill="rgba(138,61,31,0.1)" stroke="rgba(185,217,95,0.24)" stroke-width="2" />
+
+          <path class="path-flow" d="M138 142 C230 176 300 204 386 248" fill="none" stroke="rgba(214,227,123,0.32)" stroke-width="4" />
+          <path class="path-flow" d="M388 248 C480 292 556 320 650 336" fill="none" stroke="rgba(138,61,31,0.54)" stroke-width="4" />
+          <path class="path-flow" d="M650 336 C610 250 560 188 468 136" fill="none" stroke="rgba(185,217,95,0.28)" stroke-width="4" />
+          <path class="path-flow" d="M468 136 C372 86 250 82 138 142" fill="none" stroke="rgba(185,217,95,0.22)" stroke-width="3" />
+
+          <rect class="scan-line" x="84" y="220" width="594" height="3" fill="rgba(214,227,123,0.5)" />
+
+          <circle cx="138" cy="142" r="9" fill="#b9d95f" />
+          <circle cx="386" cy="248" r="9" fill="#d6e27b" />
+          <circle cx="650" cy="336" r="9" fill="#8a3d1f" />
+          <circle cx="468" cy="136" r="9" fill="#b9d95f" />
+
+          <text x="118" y="126" fill="#b9d95f" font-size="11" font-family="Cinzel" letter-spacing="2">FAKE RUNNIN'</text>
+          <text x="386" y="238" text-anchor="middle" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">MORTIVUS ADVANCE</text>
+          <text x="684" y="338" text-anchor="end" fill="#d3be74" font-size="11" font-family="Cinzel" letter-spacing="2">IRON-GOB KILL BOX</text>
+          <text x="486" y="120" fill="#b9d95f" font-size="11" font-family="Cinzel" letter-spacing="2">WARBOSS WATCHIN'</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="panel" id="orks">
+      <div class="section-kicker">
+        <p class="eyebrow">Enemy File</p>
+        <span class="tag">Orks // Greenskin War-Logic</span>
+      </div>
+
+      <h2>The Orks did not break. They became more Ork.</h2>
+
+      <p>
+        The Pallid Reversal cannot be understood if the Orks are misread as simple animals. They are brutal, loud, crude, inventive, absurdly durable, and terrifyingly sincere in their love of war. They fight because fighting is joy, proof, religion, argument, appetite, sport, and purpose folded into one green roar. Their retreat is not always fear. Sometimes it is movement toward a better scrap.
+      </p>
+
+      <p>
+        Mortivus’ error began in that misunderstanding. He watched an Ork line withdraw from plague pressure and interpreted it as the first stage of collapse. The Orks were coughing, laughing, bleeding, firing wildly, dragging wounded Nobz backward, and leaving broken vehicles behind. It looked like disorder. It sounded like panic. It smelled like victory.
+      </p>
+
+      <p>
+        It was neither panic nor victory. It was bait built from noise, smoke, instinct, and the rare discipline that appears when a warboss is both brutal enough to be obeyed and cunning enough to make even Orks pretend to run.
+      </p>
+
+      <div class="ork-grid">
+        <article class="ork-slab">
+          <span>Truth I</span>
+          <h3>Brutal Does Not Mean Stupid</h3>
+          <p>
+            Orks prize force, but they also prize the kind of low, violent cunning that makes the enemy walk into a krumpin’ because it looks too obvious to be a trap.
+          </p>
+        </article>
+
+        <article class="ork-slab">
+          <span>Truth II</span>
+          <h3>Retreat Can Be Appetite</h3>
+          <p>
+            The Ork withdrawal was not surrender. It was a lure. The greenskins gave ground because the kill-box ahead promised a louder fight.
+          </p>
+        </article>
+
+        <article class="ork-slab">
+          <span>Truth III</span>
+          <h3>Morale Works Differently</h3>
+          <p>
+            Mortivus looked for despair. The Orks answered with enthusiasm. Pain, smoke, noise, and casualties did not shrink the fight. They made it more interesting.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="two-col" id="warboss">
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">Enemy Commander</p>
+          <span class="tag">Warboss Gorzag Pallkrump</span>
+        </div>
+
+        <h2>The brute who knew how to run forward by going backward.</h2>
+
+        <p>
+          Warboss Gorzag Pallkrump was not a refined strategist. That would insult him. He was something more dangerous to Mortivus: an Ork whose instincts had hardened into battlefield intelligence. He understood noise, momentum, insult, and greed. He knew when his Boyz were getting the worse end of a fight, and he knew how to turn that embarrassment into a bigger fight somewhere else.
+        </p>
+
+        <p>
+          Gorzag had earned his name after smashing a pallid shrine-world garrison and painting his jaw-plate with chalk-white dust from the defenders’ bones. His warhost called him Pallkrump not because he was pale, but because he liked breaking pale things: bone, shrine-stone, plague-armor, and any enemy that looked too solemn to enjoy the scrap.
+        </p>
+
+        <p>
+          When Mortivus advanced, Gorzag saw something that made him grin. The Death Guard commander was patient, heavy, and convinced that patience belonged to him alone. Gorzag decided to teach him that Orks could be patient too, so long as the waiting ended with something loud.
+        </p>
+      </article>
+
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">Warboss Profile</p>
+          <span class="tag">Brutal Kunnin’ Confirmed</span>
+        </div>
+
+        <h2>Gorzag’s relevant traits.</h2>
+
+        <div class="profile-grid">
+          <div class="profile-card">
+            <span>Disposition</span>
+            <strong>Loud, violent, mocking, instinctively observant, dangerous when amused.</strong>
+          </div>
+          <div class="profile-card">
+            <span>Strength</span>
+            <strong>Understood how to make apparent disorder conceal a kill-zone.</strong>
+          </div>
+          <div class="profile-card">
+            <span>Weapon</span>
+            <strong>A huge power klaw known by the Boyz as Da Pall-Smasha.</strong>
+          </div>
+          <div class="profile-card">
+            <span>Victory Method</span>
+            <strong>Made Mortivus chase what looked like collapse into a prepared Ork brawl-engine.</strong>
+          </div>
+        </div>
+
+        <p>
+          The Septicarium does not classify Gorzag as smarter than Mortivus. It classifies him as dangerous in a way Mortivus failed to respect. The warboss did not need to understand plague theology to beat it for one day. He only needed to understand what made the pale, bell-heavy monster follow.
+        </p>
+      </article>
+    </section>
+
+    <section class="elite-panel" id="elite">
+      <div class="section-kicker">
+        <p class="eyebrow">Unique Elite Ork Unit</p>
+        <span class="tag">Da Iron-Gob Krumpguard</span>
+      </div>
+
+      <h2>The elite mob that closed the trap.</h2>
+
+      <p>
+        Da Iron-Gob Krumpguard were Gorzag’s favored Meganobz and Nob enforcers, a mob of plate-heavy killers whose armor had been hammered together from looted tank hulls, shrine gates, broken dreadnought plating, mining teeth, and slabs of scrap painted with crude glyphs of challenge. They were not subtle. They were not graceful. They were exactly where Gorzag needed them to be.
+      </p>
+
+      <p>
+        Each Iron-Gob wore a reinforced jaw-plate bolted across the lower face, turning their laughter into metallic barking. They carried power klaws, killsaws, crude kombi-weapons, chain-choppas, and armor-mounted shootas that fired because some Mek had bullied them into doing so. Their role was not to hold a clean line. Their role was to make the moment of contact catastrophic.
+      </p>
+
+      <p>
+        When Mortivus entered the kill-box, Da Iron-Gob Krumpguard did not charge immediately. That restraint was the horror. They waited until the Death Guard were committed, until the Vanguard’s rear was clogged by wrecks and green smoke, until the bells could not be heard over engines. Then the scrap walls opened.
+      </p>
+
+      <div class="asset-grid">
+        <article class="asset-card">
+          <span>Unit Type</span>
+          <h3>Meganobz and Nob Killers</h3>
+          <p>Heavy Ork elites in crude mega-armor, used as the trap’s crushing jaw.</p>
+        </article>
+
+        <article class="asset-card">
+          <span>Signature Wargear</span>
+          <h3>Iron-Gob Jaw Plates</h3>
+          <p>Bolted face-guards that made their laughter sound like engines chewing bone.</p>
+        </article>
+
+        <article class="asset-card">
+          <span>Battle Role</span>
+          <h3>Close the Kill-Box</h3>
+          <p>They did not win by elegance. They won by arriving at exactly the worst moment.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="story-panel" id="story">
+      <div class="section-kicker">
+        <p class="eyebrow">Full Battle Story</p>
+        <span class="tag">Read Record // Censured Narrative Reconstruction</span>
+      </div>
+
+      <h2>The Pallid Reversal</h2>
+
+      <div class="story-chapter">
+        <h3>I. The Pale Advance</h3>
+
+        <p>
+          The battlefield had no holy name when Mortivus first entered it. It was a broken manufactorum basin on a world of ash flats, scrap ridges, and fungal storms, a place where rusted conveyor pylons leaned like exhausted giants and the soil rang hollow over buried machine-vaults. The Orks had claimed it because it was loud, useful, and full of things that could be turned into weapons. The Death Guard came because the greenskins had disturbed a sealed plague-cache beneath the eastern ruin belts, though some in the Vanguard whispered that Mortivus had another reason and had not told them.
+        </p>
+
+        <p>
+          The first engagement favored the sons of Mortarion. Plague Marines advanced through crude Ork fire with the patience of walking tombs. Shoota rounds sparked from corrupted plate. Rokkits struck and disappeared into smoke. A trukk rammed the Death Guard line and exploded against it, disgorging burning Boyz who climbed from the wreckage laughing until bolters and plague blades ended them.
+        </p>
+
+        <p>
+          Mortivus watched from behind a curtain of censer smoke. His armor exhaled slowly. His tally-chain tapped against his chest plate. Every sound seemed measured: bolter reports, Ork howls, the wet cough of plague weapons, the crash of scrap engines, the ringing of distant bells carried by servants who trudged behind him through the ash.
+        </p>
+
+        <p>
+          The Orks were not breaking. Not yet. But they were moving back. They gave ground in ugly jerks, firing as they ran, dragging wounded Nobz by their armor straps, abandoning wrecks, shouting insults that became harder to hear through the smoke. To Mortivus, the pattern appeared familiar. Noise. Disorganization. A line losing its shape. The first loosened stitch before collapse.
+        </p>
+
+        <p>
+          He raised one gauntleted hand and ordered the advance to continue.
+        </p>
+      </div>
+
+      <div class="story-chapter">
+        <h3>II. Gorzag Laughs Behind the Smoke</h3>
+
+        <p>
+          Gorzag Pallkrump watched the plague warriors come on and loved them for it. They were slow, hard, ugly, and serious. Best of all, they did not know when a proper scrap was being made for them.
+        </p>
+
+        <p>
+          The warboss stood atop the wrecked hull of a looted hauler, one boot planted in a crater, his massive power klaw resting against his shoulder. Around him, Meks hammered at sparking panels, Grots dragged glyph plates into place, and Nobz shouted down the Boyz who wanted to turn and charge too early. That was the hard bit. Orks liked traps well enough once they closed, but getting them to run backward long enough for the trap to work took a boss with fists big enough to make patience convincing.
+        </p>
+
+        <p>
+          “Let ‘em come,” Gorzag growled through his iron jaw. “Let da stinkin’ pale gitz fink dey’s won. Den we show ‘em wot a proppa loss sounds like.”
+        </p>
+
+        <p>
+          His Weirdboy had warned him about the bell-man. Not in clear words, because Weirdboyz were rarely useful that way. The old green lightning-head had clutched his skull, laughed blood onto his teeth, and said the pale one was “fulla waitin’.” Gorzag understood enough. A boss full of waiting could be tricked if you made him think the waiting was over.
+        </p>
+
+        <p>
+          So the Orks ran, but not away. They ran toward the basin Gorzag had prepared with wreck walls, fuel drums, buried mines, fungus gas, hidden gun nests, and Da Iron-Gob Krumpguard crouched in the guts of scrap towers like armored jaws waiting to bite.
+        </p>
+      </div>
+
+      <div class="story-chapter">
+        <h3>III. The Mistake Ripens</h3>
+
+        <p>
+          The Vanguard entered the basin in good order. Mortivus had not become reckless in the simple sense. He sent plague-hardened squads through the left debris channel, kept heavier warriors near the center, and ordered the bell-serfs to remain behind the second line. He expected counterattack. He expected Ork violence. He expected noise.
+        </p>
+
+        <p>
+          He did not expect discipline disguised as appetite.
+        </p>
+
+        <p>
+          The first explosion took the rearward Rhino in a plume of rust and green fire. It did not destroy the vehicle outright, but it slewed sideways and blocked the retreating corridor. The second blast came from beneath a pile of scrap the Death Guard had already passed. Then the wreck walls opened. Shootas, big shootas, rokkits, looted cannons, and crude energy weapons erupted from both flanks.
+        </p>
+
+        <p>
+          Orks who had seemed to flee appeared on gantries above the basin, laughing and firing down into the Death Guard column. Grots pulled release chains. Spiked barricades dropped. Burning scrap rolled from the ridge lines and crashed into the advancing formation. The Orks had not run from the plague. They had led it into a throat.
+        </p>
+
+        <p>
+          Mortivus stopped walking.
+        </p>
+
+        <p>
+          That was the first sign his warriors understood something had gone wrong. Not the explosions. Not the trapped vehicles. Not the sudden green roar. Mortivus stopped.
+        </p>
+      </div>
+            <div class="story-chapter">
+        <h3>IV. Da Iron-Gob Krumpguard</h3>
+
+        <p>
+          The scrap towers split open.
+        </p>
+
+        <p>
+          Da Iron-Gob Krumpguard came down like armored machinery that had learned to enjoy murder. Their mega-armor was crude, overbuilt, and monstrous, patched from battlewagon plate, tank hull, shrine-brass, and pieces of machines that had once belonged to more disciplined species. Their iron jaws clanged when they laughed. Their killsaws screamed. Their power klaws opened and closed with the greedy rhythm of hydraulic beasts.
+        </p>
+
+        <p>
+          They struck the center of the Vanguard column, not the weak rear or the exposed flank. That was Gorzag’s brilliance. He did not try to nibble at the Death Guard. He drove his hardest killers straight into the part of the line that Mortivus believed most stable.
+        </p>
+
+        <p>
+          Plague Marines met them with bolters, blades, and contempt. The first Iron-Gob took three shots through the chest plate and kept coming until a plague knife found the join beneath his arm. The second crushed a Death Guard helm in its klaw, then died laughing as a corrupted cleaver split its armor. The third slammed bodily into a plague marine and drove both of them through a burning barricade into the scrap below.
+        </p>
+
+        <p>
+          The Orks paid heavily. They paid gladly. That was another part of the lesson.
+        </p>
+
+        <p>
+          Mortivus tried to restore the rhythm. He ordered the left channel to contract and the second line to anchor around the bells. The order was correct. The timing was not. Gorzag had already released the second wave.
+        </p>
+      </div>
+
+      <div class="story-chapter">
+        <h3>V. The Bell-Bearer Falls</h3>
+
+        <p>
+          The bell-bearer oracle stood among the ash and smoke, swaying beneath the weight of the plague-bell strapped to his bent frame. He had followed Mortivus through seven campaigns and three sealed worlds. He had named omens before they happened. He had whispered the first words of the Rotfather’s private prophecy into Mortivus’ hearing while fever burned through his own throat.
+        </p>
+
+        <p>
+          He was not a warrior in the way plague marines were warriors. He was a witness. A living instrument. A thing kept close because sometimes Nurgle’s blessings walked better on ruined legs.
+        </p>
+
+        <p>
+          Gorzag did not know any of that. He only saw that the pale gitz were trying to keep the bell alive.
+        </p>
+
+        <p>
+          “Dat one,” the warboss barked, pointing with his klaw. “Dat noisy stick-boy. Krump ‘im.”
+        </p>
+
+        <p>
+          A Deffkopta screamed low across the basin, trailing black smoke and grot-laughter. It crashed before reaching the bell-serfs, but that did not matter. The wreck became cover. Boyz poured around it. A Nob with a chain-choppa drove through the bodyguard screen and was cut down by plague fire, but a second Nob came behind him, then a third, then an Iron-Gob whose armor was already burning.
+        </p>
+
+        <p>
+          Mortivus moved toward the bell too late.
+        </p>
+
+        <p>
+          The oracle looked at him across the smoke. Witnesses disagree on whether the bell-bearer spoke. The surviving record offers only one line, scratched into a later armor plate by a plague serf who died before explaining it:
+        </p>
+
+        <p>
+          <em>He heard the wrong retreat and followed it into the mouth.</em>
+        </p>
+
+        <p>
+          The bell fell. Its sound was not loud. That made it worse. It struck the ash with a dull, broken note, and in that small silence, Mortivus understood the scale of his error.
+        </p>
+      </div>
+
+      <div class="story-chapter">
+        <h3>VI. Gorzag and Mortivus</h3>
+
+        <p>
+          Gorzag Pallkrump came for him laughing.
+        </p>
+
+        <p>
+          The warboss barreled through smoke, fungal spores, and bolter fire, one shoulder plate hanging loose, his iron jaw dented, his klaw glowing from repeated impacts. Around him, the basin had become a storm of close violence. Plague Marines and Orks fought in knots of rust and green muscle. Engines burned. Censers cracked. A bell-serf crawled with no legs toward a bell that would not ring again.
+        </p>
+
+        <p>
+          Mortivus met the charge with the Mercy-Sickle.
+        </p>
+
+        <p>
+          The first exchange carved sparks from Gorzag’s klaw and opened a line across the warboss’ chest armor. Gorzag answered by slamming Mortivus into a wall of scrap hard enough to buckle the metal behind him. The Death Guard commander did not fall. He drove the sickle low, cutting through piston bundles and exposed cabling. Gorzag roared, headbutted him through the helm, and laughed as his own mega-armor screamed warnings.
+        </p>
+
+        <p>
+          “You fink too much,” Gorzag snarled. “Dat’s why dis was easy.”
+        </p>
+
+        <p>
+          The insult was crude. It was also accurate.
+        </p>
+
+        <p>
+          Mortivus tried to turn the duel into judgment. Gorzag refused the shape. He did not fear the silence before the blade. He did not recognize spiritual instruction. He did not care that Mortivus wanted the moment to mean something. The warboss wanted to win the fight, make noise, and prove he had dragged the pale monster into the right place.
+        </p>
+
+        <p>
+          Then the second trap closed.
+        </p>
+
+        <p>
+          The basin floor detonated in staggered sequence. Not elegant. Not clean. Not perfectly timed. Ork timing did not need perfection. It needed enough. Scrap charges, fuel drums, half-buried shells, and unstable promethium tanks erupted beneath the center line. The Death Guard did not die like mortals. They died like rotten fortresses collapsing inward.
+        </p>
+
+        <p>
+          Mortivus survived because he was blessed, armored, and hated death too patiently to obey it. But survival was not victory.
+        </p>
+      </div>
+
+      <div class="story-chapter">
+        <h3>VII. The Reversal</h3>
+
+        <p>
+          The Vanguard began to withdraw.
+        </p>
+
+        <p>
+          It was not rout. Death Guard do not easily rout. It was worse for Mortivus because it was controlled, necessary, and undeniable. He had to order what he had misread in the enemy. He had to give the command he had mistaken for collapse.
+        </p>
+
+        <p>
+          Gorzag saw it happen and understood enough to laugh until blood ran through his iron jaw.
+        </p>
+
+        <p>
+          “Lookit dat!” he bellowed to his Boyz. “Da pale boss is runnin’ clever now!”
+        </p>
+
+        <p>
+          The Orks surged, not as a disciplined army but as a green avalanche of opportunistic violence. They chased, crashed, fired, bit, rammed, and shouted. Some died to the covering fire. Some slipped in the ash and were crushed under their own vehicles. Some reached the Death Guard rear guard and were butchered. None of that mattered. The Orks had won the moment they forced Mortivus to learn their lesson in his own flesh.
+        </p>
+
+        <p>
+          Mortivus turned once at the rim of the basin. The broken bell lay somewhere below, buried beneath smoke and wreckage. The oracle was gone. Several of his earliest plague-veterans were gone. The inner circle that had formed around his first victories had been carved open by Ork laughter and scrap cunning.
+        </p>
+
+        <p>
+          Gorzag raised his klaw from the basin floor.
+        </p>
+
+        <p>
+          Mortivus did not answer. He withdrew.
+        </p>
+
+        <p>
+          Afterward, his warriors expected rage. They expected punishment. They expected a return assault before the smoke had even cleared.
+        </p>
+
+        <p>
+          Instead, Mortivus ordered the names recorded. Then he ordered the bells silenced for seven days.
+        </p>
+
+        <p>
+          That frightened them more than anger would have.
+        </p>
+      </div>
+    </section>
+
+    <section class="phase-panel" id="phases">
+      <div class="section-kicker">
+        <p class="eyebrow">Battle Phase Engine</p>
+        <span class="tag">Tactical Reconstruction</span>
+      </div>
+
+      <h2>The reversal was not one mistake. It was a chain of correct readings made one step too late.</h2>
+
+      <div class="phase-buttons">
+        <button class="phase-button active" data-phase="contact">I // First Contact</button>
+        <button class="phase-button" data-phase="withdrawal">II // Ork Withdrawal</button>
+        <button class="phase-button" data-phase="pursuit">III // Mortivus Pursues</button>
+        <button class="phase-button" data-phase="killbox">IV // Kill-Box Opens</button>
+        <button class="phase-button" data-phase="irongob">V // Iron-Gob Strike</button>
+        <button class="phase-button" data-phase="bell">VI // The Bell Falls</button>
+        <button class="phase-button" data-phase="reversal">VII // Reversal</button>
+      </div>
+
+      <div class="phase-output" id="phaseOutput">
+        <span>Phase I</span>
+        <h3>First Contact</h3>
+        <p>
+          The Rotfather’s Vanguard entered the scrap basin in controlled formation and drove the Ork line backward through ash, wreckage, and fungal smoke. The first contact favored Mortivus. His plague marines absorbed crude fire, punished over-eager charges, and reduced several Ork vehicles to burning heaps.
+        </p>
+        <p>
+          The Orks seemed disordered. They were not. Gorzag Pallkrump had ordered enough genuine violence into the first clash to make the withdrawal believable. A fake retreat without real blood would not have tempted Mortivus. Gorzag understood that much.
+        </p>
+      </div>
+    </section>
+
+    <section class="record-panel" id="scrap-records">
+      <div class="section-kicker">
+        <p class="eyebrow">Recovered Scrap Records</p>
+        <span class="tag">Ork Voice // Septicarium Overlay</span>
+      </div>
+
+      <h2>The Ork records are crude, loud, and more accurate than Mortivus wanted.</h2>
+
+      <p>
+        The following fragments were reconstructed from scrap-glyph plates, grot memory scratches, captured vox-shouts, Mek notes, and Septicarium inference. They are not clean documents. They are violent memory objects.
+      </p>
+
+      <div class="record-buttons">
+        <button class="record-button active" data-doc="gorzag">Warboss Gorzag’s Boast</button>
+        <button class="record-button" data-doc="mek">Mekboy Trap Notes</button>
+        <button class="record-button" data-doc="grot">Grot Marker Scratch</button>
+        <button class="record-button" data-doc="irongob">Iron-Gob Chant</button>
+        <button class="record-button" data-doc="septicarium">Septicarial Overlay</button>
+      </div>
+
+      <div class="document-output" id="documentOutput">
+        <span>Warboss Gorzag’s Boast</span>
+        <h3>“Da Pale Git Followed”</h3>
+        <p>
+          “I told da Boyz ta run, but not like runnin’ runnin’. Like runnin’ where da fight gets better. Pale boss saw it an’ came stompin’ after us, all bells an’ stink an’ big finkin’. Knew he would. He looked like da sort what hates bein’ ignored.”
+        </p>
+        <p>
+          The boast is crude, but the tactical implication is strong. Gorzag understood that Mortivus would not tolerate an apparent collapse escaping before it could be made into doctrine. The Orks did not defeat patience with patience alone. They defeated it with insult.
+        </p>
+      </div>
+    </section>
+
+    <section class="trap-panel" id="trap-engine">
+      <div class="section-kicker">
+        <p class="eyebrow">Interactive Trap Engine</p>
+        <span class="tag">Ork Cunning Simulation</span>
+      </div>
+
+      <h2>Build the lure. See whether Mortivus follows.</h2>
+
+      <p>
+        The engine below does not replay the battle exactly. It models the logic of Gorzag’s trap: noise, bait, scrap positioning, hidden elite force, and the dangerous art of making a retreat look like collapse.
+      </p>
+
+      <div class="trap-grid">
+        <div class="trap-console">
+          <p class="eyebrow">Trap Construction</p>
+
+          <p>Ork Lure Style</p>
+          <div class="trap-choices">
+            <button class="trap-choice active" data-style="loud">Loud Fake Panic</button>
+            <button class="trap-choice" data-style="scrap">Scrap-Wall Ambush</button>
+            <button class="trap-choice" data-style="boss">Warboss Visible Bait</button>
+          </div>
+
+          <p>Trap Orders</p>
+          <div class="trap-choices">
+            <button class="trap-btn" data-order="retreat">Make Da Boyz Pull Back</button>
+            <button class="trap-btn" data-order="wrecks">Block Da Rear Wiv Wrecks</button>
+            <button class="trap-btn" data-order="guns">Open Da Hidden Gunz</button>
+            <button class="trap-btn" data-order="irongobs">Release Da Iron-Gobs</button>
+            <button class="trap-btn" data-order="boom">Set Off Da Big Boom</button>
+            <button class="trap-btn" id="resetTrap">Reset Trap</button>
+          </div>
+
+          <div class="trap-stat-grid">
+            <div class="trap-stat">
+              <span>Lure Strength</span>
+              <div class="meter"><div class="meter-fill" id="lureMeter"></div></div>
+            </div>
+            <div class="trap-stat">
+              <span>Mortivus Commitment</span>
+              <div class="meter"><div class="meter-fill" id="commitMeter"></div></div>
+            </div>
+            <div class="trap-stat">
+              <span>Ork Casualties</span>
+              <div class="meter"><div class="meter-fill" id="casualtyMeter"></div></div>
+            </div>
+            <div class="trap-stat">
+              <span>Reversal Pressure</span>
+              <div class="meter"><div class="meter-fill" id="reversalMeter"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trap-output">
+          <p class="eyebrow">Trap Log</p>
+          <div class="log" id="trapLog">
+            <div class="log-entry">
+              <span>Trap Awaiting Orders</span>
+              <h3>Da Boyz are restless.</h3>
+              <p>
+                Issue Ork trap orders. If the lure grows strong enough and Mortivus commits too deeply, the reversal closes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="verdict-panel">
+      <div class="section-kicker">
+        <p class="eyebrow">Final Septicarium Verdict</p>
+        <span class="tag">Defeat Preserved // Doctrine Altered</span>
+      </div>
+
+      <h2>The Orks did not destroy Mortivus. They corrected him.</h2>
+
+      <p>
+        The Pallid Reversal remains the greatest known wound in Mortivus’ history because it attacked the part of him he trusted most: his ability to read collapse. Gorzag Pallkrump and Da Iron-Gob Krumpguard did not beat him through refinement. They beat him through brutal cunning, timing, noise, sacrifice, and an instinctive understanding of how to make pursuit feel inevitable.
+      </p>
+
+      <p>
+        Mortivus learned. That is why the defeat mattered. After the Pallid Reversal, he became more cautious with apparent weakness, more suspicious of retreat, more willing to preserve enemies long enough to understand the shape of their deception. His later cruelties grew colder because the Orks had once made heat and laughter enough to wound him.
+      </p>
+
+      <p>
+        The archive therefore does not hide this defeat. It preserves it. A commander who cannot be wounded cannot become more dangerous. Mortivus was wounded here. What returned from the basin was not smaller. It was less generous.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button" href="mortivus-classarion.html">Return to Mortivus Classarion</a>
+        <a class="button" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
+        <a class="button" href="index.html">Return to Command Deck</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">Related Records</p>
+        <span class="tag">Living Archive</span>
+      </div>
+
+      <h2>Other wounds attached to the name.</h2>
+
+      <div class="subcrypt-grid">
+        <article class="subcrypt-card">
+          <span>Parent Dossier</span>
+          <h3>Mortivus Classarion</h3>
+          <p>The main censured bio-archive of the plaguebound commander reshaped by this defeat.</p>
+          <a class="entry-link" href="mortivus-classarion.html">Open Dossier</a>
+        </article>
+
+        <article class="subcrypt-card">
+          <span>Open Sub-Crypt</span>
+          <h3>The Mercy He Gave</h3>
+          <p>A Votann blackbox record showing what Mortivus’ doctrine became after lessons like this one hardened him.</p>
+          <a class="entry-link" href="the-mercy-he-gave.html">Open Sub-Crypt</a>
+        </article>
+
+        <article class="subcrypt-card">
+          <span>Sealed Relic Fragment</span>
+          <h3>The Mercy-Sickle</h3>
+          <p>The blade did not become infamous in one battle. Its chamber will open when the record ripens.</p>
+          <button class="sealed-entry">Await Clearance</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>THE SEPTICARIUM // THE PALLID REVERSAL // ORK WAR-RECORD PRESERVED</p>
+    <p>Retreat was not collapse. Laughter was not weakness. Mortivus remembered.</p>
+  </footer>
+
+  <div class="floating-vox">
+    <button class="vox-button" id="voxButton">Open Scrap-Vox</button>
+  </div>
+
+  <div class="vox-drawer" id="voxDrawer">
+    <div class="vox-head">
+      <div>Recovered Scrap-Vox</div>
+      <button class="close-vox" id="closeVox">Seal</button>
+    </div>
+    <div class="vox-body" id="voxBody"></div>
+  </div>
+
+  <div class="toast" id="toast">RECORD SEALED. DA SCRAP AIN’T READY.</div>
+
+  <script>
+    const bootScreen = document.getElementById("bootScreen");
+    const bootLines = document.getElementById("bootLines");
+    const enterButton = document.getElementById("enterButton");
+    const sporeField = document.querySelector(".spore-field");
+
+    const phaseButtons = document.querySelectorAll(".phase-button");
+    const phaseOutput = document.getElementById("phaseOutput");
+
+    const recordButtons = document.querySelectorAll(".record-button");
+    const documentOutput = document.getElementById("documentOutput");
+
+    const trapChoices = document.querySelectorAll(".trap-choice");
+    const trapButtons = document.querySelectorAll(".trap-btn[data-order]");
+    const resetTrap = document.getElementById("resetTrap");
+    const trapLog = document.getElementById("trapLog");
+
+    const lureMeter = document.getElementById("lureMeter");
+    const commitMeter = document.getElementById("commitMeter");
+    const casualtyMeter = document.getElementById("casualtyMeter");
+    const reversalMeter = document.getElementById("reversalMeter");
+
+    const voxButton = document.getElementById("voxButton");
+    const closeVox = document.getElementById("closeVox");
+    const voxDrawer = document.getElementById("voxDrawer");
+    const voxBody = document.getElementById("voxBody");
+
+    const sealedEntries = document.querySelectorAll(".sealed-entry");
+    const toast = document.getElementById("toast");
+
+    const bootSequence = [
+      "Scrap-vox fragments recovered.",
+      "Fungal residue pattern accepted.",
+      "Ork glyph markers partially translated.",
+      "Death Guard casualty tally restored.",
+      "Bell-bearer oracle loss confirmed.",
+      "Retreat classification disputed.",
+      "Mortivus Classarion defeat record unsealed.",
+      "The Pallid Reversal opening."
+    ];
+
+    const phases = {
+      contact: {
+        tag: "Phase I",
+        title: "First Contact",
+        body: [
+          "The Rotfather’s Vanguard entered the scrap basin in controlled formation and drove the Ork line backward through ash, wreckage, and fungal smoke. The first contact favored Mortivus. His plague marines absorbed crude fire, punished over-eager charges, and reduced several Ork vehicles to burning heaps.",
+          "The Orks seemed disordered. They were not. Gorzag Pallkrump had ordered enough genuine violence into the first clash to make the withdrawal believable. A fake retreat without real blood would not have tempted Mortivus. Gorzag understood that much."
+        ]
+      },
+      withdrawal: {
+        tag: "Phase II",
+        title: "Ork Withdrawal",
+        body: [
+          "The Ork line pulled back in fragments: Boyz shouting, trukks reversing badly, wounded Nobz dragged through ash, Grots dropping scrap markers while pretending to flee. The withdrawal looked too chaotic to be planned.",
+          "That was its strength. Mortivus interpreted the noise as failed cohesion. In truth, the Orks were moving toward a place where their disorder had already been arranged into a weapon."
+        ]
+      },
+      pursuit: {
+        tag: "Phase III",
+        title: "Mortivus Pursues",
+        body: [
+          "Mortivus ordered continued pressure. The command was tactically reasonable. If the Orks were truly folding, hesitation would let them regroup. The Vanguard advanced into the basin with heavy armor, infantry mass, and bells behind the second line.",
+          "The problem was not that Mortivus acted foolishly. The problem was that the Orks had created a situation where the correct decision led deeper into the trap."
+        ]
+      },
+      killbox: {
+        tag: "Phase IV",
+        title: "The Kill-Box Opens",
+        body: [
+          "The rear corridor clogged with wreckage. Scrap walls shifted. Hidden guns opened from gantries and flanking ridges. Mines, fuel tanks, and unstable shells detonated in ugly sequence.",
+          "The Vanguard found itself compressed in a basin designed for Ork satisfaction: close, loud, burning, confusing, and full of places from which something green and armored could come crashing out."
+        ]
+      },
+      irongob: {
+        tag: "Phase V",
+        title: "Da Iron-Gob Strike",
+        body: [
+          "Da Iron-Gob Krumpguard waited until the Death Guard were committed. Their restraint was the clearest proof of Gorzag’s control. When they finally struck, they drove into the center of the Vanguard line, not because it was weak, but because breaking confidence mattered more than breaking formation.",
+          "The Meganobz and Nob enforcers took terrible losses and returned them with brutal enthusiasm. Their attack did not annihilate the Death Guard. It disrupted the rhythm Mortivus relied on."
+        ]
+      },
+      bell: {
+        tag: "Phase VI",
+        title: "The Bell Falls",
+        body: [
+          "The bell-bearer oracle became the trap’s spiritual center once Gorzag noticed how carefully the Death Guard preserved him. The Orks did not understand his full importance. They understood enough.",
+          "When the bell fell, the note was dull and small. That was the sound Mortivus remembered. Not a glorious clash. Not a great thunder. A small broken note that told him his reading of the battle had failed."
+        ]
+      },
+      reversal: {
+        tag: "Phase VII",
+        title: "The Reversal",
+        body: [
+          "Mortivus ordered withdrawal. It was controlled, necessary, and bitter. He had to use the same battlefield language he had misread in his enemy.",
+          "The Orks chased with roaring joy. The Death Guard left with their dead, their broken bell, and the first permanent wound in Mortivus’ certainty. This was the reversal: not merely that the pursuer became the retreating force, but that Mortivus learned the meaning of retreat from Orks."
+        ]
+      }
+    };
+
+    const documents = {
+      gorzag: {
+        speaker: "Warboss Gorzag’s Boast",
+        title: "“Da Pale Git Followed”",
+        body: [
+          "“I told da Boyz ta run, but not like runnin’ runnin’. Like runnin’ where da fight gets better. Pale boss saw it an’ came stompin’ after us, all bells an’ stink an’ big finkin’. Knew he would. He looked like da sort what hates bein’ ignored.”",
+          "The boast is crude, but the tactical implication is strong. Gorzag understood that Mortivus would not tolerate an apparent collapse escaping before it could be made into doctrine. The Orks did not defeat patience with patience alone. They defeated it with insult."
+        ]
+      },
+      mek: {
+        speaker: "Mekboy Trap Notes",
+        title: "“Put Da Boom Under Da Bit Dey’ll Walk On”",
+        body: [
+          "“Boss sez da smelly gitz is gonna walk slow an’ proud-like. So I sez, right, put da boomz where slow an’ proud goes. Den put more boomz under da first boomz in case dey’s extra slow an’ extra proud.”",
+          "The Mekboy notes reveal accidental genius inside crude construction. The trap did not require clean engineering. It required redundancy, violence, and an understanding that Death Guard durability could be used against their own commitment."
+        ]
+      },
+      grot: {
+        speaker: "Grot Marker Scratch",
+        title: "“Don’t Stand Here”",
+        body: [
+          "A small glyph plate was found behind a collapsed scrap wall. Translation is disputed but functionally clear: “Don’t stand here when boss starts laughin’.”",
+          "The plate proves the Orks had prepared the basin in advance and marked danger zones for their own lesser creatures. The system was not elegant, but it was communicative enough for Ork purposes."
+        ]
+      },
+      irongob: {
+        speaker: "Iron-Gob Chant",
+        title: "“Wait Till Da Bell Stops”",
+        body: [
+          "Recovered chant fragment: “Wait till da bell stops. Wait till da pale gitz is in. Wait till da boss shouts. Den krump.”",
+          "The chant is one of the clearest indicators that Da Iron-Gob Krumpguard were not released at random. Their timing was linked to the bell-bearer’s fall and the full commitment of Mortivus’ line."
+        ]
+      },
+      septicarium: {
+        speaker: "Septicarial Overlay",
+        title: "Defeat Classification",
+        body: [
+          "The Pallid Reversal should not be treated as an embarrassment to be hidden. It is a doctrinal wound. Mortivus’ later caution, his suspicion of apparent collapse, and his habit of preserving enemies long enough to understand their own mistakes all intensify after this event.",
+          "The Orks must be honored in the record. Their victory was not refined, but it was real. They baited a Death Guard commander into the wrong reading and made him pay for it in names he could not replace."
+        ]
+      }
+    };
+
+    const scrapVox = [
+      { tag: "Scrap-Vox 01", body: "“Boss sez run dat way. I sez why. Boss hits me. Den I sees why. Good plan.”" },
+      { tag: "Scrap-Vox 02", body: "“Da pale one stopped walkin’. Dat’s when we knew da funny bit worked.”" },
+      { tag: "Scrap-Vox 03", body: "“Iron-Gobs waited. Dey hated waitin’. Dat’s how ya know boss meant it.”" },
+      { tag: "Scrap-Vox 04", body: "“Bell fell funny. Not loud. Still made da stinky gitz mad quiet.”" },
+      { tag: "Scrap-Vox 05", body: "“Gorzag said he taught da pale boss how ta run. Den he laughed till his jaw plate fell off.”" }
+    ];
+
+    let trap = {
+      style: "loud",
+      lure: 16,
+      commit: 12,
+      casualties: 8,
+      reversal: 10,
+      turns: 0,
+      ended: false
+    };
+
+    const styleLabels = {
+      loud: "Loud Fake Panic",
+      scrap: "Scrap-Wall Ambush",
+      boss: "Warboss Visible Bait"
+    };
+
+    const trapOrders = {
+      retreat: {
+        title: "Da Boyz Pull Back",
+        body: "The Ork line gives ground in noisy fragments. It looks like disorder because it is disorder, but disorder pointed in the right direction.",
+        effects: { lure: 22, commit: 18, casualties: 8, reversal: 8 }
+      },
+      wrecks: {
+        title: "Rear Blocked Wiv Wrecks",
+        body: "Burning vehicles and scrap piles clog the retreat route behind the Vanguard. The trap begins turning pursuit into commitment.",
+        effects: { lure: 8, commit: 20, casualties: 5, reversal: 18 }
+      },
+      guns: {
+        title: "Hidden Gunz Open",
+        body: "Gantries and scrap walls erupt with fire. Accuracy is inconsistent. Volume is not.",
+        effects: { lure: 6, commit: 14, casualties: 12, reversal: 20 }
+      },
+      irongobs: {
+        title: "Da Iron-Gobs Released",
+        body: "The elite mob crashes into the center line. Their job is not elegance. Their job is to make the stable part unstable.",
+        effects: { lure: 8, commit: 18, casualties: 18, reversal: 26 }
+      },
+      boom: {
+        title: "Da Big Boom Goes Off",
+        body: "Charges detonate beneath the basin in ugly sequence. The timing is not perfect. It is enough.",
+        effects: { lure: 4, commit: 16, casualties: 22, reversal: 30 }
+      }
+    };
+
+    function runBootSequence() {
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index >= bootSequence.length) {
+          clearInterval(interval);
+          return;
+        }
+
+        const p = document.createElement("p");
+        p.textContent = `// ${bootSequence[index]}`;
+        bootLines.appendChild(p);
+
+        const node = document.getElementById(`node${Math.min(index + 1, 6)}`);
+        if (node) node.classList.add("active");
+
+        index += 1;
+      }, 330);
+    }
+
+    function createSpores() {
+      const count = 90;
+      for (let i = 0; i < count; i++) {
+        const spore = document.createElement("span");
+        spore.classList.add("spore");
+        spore.style.left = `${Math.random() * 100}%`;
+        spore.style.animationDuration = `${9 + Math.random() * 21}s`;
+        spore.style.animationDelay = `${Math.random() * 14}s`;
+        spore.style.opacity = `${0.12 + Math.random() * 0.58}`;
+        spore.style.transform = `scale(${0.7 + Math.random() * 1.4})`;
+        sporeField.appendChild(spore);
+      }
+    }
+
+    function renderPhase(type) {
+      const phase = phases[type];
+
+      phaseButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.phase === type);
+      });
+
+      phaseOutput.innerHTML = `
+        <span>${phase.tag}</span>
+        <h3>${phase.title}</h3>
+        ${phase.body.map(item => `<p>${item}</p>`).join("")}
+      `;
+    }
+
+    function renderDocument(type) {
+      const doc = documents[type];
+
+      recordButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.doc === type);
+      });
+
+      documentOutput.innerHTML = `
+        <span>${doc.speaker}</span>
+        <h3>${doc.title}</h3>
+        ${doc.body.map(item => `<p>${item}</p>`).join("")}
+      `;
+    }
+
+    function updateTrapMeters() {
+      lureMeter.style.width = `${Math.min(100, trap.lure)}%`;
+      commitMeter.style.width = `${Math.min(100, trap.commit)}%`;
+      casualtyMeter.style.width = `${Math.min(100, trap.casualties)}%`;
+      reversalMeter.style.width = `${Math.min(100, trap.reversal)}%`;
+    }
+
+    function addTrapLog(title, body, label = "Trap Log") {
+      const entry = document.createElement("div");
+      entry.className = "log-entry";
+      entry.innerHTML = `<span>${label}</span><h3>${title}</h3><p>${body}</p>`;
+      trapLog.prepend(entry);
+    }
+
+    function resolveTrap() {
+      if (trap.ended) return;
+
+      if (trap.reversal >= 100 && trap.commit >= 75) {
+        trap.ended = true;
+        addTrapLog(
+          "The Reversal Closes",
+          "Mortivus has followed too far. The Orks have paid enough blood to make the bait real. The Iron-Gobs strike, the basin detonates, and the pale commander learns that retreat is not always collapse.",
+          "End State"
+        );
+      } else if (trap.casualties >= 95 && trap.reversal < 70) {
+        trap.ended = true;
+        addTrapLog(
+          "Too Many Boyz Lost Too Early",
+          "The trap becomes a normal slaughter. Orks are still Orks, but the lure loses shape before Mortivus commits deeply enough.",
+          "End State"
+        );
+      } else if (trap.lure >= 95 && trap.commit < 45) {
+        trap.ended = true;
+        addTrapLog(
+          "Mortivus Hesitates",
+          "The fake panic becomes too theatrical. Mortivus waits. The Orks get bored. The trap loses its sacred stupidity.",
+          "End State"
+        );
+      } else if (trap.turns >= 6) {
+        trap.ended = true;
+        addTrapLog(
+          "Enough Violence Becomes Strategy",
+          "The plan is no longer clean, but it is Ork enough to work. The basin becomes loud, lethal, and impossible to read correctly.",
+          "End State"
+        );
+      }
+    }
+
+    function applyTrapOrder(order) {
+      if (trap.ended) {
+        addTrapLog("Trap Already Resolved", "Reset the engine to build another lure.", "System");
+        return;
+      }
+
+      const item = trapOrders[order];
+      const styleMod = trap.style === "loud" ? 5 : trap.style === "scrap" ? 3 : 7;
+
+      trap.turns += 1;
+      trap.lure += item.effects.lure + Math.floor(Math.random() * 7) + (order === "retreat" ? styleMod : 0);
+      trap.commit += item.effects.commit + Math.floor(Math.random() * 8);
+      trap.casualties += item.effects.casualties + Math.floor(Math.random() * 7);
+      trap.reversal += item.effects.reversal + Math.floor(Math.random() * 9);
+
+      if (trap.style === "boss" && order === "retreat") {
+        trap.commit += 8;
+        trap.casualties += 4;
+      }
+
+      if (trap.style === "scrap" && order === "wrecks") {
+        trap.reversal += 8;
+      }
+
+      updateTrapMeters();
+      addTrapLog(item.title, `${item.body} Lure style: ${styleLabels[trap.style]}.`, "Order Issued");
+      resolveTrap();
+    }
+
+    function resetTrapState() {
+      trap = {
+        style: trap.style,
+        lure: 16,
+        commit: 12,
+        casualties: 8,
+        reversal: 10,
+        turns: 0,
+        ended: false
+      };
+
+      trapLog.innerHTML = `
+        <div class="log-entry">
+          <span>Trap Awaiting Orders</span>
+          <h3>Da Boyz are restless.</h3>
+          <p>Issue Ork trap orders. If the lure grows strong enough and Mortivus commits too deeply, the reversal closes.</p>
+        </div>
+      `;
+
+      updateTrapMeters();
+    }
+
+    function renderScrapVox() {
+      voxBody.innerHTML = "";
+      const chosen = [...scrapVox].sort(() => 0.5 - Math.random()).slice(0, 3);
+
+      chosen.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "vox-transmission";
+        div.innerHTML = `<span>${item.tag}</span><p>${item.body}</p>`;
+        voxBody.appendChild(div);
+      });
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    phaseButtons.forEach(button => {
+      button.addEventListener("click", () => renderPhase(button.dataset.phase));
+    });
+
+    recordButtons.forEach(button => {
+      button.addEventListener("click", () => renderDocument(button.dataset.doc));
+    });
+
+    trapChoices.forEach(choice => {
+      choice.addEventListener("click", () => {
+        trapChoices.forEach(item => item.classList.remove("active"));
+        choice.classList.add("active");
+        trap.style = choice.dataset.style;
+        resetTrapState();
+        addTrapLog("Lure Style Changed", `Current lure style: ${styleLabels[trap.style]}.`, "System");
+      });
+    });
+
+    trapButtons.forEach(button => {
+      button.addEventListener("click", () => applyTrapOrder(button.dataset.order));
+    });
+
+    resetTrap.addEventListener("click", resetTrapState);
+
+    voxButton.addEventListener("click", () => {
+      renderScrapVox();
+      voxDrawer.classList.toggle("open");
+    });
+
+    closeVox.addEventListener("click", () => {
+      voxDrawer.classList.remove("open");
+    });
+
+    sealedEntries.forEach(button => {
+      button.addEventListener("click", () => {
+        showToast("RECORD SEALED. DA SCRAP AIN’T READY.");
+      });
+    });
+
+    enterButton.addEventListener("click", () => {
+      bootScreen.classList.add("hidden");
+    });
+
+    runBootSequence();
+    createSpores();
+    updateTrapMeters();
+  </script>
+</body>
+</html>
