@@ -1,1583 +1,585 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>The Septicarium | Mortivus Classarion</title>
-
-  <meta
-    name="description"
-    content="Restricted Septicarium dossier of Mortivus Classarion, plaguebound commander of The Rotfather’s Vanguard."
-  />
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Spectral:wght@400;500;600;700&display=swap');
-
-    :root {
-      --black: #010201;
-      --bg0: #030302;
-      --bg1: #070906;
-      --panel: rgba(10, 13, 8, 0.94);
-      --panel2: rgba(15, 18, 11, 0.88);
-      --panel-red: rgba(20, 7, 5, 0.9);
-      --line: rgba(180, 204, 89, 0.2);
-      --line2: rgba(214, 227, 123, 0.54);
-      --rot: #9fba4f;
-      --rot2: #d6e27b;
-      --bone: #ded8bf;
-      --bone2: #aaa486;
-      --brass: #8b7641;
-      --rust: #78311a;
-      --blood: #4a150f;
-      --red: #9b3a22;
-      --green-shadow: 0 0 70px rgba(159, 186, 79, 0.13);
-      --red-shadow: 0 0 70px rgba(120, 49, 26, 0.22);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--bone);
-      font-family: "Spectral", Georgia, serif;
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 9% 10%, rgba(120, 49, 26, 0.21), transparent 28%),
-        radial-gradient(circle at 82% 8%, rgba(159, 186, 79, 0.1), transparent 22%),
-        radial-gradient(circle at 46% 54%, rgba(53, 64, 24, 0.12), transparent 40%),
-        linear-gradient(135deg, var(--bg0), var(--bg1) 48%, #020201 100%);
-    }
-
-    body::selection {
-      background: rgba(214, 227, 123, 0.22);
-      color: var(--rot2);
-    }
-
-    .boot-screen,
-    .void-haze,
-    .rot-grid,
-    .mote-field {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .void-haze {
-      z-index: 0;
-      background:
-        radial-gradient(circle at center, transparent 34%, rgba(0,0,0,0.74) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,0.16), rgba(0,0,0,0.84));
-    }
-
-    .rot-grid {
-      z-index: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-      background-size: 108px 108px;
-      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
-    }
-
-    .mote-field {
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .mote {
-      position: absolute;
-      width: 3px;
-      height: 15px;
-      border-radius: 999px;
-      background: linear-gradient(to bottom, rgba(214,227,123,0.05), rgba(214,227,123,0.34), rgba(214,227,123,0));
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      from { transform: translateY(-14vh) translateX(0); opacity: 0; }
-      8% { opacity: 0.6; }
-      92% { opacity: 0.22; }
-      to { transform: translateY(114vh) translateX(20px); opacity: 0; }
-    }
-
-    @keyframes rotateSlow {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes crawl {
-      to { stroke-dashoffset: -160; }
-    }
-
-    @keyframes scan {
-      0%, 100% { transform: translateY(-38px); opacity: 0.16; }
-      50% { transform: translateY(86px); opacity: 0.9; }
-    }
-
-    .boot-screen {
-      z-index: 9999;
-      pointer-events: auto;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(circle at center, rgba(36, 50, 23, 0.88), rgba(0,0,0,0.98) 64%),
-        linear-gradient(135deg, #030402, #090b07);
-      transition: opacity 760ms ease, visibility 760ms ease;
-    }
-
-    .boot-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .boot-box {
-      width: min(1180px, calc(100% - 32px));
-      padding: 30px;
-      border: 1px solid rgba(214, 227, 123, 0.26);
-      background:
-        linear-gradient(135deg, rgba(5, 7, 5, 0.93), rgba(13, 16, 12, 0.85)),
-        radial-gradient(circle at top left, rgba(159, 186, 79, 0.09), transparent 42%);
-      box-shadow: 0 0 90px rgba(159, 186, 79, 0.14);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .boot-box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.03),
-          rgba(255,255,255,0.03) 1px,
-          transparent 1px,
-          transparent 9px
-        );
-      opacity: 0.12;
-      pointer-events: none;
-    }
-
-    .boot-title {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 18px;
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.82rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .boot-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 0.82fr 1.18fr;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .boot-reliquary {
-      min-height: 360px;
-      border: 1px solid rgba(214, 227, 123, 0.14);
-      background:
-        radial-gradient(circle at center, rgba(159,186,79,0.06), transparent 42%),
-        rgba(0,0,0,0.22);
-      position: relative;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-    }
-
-    .boot-reliquary::before,
-    .boot-reliquary::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      border: 1px dashed rgba(214, 227, 123, 0.16);
-    }
-
-    .boot-reliquary::before {
-      width: 285px;
-      height: 285px;
-      animation: rotateSlow 38s linear infinite;
-    }
-
-    .boot-reliquary::after {
-      width: 210px;
-      height: 210px;
-      animation: rotateSlow 28s linear infinite reverse;
-    }
-
-    .boot-svg {
-      position: relative;
-      z-index: 2;
-      width: min(340px, 92%);
-      filter: drop-shadow(0 0 30px rgba(159,186,79,0.16));
-    }
-
-    .boot-seal-dot {
-      opacity: 0.28;
-      transition: 260ms ease;
-    }
-
-    .boot-seal-dot.active {
-      opacity: 1;
-      filter: drop-shadow(0 0 12px rgba(214,227,123,0.6));
-    }
-
-    .boot-lines {
-      min-height: 305px;
-      color: var(--bone);
-      line-height: 1.74;
-      font-size: 1rem;
-    }
-
-    .boot-lines p {
-      margin: 0 0 8px;
-    }
-
-    .boot-button {
-      margin-top: 18px;
-      border: 1px solid rgba(214, 227, 123, 0.28);
-      background: rgba(0,0,0,0.34);
-      color: var(--bone);
-      padding: 12px 16px;
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 220ms ease;
-    }
-
-    .boot-button:hover {
-      color: var(--rot2);
-      border-color: rgba(214, 227, 123, 0.58);
-      background: rgba(159, 186, 79, 0.08);
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(7, 8, 6, 0.94);
-      backdrop-filter: blur(10px);
-      color: var(--bone2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.66rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .topbar a {
-      color: var(--rot2);
-      text-decoration: none;
-    }
-
-    .topbar a:hover {
-      text-decoration: underline;
-    }
-
-    .site-shell {
-      position: relative;
-      z-index: 2;
-      width: min(1500px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 24px 0 90px;
-    }
-
-    .eyebrow {
-      margin: 0 0 10px;
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
-
-    .tag {
-      color: var(--rot2);
-      border: 1px solid rgba(214, 227, 123, 0.24);
-      background: rgba(0,0,0,0.24);
-      padding: 6px 10px;
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .hero,
-    .panel,
-    .status-slab,
-    .reliquary-panel,
-    .campaign-card,
-    .weapon-card,
-    .subcrypt-card,
-    .timeline-panel,
-    .panic-panel,
-    .secret-panel,
-    .outcome-card,
-    .weapon-schematic-panel,
-    .abilities-panel,
-    .trial-panel,
-    .armor-deep-panel {
-      position: relative;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(135deg, rgba(12, 14, 10, 0.95), rgba(8, 9, 7, 0.9)),
-        radial-gradient(circle at top left, rgba(139, 118, 65, 0.09), transparent 42%);
-      box-shadow: var(--green-shadow);
-      overflow: hidden;
-    }
-
-    .hero::before,
-    .panel::before,
-    .status-slab::before,
-    .reliquary-panel::before,
-    .campaign-card::before,
-    .weapon-card::before,
-    .subcrypt-card::before,
-    .timeline-panel::before,
-    .panic-panel::before,
-    .secret-panel::before,
-    .outcome-card::before,
-    .weapon-schematic-panel::before,
-    .abilities-panel::before,
-    .trial-panel::before,
-    .armor-deep-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 14% 0%, rgba(159, 186, 79, 0.05), transparent 24%),
-        linear-gradient(120deg, transparent, rgba(159, 186, 79, 0.025), transparent);
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 0.88fr 1.12fr;
-      gap: 24px;
-      padding: 30px;
-      margin-bottom: 18px;
-      border-left: 4px solid var(--rust);
-      align-items: stretch;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-family: "Cinzel", Georgia, serif;
-      font-size: clamp(3.1rem, 7.4vw, 7rem);
-      line-height: 0.86;
-      letter-spacing: -0.05em;
-      font-weight: 900;
-    }
-
-    .subtitle {
-      margin: 18px 0;
-      color: var(--rot2);
-      font-size: clamp(1.18rem, 2.6vw, 2.1rem);
-      font-style: italic;
-      line-height: 1.2;
-    }
-
-    .lead {
-      margin: 0 0 13px;
-      color: var(--bone);
-      font-size: 1.05rem;
-      line-height: 1.76;
-    }
-
-    .lead.dim {
-      color: var(--bone2);
-    }
-
-    .lead span {
-      color: var(--rot2);
-      font-weight: 600;
-    }
-
-    .button,
-    .entry-link,
-    .relic-hotspot,
-    .vox-button,
-    .sealed-entry,
-    .close-vox,
-    .secret-btn,
-    .tab-button,
-    .trial-btn,
-    .trial-choice {
-      border: 1px solid rgba(214, 227, 123, 0.24);
-      background: rgba(0,0,0,0.28);
-      color: var(--bone);
-      padding: 12px 14px;
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 220ms ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .button:hover,
-    .entry-link:hover,
-    .relic-hotspot:hover,
-    .relic-hotspot.active,
-    .vox-button:hover,
-    .sealed-entry:hover,
-    .close-vox:hover,
-    .secret-btn:hover,
-    .tab-button:hover,
-    .tab-button.active,
-    .trial-btn:hover,
-    .trial-choice:hover,
-    .trial-choice.active {
-      border-color: rgba(214, 227, 123, 0.58);
-      color: var(--rot2);
-      background: rgba(159, 186, 79, 0.08);
-    }
-
-    .hero-actions,
-    .action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .hero-briefing {
-      padding: 18px;
-      border: 1px solid rgba(214,227,123,0.14);
-      background: rgba(0,0,0,0.18);
-      display: grid;
-      align-content: start;
-      gap: 12px;
-    }
-
-    .brief-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .brief-row {
-      display: grid;
-      grid-template-columns: 0.35fr 0.65fr;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid rgba(214,227,123,0.12);
-      background: rgba(0,0,0,0.16);
-    }
-
-    .brief-row span {
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .brief-row strong {
-      font-weight: normal;
-      color: var(--bone);
-      line-height: 1.45;
-    }
-
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .status-slab {
-      padding: 15px;
-      min-height: 138px;
-      transition: 220ms ease;
-    }
-
-    .status-slab:hover {
-      transform: translateY(-5px);
-      border-color: var(--line2);
-      box-shadow: 0 0 40px rgba(159, 186, 79, 0.12);
-    }
-
-    .status-slab span,
-    .timeline-item span,
-    .campaign-card span,
-    .weapon-card span,
-    .subcrypt-card span,
-    .outcome-card span,
-    .ability-card span,
-    .tab-output span,
-    .trial-stat span,
-    .log-entry span,
-    .armor-note span {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .status-slab strong {
-      color: var(--bone);
-      line-height: 1.42;
-      font-weight: normal;
-    }
-
-    .section-kicker {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: start;
-      margin-bottom: 14px;
-    }
-
-    .panel,
-    .reliquary-panel,
-    .timeline-panel,
-    .panic-panel,
-    .secret-panel,
-    .weapon-schematic-panel,
-    .abilities-panel,
-    .trial-panel,
-    .armor-deep-panel {
-      padding: 24px;
-      margin-bottom: 18px;
-    }
-
-    .panel h2,
-    .reliquary-panel h2,
-    .timeline-panel h2,
-    .panic-panel h2,
-    .secret-panel h2,
-    .weapon-schematic-panel h2,
-    .abilities-panel h2,
-    .trial-panel h2,
-    .armor-deep-panel h2 {
-      margin: 0 0 12px;
-      font-family: "Cinzel", Georgia, serif;
-      font-size: clamp(2rem, 3vw, 3rem);
-      line-height: 1.03;
-      font-weight: 800;
-    }
-
-    .panel p,
-    .timeline-item p,
-    .campaign-card p,
-    .weapon-card p,
-    .subcrypt-card p,
-    .panic-panel p,
-    .secret-panel p,
-    .outcome-card p,
-    .weapon-schematic-panel p,
-    .abilities-panel p,
-    .reliquary-panel p,
-    .trial-panel p,
-    .armor-deep-panel p {
-      color: var(--bone2);
-      line-height: 1.76;
-    }
-
-    .reliquary-layout {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .reliquary-stage {
-      position: relative;
-      min-height: 760px;
-      border: 1px solid rgba(214,227,123,0.14);
-      background:
-        radial-gradient(circle at center, rgba(159,186,79,0.06), transparent 42%),
-        linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.36));
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-    }
-
-    .reliquary-svg {
-      width: min(880px, 100%);
-      filter: drop-shadow(0 0 38px rgba(159, 186, 79, 0.18));
-    }
-
-    .hotspot-list {
-      position: absolute;
-      inset: 16px;
-      pointer-events: none;
-    }
-
-    .relic-hotspot {
-      position: absolute;
-      pointer-events: auto;
-      padding: 8px 10px;
-      font-size: 0.58rem;
-      background: rgba(3,4,3,0.78);
-      box-shadow: 0 0 18px rgba(159,186,79,0.12);
-    }
-
-    .hot-helm { top: 13%; left: 50%; transform: translateX(-50%); }
-    .hot-panoply { top: 36%; left: 59%; }
-    .hot-sickle { top: 57%; left: 4%; }
-    .hot-spitter { top: 40%; right: 4%; }
-    .hot-censer { bottom: 22%; right: 12%; }
-    .hot-chain { bottom: 15%; left: 47%; }
-    .hot-glyph { top: 28%; left: 8%; }
-    .hot-omen { bottom: 8%; right: 31%; }
-
-    .analysis-panel {
-      border: 1px solid rgba(214,227,123,0.14);
-      background: rgba(0,0,0,0.18);
-      padding: 18px;
-      min-height: 760px;
-      display: grid;
-      align-content: start;
-      gap: 14px;
-    }
-
-    .analysis-panel h3 {
-      margin: 0;
-      color: var(--rot2);
-      font-family: "Cinzel", Georgia, serif;
-      font-size: 1.5rem;
-      line-height: 1.12;
-    }
-
-    .analysis-panel p {
-      margin: 0;
-    }
-
-    .verdict-grid {
-      display: grid;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .verdict-row {
-      display: grid;
-      grid-template-columns: 0.42fr 0.58fr;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid rgba(214,227,123,0.12);
-      background: rgba(0,0,0,0.16);
-    }
-
-    .verdict-row span {
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .verdict-row strong {
-      font-weight: normal;
-      color: var(--bone);
-      line-height: 1.45;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 0.93fr 1.07fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .timeline {
-      display: grid;
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .timeline-item {
-      padding: 16px;
-      border: 1px solid rgba(214, 227, 123, 0.13);
-      background: rgba(0,0,0,0.18);
-    }
-
-    .timeline-item h3,
-    .campaign-card h3,
-    .weapon-card h3,
-    .subcrypt-card h3,
-    .outcome-card h3,
-    .ability-card h3,
-    .tab-output h3,
-    .log-entry h3,
-    .armor-note h3 {
-      margin: 0 0 8px;
-      color: var(--bone);
-      font-family: "Cinzel", Georgia, serif;
-      font-size: 1.24rem;
-      line-height: 1.12;
-    }
-
-    .outcome-grid,
-    .campaign-grid,
-    .weapon-grid,
-    .subcrypt-grid,
-    .ability-grid,
-    .armor-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .campaign-card,
-    .weapon-card,
-    .subcrypt-card,
-    .outcome-card,
-    .ability-card,
-    .armor-note {
-      padding: 18px;
-      min-height: 330px;
-      transition: 240ms ease;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(135deg, rgba(12, 14, 10, 0.95), rgba(8, 9, 7, 0.9)),
-        radial-gradient(circle at top left, rgba(139, 118, 65, 0.09), transparent 42%);
-      box-shadow: var(--green-shadow);
-    }
-
-    .armor-note {
-      min-height: 270px;
-    }
-
-    .campaign-card:hover,
-    .weapon-card:hover,
-    .subcrypt-card:hover,
-    .outcome-card:hover,
-    .ability-card:hover,
-    .armor-note:hover {
-      transform: translateY(-7px);
-      border-color: var(--line2);
-      box-shadow: 0 0 46px rgba(159, 186, 79, 0.12);
-    }
-
-    .campaign-card.tragedy,
-    .outcome-card.tragedy,
-    .tab-output.tragedy {
-      border-color: rgba(120, 49, 26, 0.5);
-      box-shadow: var(--red-shadow);
-      background:
-        linear-gradient(135deg, rgba(20, 8, 6, 0.96), rgba(10, 9, 7, 0.9)),
-        radial-gradient(circle at top left, rgba(120,49,26,0.16), transparent 42%);
-    }
-
-    .diagram-wrap {
-      margin-top: 16px;
-      border: 1px solid rgba(214, 227, 123, 0.12);
-      background: rgba(0,0,0,0.18);
-      padding: 16px;
-      overflow: hidden;
-    }
-
-    .armor-svg,
-    .doctrine-svg,
-    .weapon-svg {
-      width: 100%;
-      min-height: 420px;
-      filter: drop-shadow(0 0 24px rgba(159, 186, 79, 0.1));
-    }
-
-    .path-flow {
-      stroke-dasharray: 7 9;
-      animation: crawl 16s linear infinite;
-    }
-
-    .scan-line {
-      animation: scan 5s ease-in-out infinite;
-    }
-
-    .weapon-schematic-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .weapon-schematic {
-      padding: 16px;
-      min-height: 610px;
-      border: 1px solid rgba(214, 227, 123, 0.14);
-      background: rgba(0,0,0,0.18);
-    }
-
-    .weapon-schematic h3 {
-      margin: 0 0 8px;
-      color: var(--bone);
-      font-family: "Cinzel", Georgia, serif;
-      font-size: 1.2rem;
-    }
-
-    .weapon-schematic p {
-      margin-bottom: 0;
-    }
-
-    .battle-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 18px 0;
-    }
-
-    .tab-output {
-      padding: 20px;
-      border: 1px solid rgba(214, 227, 123, 0.16);
-      background:
-        linear-gradient(135deg, rgba(5, 7, 5, 0.95), rgba(13, 17, 12, 0.84));
-      min-height: 460px;
-    }
-
-    .trial-grid {
-      display: grid;
-      grid-template-columns: 0.42fr 0.58fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .trial-console,
-    .trial-output {
-      border: 1px solid rgba(214,227,123,0.14);
-      background: rgba(0,0,0,0.18);
-      padding: 16px;
-    }
-
-    .trial-choices {
-      display: grid;
-      gap: 10px;
-      margin: 12px 0 18px;
-    }
-
-    .trial-stat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .trial-stat {
-      padding: 12px;
-      border: 1px solid rgba(214,227,123,0.12);
-      background: rgba(0,0,0,0.16);
-    }
-
-    .meter {
-      height: 12px;
-      border: 1px solid rgba(214,227,123,0.14);
-      background: rgba(0,0,0,0.34);
-      overflow: hidden;
-    }
-
-    .meter-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blood), var(--rot), var(--rot2));
-      width: 30%;
-      transition: width 300ms ease;
-    }
-
-    .log {
-      display: grid;
-      gap: 10px;
-      max-height: 520px;
-      overflow: auto;
-      padding-right: 6px;
-    }
-
-    .log-entry {
-      padding: 14px;
-      border-left: 3px solid rgba(159,186,79,0.38);
-      background: rgba(0,0,0,0.16);
-    }
-
-    .log-entry p {
-      margin: 0;
-      color: var(--bone2);
-      line-height: 1.65;
-    }
-
-    .secret-panel {
-      border-left: 4px solid var(--blood);
-    }
-
-    .secret-stack {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .secret-entry {
-      padding: 14px;
-      border-left: 3px solid rgba(159, 186, 79, 0.42);
-      background: rgba(0,0,0,0.18);
-      color: var(--bone2);
-      line-height: 1.68;
-    }
-
-    .secret-entry span {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .secret-hidden {
-      display: none;
-      margin-top: 14px;
-      padding: 16px;
-      border: 1px solid rgba(214, 227, 123, 0.16);
-      background: rgba(0,0,0,0.22);
-    }
-
-    .secret-hidden.open {
-      display: block;
-    }
-
-    .floating-vox {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 90;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .vox-button {
-      box-shadow: 0 0 24px rgba(159, 186, 79, 0.16);
-    }
-
-    .vox-drawer {
-      position: fixed;
-      right: 18px;
-      bottom: 76px;
-      z-index: 95;
-      width: min(460px, calc(100% - 24px));
-      border: 1px solid rgba(214, 227, 123, 0.2);
-      background:
-        linear-gradient(135deg, rgba(8, 10, 8, 0.97), rgba(15, 18, 14, 0.94)),
-        radial-gradient(circle at top left, rgba(159,186,79,0.08), transparent 42%);
-      box-shadow: 0 0 38px rgba(159, 186, 79, 0.14);
-      transform: translateY(18px);
-      opacity: 0;
-      pointer-events: none;
-      transition: 260ms ease;
-      overflow: hidden;
-    }
-
-    .vox-drawer.open {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .vox-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(214, 227, 123, 0.12);
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.66rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      background: rgba(0,0,0,0.22);
-    }
-
-    .vox-body {
-      padding: 16px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .vox-transmission {
-      padding: 14px;
-      border-left: 3px solid rgba(159, 186, 79, 0.38);
-      background: rgba(0,0,0,0.16);
-    }
-
-    .vox-transmission span {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--rot2);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .vox-transmission p {
-      margin: 0;
-      color: var(--bone2);
-      line-height: 1.65;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      z-index: 120;
-      transform: translateX(-50%) translateY(120px);
-      max-width: calc(100% - 28px);
-      padding: 14px 18px;
-      border: 1px solid rgba(214, 227, 123, 0.34);
-      background: rgba(6, 7, 5, 0.96);
-      color: var(--rot2);
-      box-shadow: 0 0 28px rgba(159, 186, 79, 0.14);
-      font-family: "Cinzel", Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      transition: transform 280ms ease;
-      pointer-events: none;
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .site-footer {
-      position: relative;
-      z-index: 2;
-      width: min(1500px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 26px 0 46px;
-      border-top: 1px solid rgba(214, 227, 123, 0.12);
-      color: var(--bone2);
-      font-size: 0.88rem;
-      letter-spacing: 0.03em;
-    }
-
-    @media (max-width: 1240px) {
-      .hero,
-      .two-col,
-      .boot-grid,
-      .reliquary-layout,
-      .trial-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .status-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .outcome-grid,
-      .campaign-grid,
-      .weapon-grid,
-      .subcrypt-grid,
-      .ability-grid,
-      .weapon-schematic-grid,
-      .armor-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .reliquary-stage,
-      .analysis-panel {
-        min-height: auto;
-      }
-
-      .trial-stat-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .site-shell,
-      .site-footer {
-        width: min(100% - 18px, 1500px);
-      }
-
-      .hero {
-        padding: 22px;
-      }
-
-      .hero h1 {
-        font-size: clamp(2.8rem, 14vw, 4.4rem);
-      }
-
-      .status-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-kicker {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .relic-hotspot {
-        position: static;
-        transform: none;
-        margin: 5px;
-      }
-
-      .hotspot-list {
-        position: relative;
-        inset: auto;
-        display: flex;
-        flex-wrap: wrap;
-        padding: 10px;
-      }
-
-      .verdict-row,
-      .brief-row {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="boot-screen" id="bootScreen">
-    <div class="boot-box">
-      <p class="boot-title">Reliquary Unsealing Rite // Mortivus Classarion // Subject Unaware of Full Observation</p>
-
-      <div class="boot-grid">
-        <div class="boot-reliquary">
-          <svg class="boot-svg" viewBox="0 0 360 360" role="img" aria-label="Reliquary boot seal">
-            <defs>
-              <radialGradient id="bootGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#d6e27b" stop-opacity="0.55"/>
-                <stop offset="50%" stop-color="#9fba4f" stop-opacity="0.16"/>
-                <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <circle cx="180" cy="180" r="130" fill="url(#bootGlow)" />
-            <path d="M180 48 L278 104 L278 256 L180 312 L82 256 L82 104 Z" fill="rgba(0,0,0,0.28)" stroke="rgba(214,227,123,0.4)" stroke-width="2" />
-            <path d="M180 86 L246 124 L246 236 L180 274 L114 236 L114 124 Z" fill="rgba(0,0,0,0.34)" stroke="rgba(214,227,123,0.28)" stroke-width="2" />
-            <path d="M158 112 C150 132 156 150 180 158 C204 150 210 132 202 112 C190 122 170 122 158 112 Z" fill="rgba(214,227,123,0.16)" stroke="rgba(214,227,123,0.38)" />
-            <path d="M132 188 C144 166 162 156 180 156 C198 156 216 166 228 188 L220 240 L140 240 Z" fill="rgba(18,20,14,0.92)" stroke="rgba(214,227,123,0.3)" />
-            <path d="M108 250 C136 268 164 276 180 276 C196 276 224 268 252 250" fill="none" stroke="rgba(214,227,123,0.25)" stroke-width="2" />
-            <circle class="boot-seal-dot" id="seal1" cx="180" cy="48" r="7" fill="#d6e27b"/>
-            <circle class="boot-seal-dot" id="seal2" cx="278" cy="104" r="7" fill="#d6e27b"/>
-            <circle class="boot-seal-dot" id="seal3" cx="278" cy="256" r="7" fill="#d6e27b"/>
-            <circle class="boot-seal-dot" id="seal4" cx="180" cy="312" r="7" fill="#d6e27b"/>
-            <circle class="boot-seal-dot" id="seal5" cx="82" cy="256" r="7" fill="#d6e27b"/>
-            <circle class="boot-seal-dot" id="seal6" cx="82" cy="104" r="7" fill="#d6e27b"/>
-            <circle class="boot-seal-dot" id="seal7" cx="180" cy="180" r="9" fill="#d6e27b"/>
-          </svg>
-        </div>
-
-        <div>
-          <div class="boot-lines" id="bootLines"></div>
-          <button class="boot-button" id="enterButton">Open the Reliquary</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="mote-field" aria-hidden="true"></div>
-  <div class="void-haze" aria-hidden="true"></div>
-  <div class="rot-grid" aria-hidden="true"></div>
-
-  <header class="topbar">
-    <div>Restricted Name-Crypt // Mortivus Classarion // Internal to The Septicarium</div>
-    <div>
-      <a href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
-      //
-      <a href="index.html">Command Deck</a>
-    </div>
-  </header>
-
-  <main class="site-shell">
-    <section class="hero">
-      <div>
-        <p class="eyebrow">Internal Observation File // Subject Not Advised of Full Record</p>
-        <h1>Mortivus Classarion</h1>
-        <p class="subtitle">“Blessed by Nurgle. Unfinished by design.”</p>
-
-        <p class="lead">
-          Mortivus Classarion commands <span>The Rotfather’s Vanguard</span> as a plaguebound war-master of uncertain station. The Septicarium records him as a Plague Champion by earliest viable origin, yet no stable title has managed to contain him. Witnesses name him commander, contagion-lord, shrine-armored butcher, plague-prophet, and something not yet admissible to open record.
-        </p>
-
-        <p class="lead dim">
-          This chamber is quieter than the rest of the Dossier. Mortivus permits records to be kept, but not necessarily the degree of scrutiny preserved here. These observations are maintained as internal plague-intelligence: loyal in purpose, potentially fatal if discovered, and more useful because the subject may not know how deeply he has been watched.
-        </p>
-
-        <p class="lead dim">
-          His name appears in the margins of victories, humiliations, vanished retreats, and sealed chambers where the survivors no longer agree on the shape of the one who spared them from quick endings. The page you read is not a biography. It is a containment failure disguised as one.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button" href="#reliquary">Reliquary</a>
-          <a class="button" href="#origin">Origin</a>
-          <a class="button" href="#panoply">Panoply</a>
-          <a class="button" href="#weapons">Weapons</a>
-          <a class="button" href="#abilities">Abilities</a>
-          <a class="button" href="#battles">Campaigns</a>
-          <a class="button" href="#attached-records">Attached Records</a>
-          <a class="button" href="#trial">Command Trial</a>
-        </div>
-      </div>
-
-      <div class="hero-briefing">
-        <p class="eyebrow">Archive Verdict</p>
-        <div class="brief-grid">
-          <div class="brief-row">
-            <span>Recorded Origin</span>
-            <strong>Plague Champion by earliest viable record.</strong>
-          </div>
-          <div class="brief-row">
-            <span>Legionary Root</span>
-            <strong>Death Guard, XIV Legion line. Exact company lineage withheld by corruption and competing testimony.</strong>
-          </div>
-          <div class="brief-row">
-            <span>Present Station</span>
-            <strong>Unresolved. Command-grade authority confirmed. Title stability denied.</strong>
-          </div>
-          <div class="brief-row">
-            <span>Vessel</span>
-            <strong>The Rotfather’s Mercy, whose lower sanctums respond to his presence with accelerated corrosion.</strong>
-          </div>
-          <div class="brief-row">
-            <span>Warhost</span>
-            <strong>The Rotfather’s Vanguard, an attritional plague-host shaped by spiritual decay, biological corruption, and occult rot.</strong>
-          </div>
-          <div class="brief-row">
-            <span>Final Warning</span>
-            <strong>Do not force the subject into one clean classification. Clean classification is an Imperial disease.</strong>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="status-grid">
-      <article class="status-slab">
-        <span>Common Epithet</span>
-        <strong>Blessed by Nurgle</strong>
-      </article>
-      <article class="status-slab">
-        <span>Primary Function</span>
-        <strong>War-master of The Rotfather’s Vanguard</strong>
-      </article>
-      <article class="status-slab">
-        <span>Command Method</span>
-        <strong>Attritional, occult, morale-erosive, spiritually contaminant</strong>
-      </article>
-      <article class="status-slab">
-        <span>Chronological Status</span>
-        <strong>Possibly Heresy-era veteran, possibly later accretion of the Long War</strong>
-      </article>
-      <article class="status-slab">
-        <span>Ascension Pressure</span>
-        <strong>Detected, increasing, insufficiently contained by present titles</strong>
-      </article>
-      <article class="status-slab">
-        <span>Archive Risk</span>
-        <strong>Subject may eventually discover this record and approve it for the wrong reasons</strong>
-      </article>
-    </section>
-
-    <section class="reliquary-panel" id="reliquary">
+    <section class="panel" id="usage">
       <div class="section-kicker">
-        <p class="eyebrow">The Reliquary of the Unfinished Saint</p>
-        <span class="tag">Recovered Pict-Capture // Unstable</span>
+        <p class="eyebrow">How Mortivus Uses It</p>
+        <span class="tag">Execution Doctrine // Battlefield Grammar</span>
       </div>
 
-      <h2>The archive does not possess a clean image of Mortivus. It possesses layered evidence.</h2>
+      <h2>Mortivus does not swing the Mercy-Sickle like a berserker. He uses it like a final argument.</h2>
 
       <p>
-        The relic-case below is a composite: battle-pict distortion, armor-slate fragments, plague-serf sketches, sensor ghosts, shrine reflection, and corrupted command memory. The figure at the center is not an illustration offered to honor him. It is an intelligence object, opened under seal, annotated by hands that would rather not be caught annotating him.
+        The Mercy-Sickle is rarely the first weapon seen in a battle. Mortivus does not waste it on disorder that has not yet learned what it is. The blade appears when a resistance has already been spiritually softened, when a commander realizes his orders no longer mean what they meant, when a priest hears his own prayer become unfamiliar, or when an elite warrior understands that personal courage cannot repair the collapse around him.
       </p>
 
-      <div class="reliquary-layout">
-        <div class="reliquary-stage">
-          <svg class="reliquary-svg" viewBox="0 0 900 780" role="img" aria-label="Corrupted pict-capture of Mortivus Classarion">
-            <defs>
-              <filter id="pictGlow">
-                <feGaussianBlur stdDeviation="5" result="blur"/>
-                <feMerge>
-                  <feMergeNode in="blur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
+      <p>
+        Mortivus uses the weapon with deliberate economy. He does not flail, posture, or indulge in theatrical excess. He advances with the patience of an execution rite. The hook draws the target out of formation. The inner edge opens armor seams. The spine turns aside desperate blows. The chain-ring pulls the blade back into readiness with a small, wet, ceremonial sound.
+      </p>
 
-              <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#d6e27b" stop-opacity="0.52"/>
-                <stop offset="42%" stop-color="#9fba4f" stop-opacity="0.14"/>
-                <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
-              </radialGradient>
+      <p>
+        Most witnesses agree that the worst moment is not the wound. It is the pause before the wound. Mortivus often allows the chosen target to see the blade clearly. In that pause, the victim understands that they have not been selected for death alone. They have been selected as proof.
+      </p>
 
-              <linearGradient id="armorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#3a392c"/>
-                <stop offset="35%" stop-color="#202118"/>
-                <stop offset="75%" stop-color="#12130f"/>
-                <stop offset="100%" stop-color="#33170f"/>
-              </linearGradient>
-
-              <linearGradient id="weaponGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#a08b45"/>
-                <stop offset="60%" stop-color="#604f20"/>
-                <stop offset="100%" stop-color="#2f250f"/>
-              </linearGradient>
-
-              <linearGradient id="rotLeak" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#d6e27b" stop-opacity="0.75"/>
-                <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-
-            <rect x="30" y="26" width="840" height="724" rx="28" fill="rgba(0,0,0,0.18)" stroke="rgba(214,227,123,0.11)" />
-            <rect class="scan-line" x="80" y="248" width="740" height="3" fill="rgba(214,227,123,0.55)" />
-
-            <circle cx="458" cy="178" r="148" fill="url(#haloGrad)" style="animation:pulse 4.2s ease-in-out infinite;" />
-            <circle cx="458" cy="178" r="176" fill="none" stroke="rgba(214,227,123,0.16)" stroke-width="1.5" />
-            <circle cx="458" cy="178" r="208" fill="none" stroke="rgba(214,227,123,0.1)" stroke-width="1.5" stroke-dasharray="6 8" />
-
-            <path d="M458 76 L490 112 L472 134 L444 134 L426 112 Z"
-                  fill="url(#armorGrad)"
-                  stroke="rgba(214,227,123,0.42)"
-                  stroke-width="2"
-                  filter="url(#pictGlow)" />
-
-            <path d="M388 154 C380 124 408 102 458 98 C508 102 536 124 528 154 L510 198 L406 198 Z"
-                  fill="url(#armorGrad)"
-                  stroke="rgba(214,227,123,0.34)"
-                  stroke-width="2.3" />
-
-            <path d="M318 204 C256 232 224 282 222 350 L218 492 C216 570 274 620 354 636 L562 636 C642 620 700 570 698 492 L694 350 C692 282 660 232 598 204 L538 176 L378 176 Z"
-                  fill="url(#armorGrad)"
-                  stroke="rgba(214,227,123,0.3)"
-                  stroke-width="2.4"
-                  filter="url(#pictGlow)" />
-
-            <path d="M378 184 L294 228 L304 330 L376 300 Z"
-                  fill="rgba(34,34,25,0.94)"
-                  stroke="rgba(214,227,123,0.24)"
-                  stroke-width="2" />
-
-            <path d="M538 184 L622 228 L612 330 L540 300 Z"
-                  fill="rgba(34,34,25,0.94)"
-                  stroke="rgba(214,227,123,0.24)"
-                  stroke-width="2" />
-
-            <path d="M388 312 L346 590 L398 616 L426 350 Z"
-                  fill="rgba(25,26,18,0.95)"
-                  stroke="rgba(214,227,123,0.22)"
-                  stroke-width="2" />
-
-            <path d="M528 312 L570 590 L518 616 L490 350 Z"
-                  fill="rgba(25,26,18,0.95)"
-                  stroke="rgba(214,227,123,0.22)"
-                  stroke-width="2" />
-
-            <path d="M430 638 L404 742 L452 758 L476 638 Z"
-                  fill="rgba(25,26,18,0.95)"
-                  stroke="rgba(214,227,123,0.22)"
-                  stroke-width="2" />
-
-            <path d="M482 638 L508 742 L460 758 L436 638 Z"
-                  fill="rgba(25,26,18,0.95)"
-                  stroke="rgba(214,227,123,0.22)"
-                  stroke-width="2" />
-
-            <path d="M130 474 C216 400 292 354 398 318"
-                  fill="none"
-                  stroke="url(#weaponGrad)"
-                  stroke-width="15"
-                  stroke-linecap="round" />
-
-            <path d="M104 490 C62 520 48 570 68 612 C98 676 222 666 296 600"
-                  fill="none"
-                  stroke="url(#weaponGrad)"
-                  stroke-width="20"
-                  stroke-linecap="round" />
-
-            <path d="M296 598 C230 678 136 694 66 638"
-                  fill="none"
-                  stroke="rgba(214,227,123,0.24)"
-                  stroke-width="3" />
-
-            <path d="M568 278 C646 296 714 346 748 418 C766 456 772 508 758 566"
-                  fill="none"
-                  stroke="rgba(120,49,26,0.78)"
-                  stroke-width="18"
-                  stroke-linecap="round"
-                  opacity="0.45" />
-
-            <path class="path-flow" d="M138 186 C238 158 330 144 432 122" fill="none" stroke="rgba(214,227,123,0.26)" stroke-width="2" />
-            <path class="path-flow" d="M760 264 C676 248 602 230 538 210" fill="none" stroke="rgba(214,227,123,0.26)" stroke-width="2" />
-            <path class="path-flow" d="M762 510 C682 502 610 474 558 448" fill="none" stroke="rgba(214,227,123,0.26)" stroke-width="2" />
-            <path class="path-flow" d="M130 454 C218 398 304 352 392 316" fill="none" stroke="rgba(214,227,123,0.26)" stroke-width="2" />
-
-            <circle cx="138" cy="186" r="7" fill="#d6e27b" />
-            <circle cx="760" cy="264" r="7" fill="#d6e27b" />
-            <circle cx="762" cy="510" r="7" fill="#d6e27b" />
-            <circle cx="130" cy="454" r="7" fill="#d6e27b" />
-
-            <text x="62" y="180" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">HELM</text>
-            <text x="776" y="258" text-anchor="end" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">PANOPLY</text>
-            <text x="780" y="504" text-anchor="end" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">CENSER ARRAY</text>
-            <text x="62" y="448" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">MERCY-SICKLE</text>
-
-            <circle cx="378" cy="250" r="9" fill="rgba(159,186,79,0.7)" />
-            <circle cx="538" cy="250" r="9" fill="rgba(159,186,79,0.7)" />
-            <circle cx="458" cy="138" r="5" fill="rgba(214,227,123,0.8)" />
-
-            <path d="M378 200 C396 230 408 266 412 306" stroke="url(#rotLeak)" stroke-width="3" opacity="0.35" />
-            <path d="M542 200 C524 230 512 266 508 306" stroke="url(#rotLeak)" stroke-width="3" opacity="0.35" />
-
-            <path d="M322 536 C378 560 426 568 458 568 C490 568 538 560 594 536" fill="none" stroke="rgba(214,227,123,0.16)" stroke-width="3" stroke-dasharray="4 7" />
-            <text x="458" y="712" text-anchor="middle" fill="#aaa486" font-size="11" font-family="Cinzel" letter-spacing="2">PICT-CAPTURE RECONSTRUCTION // SUBJECT SILHOUETTE UNSTABLE</text>
-          </svg>
-
-          <div class="hotspot-list">
-            <button class="relic-hotspot hot-helm active" data-relic="helm">Helm</button>
-            <button class="relic-hotspot hot-panoply" data-relic="panoply">Panoply</button>
-            <button class="relic-hotspot hot-sickle" data-relic="sickle">Mercy-Sickle</button>
-            <button class="relic-hotspot hot-spitter" data-relic="spitter">Rite-Spitter</button>
-            <button class="relic-hotspot hot-censer" data-relic="censer">Censer Array</button>
-            <button class="relic-hotspot hot-chain" data-relic="chain">Tally Chains</button>
-            <button class="relic-hotspot hot-glyph" data-relic="glyph">Corrosion Glyphs</button>
-            <button class="relic-hotspot hot-omen" data-relic="omen">Omen Residue</button>
-          </div>
-        </div>
-
-        <div class="analysis-panel" id="analysisPanel">
-          <p class="eyebrow">Relic Analysis</p>
-          <h3>Shrine-Mask Helm</h3>
+      <div class="effect-grid">
+        <article class="effect-card">
+          <span>Use Pattern I</span>
+          <h3>Against Commanders</h3>
           <p>
-            The helm is the most stable feature across corrupted pict-captures. It is not merely protective armor. It functions as icon, intimidation locus, and devotional mask. The optics are repeatedly described as dull green stars viewed through burial glass.
+            Mortivus favors the blade against officers who kept their lines intact longer than expected. The Mercy-Sickle removes the commander not only from life, but from the story their soldiers needed them to embody.
           </p>
-          <p>
-            Several witnesses insist the helm is horned. Others deny horns and describe instead a broken plague halo or corroded back-crest. The archive does not reconcile this. It records only that those who look directly into the visor often describe being judged by something patient enough to wait out civilizations.
-          </p>
+        </article>
 
-          <div class="verdict-grid">
-            <div class="verdict-row"><span>Recorded Origin</span><strong>Plague Champion, but elevated by command gravity.</strong></div>
-            <div class="verdict-row"><span>Present Station</span><strong>Unresolved. Command-grade threat confirmed.</strong></div>
-            <div class="verdict-row"><span>Heresy Trace</span><strong>Unproven, but Long War residue is unusually dense.</strong></div>
-            <div class="verdict-row"><span>Ascension Vector</span><strong>Active. Not granted. Not denied. Not safely ignored.</strong></div>
-            <div class="verdict-row"><span>Final Verdict</span><strong>Do not fix the subject into a single title.</strong></div>
-          </div>
-        </div>
+        <article class="effect-card">
+          <span>Use Pattern II</span>
+          <h3>Against Priests and Oath-Holders</h3>
+          <p>
+            The blade is often reserved for those whose faith sustained others. Mortivus cuts them last enough to make their followers watch and early enough to let despair finish the battle.
+          </p>
+        </article>
+
+        <article class="effect-card">
+          <span>Use Pattern III</span>
+          <h3>Against Elite Survivors</h3>
+          <p>
+            When a warrior refuses to break, Mortivus does not always crush them immediately. He uses the blade to teach the difference between endurance and meaning.
+          </p>
+        </article>
       </div>
     </section>
 
-    <section class="two-col" id="origin">
-      <article class="panel">
-        <div class="section-kicker">
-          <p class="eyebrow">Origin Threads</p>
-          <span class="tag">Contradiction Preserved</span>
-        </div>
-
-        <h2>The Name Before the Fully Ripened Rot</h2>
-
-        <p>
-          The Septicarium does not present a single origin for Mortivus Classarion because no single origin has survived intact. The earliest fragments agree only on pattern: a subordinate officer or lesser champion whose understanding of decay exceeded his formal station. He appears not first as a conquering icon, but as a field-presence repeatedly found wherever an engagement changed from battle into inevitability.
-        </p>
-
-        <p>
-          One lineage-trace claims he served within the later rot-scarred withdrawal patterns that followed the Horus Heresy, already bearing the patience and doctrinal cruelty of the XIV Legion’s bitterest survivors. Another places him centuries later, a post-Heresy plaguebound ascendant who inherited the memory of older wars so completely that witnesses mistook inheritance for direct participation.
-        </p>
-
-        <p>
-          The third thread is the most dangerous. It suggests that the Long War does not pass through Mortivus in a straight line, but accumulates inside him like sediment. If he was not physically present during the Heresy, he carries himself like one who has swallowed its residue so deeply that distinction has become strategically irrelevant.
-        </p>
-      </article>
-
-      <article class="panel">
-        <div class="section-kicker">
-          <p class="eyebrow">Ascent</p>
-          <span class="tag">Rookie to War-Master</span>
-        </div>
-
-        <h2>How He Rose</h2>
-
-        <p>
-          Mortivus did not rise through flamboyant brutality alone. Many have been brutal in the Eye and left nothing but gore. Mortivus rose because he could read the invisible stages of collapse: the moment a garrison stopped believing its walls were sacred, the breath between disciplined resistance and ritualized desperation, the hidden softness in commanders who still called themselves unbroken.
-        </p>
-
-        <p>
-          His first followers gathered because battles in his orbit stopped feeling random. Supply lines spoiled with suspicious precision. Enemy liturgies became infection routes. Chapels and command bunkers, rather than being annihilated, were left sealed until their occupants transformed from defenders into warnings.
-        </p>
-
-        <p>
-          Over time, scattered plague marines, failed rivals, exhausted survivors, bell-bearing serfs, and specialist killers began to orbit him. That orbit thickened into doctrine. Doctrine thickened into command. Command thickened into a warband. Thus The Rotfather’s Vanguard did not truly form by proclamation. It congealed.
-        </p>
-      </article>
-    </section>
-
-    <section class="timeline-panel">
+    <section class="panel" id="effects">
       <div class="section-kicker">
-        <p class="eyebrow">Selected History</p>
-        <span class="tag">Long War Trace</span>
+        <p class="eyebrow">Observed Effects</p>
+        <span class="tag">Physical // Psychological // Spiritual</span>
       </div>
 
-      <h2>Chronology of a subject the archive cannot finish naming.</h2>
+      <h2>The blade does not wound in one category.</h2>
 
-      <div class="timeline">
-        <div class="timeline-item">
-          <span>Earliest Murmur</span>
-          <h3>The Carrion Years of Uncertain Date</h3>
+      <div class="effect-grid">
+        <article class="effect-card">
+          <span>Physical Effect</span>
+          <h3>The Body Opened as Evidence</h3>
           <p>
-            The first stain associated with Mortivus records a commander or sub-commander left behind during an attritional withdrawal. Orders failed to reach his line. He held position, not from heroic nobility, but because he correctly judged that the enemy relief column would enter the quarantine perimeter before his own losses became tactically decisive. It did. The resulting slaughter was credited to chance by outsiders and to Mortivus by those who survived him.
+            The Mercy-Sickle causes hooked, dragging trauma unsuited to clean battlefield death. It catches beneath armor lips, pulls through weakened seams, and turns defensive posture into exposure. Wounds made by the inner edge often putrefy rapidly, even when inflicted on subjects whose armor or physiology should resist common corruption.
           </p>
-        </div>
+          <p>
+            The blade appears particularly suited for disabling elite targets without immediately removing their awareness. Limbs fail. Breath becomes labor. The body remains present long enough to participate in the lesson.
+          </p>
+        </article>
 
-        <div class="timeline-item">
-          <span>Formation Sign</span>
-          <h3>The Seven Bell Advance</h3>
+        <article class="effect-card">
+          <span>Psychological Effect</span>
+          <h3>The Pause Before the Cut</h3>
           <p>
-            Mortivus delayed an assault until seven distinct chimes carried across a besieged industrial plain. Each bell corresponded to a collapse he had already initiated: sanitation, morale, ammunition discipline, food purity, chapel order, command confidence, and finally hope. When the advance began, the enemy still possessed weapons and walls, but no longer possessed inward unity.
+            Survivors and witnesses frequently remember anticipation more vividly than impact. The blade creates a fixation response. Eyes follow the curve. Hands tighten. Vox discipline breaks. Warriors who have endured artillery, plague-fire, and close assault still report dread when Mortivus lowers the sickle into view.
           </p>
-        </div>
+          <p>
+            This fear is not simple fear of pain. It is fear of being personally selected by something patient, intelligent, and already convinced that the victim has something left to understand.
+          </p>
+        </article>
 
-        <div class="timeline-item">
-          <span>Warband Coheres</span>
-          <h3>The Rotfather’s Vanguard Takes Shape</h3>
+        <article class="effect-card">
+          <span>Spiritual Effect</span>
+          <h3>The Soul Counted Before Death</h3>
           <p>
-            The host that became The Rotfather’s Vanguard acquired Mortivus less as a leader than as a gravitational center. He had ceased to win merely through endurance. He now generated doctrine: spiritual decay before bodily corruption, biological corruption before visible collapse, and visible collapse only when resistance had already become ceremonial.
+            The Mercy-Sickle has repeatedly disrupted prayer, oath-recitation, and command cant. Victims describe feeling counted, weighed, or recognized by the edge. Several enemy accounts claim the blade made them feel judged before it touched them.
           </p>
-        </div>
-
-        <div class="timeline-item">
-          <span>Prophetic Acceleration</span>
-          <h3>The Unfinished Apotheosis</h3>
           <p>
-            At some point, possibly after the tragedy later called The Pallid Reversal, Mortivus ceased behaving like a simple champion with an expanding retinue. Witnesses began to record premonitory anomalies around his name: victories entered before their battles, titles argued by his own retainers in whispers, and a persistent sense that his future rank was leaning backward into the present.
+            The archive does not confirm true sentience. It confirms only that the blade behaves like an object around which meaning becomes dangerous.
           </p>
-        </div>
+        </article>
       </div>
     </section>
-        <section class="two-col" id="panoply">
+
+    <section class="record-panel" id="witnesses">
+      <div class="section-kicker">
+        <p class="eyebrow">Battlefield Witness Accounts</p>
+        <span class="tag">Recovered Testimony // Multiple Sources</span>
+      </div>
+
+      <h2>Those who saw the blade used rarely describe the same wound. They describe the same silence.</h2>
+
+      <div class="witness-grid">
+        <article class="witness-record">
+          <span>Witness I // Plague Marine of the Vanguard</span>
+          <h3>“He drew it after the enemy had already failed.”</h3>
+          <p>
+            “The foe still had guns. Still had walls. Still had breath enough to curse us. But they had failed before he drew the sickle. That is what the clean-blooded never understand. The weapon is not for beginning. It is for closing. When he raised it, the battle became honest.”
+          </p>
+        </article>
+
+        <article class="witness-record">
+          <span>Witness II // Captured Imperial Vox Fragment</span>
+          <h3>“Do not let him point that thing at the altar.”</h3>
+          <p>
+            “Command, repeat, command, the plague lord has entered the nave. He is carrying some kind of hooked blade. The Canoness is still standing. The altar guard is still standing. No one is firing. Why is no one firing? Emperor preserve us, do not let him point that thing at the altar.”
+          </p>
+        </article>
+
+        <article class="witness-record">
+          <span>Witness III // Bell-Serf Marginalia</span>
+          <h3>“He waited until the man understood.”</h3>
+          <p>
+            “The captain spat at him. The captain laughed first. Then the captain looked around and saw his company watching. Then he stopped laughing. Lord Mortivus waited for that exact moment. Then the blade moved.”
+          </p>
+        </article>
+
+        <article class="witness-record">
+          <span>Witness IV // Septicarium Field Note</span>
+          <h3>“The blade functions as punctuation.”</h3>
+          <p>
+            “The Mercy-Sickle should not be classified only as armament. It functions as punctuation in Mortivus’ battlefield syntax. It appears after argument, after pressure, after the enemy’s interpretation of reality has become unstable. Its strike is the sentence ending.”
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="record-panel" id="survivors">
+      <div class="section-kicker">
+        <p class="eyebrow">Fragments From Enemies Who Survived Contact</p>
+        <span class="tag">Survival Did Not Equal Escape</span>
+      </div>
+
+      <h2>The spared remember too much.</h2>
+
+      <div class="fragment-grid">
+        <article class="survivor-fragment">
+          <span>Fragment I // Votann Kin Blackbox</span>
+          <h3>“The blade hooked the oath before the flesh.”</h3>
+          <p>
+            “He did not strike our Theyn first. He cut the banner-pole, then the hand that reached for it, then the oath-speaker who tried to name the ancestor-core. The blade moved like it knew which symbols held us upright.”
+          </p>
+        </article>
+
+        <article class="survivor-fragment">
+          <span>Fragment II // Imperial Officer Debrief</span>
+          <h3>“He made me watch my own command stop being mine.”</h3>
+          <p>
+            “The wound was survivable. That was the horror. He could have killed me with the first cut. Instead he opened the armor, left me breathing, and turned me so I could see my men break formation around the breach.”
+          </p>
+        </article>
+
+        <article class="survivor-fragment">
+          <span>Fragment III // Shrine Guard Confession</span>
+          <h3>“It was not rage.”</h3>
+          <p>
+            “I have seen rage. I have seen butchery. This was not rage. He looked almost gentle. That is why I still hear the chain. He did not hate us enough. He believed he was completing something.”
+          </p>
+        </article>
+
+        <article class="survivor-fragment">
+          <span>Fragment IV // Ork Memory-Scrap</span>
+          <h3>“Sharp hook. Bad funny.”</h3>
+          <p>
+            “Big stink boss had a hooky choppa. Nob laughed, then got pulled where he didn’t wanna go. Didn’t like dat. Boyz said it weren’t proppa. Boss said krump him from far next time.”
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel relic-whisper" id="whispers">
+      <div class="section-kicker">
+        <p class="eyebrow">Relic Whisper Engine</p>
+        <span class="tag">Unauthorized Edge-Thoughts</span>
+      </div>
+
+      <h2>The blade does not speak. The archive still receives sentences.</h2>
+
+      <p>
+        The following output is generated from recorded witness language, blade proximity events, and recurring phrases found near Mercy-Sickle entries. It should not be interpreted as proof of sentience. It should not be interpreted as proof of absence.
+      </p>
+
+      <div class="whisper-box" id="whisperOutput">
+        Mercy is the wound that teaches.
+      </div>
+
+      <div class="hero-actions">
+        <button class="button" id="whisperButton">Invoke Relic Whisper</button>
+        <button class="button" id="hiddenRelicButton">Test Central Seal</button>
+      </div>
+
+      <div class="hidden-relic-note" id="hiddenRelicNote">
+        <p>
+          Hidden archive note: The Septicarium does not confirm that the Mercy-Sickle was made for Mortivus. The pattern of witness testimony increasingly suggests the inverse possibility. The blade may have been waiting for a bearer whose definition of mercy was already rotten enough to fit the grip.
+        </p>
+      </div>
+    </section>
+
+    <section class="verdict-panel" id="judgment">
+      <div class="section-kicker">
+        <p class="eyebrow">Final Archive Judgment</p>
+        <span class="tag">Relic Classification Remains Open</span>
+      </div>
+
+      <h2>The Mercy-Sickle is not merely Mortivus’ blade. It is his doctrine made hand-held.</h2>
+
+      <p>
+        The relic embodies the central horror of Mortivus Classarion: that death is not always the point, that suffering can be arranged into instruction, and that mercy can be redefined until the victim begs for the older cruelty of simple execution.
+      </p>
+
+      <p>
+        Its hook denies escape. Its edge denies ignorance. Its grip denies clean ownership. Its name denies comfort. Wherever it appears, the battle has already entered its final grammar. The enemy may still breathe, fire, pray, and stand, but the Mercy-Sickle announces that Mortivus has begun writing the conclusion.
+      </p>
+
+      <p>
+        The archive therefore classifies the weapon as a relic of doctrinal execution, spiritual rupture, and battlefield revelation. It is not the most destructive weapon carried by the Vanguard. It is worse than that. It is the one Mortivus uses when destruction alone would be insufficiently educational.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button" href="mortivus-classarion.html">Return to Mortivus Classarion</a>
+        <a class="button" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
+        <a class="button" href="index.html">Return to Command Deck</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>THE SEPTICARIUM // RELIC VAULT // THE MERCY-SICKLE</p>
+    <p>The edge is curved because straight mercy would be too quick.</p>
+  </footer>
+
+  <div class="floating-vox">
+    <button class="vox-button" id="voxButton">Relic Vox</button>
+  </div>
+
+  <div class="vox-drawer" id="voxDrawer">
+    <div class="vox-head">
+      <div>Relic Proximity Vox</div>
+      <button class="close-vox" id="closeVox">Seal</button>
+    </div>
+    <div class="vox-body" id="voxBody"></div>
+  </div>
+
+  <div class="toast" id="toast">THE EDGE REFUSES CLEAN HANDS.</div>
+
+  <script>
+    const bootScreen = document.getElementById("bootScreen");
+    const bootLines = document.getElementById("bootLines");
+    const enterButton = document.getElementById("enterButton");
+
+    const sporeField = document.querySelector(".spore-field");
+    const moteField = document.querySelector(".mote-field");
+
+    const sickleButtons = document.querySelectorAll(".sickle-hotspot");
+    const examinationPanel = document.getElementById("examinationPanel");
+
+    const whisperButton = document.getElementById("whisperButton");
+    const whisperOutput = document.getElementById("whisperOutput");
+
+    const hiddenRelicButton = document.getElementById("hiddenRelicButton");
+    const hiddenRelicNote = document.getElementById("hiddenRelicNote");
+
+    const voxButton = document.getElementById("voxButton");
+    const closeVox = document.getElementById("closeVox");
+    const voxDrawer = document.getElementById("voxDrawer");
+    const voxBody = document.getElementById("voxBody");
+
+    const toast = document.getElementById("toast");
+
+    const bootSequence = [
+      "Reliquary seals identified.",
+      "Chain tension rising.",
+      "Devotional corrosion active.",
+      "Edge memory unstable.",
+      "Grip refusing unauthorized handling.",
+      "Witness wounds surfacing.",
+      "Mercy definition inverted.",
+      "The Mercy-Sickle acknowledged."
+    ];
+
+    const partData = {
+      hook: {
+        title: "The Hook of Instruction",
+        body: [
+          "The outer hook is not shaped for clean decapitation. It is shaped to catch, drag, turn, and expose. Mortivus uses this portion when a target still believes posture, armor, rank, or faith can keep meaning intact.",
+          "The hook teaches by interruption. It arrests motion, opens guard, and denies the enemy a clean heroic line. Witnesses often recall the moment the hook catches more vividly than the wound that follows."
+        ],
+        warning: "The hook is where the name “mercy” becomes hardest to misunderstand. It does not release. It keeps.",
+        threat: "Close execution and symbolic capture.",
+        doctrine: "Understanding before termination.",
+        use: "Elite targets, priests, officers, oath-holders.",
+        handling: "Denied to all clean hands."
+      },
+      inner: {
+        title: "The Inner Edge",
+        body: [
+          "The inner edge carries the most consistent corruption bloom. It does not cut like clean metal. It appears to worry armor apart, finding stressed seams, weak seals, cracked plates, and wounded confidence.",
+          "Victims struck by the inner edge often remain aware longer than expected. The archive considers this intentional or at least doctrinally convenient."
+        ],
+        warning: "The inner edge is associated with silence before death. Targets often stop denying the wound before the wound finishes them.",
+        threat: "Seam opening, septic trauma, deliberate disabling.",
+        doctrine: "Pain made articulate.",
+        use: "Commanders, champions, heavily armored defenders.",
+        handling: "Do not inspect without devotional contamination."
+      },
+      spine: {
+        title: "The Spine",
+        body: [
+          "The spine of the blade appears heavier than its curvature should permit. It functions as counterweight, impact surface, and symbolic backbone. Mortivus uses it to turn aside desperate strikes rather than meet them with haste.",
+          "Several pict-records show the spine absorbing impacts from powered weapons without visible deformation. The archive refuses to call this impossible. Impossible is an Imperial word for bad documentation."
+        ],
+        warning: "The spine is the patient part of the weapon. It survives the enemy’s last argument.",
+        threat: "Deflection, crushing impact, authority display.",
+        doctrine: "Endurance over speed.",
+        use: "Dueling elites, shielded targets, desperate counterstrikes.",
+        handling: "Stable only while borne by Mortivus."
+      },
+      grip: {
+        title: "The Grip",
+        body: [
+          "The grip is wrapped in blackened material that refuses consistent identification: leather, cured plague-hide, oath-parchment, funeral cloth, or all of these layered into one devotional handle.",
+          "No successful transfer record exists. Those ordered to move the weapon describe nausea, sudden grief, and the conviction that they were being remembered by something they had never met."
+        ],
+        warning: "The grip may not simply fit Mortivus. It may recognize him.",
+        threat: "Unauthorized handling hazard.",
+        doctrine: "Bearer and blade agreement.",
+        use: "Primary contact point, possible relic-bond locus.",
+        handling: "Handling permission refused."
+      },
+      chain: {
+        title: "The Chain Ring",
+        body: [
+          "The chain-ring binds the blade to Mortivus’ broader tally system. It allows recovery after a hooking motion, but it also carries ceremonial weight. The sound it makes before execution is repeatedly mentioned in witness accounts.",
+          "The chain does not always ring loudly. Its smaller sounds appear to matter more: a scrape, a tap, a dragging link across plate. These sounds are often remembered by survivors with disproportionate clarity."
+        ],
+        warning: "The chain announces that the blade has not finished with the body it touched.",
+        threat: "Weapon recovery, intimidation, ritual sound.",
+        doctrine: "No wound outside the tally.",
+        use: "Close-quarters execution and repeated hooking motions.",
+        handling: "Chains must not be counted aloud."
+      },
+      notches: {
+        title: "The Tally Notches",
+        body: [
+          "The tally notches are not arranged in any clean numerical sequence. Some appear cut by battle damage. Others appear deliberate. A few seem to have opened beneath corrosion rather than being carved.",
+          "The archive does not know whether they count kills, lessons, preserved witnesses, failed mercies, or names Mortivus has not yet spoken."
+        ],
+        warning: "Counting the notches produces inconsistent totals. Recounting produces emotional discomfort.",
+        threat: "Mnemonic contamination.",
+        doctrine: "Every lesson leaves a mark.",
+        use: "Unknown tally function.",
+        handling: "Do not trace the notches with bare skin."
+      },
+      bloom: {
+        title: "The Corrosion Bloom",
+        body: [
+          "The corrosion bloom is not static. It has been observed spreading after major executions, receding after long periods of disuse, and darkening after battlefield defeats.",
+          "Its coloration ranges from green-black rot to brass-yellow infection. The bloom is most active near the hook and inner edge, where symbolic and physical violence converge."
+        ],
+        warning: "The corrosion may be feeding on more than blood.",
+        threat: "Relic mutation and wound acceleration.",
+        doctrine: "Rot as witness.",
+        use: "Unknown, likely spiritual residue accumulation.",
+        handling: "Do not scrape. Scrapings remain active."
+      },
+      seal: {
+        title: "The Relic Seal",
+        body: [
+          "The relic seal is not a lock in the ordinary sense. It is a restraint, warning, and devotional claim. It has broken more than once and been restored with materials from battlefields connected to Mortivus’ private history.",
+          "One seal-fragment is believed to contain ash from the Pallid Reversal. Another may contain bone from a Votann oath-speaker. The archive has not confirmed either possibility, but both rumors persist because the blade permits them to persist."
+        ],
+        warning: "The seal does not keep the blade contained. It reminds the blade to wait.",
+        threat: "Omen leakage and memory instability.",
+        doctrine: "Patience as containment.",
+        use: "Relic restraint and symbolic binding.",
+        handling: "Only Mortivus may break it without consequence."
+      }
+    };
+
+    const whispers = [
+      "Mercy is the wound that teaches.",
+      "It hooks more than flesh.",
+      "He does not raise it in anger. That is the worst thing.",
+      "Those spared by it were not spared.",
+      "The edge is curved because straight mercy would be too quick.",
+      "A clean death teaches nothing.",
+      "The blade waits until the victim understands the room.",
+      "It is not the cut. It is the recognition before the cut.",
+      "The grip knows its hand.",
+      "The hook does not release what has not yet learned.",
+      "Some weapons kill bodies. This one corrects meanings.",
+      "The final mercy is the denial of ignorance."
+    ];
+
+    const relicVox = [
+      {
+        tag: "Relic Vox 01",
+        body: "The chain moved inside the vault. No handling request had been entered."
+      },
+      {
+        tag: "Relic Vox 02",
+        body: "Witnesses report the same sound: one link tapping plate before the first scream."
+      },
+      {
+        tag: "Relic Vox 03",
+        body: "The blade does not brighten when cleaned. Cleaning attempts are therefore forbidden."
+      },
+      {
+        tag: "Relic Vox 04",
+        body: "A scribe counted seven notches yesterday. Today there are six. The missing mark is under his fingernail."
+      },
+      {
+        tag: "Relic Vox 05",
+        body: "Mortivus did not name the weapon. The weapon made the name useful."
+      }
+    ];
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    function runBootSequence() {
+      let index = 0;
+
+      const interval = setInterval(() => {
+        if (index >= bootSequence.length) {
+          clearInterval(interval);
+          return;
+        }
+
+        const p = document.createElement("p");
+        p.textContent = `// ${bootSequence[index]}`;
+        bootLines.appendChild(p);
+
+        const seal = document.getElementById(`seal${Math.min(index + 1, 7)}`);
+
+        if (seal) {
+          seal.classList.add("active");
+        }
+
+        index += 1;
+      }, 330);
+    }
+
+    function createSpores() {
+      if (!sporeField) return;
+
+      for (let i = 0; i < 90; i++) {
+        const spore = document.createElement("span");
+        spore.classList.add("spore");
+        spore.style.left = `${Math.random() * 100}%`;
+        spore.style.animationDuration = `${10 + Math.random() * 22}s`;
+        spore.style.animationDelay = `${Math.random() * 16}s`;
+        spore.style.opacity = `${0.16 + Math.random() * 0.62}`;
+        spore.style.transform = `scale(${0.6 + Math.random() * 1.7})`;
+        sporeField.appendChild(spore);
+      }
+    }
+
+    function createMotes() {
+      if (!moteField) return;
+
+      for (let i = 0; i < 70; i++) {
+        const mote = document.createElement("span");
+        mote.classList.add("mote");
+        mote.style.left = `${Math.random() * 100}%`;
+        mote.style.animationDuration = `${9 + Math.random() * 21}s`;
+        mote.style.animationDelay = `${Math.random() * 15}s`;
+        mote.style.opacity = `${0.12 + Math.random() * 0.55}`;
+        mote.style.transform = `scale(${0.65 + Math.random() * 1.4})`;
+        moteField.appendChild(mote);
+      }
+    }
+
+    function renderPart(part) {
+      const data = partData[part];
+
+      sickleButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.part === part);
+      });
+
+      examinationPanel.innerHTML = `
+        <p class="eyebrow">Relic Examination</p>
+        <h3>${data.title}</h3>
+        ${data.body.map(text => `<p>${text}</p>`).join("")}
+
+        <div class="relic-warning">
+          <strong>Vault Annotation</strong>
+          ${data.warning}
+        </div>
+
+        <div class="vault-status">
+          <div>
+            <span>Threat</span>
+            <strong>${data.threat}</strong>
+          </div>
+          <div>
+            <span>Doctrine</span>
+            <strong>${data.doctrine}</strong>
+          </div>
+          <div>
+            <span>Observed Use</span>
+            <strong>${data.use}</strong>
+          </div>
+          <div>
+            <span>Handling</span>
+            <strong>${data.handling}</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    function invokeWhisper() {
+      const chosen = whispers[Math.floor(Math.random() * whispers.length)];
+      whisperOutput.textContent = chosen;
+    }
+
+    function renderVox() {
+      voxBody.innerHTML = "";
+
+      const chosen = [...relicVox].sort(() => 0.5 - Math.random()).slice(0, 3);
+
+      chosen.forEach(fragment => {
+        const div = document.createElement("div");
+        div.className = "vox-transmission";
+        div.innerHTML = `<span>${fragment.tag}</span><p>${fragment.body}</p>`;
+        voxBody.appendChild(div);
+      });
+    }
+
+    sickleButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        renderPart(button.dataset.part);
+      });
+    });
+
+    whisperButton.addEventListener("click", invokeWhisper);
+
+    hiddenRelicButton.addEventListener("click", () => {
+      hiddenRelicNote.classList.toggle("open");
+
+      if (hiddenRelicNote.classList.contains("open")) {
+        hiddenRelicButton.textContent = "Reseal Central Note";
+        showToast("HIDDEN RELIC NOTE UNSEALED.");
+      } else {
+        hiddenRelicButton.textContent = "Test Central Seal";
+        showToast("CENTRAL NOTE RESEALED.");
+      }
+    });
+
+    voxButton.addEventListener("click", () => {
+      renderVox();
+      voxDrawer.classList.toggle("open");
+    });
+
+    closeVox.addEventListener("click", () => {
+      voxDrawer.classList.remove("open");
+    });
+
+    enterButton.addEventListener("click", () => {
+      bootScreen.classList.add("hidden");
+    });
+
+    runBootSequence();
+    createSpores();
+    createMotes();
+  </script>
+</body>
+</html>
+    <section class="two-col" id="panoply">
       <article class="panel">
         <div class="section-kicker">
           <p class="eyebrow">Panoply</p>
@@ -1594,8 +596,8 @@
           The plate is marked by corrosion not as neglect but as ornament. Brass trim buckles outward like infected architecture. Shoulder masses are swollen and asymmetric. Chains carry censers, seals, finger-bones, cracked tags, and oath-plates cut from the dead. His greaves show trench pitting, grave dust, and the layered wear of a commander who habitually closes the final distance himself.
         </p>
 
-        <div class="diagram-wrap">
-          <svg class="armor-svg" viewBox="0 0 860 430" role="img" aria-label="Panoply anatomy schematic">
+        <div class="mortivus-diagram">
+          <svg viewBox="0 0 860 430" role="img" aria-label="Panoply anatomy schematic">
             <defs>
               <filter id="armorGlow">
                 <feGaussianBlur stdDeviation="4" result="blur"/>
@@ -1606,24 +608,24 @@
               </filter>
             </defs>
 
-            <path d="M430 72 L458 102 L444 122 L416 122 L402 102 Z" fill="#202118" stroke="rgba(214,227,123,0.35)" stroke-width="2" />
-            <path d="M380 136 C372 118 388 106 430 102 C472 106 488 118 480 136 L468 166 L392 166 Z" fill="#1a1b14" stroke="rgba(214,227,123,0.28)" stroke-width="2" />
-            <path d="M318 172 C282 186 256 218 252 270 L248 334 C246 372 272 404 312 410 L548 410 C588 404 614 372 612 334 L608 270 C604 218 578 186 542 172 L492 154 L368 154 Z" fill="#161711" stroke="rgba(214,227,123,0.22)" stroke-width="2.2" filter="url(#armorGlow)" />
+            <path d="M430 72 L458 102 L444 122 L416 122 L402 102 Z" fill="#202118" stroke="rgba(220,237,132,0.35)" stroke-width="2" />
+            <path d="M380 136 C372 118 388 106 430 102 C472 106 488 118 480 136 L468 166 L392 166 Z" fill="#1a1b14" stroke="rgba(220,237,132,0.28)" stroke-width="2" />
+            <path d="M318 172 C282 186 256 218 252 270 L248 334 C246 372 272 404 312 410 L548 410 C588 404 614 372 612 334 L608 270 C604 218 578 186 542 172 L492 154 L368 154 Z" fill="#161711" stroke="rgba(220,237,132,0.22)" stroke-width="2.2" filter="url(#armorGlow)" />
 
-            <path class="path-flow" d="M146 126 C232 126 292 130 404 110" fill="none" stroke="rgba(214,227,123,0.24)" stroke-width="2" />
-            <path class="path-flow" d="M714 156 C642 162 566 170 498 176" fill="none" stroke="rgba(214,227,123,0.24)" stroke-width="2" />
-            <path class="path-flow" d="M720 320 C648 314 572 306 520 286" fill="none" stroke="rgba(214,227,123,0.24)" stroke-width="2" />
-            <path class="path-flow" d="M134 332 C226 318 286 306 338 286" fill="none" stroke="rgba(214,227,123,0.24)" stroke-width="2" />
+            <path class="path-flow" d="M146 126 C232 126 292 130 404 110" fill="none" stroke="rgba(220,237,132,0.24)" stroke-width="2" />
+            <path class="path-flow" d="M714 156 C642 162 566 170 498 176" fill="none" stroke="rgba(220,237,132,0.24)" stroke-width="2" />
+            <path class="path-flow" d="M720 320 C648 314 572 306 520 286" fill="none" stroke="rgba(220,237,132,0.24)" stroke-width="2" />
+            <path class="path-flow" d="M134 332 C226 318 286 306 338 286" fill="none" stroke="rgba(220,237,132,0.24)" stroke-width="2" />
 
-            <circle cx="142" cy="126" r="6" fill="#d6e27b" />
-            <circle cx="714" cy="156" r="6" fill="#d6e27b" />
-            <circle cx="720" cy="320" r="6" fill="#d6e27b" />
-            <circle cx="134" cy="332" r="6" fill="#d6e27b" />
+            <circle cx="142" cy="126" r="6" fill="#dced84" />
+            <circle cx="714" cy="156" r="6" fill="#dced84" />
+            <circle cx="720" cy="320" r="6" fill="#dced84" />
+            <circle cx="134" cy="332" r="6" fill="#dced84" />
 
-            <text x="36" y="121" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">HELM: shrine-mask optics</text>
-            <text x="726" y="151" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">PAULDRONS: swollen plague mass</text>
-            <text x="730" y="316" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">CHAINS: censers, tags, bone seals</text>
-            <text x="36" y="328" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">GREAVES: trench pitting, grave-dust wear</text>
+            <text x="36" y="121" fill="#dced84" font-size="11" font-family="Cinzel" letter-spacing="2">HELM: shrine-mask optics</text>
+            <text x="726" y="151" fill="#dced84" font-size="11" font-family="Cinzel" letter-spacing="2">PAULDRONS: swollen plague mass</text>
+            <text x="730" y="316" fill="#dced84" font-size="11" font-family="Cinzel" letter-spacing="2">CHAINS: censers, tags, bone seals</text>
+            <text x="36" y="328" fill="#dced84" font-size="11" font-family="Cinzel" letter-spacing="2">GREAVES: trench pitting, grave-dust wear</text>
           </svg>
         </div>
       </article>
@@ -1644,32 +646,32 @@
           This is why Mortivus is feared even among his own. He does not prize speed over certainty. He is content to leave an enemy alive inside a sealed defense line if remaining alive will teach them something worse than death. For him, victory is most complete when the defeated understand the logic of their ruin before the blade finishes its work.
         </p>
 
-        <div class="diagram-wrap">
-          <svg class="doctrine-svg" viewBox="0 0 860 430" role="img" aria-label="Doctrine diagram">
-            <circle cx="430" cy="214" r="54" fill="rgba(0,0,0,0.24)" stroke="rgba(214,227,123,0.46)" stroke-width="2" />
-            <text x="430" y="208" text-anchor="middle" fill="#d6e27b" font-size="17" font-family="Cinzel">ROT</text>
+        <div class="mortivus-diagram">
+          <svg viewBox="0 0 860 430" role="img" aria-label="Doctrine diagram">
+            <circle cx="430" cy="214" r="54" fill="rgba(0,0,0,0.24)" stroke="rgba(220,237,132,0.46)" stroke-width="2" />
+            <text x="430" y="208" text-anchor="middle" fill="#dced84" font-size="17" font-family="Cinzel">ROT</text>
             <text x="430" y="230" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">AS REVELATION</text>
 
-            <circle cx="210" cy="118" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(214,227,123,0.32)" stroke-width="2" />
-            <text x="210" y="116" text-anchor="middle" fill="#d6e27b" font-size="13" font-family="Cinzel">SPIRITUAL</text>
+            <circle cx="210" cy="118" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
+            <text x="210" y="116" text-anchor="middle" fill="#dced84" font-size="13" font-family="Cinzel">SPIRITUAL</text>
             <text x="210" y="136" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">DECAY</text>
 
-            <circle cx="650" cy="118" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(214,227,123,0.32)" stroke-width="2" />
-            <text x="650" y="116" text-anchor="middle" fill="#d6e27b" font-size="13" font-family="Cinzel">BIOLOGICAL</text>
+            <circle cx="650" cy="118" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
+            <text x="650" y="116" text-anchor="middle" fill="#dced84" font-size="13" font-family="Cinzel">BIOLOGICAL</text>
             <text x="650" y="136" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">CORRUPTION</text>
 
-            <circle cx="210" cy="312" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(214,227,123,0.32)" stroke-width="2" />
-            <text x="210" y="310" text-anchor="middle" fill="#d6e27b" font-size="13" font-family="Cinzel">MORALE</text>
+            <circle cx="210" cy="312" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
+            <text x="210" y="310" text-anchor="middle" fill="#dced84" font-size="13" font-family="Cinzel">MORALE</text>
             <text x="210" y="330" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">UNMAKING</text>
 
-            <circle cx="650" cy="312" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(214,227,123,0.32)" stroke-width="2" />
-            <text x="650" y="310" text-anchor="middle" fill="#d6e27b" font-size="13" font-family="Cinzel">TACTICAL</text>
+            <circle cx="650" cy="312" r="48" fill="rgba(0,0,0,0.2)" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
+            <text x="650" y="310" text-anchor="middle" fill="#dced84" font-size="13" font-family="Cinzel">TACTICAL</text>
             <text x="650" y="330" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">INEVITABILITY</text>
 
-            <path class="path-flow" d="M260 136 C324 164 344 182 382 194" fill="none" stroke="rgba(214,227,123,0.3)" stroke-width="2.4" />
-            <path class="path-flow" d="M600 136 C536 164 516 182 478 194" fill="none" stroke="rgba(214,227,123,0.3)" stroke-width="2.4" />
-            <path class="path-flow" d="M260 294 C324 266 344 248 382 234" fill="none" stroke="rgba(214,227,123,0.3)" stroke-width="2.4" />
-            <path class="path-flow" d="M600 294 C536 266 516 248 478 234" fill="none" stroke="rgba(214,227,123,0.3)" stroke-width="2.4" />
+            <path class="path-flow" d="M260 136 C324 164 344 182 382 194" fill="none" stroke="rgba(220,237,132,0.3)" stroke-width="2.4" />
+            <path class="path-flow" d="M600 136 C536 164 516 182 478 194" fill="none" stroke="rgba(220,237,132,0.3)" stroke-width="2.4" />
+            <path class="path-flow" d="M260 294 C324 266 344 248 382 234" fill="none" stroke="rgba(220,237,132,0.3)" stroke-width="2.4" />
+            <path class="path-flow" d="M600 294 C536 266 516 248 478 234" fill="none" stroke="rgba(220,237,132,0.3)" stroke-width="2.4" />
           </svg>
         </div>
       </article>
@@ -1756,71 +758,76 @@
           <svg class="weapon-svg" viewBox="0 0 520 360" role="img" aria-label="Mercy-Sickle schematic">
             <defs>
               <linearGradient id="bladeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#d6e27b" stop-opacity="0.72"/>
+                <stop offset="0%" stop-color="#dced84" stop-opacity="0.72"/>
                 <stop offset="45%" stop-color="#8b7641" stop-opacity="0.72"/>
                 <stop offset="100%" stop-color="#2b1d0c" stop-opacity="1"/>
               </linearGradient>
             </defs>
-            <path d="M80 260 C170 184 254 132 370 98 C316 120 294 174 318 220 C346 274 424 270 470 220 C452 300 348 346 260 302 C210 278 158 278 100 310 Z" fill="rgba(159,186,79,0.08)" stroke="rgba(214,227,123,0.32)" stroke-width="3" />
+
+            <path d="M80 260 C170 184 254 132 370 98 C316 120 294 174 318 220 C346 274 424 270 470 220 C452 300 348 346 260 302 C210 278 158 278 100 310 Z" fill="rgba(159,186,79,0.08)" stroke="rgba(220,237,132,0.32)" stroke-width="3" />
             <path d="M106 286 C196 210 282 154 392 112" fill="none" stroke="url(#bladeGrad)" stroke-width="18" stroke-linecap="round" />
             <path d="M82 296 C50 318 38 344 50 358 C76 384 142 354 194 306" fill="none" stroke="url(#bladeGrad)" stroke-width="20" stroke-linecap="round" />
-            <circle cx="194" cy="306" r="13" fill="rgba(0,0,0,0.35)" stroke="rgba(214,227,123,0.4)" />
-            <path class="path-flow" d="M96 238 C176 180 268 122 410 76" fill="none" stroke="rgba(214,227,123,0.22)" stroke-width="2" />
-            <text x="30" y="42" fill="#d6e27b" font-size="13" font-family="Cinzel" letter-spacing="2">CURVATURE: HARVEST PROFILE</text>
+            <circle cx="194" cy="306" r="13" fill="rgba(0,0,0,0.35)" stroke="rgba(220,237,132,0.4)" />
+            <path class="path-flow" d="M96 238 C176 180 268 122 410 76" fill="none" stroke="rgba(220,237,132,0.22)" stroke-width="2" />
+
+            <text x="30" y="42" fill="#dced84" font-size="13" font-family="Cinzel" letter-spacing="2">CURVATURE: HARVEST PROFILE</text>
             <text x="30" y="66" fill="#aaa486" font-size="11" font-family="Cinzel" letter-spacing="2">FUNCTION: refusal-cutting / flesh-terminal</text>
-            <text x="30" y="328" fill="#d6e27b" font-size="12" font-family="Cinzel" letter-spacing="2">NOTE: victims often fall silent before dying</text>
+            <text x="30" y="328" fill="#dced84" font-size="12" font-family="Cinzel" letter-spacing="2">OPEN FULL RELIC VAULT FOR DEEP EXAMINATION</text>
           </svg>
+
           <p>
             A harvesting blade of uncertain exact pattern, recorded somewhere between plague-cleaver, manreaper, and ritual implement. It is feared not merely for lethality but for its psychological effect. Those struck often cease speaking before they cease moving, as if the weapon harvests refusal or dignity before it harvests flesh.
           </p>
+
           <p>
-            Mortivus does not swing the weapon with theatrical frenzy. He uses it like a sentence being carried out. He cuts after the enemy understands the shape of the loss. He often pauses before the terminal motion, not from mercy, but to permit recognition.
+            Mortivus does not swing the weapon with theatrical frenzy. He uses it like a sentence being carried out. He cuts after the enemy understands the shape of the loss.
           </p>
+
+          <a class="entry-link" href="the-mercy-sickle.html">Open Relic Vault</a>
         </article>
 
         <article class="weapon-schematic">
           <h3>The Rite-Spitter</h3>
           <svg class="weapon-svg" viewBox="0 0 520 360" role="img" aria-label="Rite-Spitter schematic">
-            <path d="M70 168 H320 C360 168 384 188 402 224 L438 224 L448 250 L386 250 C356 222 326 208 280 208 H70 Z" fill="rgba(20,22,15,0.95)" stroke="rgba(214,227,123,0.34)" stroke-width="3" />
-            <path d="M116 208 L96 300 H160 L182 208 Z" fill="rgba(15,16,11,0.95)" stroke="rgba(214,227,123,0.25)" stroke-width="3" />
-            <path d="M310 156 L366 106 L394 124 L350 176 Z" fill="rgba(120,49,26,0.42)" stroke="rgba(214,227,123,0.26)" stroke-width="3" />
-            <circle cx="332" cy="188" r="18" fill="rgba(159,186,79,0.22)" stroke="rgba(214,227,123,0.38)" />
-            <path class="path-flow" d="M402 224 C452 214 480 194 500 164" fill="none" stroke="rgba(214,227,123,0.34)" stroke-width="3" />
+            <path d="M70 168 H320 C360 168 384 188 402 224 L438 224 L448 250 L386 250 C356 222 326 208 280 208 H70 Z" fill="rgba(20,22,15,0.95)" stroke="rgba(220,237,132,0.34)" stroke-width="3" />
+            <path d="M116 208 L96 300 H160 L182 208 Z" fill="rgba(15,16,11,0.95)" stroke="rgba(220,237,132,0.25)" stroke-width="3" />
+            <path d="M310 156 L366 106 L394 124 L350 176 Z" fill="rgba(120,49,26,0.42)" stroke="rgba(220,237,132,0.26)" stroke-width="3" />
+            <circle cx="332" cy="188" r="18" fill="rgba(159,186,79,0.22)" stroke="rgba(220,237,132,0.38)" />
+            <path class="path-flow" d="M402 224 C452 214 480 194 500 164" fill="none" stroke="rgba(220,237,132,0.34)" stroke-width="3" />
             <path class="path-flow" d="M402 238 C458 246 486 274 508 320" fill="none" stroke="rgba(120,49,26,0.42)" stroke-width="3" />
-            <text x="34" y="46" fill="#d6e27b" font-size="13" font-family="Cinzel" letter-spacing="2">BARREL: PLAGUE-VENTED</text>
+
+            <text x="34" y="46" fill="#dced84" font-size="13" font-family="Cinzel" letter-spacing="2">BARREL: PLAGUE-VENTED</text>
             <text x="34" y="70" fill="#aaa486" font-size="11" font-family="Cinzel" letter-spacing="2">EFFECT: fever / catechism confusion / lung bloom</text>
-            <text x="34" y="326" fill="#d6e27b" font-size="12" font-family="Cinzel" letter-spacing="2">CLASS: altered bolt weapon or toxin projector</text>
+            <text x="34" y="326" fill="#dced84" font-size="12" font-family="Cinzel" letter-spacing="2">CLASS: altered bolt weapon or toxin projector</text>
           </svg>
+
           <p>
             A corrupted ranged armament whose reports vary between plague-belcher, altered bolt weapon, and toxin projector. Whatever the mechanism, impact is followed by fever, lung bloom, pulmonary collapse, and liturgical disorientation. Enemy priests mispronounce prayers. Sergeants forget command cant. Vox discipline curdles into coughing.
-          </p>
-          <p>
-            The weapon is most often used before the decisive advance. Mortivus fires not to destroy the line outright, but to make its commands unreliable. When the Rite-Spitter speaks, orders begin arriving late, shouted names sound unfamiliar, and fortified rooms start feeling like lungs filling from the inside.
           </p>
         </article>
 
         <article class="weapon-schematic">
           <h3>The Tally-Chain</h3>
           <svg class="weapon-svg" viewBox="0 0 520 360" role="img" aria-label="Tally-Chain schematic">
-            <path d="M90 80 C160 34 234 34 304 80 C372 126 430 134 484 106" fill="none" stroke="rgba(214,227,123,0.36)" stroke-width="8" stroke-linecap="round" stroke-dasharray="16 18" />
+            <path d="M90 80 C160 34 234 34 304 80 C372 126 430 134 484 106" fill="none" stroke="rgba(220,237,132,0.36)" stroke-width="8" stroke-linecap="round" stroke-dasharray="16 18" />
             <path d="M80 152 C154 114 226 114 300 152 C374 190 430 198 486 170" fill="none" stroke="rgba(139,118,65,0.48)" stroke-width="8" stroke-linecap="round" stroke-dasharray="16 18" />
-            <path d="M92 228 C168 190 236 190 312 228 C388 266 440 270 490 240" fill="none" stroke="rgba(214,227,123,0.28)" stroke-width="8" stroke-linecap="round" stroke-dasharray="16 18" />
+            <path d="M92 228 C168 190 236 190 312 228 C388 266 440 270 490 240" fill="none" stroke="rgba(220,237,132,0.28)" stroke-width="8" stroke-linecap="round" stroke-dasharray="16 18" />
+
             <g>
-              <rect x="144" y="90" width="42" height="58" rx="5" fill="rgba(0,0,0,0.3)" stroke="rgba(214,227,123,0.34)" />
-              <rect x="260" y="152" width="42" height="58" rx="5" fill="rgba(0,0,0,0.3)" stroke="rgba(214,227,123,0.34)" />
-              <rect x="388" y="206" width="42" height="58" rx="5" fill="rgba(0,0,0,0.3)" stroke="rgba(214,227,123,0.34)" />
-              <circle cx="165" cy="120" r="5" fill="#d6e27b" />
-              <circle cx="281" cy="182" r="5" fill="#d6e27b" />
-              <circle cx="409" cy="236" r="5" fill="#d6e27b" />
+              <rect x="144" y="90" width="42" height="58" rx="5" fill="rgba(0,0,0,0.3)" stroke="rgba(220,237,132,0.34)" />
+              <rect x="260" y="152" width="42" height="58" rx="5" fill="rgba(0,0,0,0.3)" stroke="rgba(220,237,132,0.34)" />
+              <rect x="388" y="206" width="42" height="58" rx="5" fill="rgba(0,0,0,0.3)" stroke="rgba(220,237,132,0.34)" />
+              <circle cx="165" cy="120" r="5" fill="#dced84" />
+              <circle cx="281" cy="182" r="5" fill="#dced84" />
+              <circle cx="409" cy="236" r="5" fill="#dced84" />
             </g>
-            <text x="34" y="46" fill="#d6e27b" font-size="13" font-family="Cinzel" letter-spacing="2">LINKS: NAMEPLATES / TEETH / SHELLS / BROKEN OATH-SEALS</text>
-            <text x="34" y="326" fill="#d6e27b" font-size="12" font-family="Cinzel" letter-spacing="2">FUNCTION: divinatory abacus / mobile record / execution permission</text>
+
+            <text x="34" y="46" fill="#dced84" font-size="13" font-family="Cinzel" letter-spacing="2">LINKS: NAMEPLATES / TEETH / SHELLS / BROKEN OATH-SEALS</text>
+            <text x="34" y="326" fill="#dced84" font-size="12" font-family="Cinzel" letter-spacing="2">FUNCTION: divinatory abacus / mobile record / execution permission</text>
           </svg>
+
           <p>
             Chain-linked seals, brass tags, shell fragments, teeth, relic shards, and identity plates are carried not as ornament but as a mobile record. Mortivus touches this chain before sparing, condemning, or delaying an assault. Retainers suspect it functions as a private calculus, a divinatory abacus, or both.
-          </p>
-          <p>
-            The chain is not always heard during battle. It is heard before choices. A small clatter before a door is sealed. A brass tap before prisoners are preserved. A scrape of metal when an officer asks whether to advance and Mortivus already knows the answer.
           </p>
         </article>
       </div>
@@ -1839,7 +846,7 @@
           <span>Function I</span>
           <h3>Spiritual Decay Induction</h3>
           <p>
-            Mortivus excels at attacking the meaning structures that allow resistance to hold. Under his pressure, chapels become quarantine errors, discipline becomes ritual rigidity, and courage becomes another surface through which rot enters. This does not always require sorcery in the visible sense. Sometimes it requires only patience, pressure, and the correct wound in the enemy’s faith.
+            Mortivus excels at attacking the meaning structures that allow resistance to hold. Under his pressure, chapels become quarantine errors, discipline becomes ritual rigidity, and courage becomes another surface through which rot enters.
           </p>
         </article>
 
@@ -1847,7 +854,7 @@
           <span>Function II</span>
           <h3>Morale Collapse Pressure</h3>
           <p>
-            He allows defenders to continue fighting after their inner certainty has already failed. This creates the cruelest possible battlefield state: armed bodies performing duty after the soul has deserted the position. Mortivus values that interval. He treats it as the moment when the enemy becomes readable.
+            He allows defenders to continue fighting after their inner certainty has already failed. This creates the cruelest possible battlefield state: armed bodies performing duty after the soul has deserted the position.
           </p>
         </article>
 
@@ -1863,7 +870,7 @@
           <span>Function IV</span>
           <h3>Omen Reading</h3>
           <p>
-            Mortivus frequently delays violence until hidden conditions ripen. The result is the impression that he reads battlefield collapse before it occurs, or perhaps helps write it in advance. He does not rush the rot. He waits until it can speak through the battlefield clearly.
+            Mortivus frequently delays violence until hidden conditions ripen. The result is the impression that he reads battlefield collapse before it occurs, or perhaps helps write it in advance.
           </p>
         </article>
 
@@ -1871,7 +878,7 @@
           <span>Function V</span>
           <h3>Command Contagion</h3>
           <p>
-            Those who serve beneath him begin thinking in stages of corruption rather than exchanges of fire. His officers increasingly measure victory by collapse-quality, not territory seized. A battlefield is not taken when the enemy dies. It is taken when the enemy’s interpretation of reality fails.
+            Those who serve beneath him begin thinking in stages of corruption rather than exchanges of fire. His officers increasingly measure victory by collapse-quality, not territory seized.
           </p>
         </article>
 
@@ -1879,7 +886,7 @@
           <span>Function VI</span>
           <h3>Mercy Inversion</h3>
           <p>
-            Mortivus does not define mercy as release. He defines it as forced participation in shared suffering. This makes his restraint more feared than his violence. If he leaves an enemy alive, the archive assumes the survival has become useful.
+            Mortivus does not define mercy as release. He defines it as forced participation in shared suffering. This makes his restraint more feared than his violence.
           </p>
         </article>
       </div>
@@ -1921,9 +928,6 @@
           <p>
             Mortivus’ most complete strategic victory came during the reduction of a fortress-shrine complex on Solkhar IX. Rather than breaking the bastion by conventional siege alone, he poisoned prayer circulation, burial procedures, and chapel rotation. By the time the walls were breached, the defenders had turned their own sanctity into an infection engine.
           </p>
-          <p>
-            Entire companies were found dead at their posts, still in formation, believing they had held. The victory remains studied inside the Vanguard because it proved one of Mortivus’ central convictions: faith, under the correct pressure, can be made to betray its own fortress.
-          </p>
         </article>
 
         <article class="outcome-card tragedy">
@@ -1933,7 +937,7 @@
             Mortivus’ most devastating failure began when he misread an Ork withdrawal as spiritual collapse rather than brutal cunning. He advanced into a scrap-built kill-box and lost a large portion of the earliest cadre that would become his inner circle.
           </p>
           <p>
-            Among the dead was a bell-bearer oracle credited with first naming the private plague-prophecy Mortivus later followed. He survived. The host survived. But the defeat carved something into him. After the Pallid Reversal, Mortivus became colder, slower, and far less likely to trust the shape of weakness.
+            He survived. The host survived. But the defeat carved something into him. After the Pallid Reversal, Mortivus became colder, slower, and far less likely to trust the shape of weakness.
           </p>
         </article>
 
@@ -1942,9 +946,6 @@
           <h3>The Ashen Pilgrimage of Oltane Spire</h3>
           <p>
             Mortivus succeeded in taking Oltane Spire, a vertical industrial-sanctuary whose defenders were finally broken through disease, deprivation, and sacramental contamination. Yet the cost was severe. The Vanguard lost irreplaceable specialists, several reliquary assets, and an entire veteran boarding contingent during the final climb.
-          </p>
-          <p>
-            Mortivus claimed the site and transformed it into a plague altar, but the victory remains a warning inside the host: even revelation can be purchased too eagerly.
           </p>
         </article>
       </div>
@@ -1955,7 +956,7 @@
         <button class="tab-button" data-battle="oltane">Oltane Spire</button>
       </div>
 
-      <div class="tab-output" id="battleOutput">
+      <div class="tab-output battle-record-output" id="battleOutput">
         <span>Combat Reconstruction</span>
         <h3>The Weeping Redoubt of Solkhar IX</h3>
         <p>
@@ -1966,9 +967,6 @@
         </p>
         <p>
           Mortivus entered through the eastern reliquary arch after the third plagueburst detonation. He did not run. He walked behind a curtain of diseased smoke while plague marines dragged broken shrine-guard into the nave and piled them against the walls as if arranging offerings. The final defenders formed a shield cordon around the inner altar. Mortivus let them complete their prayer before cutting the first man down.
-        </p>
-        <p>
-          The others screamed, but their timing was wrong. The bells had already told them they were saved. When the redoubt was opened from within, its defenders were still positioned in perfect order, their corpses turned toward the altar, their armor marked by their own contaminated prayers. Mortivus ordered the bells preserved.
         </p>
       </div>
     </section>
@@ -1990,10 +988,12 @@
           <span>Internal Note I</span>
           Mortivus increasingly behaves as though battlefields are arguments being staged for a future witness rather than simple theaters of victory.
         </div>
+
         <div class="secret-entry">
           <span>Internal Note II</span>
           Several officers imitate his doctrine effectively, but none reproduce the same omen density. This suggests either singular intuition or external favor.
         </div>
+
         <div class="secret-entry">
           <span>Internal Note III</span>
           The subject’s reactions to bells, sealed chambers, and wounded elites are stronger than statistical norm for comparable Death Guard commanders.
@@ -2026,7 +1026,7 @@
       </p>
 
       <div class="subcrypt-grid">
-        <article class="subcrypt-card">
+        <article class="subcrypt-card attached-record-card open">
           <span>Open Sub-Crypt</span>
           <h3>The Mercy He Gave</h3>
           <p>
@@ -2035,7 +1035,7 @@
           <a class="entry-link" href="the-mercy-he-gave.html">Open Sub-Crypt</a>
         </article>
 
-        <article class="subcrypt-card">
+        <article class="subcrypt-card attached-record-card open">
           <span>Open Battle Fragment</span>
           <h3>The Pallid Reversal</h3>
           <p>
@@ -2044,16 +1044,16 @@
           <a class="entry-link" href="the-pallid-reversal.html">Open Battle Fragment</a>
         </article>
 
-        <article class="subcrypt-card">
-          <span>Sealed Relic Fragment</span>
+        <article class="subcrypt-card attached-record-card open">
+          <span>Open Relic Vault</span>
           <h3>The Mercy-Sickle</h3>
           <p>
-            The blade has not yet earned a full reliquary chamber, but its behavior is under watch. Reports suggest it does more than cut. It appears to harvest refusal, silence, and the final dignity of those Mortivus chooses to instruct.
+            The hooked relic-blade borne by Mortivus Classarion. A weapon-autopsy chamber preserving its corrupted schematic, provenance rumors, battlefield witness accounts, survivor fragments, and the doctrine behind its cruel name.
           </p>
-          <button class="sealed-entry">Await Clearance</button>
+          <a class="entry-link" href="the-mercy-sickle.html">Open Relic Vault</a>
         </article>
 
-        <article class="subcrypt-card">
+        <article class="subcrypt-card attached-record-card sealed">
           <span>Sealed Omen Fragment</span>
           <h3>The Rotfather’s Omen</h3>
           <p>
@@ -2062,7 +1062,7 @@
           <button class="sealed-entry">Await Clearance</button>
         </article>
 
-        <article class="subcrypt-card">
+        <article class="subcrypt-card attached-record-card sealed">
           <span>Unindexed Fragment</span>
           <h3>Record Not Yet Named</h3>
           <p>
@@ -2113,14 +1113,17 @@
               <span>Contagion</span>
               <div class="meter"><div class="meter-fill" id="contagionMeter"></div></div>
             </div>
+
             <div class="trial-stat">
               <span>Morale Collapse</span>
               <div class="meter"><div class="meter-fill" id="moraleMeter"></div></div>
             </div>
+
             <div class="trial-stat">
               <span>Vanguard Losses</span>
               <div class="meter"><div class="meter-fill" id="lossMeter"></div></div>
             </div>
+
             <div class="trial-stat">
               <span>Omen Pressure</span>
               <div class="meter"><div class="meter-fill" id="omenMeter"></div></div>
@@ -2189,9 +1192,11 @@
     const bootScreen = document.getElementById("bootScreen");
     const bootLines = document.getElementById("bootLines");
     const enterButton = document.getElementById("enterButton");
+
+    const sporeField = document.querySelector(".spore-field");
     const moteField = document.querySelector(".mote-field");
 
-    const relicButtons = document.querySelectorAll(".relic-hotspot");
+    const relicButtons = document.querySelectorAll(".mortivus-hotspot");
     const analysisPanel = document.getElementById("analysisPanel");
 
     const battleButtons = document.querySelectorAll(".tab-button");
@@ -2248,8 +1253,9 @@
         title: "The Mercy-Sickle",
         body: [
           "The blade is usually described as a hooked harvesting weapon, too ritualized for simple utility and too practical to be dismissed as mere icon. Its curve suits close execution, limb-taking, and the slow opening of armored seams.",
-          "Survivors claim the worst wound is not always physical. Those struck often stop denying what is happening before they die. Mortivus appears to value that moment."
-        ]
+          "Survivors claim the worst wound is not always physical. Those struck often stop denying what is happening before they die. Mortivus appears to value that moment. The full relic vault is now open for examination."
+        ],
+        link: true
       },
       spitter: {
         title: "The Rite-Spitter",
@@ -2283,7 +1289,7 @@
         title: "Omen Residue",
         body: [
           "Omen residue is strongest near battle scars, sealed chambers, bells, and captured enemy reliquaries. This is the portion of the subject the archive finds hardest to categorize.",
-          "The residue suggests that some campaigns may not merely record Mortivus’ rise. They may be participating in it."
+          "The residue suggests that some campaigns may not merely record Mortivus’ rise. They may be participating in it. The Rotfather’s Omen remains sealed."
         ]
       }
     };
@@ -2379,6 +1385,12 @@
       }
     };
 
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
     function runBootSequence() {
       let index = 0;
       const interval = setInterval(() => {
@@ -2386,6 +1398,7 @@
           clearInterval(interval);
           return;
         }
+
         const p = document.createElement("p");
         p.textContent = `// ${bootSequence[index]}`;
         bootLines.appendChild(p);
@@ -2397,16 +1410,32 @@
       }, 330);
     }
 
+    function createSpores() {
+      if (!sporeField) return;
+
+      for (let i = 0; i < 90; i++) {
+        const spore = document.createElement("span");
+        spore.classList.add("spore");
+        spore.style.left = `${Math.random() * 100}%`;
+        spore.style.animationDuration = `${10 + Math.random() * 22}s`;
+        spore.style.animationDelay = `${Math.random() * 16}s`;
+        spore.style.opacity = `${0.16 + Math.random() * 0.62}`;
+        spore.style.transform = `scale(${0.6 + Math.random() * 1.7})`;
+        sporeField.appendChild(spore);
+      }
+    }
+
     function createMotes() {
-      const moteCount = 92;
-      for (let i = 0; i < moteCount; i++) {
+      if (!moteField) return;
+
+      for (let i = 0; i < 70; i++) {
         const mote = document.createElement("span");
         mote.classList.add("mote");
         mote.style.left = `${Math.random() * 100}%`;
-        mote.style.animationDuration = `${9 + Math.random() * 20}s`;
-        mote.style.animationDelay = `${Math.random() * 14}s`;
-        mote.style.opacity = `${0.14 + Math.random() * 0.55}`;
-        mote.style.transform = `scale(${0.7 + Math.random() * 1.4})`;
+        mote.style.animationDuration = `${9 + Math.random() * 21}s`;
+        mote.style.animationDelay = `${Math.random() * 15}s`;
+        mote.style.opacity = `${0.12 + Math.random() * 0.55}`;
+        mote.style.transform = `scale(${0.65 + Math.random() * 1.4})`;
         moteField.appendChild(mote);
       }
     }
@@ -2418,10 +1447,15 @@
         btn.classList.toggle("active", btn.dataset.relic === type);
       });
 
+      const linkMarkup = item.link
+        ? `<a class="entry-link" href="the-mercy-sickle.html">Open Full Mercy-Sickle Relic Vault</a>`
+        : "";
+
       analysisPanel.innerHTML = `
         <p class="eyebrow">Relic Analysis</p>
         <h3>${item.title}</h3>
         ${item.body.map(paragraph => `<p>${paragraph}</p>`).join("")}
+        ${linkMarkup}
         <div class="verdict-grid">
           <div class="verdict-row"><span>Recorded Origin</span><strong>Plague Champion, but elevated by command gravity.</strong></div>
           <div class="verdict-row"><span>Present Station</span><strong>Unresolved. Command-grade threat confirmed.</strong></div>
@@ -2439,7 +1473,7 @@
         btn.classList.toggle("active", btn.dataset.battle === type);
       });
 
-      battleOutput.className = `tab-output ${item.className}`;
+      battleOutput.className = `tab-output battle-record-output ${item.className}`;
       battleOutput.innerHTML = `
         <span>Combat Reconstruction</span>
         <h3>${item.title}</h3>
@@ -2447,15 +1481,11 @@
       `;
     }
 
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2600);
-    }
-
     function renderVoxLeaks() {
       voxBody.innerHTML = "";
+
       const chosen = [...voxLeaks].sort(() => 0.5 - Math.random()).slice(0, 3);
+
       chosen.forEach(item => {
         const div = document.createElement("div");
         div.className = "vox-transmission";
@@ -2541,6 +1571,7 @@
         turns: 0,
         ended: false
       };
+
       battleLog.innerHTML = `
         <div class="log-entry">
           <span>Trial Awaiting Doctrine</span>
@@ -2548,6 +1579,7 @@
           <p>Select enemy temperament and issue doctrine. The trial will interpret the collapse pattern according to observed Mortivus Classarion command tendencies.</p>
         </div>
       `;
+
       updateTrialMeters();
     }
 
@@ -2602,6 +1634,7 @@
     });
 
     runBootSequence();
+    createSpores();
     createMotes();
     updateTrialMeters();
   </script>
