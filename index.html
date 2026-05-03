@@ -8,13 +8,785 @@
 
   <meta
     name="description"
-    content="The Septicarium. Where Mercy Is Counted in Rot. A plague-intelligence command archive aboard The Rotfather’s Mercy of the XIV Legion."
+    content="The Septicarium. Where Mercy Is Counted in Rot. Occult plague-intelligence command archive aboard The Rotfather’s Mercy."
   />
 
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root {
+      --bg-0: #030402;
+      --bg-1: #070a06;
+      --bg-2: #10170d;
+      --panel: rgba(8, 12, 8, 0.88);
+      --panel-2: rgba(12, 18, 10, 0.72);
+      --line: rgba(186, 220, 92, 0.2);
+      --line-strong: rgba(186, 220, 92, 0.5);
+      --rot: #a3c64a;
+      --rot-bright: #dced84;
+      --bone: #ddd7bc;
+      --bone-dim: #aaa483;
+      --brass: #8e7b42;
+      --rust: #5b2617;
+      --blood: #34110d;
+      --shadow: 0 0 60px rgba(163, 198, 74, 0.1);
+      --red-glow: 0 0 50px rgba(91, 38, 23, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      font-family: Georgia, "Times New Roman", serif;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(91, 38, 23, 0.2), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(163, 198, 74, 0.1), transparent 20%),
+        radial-gradient(circle at 45% 55%, rgba(50, 90, 32, 0.08), transparent 34%),
+        linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, #010201 100%);
+    }
+
+    .void-haze,
+    .rot-grid,
+    .spore-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .void-haze {
+      z-index: 0;
+      background:
+        radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.72) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.76));
+    }
+
+    .rot-grid {
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
+      background-size: 96px 96px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
+    }
+
+    .spore-field {
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .spore {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(220, 237, 132, 0.44);
+      box-shadow: 0 0 12px rgba(220, 237, 132, 0.42);
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateY(105vh) translateX(0);
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 0.8;
+      }
+
+      90% {
+        opacity: 0.32;
+      }
+
+      to {
+        transform: translateY(-12vh) translateX(90px);
+        opacity: 0;
+      }
+    }
+
+    .boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(28, 44, 19, 0.82), rgba(0,0,0,0.98) 66%),
+        linear-gradient(135deg, #020302, #070a06);
+      transition: opacity 700ms ease, visibility 700ms ease;
+    }
+
+    .boot-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .boot-box {
+      width: min(900px, calc(100% - 32px));
+      padding: 30px;
+      border: 1px solid rgba(220, 237, 132, 0.28);
+      background: rgba(4, 7, 4, 0.78);
+      box-shadow: 0 0 80px rgba(163, 198, 74, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .boot-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.032),
+          rgba(255,255,255,0.032) 1px,
+          transparent 1px,
+          transparent 8px
+        );
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .boot-title {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 18px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .boot-lines {
+      position: relative;
+      z-index: 1;
+      min-height: 240px;
+      color: var(--bone);
+      line-height: 1.72;
+      font-size: 1rem;
+    }
+
+    .boot-lines p {
+      margin: 0 0 8px;
+    }
+
+    .boot-button {
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.3);
+      background: rgba(0,0,0,0.34);
+      color: var(--bone);
+      padding: 12px 16px;
+      font-family: Arial, sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+    }
+
+    .boot-button:hover {
+      color: var(--rot-bright);
+      border-color: rgba(220, 237, 132, 0.62);
+      background: rgba(163, 198, 74, 0.08);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 6, 4, 0.92);
+      backdrop-filter: blur(10px);
+      color: var(--bone-dim);
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .site-shell {
+      position: relative;
+      z-index: 2;
+      width: min(1380px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 90px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .tag {
+      color: var(--rot-bright);
+      border: 1px solid rgba(220, 237, 132, 0.24);
+      background: rgba(0,0,0,0.26);
+      padding: 6px 10px;
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero,
+    .panel,
+    .datavault-card,
+    .chain-card,
+    .console-card,
+    .mandate-panel,
+    .adjudication-panel {
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(8, 12, 8, 0.95), rgba(5, 7, 5, 0.88)),
+        radial-gradient(circle at top left, rgba(143, 125, 67, 0.08), transparent 42%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .panel::before,
+    .datavault-card::before,
+    .chain-card::before,
+    .console-card::before,
+    .mandate-panel::before,
+    .adjudication-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 14% 0%, rgba(163, 198, 74, 0.05), transparent 24%),
+        linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.025), transparent);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 24px;
+      padding: 32px;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--rot);
+      min-height: 680px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(3.6rem, 8vw, 7.4rem);
+      line-height: 0.86;
+      letter-spacing: -0.06em;
+    }
+
+    .subtitle {
+      margin: 18px 0 18px;
+      color: var(--rot-bright);
+      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      font-style: italic;
+    }
+
+    .lead {
+      max-width: 960px;
+      margin: 0 0 13px;
+      color: var(--bone);
+      font-size: 1.06rem;
+      line-height: 1.75;
+    }
+
+    .lead.dim {
+      color: var(--bone-dim);
+    }
+
+    .lead span {
+      color: var(--rot-bright);
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button,
+    .crypt-button,
+    .sealed-button {
+      border: 1px solid rgba(220, 237, 132, 0.24);
+      background: rgba(0,0,0,0.28);
+      color: var(--bone);
+      padding: 12px 14px;
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .button:hover,
+    .crypt-button:hover,
+    .sealed-button:hover {
+      border-color: rgba(220, 237, 132, 0.58);
+      color: var(--rot-bright);
+      background: rgba(163, 198, 74, 0.08);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+    }
+
+    .ship-schematic {
+      width: min(640px, 100%);
+      filter: drop-shadow(0 0 35px rgba(163, 198, 74, 0.14));
+    }
+
+    .schematic-line {
+      stroke-dasharray: 6 10;
+      animation: crawl 16s linear infinite;
+    }
+
+    @keyframes crawl {
+      to {
+        stroke-dashoffset: -180;
+      }
+    }
+
+    .pulse-node {
+      animation: nodePulse 3.2s ease-in-out infinite;
+    }
+
+    .pulse-node.delay-a {
+      animation-delay: 0.4s;
+    }
+
+    .pulse-node.delay-b {
+      animation-delay: 0.9s;
+    }
+
+    .pulse-node.delay-c {
+      animation-delay: 1.4s;
+    }
+
+    @keyframes nodePulse {
+      0%, 100% {
+        opacity: 0.45;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.06);
+      }
+    }
+
+    .section-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel,
+    .mandate-panel,
+    .adjudication-panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .mandate-panel h2,
+    .adjudication-panel h2,
+    .console-card h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 1.03;
+    }
+
+    .panel p,
+    .datavault-card p,
+    .chain-card p,
+    .console-card p,
+    .mandate-panel p,
+    .adjudication-panel p,
+    .readout p {
+      color: var(--bone-dim);
+      line-height: 1.72;
+    }
+
+    .symbol-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .symbol-cell {
+      padding: 14px 10px;
+      border: 1px solid rgba(220, 237, 132, 0.14);
+      background: rgba(6, 9, 6, 0.62);
+      text-align: center;
+      transition: 220ms ease;
+    }
+
+    .symbol-cell:hover {
+      border-color: rgba(220, 237, 132, 0.5);
+      box-shadow: 0 0 28px rgba(163, 198, 74, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .symbol-glyph {
+      display: block;
+      color: var(--rot-bright);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      letter-spacing: 0.12em;
+    }
+
+    .symbol-text {
+      display: block;
+      color: var(--bone-dim);
+      font-family: Arial, sans-serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .datavault-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .datavault-card {
+      padding: 20px;
+      min-height: 310px;
+      transition: 240ms ease;
+    }
+
+    .datavault-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--line-strong);
+      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
+    }
+
+    .datavault-card svg {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 14px;
+      filter: drop-shadow(0 0 18px rgba(163, 198, 74, 0.14));
+    }
+
+    .datavault-card span,
+    .chain-card span,
+    .readout span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .datavault-card h3,
+    .chain-card h3,
+    .readout h3 {
+      margin: 0 0 10px;
+      color: var(--bone);
+      font-size: 1.42rem;
+      line-height: 1.08;
+    }
+
+    .chain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .chain-card {
+      padding: 20px;
+      min-height: 300px;
+      transition: 240ms ease;
+    }
+
+    .chain-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--line-strong);
+      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
+    }
+
+    .chain-card.mercy {
+      border-color: rgba(91, 38, 23, 0.55);
+      background:
+        linear-gradient(135deg, rgba(20, 6, 5, 0.92), rgba(6, 8, 5, 0.88)),
+        radial-gradient(circle at top left, rgba(91, 38, 23, 0.16), transparent 42%);
+      box-shadow: var(--red-glow);
+    }
+
+    .system-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .console-card {
+      padding: 24px;
+    }
+
+    .meter-group {
+      margin: 16px 0;
+    }
+
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 8px;
+      color: var(--bone-dim);
+    }
+
+    .meter {
+      height: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.16);
+      background: rgba(0,0,0,0.34);
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0;
+      transition: width 350ms ease;
+    }
+
+    .integrity-fill {
+      background: linear-gradient(90deg, #5d7931, var(--rot-bright));
+    }
+
+    .bloom-fill {
+      background: linear-gradient(90deg, #4a1712, #8ea83e, var(--rot-bright));
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .terminal-output {
+      min-height: 265px;
+      padding: 18px;
+      border: 1px solid rgba(220, 237, 132, 0.14);
+      background:
+        linear-gradient(135deg, rgba(4, 7, 4, 0.95), rgba(12, 18, 10, 0.82));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .terminal-output::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.025),
+          rgba(255,255,255,0.025) 1px,
+          transparent 1px,
+          transparent 8px
+        );
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    .terminal-output h3,
+    .terminal-output p {
+      position: relative;
+      z-index: 1;
+    }
+
+    .terminal-output h3 {
+      margin: 0 0 12px;
+      color: var(--rot-bright);
+      font-size: 1.45rem;
+      line-height: 1.12;
+    }
+
+    .mandate-panel {
+      border-left: 4px solid var(--rot);
+    }
+
+    .adjudication-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .readout-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .readout {
+      padding: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.13);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      width: min(1380px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 46px;
+      border-top: 1px solid rgba(220, 237, 132, 0.12);
+      color: var(--bone-dim);
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 100;
+      transform: translateX(-50%) translateY(120px);
+      max-width: calc(100% - 28px);
+      padding: 14px 18px;
+      border: 1px solid rgba(220, 237, 132, 0.34);
+      background: rgba(4, 6, 4, 0.96);
+      color: var(--rot-bright);
+      box-shadow: 0 0 28px rgba(163, 198, 74, 0.14);
+      font-family: Arial, sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: transform 280ms ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hover-liturgy {
+      position: fixed;
+      z-index: 999;
+      max-width: 380px;
+      padding: 13px 15px;
+      border: 1px solid rgba(220, 237, 132, 0.42);
+      background:
+        linear-gradient(135deg, rgba(5, 8, 5, 0.97), rgba(12, 18, 10, 0.94)),
+        radial-gradient(circle at top left, rgba(163, 198, 74, 0.12), transparent 45%);
+      color: var(--rot-bright);
+      box-shadow: 0 0 32px rgba(163, 198, 74, 0.16);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(14px, 14px);
+      transition: opacity 160ms ease;
+    }
+
+    .hover-liturgy.show {
+      opacity: 1;
+    }
+
+    [data-lore] {
+      cursor: crosshair;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .system-grid,
+      .adjudication-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .datavault-grid,
+      .chain-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .symbol-row {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .site-shell,
+      .site-footer {
+        width: min(100% - 18px, 1380px);
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 16vw, 4.8rem);
+      }
+
+      .datavault-grid,
+      .chain-grid,
+      .symbol-row {
+        grid-template-columns: 1fr;
+      }
+
+      .section-kicker {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="boot-screen" id="bootScreen">
+    <div class="boot-box">
+      <p class="boot-title">COMMAND DECK IGNITION // THE SEPTICARIUM</p>
+      <div class="boot-lines" id="bootLines"></div>
+      <button class="boot-button" id="enterButton">Enter the Command Deck</button>
+    </div>
+  </div>
+
   <div class="spore-field" aria-hidden="true"></div>
   <div class="void-haze" aria-hidden="true"></div>
   <div class="rot-grid" aria-hidden="true"></div>
@@ -25,189 +797,245 @@
   </header>
 
   <main class="site-shell">
-
-    <section class="breach-banner">
-      <div class="banner-rune">☣</div>
-
+    <section class="hero">
       <div>
-        <p class="eyebrow">BREACH LITANY</p>
-        <h1>THE SEPTICARIUM</h1>
+        <p class="eyebrow">OCCULT PLAGUE-INTELLIGENCE COMMAND DECK</p>
+        <h1>The Septicarium</h1>
         <p class="subtitle">Where Mercy Is Counted in Rot</p>
 
         <p class="lead">
-          You have entered an occult plague-intelligence sanctum aboard
-          <span>The Rotfather’s Mercy</span>, war-vessel of <span>The Rotfather’s Vanguard</span>.
-          This command archive records hostile doctrine, ritual weakness, battlefield decay,
-          relic contamination, and the slower arithmetic by which resistance is rendered useful.
+          You have entered the command archive aboard <span>The Rotfather’s Mercy</span>,
+          war-vessel of <span>The Rotfather’s Vanguard</span>. This chamber does not remember for reverence.
+          It remembers to weaken, infect, classify, and preserve what should have died cleanly.
         </p>
 
         <p class="lead dim">
-          Mortivus Classarion, called by some <span>Blessed by Nurgle</span>,
-          permits this memory to surface. Whether he is Plague Champion, Lord of Contagion,
-          Blightlord ascendant, or something not yet named is not agreed upon even by his own.
+          The archive is maintained beneath the will of Mortivus Classarion, called by some
+          <span>Blessed by Nurgle</span>. Its datavaults gather enemy doctrine, plaguebound identity,
+          battle memory, forbidden scripture, relic traces, and the visitors foolish enough to be counted.
         </p>
+
+        <div class="hero-links">
+          <a class="button" href="plaguebound-dossier.html">Open Plaguebound Dossier</a>
+          <a class="button" href="mortivus-classarion.html">Open Mortivus Classarion</a>
+          <a class="button" href="the-mercy-he-gave.html">Open Censured Sub-Crypt</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <svg class="ship-schematic" viewBox="0 0 760 620" role="img" aria-label="A stylized plague command schematic of The Rotfather's Mercy">
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+
+            <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#dced84" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#a3c64a" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#a3c64a" stop-opacity="0"/>
+            </radialGradient>
+
+            <linearGradient id="hullGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#d7c98f" stop-opacity="0.16"/>
+              <stop offset="45%" stop-color="#a3c64a" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#5b2617" stop-opacity="0.22"/>
+            </linearGradient>
+          </defs>
+
+          <rect x="22" y="22" width="716" height="576" rx="28" fill="rgba(0,0,0,0.22)" stroke="rgba(220,237,132,0.16)" />
+
+          <path d="M380 74 C500 106 608 206 650 308 C608 416 500 516 380 546 C260 516 152 416 110 308 C152 206 260 106 380 74 Z"
+                fill="url(#hullGrad)"
+                stroke="rgba(220,237,132,0.28)"
+                stroke-width="2"
+                filter="url(#glow)" />
+
+          <path d="M380 112 C474 140 556 222 590 308 C556 394 474 476 380 504 C286 476 204 394 170 308 C204 222 286 140 380 112 Z"
+                fill="rgba(0,0,0,0.2)"
+                stroke="rgba(143,125,67,0.42)"
+                stroke-width="2" />
+
+          <path class="schematic-line" d="M380 132 L380 486" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
+          <path class="schematic-line" d="M190 308 L570 308" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
+          <path class="schematic-line" d="M247 195 C310 240 450 240 513 195" stroke="rgba(220,237,132,0.24)" stroke-width="2" fill="none" />
+          <path class="schematic-line" d="M247 421 C310 376 450 376 513 421" stroke="rgba(220,237,132,0.24)" stroke-width="2" fill="none" />
+
+          <circle cx="380" cy="308" r="82" fill="rgba(0,0,0,0.32)" stroke="rgba(220,237,132,0.44)" stroke-width="2" />
+          <circle cx="380" cy="308" r="54" fill="rgba(163,198,74,0.06)" stroke="rgba(220,237,132,0.3)" stroke-width="1" />
+          <circle cx="380" cy="308" r="18" fill="url(#nodeGlow)" class="pulse-node" />
+
+          <circle cx="380" cy="164" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-a" />
+          <circle cx="520" cy="308" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-b" />
+          <circle cx="380" cy="452" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-c" />
+          <circle cx="240" cy="308" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-a" />
+
+          <text x="380" y="314" text-anchor="middle" fill="#dced84" font-size="25" font-family="Georgia">XIV</text>
+          <text x="380" y="158" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">PLAGUEBOUND</text>
+          <text x="520" y="312" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">SCRIPTURE</text>
+          <text x="380" y="456" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">RELIQUARY</text>
+          <text x="240" y="312" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">WAR-ROT</text>
+
+          <path d="M104 120 L222 120 L222 154" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
+          <path d="M656 120 L538 120 L538 154" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
+          <path d="M104 496 L222 496 L222 462" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
+          <path d="M656 496 L538 496 L538 462" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
+
+          <text x="104" y="112" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">VESSEL: ROTFATHER'S MERCY</text>
+          <text x="470" y="112" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">HOST: ROTFATHER'S VANGUARD</text>
+          <text x="104" y="514" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">COMMAND: MORTIVUS CLASSARION</text>
+          <text x="474" y="514" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">STATUS: WEEPING</text>
+        </svg>
       </div>
     </section>
 
-    <section class="symbol-bar">
-      <div
-        class="symbol-item"
-        data-lore="Three circles. One corruption. Flesh, spirit, and command are counted separately only by the clean."
-      >
+    <section class="symbol-row">
+      <div class="symbol-cell" data-lore="Three wounds: flesh, spirit, command. The clean separate them. The rot reunites them.">
         <span class="symbol-glyph">◉◉◉</span>
         <span class="symbol-text">Triune Blight</span>
       </div>
-
-      <div
-        class="symbol-item"
-        data-lore="Seven is not completion. It is the rhythm by which decay learns to return."
-      >
+      <div class="symbol-cell" data-lore="Seven is not completion. Seven is recurrence taught to count itself.">
         <span class="symbol-glyph">VII</span>
         <span class="symbol-text">Sacred Seven</span>
       </div>
-
-      <div
-        class="symbol-item"
-        data-lore="The Fourteenth does not hurry. It arrives as rust arrives: quietly, then everywhere."
-      >
+      <div class="symbol-cell" data-lore="The Fourteenth arrives as rust arrives: quietly, then everywhere.">
         <span class="symbol-glyph">XIV</span>
         <span class="symbol-text">Legion Memory</span>
       </div>
-
-      <div
-        class="symbol-item"
-        data-lore="The Immaterium need not tear reality open when rot can teach reality to soften."
-      >
+      <div class="symbol-cell" data-lore="The warp need not tear reality open when rot can teach it to soften.">
         <span class="symbol-glyph">✢</span>
-        <span class="symbol-text">Warp-Taint Vector</span>
+        <span class="symbol-text">Warp-Taint</span>
       </div>
-
-      <div
-        class="symbol-item"
-        data-lore="The mark is not warning. It is permission."
-      >
+      <div class="symbol-cell" data-lore="The mark is not warning. It is permission.">
         <span class="symbol-glyph">☣</span>
         <span class="symbol-text">Plague Sign</span>
       </div>
-
-      <div
-        class="symbol-item"
-        data-lore="The censer does not mask the stench. It sanctifies it."
-      >
+      <div class="symbol-cell" data-lore="The censer does not mask the stench. It sanctifies it.">
         <span class="symbol-glyph">⟁</span>
         <span class="symbol-text">Censer Rite</span>
       </div>
-
-      <div
-        class="symbol-item"
-        data-lore="A name written once may still be lost. A name entered into the tally belongs."
-      >
+      <div class="symbol-cell" data-lore="A name entered into the tally no longer belongs entirely to itself.">
         <span class="symbol-glyph">⟟</span>
         <span class="symbol-text">Tally Mark</span>
       </div>
     </section>
 
-    <section class="command-core">
-      <article class="sigil-sanctum">
-        <div class="section-kicker">
-          <p class="eyebrow">COMMAND SANCTUM</p>
-          <span class="tag">PRIMARY DECK</span>
-        </div>
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULTS</p>
+        <span class="tag">DATABASE CHAMBERS</span>
+      </div>
+      <h2>Every enemy becomes a record. Every record becomes a wound.</h2>
+      <p>
+        The datavaults are not archives in the mortal sense. They are weaponized repositories, assembled so that flesh,
+        doctrine, devotion, command, and memory may be studied until they open.
+      </p>
+    </section>
 
-        <h2>Cogitator-Iconostasis of Rot</h2>
-
-        <div class="sigil-stage">
-          <div class="sigil-wrap" id="sigil">
-            <div class="sigil-ring outer"></div>
-            <div class="sigil-ring middle"></div>
-            <div class="sigil-ring inner"></div>
-
-            <div
-              class="sigil-triad triad-a lore-circle"
-              data-lore="LORE ENTRY // The First Hidden Circle: Flesh is the first scripture. It receives the blessing before the mind has learned to thank it."
-            >
-              <span></span>
-            </div>
-
-            <div
-              class="sigil-triad triad-b lore-circle"
-              data-lore="LORE ENTRY // The Second Hidden Circle: Spirit is not cleansed by suffering. It is softened, opened, and made hospitable."
-            >
-              <span></span>
-            </div>
-
-            <div class="sigil-core">XIV</div>
-
-            <div class="orbit-point p1">FLY</div>
-            <div class="orbit-point p2">BELL</div>
-            <div class="orbit-point p3">CENSER</div>
-            <div class="orbit-point p4">TALLY</div>
-            <div class="orbit-point p5">SCYTHE</div>
-            <div class="orbit-point p6">SPORE</div>
-            <div class="orbit-point p7">RUST</div>
-            <div class="orbit-point p8">WARP</div>
-          </div>
-
-          <div class="command-readouts">
-            <div
-              class="readout"
-              data-lore="The Rotfather’s Mercy does not translate mercy as pardon. Mercy is preservation through holy corruption."
-            >
-              <span>Vessel</span>
-              <strong>The Rotfather’s Mercy</strong>
-            </div>
-
-            <div
-              class="readout"
-              data-lore="The Vanguard advances first where hope has already begun to spoil."
-            >
-              <span>Warhost</span>
-              <strong>The Rotfather’s Vanguard</strong>
-            </div>
-
-            <div
-              class="readout"
-              data-lore="Mortivus Classarion is recorded by many titles and confirmed by none. This uncertainty is considered devotional."
-            >
-              <span>Command Authority</span>
-              <strong>Mortivus Classarion</strong>
-            </div>
-
-            <div
-              class="readout"
-              data-lore="The XIV Legion endures where swifter legions fracture. Attrition is not delay. It is doctrine."
-            >
-              <span>Legion</span>
-              <strong>XIV // Death Guard</strong>
-            </div>
-
-            <div
-              class="readout"
-              data-lore="Grandfather Nurgle does not merely end life. He teaches life to continue in forms the fearful call ruin."
-            >
-              <span>Patron</span>
-              <strong>Grandfather Nurgle</strong>
-            </div>
-
-            <div
-              class="readout"
-              data-lore="You are not yet infected enough to be useful. The archive will continue its assessment."
-            >
-              <span>Current Intruder Class</span>
-              <strong>Tally-Pending Witness</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="liturgy-feed">
-          <p class="eyebrow">RITUAL FEED</p>
-          <div id="liturgyOutput">
-            The bells are silent. This is not mercy. It is only the pause before recognition.
-          </div>
-        </div>
+    <section class="datavault-grid">
+      <article class="datavault-card">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 8 L82 24 L82 76 L50 92 L18 76 L18 24 Z" fill="rgba(163,198,74,0.08)" stroke="rgba(220,237,132,0.48)" stroke-width="2"/>
+          <circle cx="50" cy="50" r="22" fill="rgba(0,0,0,0.25)" stroke="rgba(220,237,132,0.35)" />
+          <path d="M35 50 H65 M50 35 V65" stroke="rgba(220,237,132,0.65)" stroke-width="3"/>
+        </svg>
+        <span>OPEN DATAVAULT</span>
+        <h3>Plaguebound Dossier</h3>
+        <p>
+          Names, contradictions, plaguebound identity records, command hierarchy, and the active name-crypt of Mortivus Classarion.
+        </p>
+        <a class="crypt-button" href="plaguebound-dossier.html">Open Dossier</a>
       </article>
 
-      <article class="containment-module">
+      <article class="datavault-card">
+        <svg viewBox="0 0 100 100">
+          <rect x="18" y="18" width="64" height="64" rx="8" fill="rgba(163,198,74,0.06)" stroke="rgba(220,237,132,0.42)" stroke-width="2"/>
+          <path d="M28 38 H72 M28 50 H58 M28 62 H68" stroke="rgba(220,237,132,0.58)" stroke-width="3"/>
+          <circle cx="72" cy="66" r="6" fill="rgba(220,237,132,0.58)"/>
+        </svg>
+        <span>SEALED DATAVAULT</span>
+        <h3>War-Rot Intercepts</h3>
+        <p>
+          Confirmed engagements, casualty tallies, corrupted vox returns, campaign stains, and battlefield outcomes.
+        </p>
+        <button class="sealed-button">Await Clearance</button>
+      </article>
+
+      <article class="datavault-card">
+        <svg viewBox="0 0 100 100">
+          <path d="M28 15 H72 C78 15 82 20 82 26 V84 H30 C23 84 18 79 18 72 V25 C18 19 22 15 28 15 Z" fill="rgba(163,198,74,0.07)" stroke="rgba(220,237,132,0.42)" stroke-width="2"/>
+          <path d="M32 32 H68 M32 44 H62 M32 56 H70" stroke="rgba(220,237,132,0.52)" stroke-width="3"/>
+          <path d="M71 15 V84" stroke="rgba(220,237,132,0.2)" stroke-width="2"/>
+        </svg>
+        <span>SEALED DATAVAULT</span>
+        <h3>Septic Scriptures</h3>
+        <p>
+          Plague litanies, private doctrine, prophetic rot-texts, devotional fragments, and esoteric meditations.
+        </p>
+        <button class="sealed-button">Await Clearance</button>
+      </article>
+
+      <article class="datavault-card">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 12 C65 22 78 34 78 54 C78 74 66 88 50 88 C34 88 22 74 22 54 C22 34 35 22 50 12 Z" fill="rgba(163,198,74,0.07)" stroke="rgba(220,237,132,0.42)" stroke-width="2"/>
+          <circle cx="50" cy="54" r="13" fill="rgba(0,0,0,0.25)" stroke="rgba(220,237,132,0.45)"/>
+          <path d="M50 25 V43 M50 65 V78 M32 54 H40 M60 54 H68" stroke="rgba(220,237,132,0.55)" stroke-width="3"/>
+        </svg>
+        <span>SEALED DATAVAULT</span>
+        <h3>Reliquary Vault</h3>
+        <p>
+          Relics, trophies, ship fragments, corrupted heraldry, sacred rot-objects, and visual intelligence.
+        </p>
+        <button class="sealed-button">Await Clearance</button>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">ACTIVE NAME-CHAIN</p>
+        <span class="tag">OPEN THREAD</span>
+      </div>
+      <h2>The current open chain descends through Mortivus.</h2>
+      <p>
+        The Septicarium has opened one path: the Plaguebound Dossier, the name-crypt of Mortivus Classarion,
+        and a censured sub-crypt attached to his doctrine of mercy.
+      </p>
+    </section>
+
+    <section class="chain-grid">
+      <article class="chain-card">
+        <span>NAME-CRYPT INDEX</span>
+        <h3>Plaguebound Dossier</h3>
+        <p>
+          The identity rack where names are preserved until they become useful infections.
+        </p>
+        <a class="crypt-button" href="plaguebound-dossier.html">Enter Dossier</a>
+      </article>
+
+      <article class="chain-card">
+        <span>PRIMARY NAME</span>
+        <h3>Mortivus Classarion</h3>
+        <p>
+          Blessed by Nurgle. Unfinished by design. Commander, omen-bearer, occult tactician, and ascension pressure point.
+        </p>
+        <a class="crypt-button" href="mortivus-classarion.html">Open Name-Crypt</a>
+      </article>
+
+      <article class="chain-card mercy">
+        <span>CENSURED SUB-CRYPT</span>
+        <h3>The Mercy He Gave</h3>
+        <p>
+          A brutal Votann contact record preserving Mortivus’ most infamous interpretation of mercy.
+        </p>
+        <a class="crypt-button" href="the-mercy-he-gave.html">Open Sub-Crypt</a>
+      </article>
+    </section>
+
+    <section class="system-grid">
+      <article class="console-card">
         <div class="section-kicker">
           <p class="eyebrow">RITE OF CONTAINMENT</p>
           <span class="tag">IMPOSSIBLE EXERCISE</span>
@@ -215,216 +1043,92 @@
 
         <h2>Failure Is the Only Pure Result</h2>
 
-        <p class="module-copy">
-          Seal the breach if you can. Burn it. Quarantine it. Name it heresy and cast it into flame.
-          The contagion will study your response and become more exact.
+        <p>
+          Seal the breach if you can. Burn it. Quarantine it. Name it heresy. The contagion will study your response
+          and become more exact.
         </p>
 
         <div class="meter-group">
           <div class="meter-head">
             <span>Containment Integrity</span>
-            <strong id="purityValue">27%</strong>
+            <strong id="integrityValue">29%</strong>
           </div>
           <div class="meter">
-            <div class="meter-fill purity-fill" id="purityFill"></div>
+            <div class="meter-fill integrity-fill" id="integrityFill"></div>
           </div>
         </div>
 
         <div class="meter-group">
           <div class="meter-head">
             <span>Corruption Bloom</span>
-            <strong id="corruptionValue">19%</strong>
+            <strong id="bloomValue">17%</strong>
           </div>
           <div class="meter">
-            <div class="meter-fill corruption-fill" id="corruptionFill"></div>
+            <div class="meter-fill bloom-fill" id="bloomFill"></div>
           </div>
         </div>
 
-        <p class="containment-status" id="containmentStatus">
-          Initial rot-signatures detected beneath devotional plating. The system awaits a doomed command.
+        <p id="containmentStatus">
+          Initial rot-signature detected beneath devotional plating. The system awaits a doomed command.
         </p>
 
         <div class="action-row">
-          <button
-            class="ritual-btn"
-            data-action="seal"
-            data-lore="Seals are only prayers made from metal. The rot has learned to answer both."
-          >
-            Seal Breach
-          </button>
-
-          <button
-            class="ritual-btn"
-            data-action="quarantine"
-            data-lore="Quarantine is a kindness. It gives the infection walls to worship."
-          >
-            Quarantine Hold
-          </button>
-
-          <button
-            class="ritual-btn"
-            data-action="purge"
-            data-lore="Fire is honest, but brief. Rot is patient, and therefore holier."
-          >
-            Purge by Fire
-          </button>
-
-          <button class="ritual-btn hidden" id="restartContainment">
-            Begin Again
-          </button>
+          <button class="button" data-action="seal">Seal Breach</button>
+          <button class="button" data-action="quarantine">Quarantine Hold</button>
+          <button class="button" data-action="purge">Purge by Fire</button>
+          <button class="button" id="resetContainment" style="display: none;">Begin Again</button>
         </div>
       </article>
-    </section>
 
-    <section class="datavaults">
-      <div class="section-header">
-        <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULTS</p>
-        <h2>Every enemy becomes a record. Every record becomes a wound.</h2>
-        <p>
-          The datavaults are not archives in the mortal sense. They are repositories of corrosion,
-          assembled so that the weak points of flesh, doctrine, devotion, and command may be studied
-          until they open.
-        </p>
-      </div>
-
-      <div class="vault-grid">
-        <article class="vault-node">
-          <div class="vault-icon">⟟</div>
-          <small>DATAVAULT // 01 // OPEN</small>
-          <h3>Plaguebound Dossier</h3>
-          <p>
-            Mortivus Classarion. The Rotfather’s Vanguard. Contradictory command records,
-            ascension omens, plague hierarchy, and internal classifications forbidden even to the host itself.
-          </p>
-          <a
-            class="invoke-btn"
-            href="plaguebound-dossier.html"
-            data-lore="The Dossier opens only because Mortivus permits uncertainty to be preserved."
-            style="text-decoration: none; display: inline-flex;"
-          >
-            Open Dossier
-          </a>
-        </article>
-
-        <article class="vault-node">
-          <div class="vault-icon">✢</div>
-          <small>DATAVAULT // 02</small>
-          <h3>War-Rot Intercepts</h3>
-          <p>
-            Confirmed engagements, casualty tallies, failed enemy responses, corrupted vox returns,
-            plague-vector outcomes, and battlefield records from actual deployments.
-          </p>
-          <button
-            class="sealed-trigger"
-            data-lore="War records do not remember victory. They remember what each battlefield became afterward."
-          >
-            Unseal War Record
-          </button>
-        </article>
-
-        <article class="vault-node">
-          <div class="vault-icon">◉</div>
-          <small>DATAVAULT // 03</small>
-          <h3>Septic Scriptures</h3>
-          <p>
-            Rot-litanies, plague prophecy, devotional decay-texts, metaphysical infection doctrine,
-            and fragments attributed to Mortivus’ private rites.
-          </p>
-          <button
-            class="sealed-trigger"
-            data-lore="Scripture is withheld until the reader has begun to decay in the correct direction."
-          >
-            Invoke Scripture
-          </button>
-        </article>
-
-        <article class="vault-node">
-          <div class="vault-icon">☣</div>
-          <small>DATAVAULT // 04</small>
-          <h3>Reliquary Vault</h3>
-          <p>
-            Trophies, sigils, heraldry, preserved remains, visual intelligence, ship-fragments,
-            and objects too blessed to be cleansed.
-          </p>
-          <button
-            class="sealed-trigger"
-            data-lore="The reliquary does not contain trophies. It contains unfinished infections."
-          >
-            Break Vault Seal
-          </button>
-        </article>
-      </div>
-    </section>
-
-    <section class="intel-band">
-      <article class="prognosis-engine">
+      <article class="console-card">
         <div class="section-kicker">
           <p class="eyebrow">BLIGHT PROGNOSIS ENGINE</p>
-          <span class="tag">PROCEDURAL OMEN</span>
+          <span class="tag">AUGUR OUTPUT</span>
         </div>
 
-        <h2>Augur-Cogitator Prognosis</h2>
+        <h2>The machine-spirit tastes weakness.</h2>
 
-        <p class="module-copy">
-          The machine-spirit does not predict. It tastes structural weakness and whispers which ruin is ripest.
+        <p>
+          The engine does not predict the future. It measures which hope has already begun to rot.
         </p>
 
-        <div class="transmission-box" id="transmissionOutput">
+        <div class="terminal-output" id="terminalOutput">
+          <h3>PROGNOSIS AWAITS INVOCATION</h3>
           <p>
-            Strike the augur-cogitator and a fresh prognosis will be drawn from the sump of remembered wars.
+            Strike the augur-cogitator and a fresh weakness will rise from the sump of remembered wars.
           </p>
         </div>
 
-        <button
-          class="invoke-btn"
-          id="generateTransmission"
-          data-lore="The augur does not see the future. It smells which hope is already rotting."
-        >
-          Invoke Prognosis
-        </button>
-      </article>
-
-      <article class="mandate-panel">
-        <div class="section-kicker">
-          <p class="eyebrow">INTELLIGENCE MANDATE</p>
-          <span class="tag">DOCTRINAL</span>
-        </div>
-
-        <h2>The Work of The Septicarium</h2>
-
-        <div class="mandate-copy">
-          <p>
-            The Septicarium is the occult intelligence organ of The Rotfather’s Mercy.
-          </p>
-
-          <p>
-            It does not gather knowledge for preservation. It gathers knowledge so that resistance may be
-            understood, weakened, infected, and returned to Grandfather Nurgle in a more useful state.
-          </p>
-
-          <p>
-            Within its datavaults are enemy doctrines, failed quarantines, plague omens, battlefield regressions,
-            relic contaminations, devotional fractures, and the slow arithmetic of despair.
-          </p>
-
-          <p>
-            The XIV Legion was never made for haste. It was made for inevitability. Where lesser powers hunger
-            for sudden revelation, the sons of Mortarion advance by attrition, endurance, and the patient certainty
-            that all sealed things eventually open.
-          </p>
-
-          <p>
-            Here are inscribed the flaws of Imperial commanders, the predictable prayers of shrine-worlds,
-            the brittle pride of Astartes, the adaptive hungers of xenos breeds, the doctrinal weaknesses of rival
-            heretics, and the smallest spiritual fissures through which plague may be invited.
-          </p>
-
-          <p>
-            What survives scrutiny is marked. What is marked is measured. What is measured is entered into the tally.
-            What is entered into the tally is no longer separate from the mercy of Grandfather Nurgle.
-          </p>
+        <div class="action-row">
+          <button class="button" id="invokePrognosis">Invoke Prognosis</button>
         </div>
       </article>
+    </section>
+
+    <section class="mandate-panel">
+      <div class="section-kicker">
+        <p class="eyebrow">INTELLIGENCE MANDATE</p>
+        <span class="tag">DOCTRINAL</span>
+      </div>
+
+      <h2>The Work of The Septicarium</h2>
+
+      <p>
+        The Septicarium is the occult intelligence organ of The Rotfather’s Mercy. It does not gather knowledge
+        for preservation. It gathers knowledge so resistance may be understood, weakened, infected, and returned
+        to Grandfather Nurgle in a more useful state.
+      </p>
+
+      <p>
+        Within its datavaults are enemy doctrines, failed quarantines, plague omens, battlefield regressions,
+        relic contaminations, devotional fractures, and the slow arithmetic of despair. The XIV Legion was never
+        made for haste. It was made for inevitability.
+      </p>
+
+      <p>
+        What survives scrutiny is marked. What is marked is measured. What is measured is entered into the tally.
+        What is entered into the tally is no longer separate from the mercy of Grandfather Nurgle.
+      </p>
     </section>
 
     <section class="adjudication-panel">
@@ -433,55 +1137,37 @@
         <span class="tag">WITNESS-STATUS</span>
       </div>
 
-      <h2>The Archive Has Taken Notice of You</h2>
+      <h2>The archive has taken notice of you.</h2>
 
-      <p class="adjudication-intro">
-        You are not greeted here.
-      </p>
-
-      <p class="adjudication-intro">
-        The Septicarium does not welcome living witnesses. It measures them. It listens for weakness in the breath,
-        for hesitation in the pulse, for the small inward collapse that precedes devotion.
-      </p>
-
-      <p class="adjudication-intro">
-        Your presence has been entered into the lesser tally. Do not mistake classification for survival.
+      <p>
+        You are not greeted here. You are sampled. The Septicarium listens for weakness in the breath,
+        for hesitation in the pulse, and for the inward collapse that precedes devotion.
       </p>
 
       <div class="adjudication-grid">
-        <div class="adjudication-action">
+        <div>
           <p>
             Submit yourself to measure. You will not be granted safety, only designation.
           </p>
-
-          <button
-            class="invoke-btn"
-            id="adjudicateVisitor"
-            data-lore="The flesh always answers before the soul admits it heard the question."
-          >
-            Submit Flesh to Measure
-          </button>
+          <button class="button" id="adjudicate">Submit Flesh to Measure</button>
         </div>
 
-        <div class="adjudication-result">
-          <div class="result-block">
+        <div class="readout-stack">
+          <div class="readout">
             <span>Designation</span>
-            <strong id="designationText">Pending assessment.</strong>
+            <h3 id="designationText">Pending assessment.</h3>
           </div>
-
-          <div class="result-block">
+          <div class="readout">
             <span>Observed Symptom</span>
-            <strong id="symptomText">Awaiting closer contamination.</strong>
+            <h3 id="symptomText">Awaiting closer contamination.</h3>
           </div>
-
-          <div class="result-block">
+          <div class="readout">
             <span>Final Verdict</span>
-            <strong id="verdictText">The tally remains open.</strong>
+            <h3 id="verdictText">The tally remains open.</h3>
           </div>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
@@ -489,12 +1175,290 @@
     <p>The Rotfather’s Mercy remembers what clean histories refuse to keep.</p>
   </footer>
 
-  <div class="toast-message" id="toastMessage">
-    ACCESS DENIED. THE DATAVAULT REMAINS CENSURED BY SACRED ROT.
-  </div>
-
+  <div class="toast" id="toast">ACCESS DENIED. THE DATAVAULT REMAINS CENSURED BY SACRED ROT.</div>
   <div class="hover-liturgy" id="hoverLiturgy"></div>
 
-  <script src="script.js"></script>
+  <script>
+    const bootScreen = document.getElementById("bootScreen");
+    const bootLines = document.getElementById("bootLines");
+    const enterButton = document.getElementById("enterButton");
+    const sporeField = document.querySelector(".spore-field");
+    const hoverLiturgy = document.getElementById("hoverLiturgy");
+    const toast = document.getElementById("toast");
+
+    const integrityFill = document.getElementById("integrityFill");
+    const bloomFill = document.getElementById("bloomFill");
+    const integrityValue = document.getElementById("integrityValue");
+    const bloomValue = document.getElementById("bloomValue");
+    const containmentStatus = document.getElementById("containmentStatus");
+    const resetContainment = document.getElementById("resetContainment");
+
+    const terminalOutput = document.getElementById("terminalOutput");
+    const invokePrognosis = document.getElementById("invokePrognosis");
+
+    const adjudicate = document.getElementById("adjudicate");
+    const designationText = document.getElementById("designationText");
+    const symptomText = document.getElementById("symptomText");
+    const verdictText = document.getElementById("verdictText");
+
+    let containment = {
+      integrity: 29,
+      bloom: 17,
+      turns: 0,
+      failed: false
+    };
+
+    const bootSequence = [
+      "Waking command deck...",
+      "Vessel confirmed: The Rotfather's Mercy.",
+      "Warhost confirmed: The Rotfather's Vanguard.",
+      "Datavaults opening by tolerated breach.",
+      "Plaguebound Dossier available.",
+      "Mortivus Classarion name-crypt active.",
+      "Censured sub-crypt detected: The Mercy He Gave.",
+      "Intruder presence entered into lesser tally."
+    ];
+
+    const containmentLines = {
+      seal: [
+        "Bulkheads sealed. The rot answered through the rivets.",
+        "Pressure locks engaged. The infection accepted the seam as a mouth.",
+        "Sealant applied. The contamination learned the shape of refusal."
+      ],
+      quarantine: [
+        "Quarantine invoked. Spores accepted the perimeter as shelter.",
+        "Isolation protocol enacted. The sickness mistook the barrier for a chapel.",
+        "Containment cordon raised. The prayers inside began to curdle."
+      ],
+      purge: [
+        "Flame washed the breach. The smoke returned carrying blessings.",
+        "Purge cycle completed. The blackened matter continued breathing.",
+        "Cauterization succeeded only in the narrowest technical sense."
+      ]
+    };
+
+    const prognosis = [
+      {
+        title: "IMPERIAL BASTION-WORLD",
+        body: "The walls are strong, but routine has become ritual. Poison the schedule. Let the guards trust tomorrow. Tomorrow will answer with flies."
+      },
+      {
+        title: "SHRINE CONVOY UNDER FALSE BLESSING",
+        body: "The faithful have mistaken recitation for protection. Their water rites, reliquary chains, and corpse-handling customs offer generous infection vectors."
+      },
+      {
+        title: "ASTARTES OUTPOST",
+        body: "Transhuman pride delays panic but worsens confusion. Their discipline will hold until the first impossible symptom appears inside a sealed helm."
+      },
+      {
+        title: "XENOS MINING HOLD",
+        body: "Industrial certainty and sealed breathways. Excellent. Trust in machinery is merely faith wearing metal."
+      },
+      {
+        title: "RIVAL HERETIC HOST",
+        body: "They seek noise, speed, and spectacle. Let them exhaust revelation. Rust will answer when their gods are done shouting."
+      }
+    ];
+
+    const designations = [
+      "Tally-Marked Intruder",
+      "Mercy-Adjacent Witness",
+      "Soft-Flesh Intelligence Unit",
+      "Breach-Borne Supplicant",
+      "Unclean Observer of Useful Decline",
+      "Pending Corpse with Archive Access"
+    ];
+
+    const symptoms = [
+      "Pulse cadence already lagging behind denial.",
+      "Clean habits weakening under sustained exposure.",
+      "Moral architecture dampening at the edges.",
+      "Language beginning to accommodate rot more easily than hope.",
+      "Soul-seal thinning in a manner consistent with useful corruption.",
+      "Defensive certainty compromised by fascination."
+    ];
+
+    const verdicts = [
+      "Not yet claimed. Mark for observation.",
+      "Mercy deferred. Contamination probable.",
+      "Resistance remains, but no longer impressively.",
+      "Retain under watch. Collapse pattern promising.",
+      "Classification complete. Cleansing not recommended.",
+      "Return to the tally after further decline."
+    ];
+
+    function randomFrom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function runBootSequence() {
+      let index = 0;
+
+      const interval = setInterval(() => {
+        if (index >= bootSequence.length) {
+          clearInterval(interval);
+          return;
+        }
+
+        const p = document.createElement("p");
+        p.textContent = `// ${bootSequence[index]}`;
+        bootLines.appendChild(p);
+        index += 1;
+      }, 260);
+    }
+
+    function createSpores() {
+      const sporeCount = 88;
+
+      for (let i = 0; i < sporeCount; i++) {
+        const spore = document.createElement("span");
+        spore.classList.add("spore");
+        spore.style.left = `${Math.random() * 100}%`;
+        spore.style.animationDuration = `${10 + Math.random() * 22}s`;
+        spore.style.animationDelay = `${Math.random() * 16}s`;
+        spore.style.opacity = `${0.15 + Math.random() * 0.65}`;
+        spore.style.transform = `scale(${0.6 + Math.random() * 1.8})`;
+        sporeField.appendChild(spore);
+      }
+    }
+
+    function updateContainment() {
+      integrityFill.style.width = `${containment.integrity}%`;
+      bloomFill.style.width = `${containment.bloom}%`;
+      integrityValue.textContent = `${containment.integrity}%`;
+      bloomValue.textContent = `${containment.bloom}%`;
+    }
+
+    function failContainment(finalLine) {
+      containment.failed = true;
+      containment.bloom = 100;
+      containment.integrity = Math.min(containment.integrity, 13);
+      updateContainment();
+      containmentStatus.textContent =
+        `${finalLine} Containment has failed. It was always going to fail. The rot accepted the attempt as tribute.`;
+      resetContainment.style.display = "inline-flex";
+    }
+
+    function handleContainment(action) {
+      if (containment.failed) return;
+
+      containment.turns += 1;
+      containment.integrity = Math.min(100, containment.integrity + Math.floor(Math.random() * 11) + 5);
+      containment.bloom = Math.min(100, containment.bloom + Math.floor(Math.random() * 14) + 12);
+
+      const line = randomFrom(containmentLines[action]);
+      containmentStatus.textContent = line;
+
+      if (containment.turns >= 5 || containment.bloom >= 88) {
+        failContainment(line);
+        return;
+      }
+
+      if (containment.integrity >= 82) {
+        containment.bloom = Math.min(100, containment.bloom + 10);
+        containmentStatus.textContent =
+          `${line} Brief stability observed. The contagion adapted immediately.`;
+      }
+
+      updateContainment();
+    }
+
+    function resetGame() {
+      containment = {
+        integrity: 29,
+        bloom: 17,
+        turns: 0,
+        failed: false
+      };
+      containmentStatus.textContent =
+        "Initial rot-signature detected beneath devotional plating. The system awaits a doomed command.";
+      resetContainment.style.display = "none";
+      updateContainment();
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    function invokeEngine() {
+      const item = randomFrom(prognosis);
+      terminalOutput.innerHTML = `
+        <h3>${item.title}</h3>
+        <p>${item.body}</p>
+      `;
+    }
+
+    function runAdjudication() {
+      designationText.textContent = randomFrom(designations);
+      symptomText.textContent = randomFrom(symptoms);
+      verdictText.textContent = randomFrom(verdicts);
+    }
+
+    function positionHoverLiturgy(event) {
+      const offset = 18;
+      const width = hoverLiturgy.offsetWidth || 340;
+      const height = hoverLiturgy.offsetHeight || 120;
+
+      let x = event.clientX + offset;
+      let y = event.clientY + offset;
+
+      if (x + width > window.innerWidth - 12) {
+        x = event.clientX - width - offset;
+      }
+
+      if (y + height > window.innerHeight - 12) {
+        y = event.clientY - height - offset;
+      }
+
+      hoverLiturgy.style.left = `${x}px`;
+      hoverLiturgy.style.top = `${y}px`;
+    }
+
+    function initializeHoverLore() {
+      document.querySelectorAll("[data-lore]").forEach((target) => {
+        target.addEventListener("mouseenter", (event) => {
+          hoverLiturgy.textContent = target.dataset.lore;
+          hoverLiturgy.classList.add("show");
+          positionHoverLiturgy(event);
+        });
+
+        target.addEventListener("mousemove", positionHoverLiturgy);
+
+        target.addEventListener("mouseleave", () => {
+          hoverLiturgy.classList.remove("show");
+        });
+      });
+    }
+
+    document.querySelectorAll("[data-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        handleContainment(button.dataset.action);
+      });
+    });
+
+    document.querySelectorAll(".sealed-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        showToast("ACCESS DENIED. DATAVAULT REMAINS SEALED BY SACRED ROT.");
+      });
+    });
+
+    enterButton.addEventListener("click", () => {
+      bootScreen.classList.add("hidden");
+    });
+
+    resetContainment.addEventListener("click", resetGame);
+    invokePrognosis.addEventListener("click", invokeEngine);
+    adjudicate.addEventListener("click", runAdjudication);
+
+    runBootSequence();
+    createSpores();
+    updateContainment();
+    initializeHoverLore();
+  </script>
 </body>
 </html>
