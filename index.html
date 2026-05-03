@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>The Septicarium | Where Mercy Is Counted in Rot</title>
+
   <meta
     name="description"
     content="The Septicarium. Where Mercy Is Counted in Rot. A plague-intelligence command archive aboard The Rotfather’s Mercy of the XIV Legion."
   />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="spore-field" aria-hidden="true"></div>
   <div class="void-haze" aria-hidden="true"></div>
@@ -21,8 +25,10 @@
   </header>
 
   <main class="site-shell">
+
     <section class="breach-banner">
       <div class="banner-rune">☣</div>
+
       <div>
         <p class="eyebrow">BREACH LITANY</p>
         <h1>THE SEPTICARIUM</h1>
@@ -44,31 +50,58 @@
     </section>
 
     <section class="symbol-bar">
-      <div class="symbol-item">
+      <div
+        class="symbol-item"
+        data-lore="Three circles. One corruption. Flesh, spirit, and command are counted separately only by the clean."
+      >
         <span class="symbol-glyph">◉◉◉</span>
         <span class="symbol-text">Triune Blight</span>
       </div>
-      <div class="symbol-item">
+
+      <div
+        class="symbol-item"
+        data-lore="Seven is not completion. It is the rhythm by which decay learns to return."
+      >
         <span class="symbol-glyph">VII</span>
         <span class="symbol-text">Sacred Seven</span>
       </div>
-      <div class="symbol-item">
+
+      <div
+        class="symbol-item"
+        data-lore="The Fourteenth does not hurry. It arrives as rust arrives: quietly, then everywhere."
+      >
         <span class="symbol-glyph">XIV</span>
         <span class="symbol-text">Legion Memory</span>
       </div>
-      <div class="symbol-item">
+
+      <div
+        class="symbol-item"
+        data-lore="The Immaterium need not tear reality open when rot can teach reality to soften."
+      >
         <span class="symbol-glyph">✢</span>
         <span class="symbol-text">Warp-Taint Vector</span>
       </div>
-      <div class="symbol-item">
+
+      <div
+        class="symbol-item"
+        data-lore="The mark is not warning. It is permission."
+      >
         <span class="symbol-glyph">☣</span>
         <span class="symbol-text">Plague Sign</span>
       </div>
-      <div class="symbol-item">
+
+      <div
+        class="symbol-item"
+        data-lore="The censer does not mask the stench. It sanctifies it."
+      >
         <span class="symbol-glyph">⟁</span>
         <span class="symbol-text">Censer Rite</span>
       </div>
-      <div class="symbol-item">
+
+      <div
+        class="symbol-item"
+        data-lore="A name written once may still be lost. A name entered into the tally belongs."
+      >
         <span class="symbol-glyph">⟟</span>
         <span class="symbol-text">Tally Mark</span>
       </div>
@@ -88,8 +121,21 @@
             <div class="sigil-ring outer"></div>
             <div class="sigil-ring middle"></div>
             <div class="sigil-ring inner"></div>
-            <div class="sigil-triad triad-a"></div>
-            <div class="sigil-triad triad-b"></div>
+
+            <div
+              class="sigil-triad triad-a lore-circle"
+              data-lore="LORE ENTRY // The First Hidden Circle: Flesh is the first scripture. It receives the blessing before the mind has learned to thank it."
+            >
+              <span></span>
+            </div>
+
+            <div
+              class="sigil-triad triad-b lore-circle"
+              data-lore="LORE ENTRY // The Second Hidden Circle: Spirit is not cleansed by suffering. It is softened, opened, and made hospitable."
+            >
+              <span></span>
+            </div>
+
             <div class="sigil-core">XIV</div>
 
             <div class="orbit-point p1">FLY</div>
@@ -103,27 +149,50 @@
           </div>
 
           <div class="command-readouts">
-            <div class="readout">
+            <div
+              class="readout"
+              data-lore="The Rotfather’s Mercy does not translate mercy as pardon. Mercy is preservation through holy corruption."
+            >
               <span>Vessel</span>
               <strong>The Rotfather’s Mercy</strong>
             </div>
-            <div class="readout">
+
+            <div
+              class="readout"
+              data-lore="The Vanguard advances first where hope has already begun to spoil."
+            >
               <span>Warhost</span>
               <strong>The Rotfather’s Vanguard</strong>
             </div>
-            <div class="readout">
+
+            <div
+              class="readout"
+              data-lore="Mortivus Classarion is recorded by many titles and confirmed by none. This uncertainty is considered devotional."
+            >
               <span>Command Authority</span>
               <strong>Mortivus Classarion</strong>
             </div>
-            <div class="readout">
+
+            <div
+              class="readout"
+              data-lore="The XIV Legion endures where swifter legions fracture. Attrition is not delay. It is doctrine."
+            >
               <span>Legion</span>
               <strong>XIV // Death Guard</strong>
             </div>
-            <div class="readout">
+
+            <div
+              class="readout"
+              data-lore="Grandfather Nurgle does not merely end life. He teaches life to continue in forms the fearful call ruin."
+            >
               <span>Patron</span>
               <strong>Grandfather Nurgle</strong>
             </div>
-            <div class="readout">
+
+            <div
+              class="readout"
+              data-lore="You are not yet infected enough to be useful. The archive will continue its assessment."
+            >
               <span>Current Intruder Class</span>
               <strong>Tally-Pending Witness</strong>
             </div>
@@ -176,10 +245,33 @@
         </p>
 
         <div class="action-row">
-          <button class="ritual-btn" data-action="seal">Seal Breach</button>
-          <button class="ritual-btn" data-action="quarantine">Quarantine Hold</button>
-          <button class="ritual-btn" data-action="purge">Purge by Fire</button>
-          <button class="ritual-btn hidden" id="restartContainment">Begin Again</button>
+          <button
+            class="ritual-btn"
+            data-action="seal"
+            data-lore="Seals are only prayers made from metal. The rot has learned to answer both."
+          >
+            Seal Breach
+          </button>
+
+          <button
+            class="ritual-btn"
+            data-action="quarantine"
+            data-lore="Quarantine is a kindness. It gives the infection walls to worship."
+          >
+            Quarantine Hold
+          </button>
+
+          <button
+            class="ritual-btn"
+            data-action="purge"
+            data-lore="Fire is honest, but brief. Rot is patient, and therefore holier."
+          >
+            Purge by Fire
+          </button>
+
+          <button class="ritual-btn hidden" id="restartContainment">
+            Begin Again
+          </button>
         </div>
       </article>
     </section>
@@ -204,7 +296,12 @@
             Mortivus Classarion. The Rotfather’s Vanguard. Contradictory command records,
             ascension omens, plague hierarchy, and internal classifications forbidden even to the host itself.
           </p>
-          <button class="sealed-trigger">Petition Entry</button>
+          <button
+            class="sealed-trigger"
+            data-lore="The dossier remains sealed because even the host disagrees on what Mortivus has become."
+          >
+            Petition Entry
+          </button>
         </article>
 
         <article class="vault-node">
@@ -215,7 +312,12 @@
             Confirmed engagements, casualty tallies, failed enemy responses, corrupted vox returns,
             plague-vector outcomes, and battlefield records from actual deployments.
           </p>
-          <button class="sealed-trigger">Unseal War Record</button>
+          <button
+            class="sealed-trigger"
+            data-lore="War records do not remember victory. They remember what each battlefield became afterward."
+          >
+            Unseal War Record
+          </button>
         </article>
 
         <article class="vault-node">
@@ -226,7 +328,12 @@
             Rot-litanies, plague prophecy, devotional decay-texts, metaphysical infection doctrine,
             and fragments attributed to Mortivus’ private rites.
           </p>
-          <button class="sealed-trigger">Invoke Scripture</button>
+          <button
+            class="sealed-trigger"
+            data-lore="Scripture is withheld until the reader has begun to decay in the correct direction."
+          >
+            Invoke Scripture
+          </button>
         </article>
 
         <article class="vault-node">
@@ -237,7 +344,12 @@
             Trophies, sigils, heraldry, preserved remains, visual intelligence, ship-fragments,
             and objects too blessed to be cleansed.
           </p>
-          <button class="sealed-trigger">Break Vault Seal</button>
+          <button
+            class="sealed-trigger"
+            data-lore="The reliquary does not contain trophies. It contains unfinished infections."
+          >
+            Break Vault Seal
+          </button>
         </article>
       </div>
     </section>
@@ -256,10 +368,18 @@
         </p>
 
         <div class="transmission-box" id="transmissionOutput">
-          <p>Strike the augur-cogitator and a fresh prognosis will be drawn from the sump of remembered wars.</p>
+          <p>
+            Strike the augur-cogitator and a fresh prognosis will be drawn from the sump of remembered wars.
+          </p>
         </div>
 
-        <button class="invoke-btn" id="generateTransmission">Invoke Prognosis</button>
+        <button
+          class="invoke-btn"
+          id="generateTransmission"
+          data-lore="The augur does not see the future. It smells which hope is already rotting."
+        >
+          Invoke Prognosis
+        </button>
       </article>
 
       <article class="mandate-panel">
@@ -316,10 +436,12 @@
       <p class="adjudication-intro">
         You are not greeted here.
       </p>
+
       <p class="adjudication-intro">
         The Septicarium does not welcome living witnesses. It measures them. It listens for weakness in the breath,
         for hesitation in the pulse, for the small inward collapse that precedes devotion.
       </p>
+
       <p class="adjudication-intro">
         Your presence has been entered into the lesser tally. Do not mistake classification for survival.
       </p>
@@ -329,7 +451,14 @@
           <p>
             Submit yourself to measure. You will not be granted safety, only designation.
           </p>
-          <button class="invoke-btn" id="adjudicateVisitor">Submit Flesh to Measure</button>
+
+          <button
+            class="invoke-btn"
+            id="adjudicateVisitor"
+            data-lore="The flesh always answers before the soul admits it heard the question."
+          >
+            Submit Flesh to Measure
+          </button>
         </div>
 
         <div class="adjudication-result">
@@ -337,10 +466,12 @@
             <span>Designation</span>
             <strong id="designationText">Pending assessment.</strong>
           </div>
+
           <div class="result-block">
             <span>Observed Symptom</span>
             <strong id="symptomText">Awaiting closer contamination.</strong>
           </div>
+
           <div class="result-block">
             <span>Final Verdict</span>
             <strong id="verdictText">The tally remains open.</strong>
@@ -348,6 +479,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
@@ -358,6 +490,8 @@
   <div class="toast-message" id="toastMessage">
     ACCESS DENIED. THE DATAVAULT REMAINS CENSURED BY SACRED ROT.
   </div>
+
+  <div class="hover-liturgy" id="hoverLiturgy"></div>
 
   <script src="script.js"></script>
 </body>
