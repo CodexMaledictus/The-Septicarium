@@ -13,71 +13,66 @@
 
   <style>
     :root {
-      --bg-0: #030402;
-      --bg-1: #070a06;
-      --bg-2: #0d140c;
-      --panel: rgba(8, 12, 8, 0.88);
-      --panel-2: rgba(11, 17, 10, 0.74);
-      --line: rgba(186, 220, 92, 0.2);
+      --bg-0: #040503;
+      --bg-1: #0a0d08;
+      --bg-2: #11170f;
+      --panel: rgba(8, 12, 8, 0.9);
+      --panel-2: rgba(14, 20, 14, 0.74);
+      --line: rgba(186, 220, 92, 0.18);
       --line-strong: rgba(186, 220, 92, 0.48);
       --rot: #a3c64a;
       --rot-bright: #dced84;
       --bone: #ddd7bc;
       --bone-dim: #aaa483;
-      --brass: #8e7b42;
-      --rust: #582216;
-      --blood: #2f0c0b;
-      --shadow: 0 0 50px rgba(163, 198, 74, 0.1);
+      --brass: #8f7d43;
+      --rust: #5b2617;
+      --shadow: 0 0 50px rgba(163, 198, 74, 0.09);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
       color: var(--bone);
-      background:
-        radial-gradient(circle at 15% 18%, rgba(88, 34, 22, 0.18), transparent 26%),
-        radial-gradient(circle at 78% 10%, rgba(163, 198, 74, 0.09), transparent 20%),
-        linear-gradient(135deg, var(--bg-0), var(--bg-1) 40%, var(--bg-0) 100%);
       font-family: Georgia, "Times New Roman", serif;
       overflow-x: hidden;
-    }
-
-    .void-haze {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
       background:
-        radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.62) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.7));
-      z-index: 0;
+        radial-gradient(circle at 12% 10%, rgba(91, 38, 23, 0.18), transparent 26%),
+        radial-gradient(circle at 80% 8%, rgba(163, 198, 74, 0.08), transparent 18%),
+        linear-gradient(135deg, var(--bg-0), var(--bg-1) 42%, #020301 100%);
     }
 
-    .rot-grid {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-      background-size: 92px 92px;
-      mask-image: radial-gradient(circle at center, black 0%, transparent 82%);
-    }
-
+    .boot-screen,
+    .void-haze,
+    .rot-grid,
     .spore-field {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      overflow: hidden;
+    }
+
+    .void-haze {
+      z-index: 0;
+      background:
+        radial-gradient(circle at center, transparent 34%, rgba(0,0,0,0.7) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.14), rgba(0,0,0,0.8));
+    }
+
+    .rot-grid {
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
+      background-size: 96px 96px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
+    }
+
+    .spore-field {
       z-index: 1;
+      overflow: hidden;
     }
 
     .spore {
@@ -86,37 +81,111 @@
       height: 3px;
       border-radius: 999px;
       background: rgba(220, 237, 132, 0.44);
-      box-shadow: 0 0 12px rgba(220, 237, 132, 0.46);
+      box-shadow: 0 0 10px rgba(220, 237, 132, 0.36);
       animation: drift linear infinite;
     }
 
     @keyframes drift {
-      from {
-        transform: translateY(105vh) translateX(0);
-        opacity: 0;
-      }
+      from { transform: translateY(105vh) translateX(0); opacity: 0; }
+      8% { opacity: 0.8; }
+      90% { opacity: 0.3; }
+      to { transform: translateY(-12vh) translateX(88px); opacity: 0; }
+    }
 
-      8% {
-        opacity: 0.8;
-      }
+    .boot-screen {
+      z-index: 9999;
+      pointer-events: auto;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, rgba(19, 34, 16, 0.8), rgba(0,0,0,0.98) 66%),
+        linear-gradient(135deg, #040503, #090d08);
+      transition: opacity 700ms ease, visibility 700ms ease;
+    }
 
-      90% {
-        opacity: 0.35;
-      }
+    .boot-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
 
-      to {
-        transform: translateY(-12vh) translateX(88px);
-        opacity: 0;
-      }
+    .boot-box {
+      width: min(860px, calc(100% - 28px));
+      padding: 28px;
+      border: 1px solid rgba(220, 237, 132, 0.28);
+      background: rgba(6, 8, 6, 0.76);
+      box-shadow: 0 0 60px rgba(163, 198, 74, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .boot-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.03),
+          rgba(255,255,255,0.03) 1px,
+          transparent 1px,
+          transparent 7px
+        );
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .boot-title {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 18px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .boot-lines {
+      position: relative;
+      z-index: 1;
+      min-height: 220px;
+      line-height: 1.7;
+      color: var(--bone);
+    }
+
+    .boot-lines p {
+      margin: 0 0 8px;
+    }
+
+    .boot-button {
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.28);
+      background: rgba(0,0,0,0.32);
+      color: var(--bone);
+      padding: 12px 16px;
+      font-family: Arial, sans-serif;
+      font-size: 0.73rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+    }
+
+    .boot-button:hover {
+      color: var(--rot-bright);
+      border-color: rgba(220, 237, 132, 0.58);
+      background: rgba(163, 198, 74, 0.08);
     }
 
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 30;
       display: flex;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       padding: 10px 18px;
       border-bottom: 1px solid var(--line);
       background: rgba(4, 6, 4, 0.92);
@@ -133,16 +202,12 @@
       text-decoration: none;
     }
 
-    .topbar a:hover {
-      text-decoration: underline;
-    }
-
     .site-shell {
       position: relative;
       z-index: 2;
-      width: min(1320px, calc(100% - 28px));
+      width: min(1360px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 24px 0 90px;
+      padding: 24px 0 88px;
     }
 
     .eyebrow {
@@ -156,9 +221,9 @@
 
     .tag {
       color: var(--rot-bright);
-      border: 1px solid rgba(220, 237, 132, 0.28);
+      border: 1px solid rgba(220, 237, 132, 0.24);
+      background: rgba(0,0,0,0.26);
       padding: 6px 10px;
-      background: rgba(0, 0, 0, 0.28);
       font-family: Arial, sans-serif;
       font-size: 0.68rem;
       letter-spacing: 0.14em;
@@ -169,13 +234,14 @@
     .hero,
     .panel,
     .name-card,
+    .vault-schematic,
     .terminal-panel,
-    .archive-verdict {
+    .journal-panel {
       position: relative;
       border: 1px solid var(--line);
       background:
-        linear-gradient(135deg, rgba(8, 12, 8, 0.94), rgba(4, 6, 4, 0.88)),
-        radial-gradient(circle at top left, rgba(142, 123, 66, 0.1), transparent 42%);
+        linear-gradient(135deg, rgba(8, 12, 8, 0.95), rgba(5, 7, 5, 0.88)),
+        radial-gradient(circle at top left, rgba(143, 125, 67, 0.08), transparent 42%);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
@@ -183,21 +249,22 @@
     .hero::before,
     .panel::before,
     .name-card::before,
+    .vault-schematic::before,
     .terminal-panel::before,
-    .archive-verdict::before {
+    .journal-panel::before {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(circle at 12% 0%, rgba(163, 198, 74, 0.06), transparent 24%),
-        linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.03), transparent);
+        radial-gradient(circle at 14% 0%, rgba(163, 198, 74, 0.05), transparent 22%),
+        linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.025), transparent);
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1fr 0.82fr;
-      gap: 26px;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
       padding: 30px;
       margin-bottom: 18px;
       border-left: 4px solid var(--rot);
@@ -205,24 +272,23 @@
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(3rem, 7vw, 6rem);
+      font-size: clamp(3rem, 7vw, 6.4rem);
       line-height: 0.9;
-      letter-spacing: -0.055em;
+      letter-spacing: -0.05em;
     }
 
     .subtitle {
       margin: 14px 0 16px;
       color: var(--rot-bright);
-      font-size: clamp(1.15rem, 2.5vw, 2rem);
+      font-size: clamp(1.1rem, 2.5vw, 1.9rem);
       font-style: italic;
     }
 
     .lead {
-      max-width: 920px;
       margin: 0 0 12px;
-      font-size: 1.05rem;
       line-height: 1.72;
       color: var(--bone);
+      font-size: 1.04rem;
     }
 
     .lead.dim {
@@ -233,130 +299,71 @@
       color: var(--rot-bright);
     }
 
-    .hero-sigil {
+    .name-rack {
       display: grid;
-      place-items: center;
-      min-height: 320px;
+      gap: 12px;
+      align-content: start;
     }
 
-    .dossier-seal {
-      position: relative;
-      width: min(330px, 100%);
-      aspect-ratio: 1 / 1;
+    .rack-row {
       display: grid;
-      place-items: center;
-      cursor: crosshair;
-      filter: drop-shadow(0 0 40px rgba(163, 198, 74, 0.14));
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .seal-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(220, 237, 132, 0.24);
+    .rack-tag {
+      border: 1px solid rgba(220, 237, 132, 0.16);
+      background: rgba(0,0,0,0.22);
+      padding: 14px 12px;
+      min-height: 74px;
     }
 
-    .seal-ring.outer {
-      inset: 0;
-      border-style: dashed;
-      animation: rotateSlow 44s linear infinite;
-    }
-
-    .seal-ring.middle {
-      inset: 15%;
-      border-color: rgba(142, 123, 66, 0.42);
-      animation: rotateReverse 34s linear infinite;
-    }
-
-    .seal-ring.inner {
-      inset: 31%;
-      border-color: rgba(220, 237, 132, 0.48);
-      animation: breathe 5s ease-in-out infinite;
-    }
-
-    .seal-core {
-      position: relative;
-      z-index: 3;
-      width: 122px;
-      height: 122px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      border: 1px solid rgba(220, 237, 132, 0.64);
-      color: var(--rot-bright);
-      font-size: 2.2rem;
-      letter-spacing: 0.08em;
-      background:
-        radial-gradient(circle, rgba(163, 198, 74, 0.18), rgba(6, 10, 5, 0.94) 60%);
-      box-shadow: inset 0 0 30px rgba(163, 198, 74, 0.08);
-    }
-
-    .seal-node {
-      position: absolute;
-      z-index: 4;
-      padding: 4px 8px;
-      border: 1px solid rgba(220, 237, 132, 0.18);
-      background: rgba(0,0,0,0.3);
-      color: var(--bone-dim);
+    .rack-tag span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--rot);
       font-family: Arial, sans-serif;
-      font-size: 0.57rem;
-      letter-spacing: 0.14em;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
     }
 
-    .n1 { top: 8%; left: 41%; }
-    .n2 { top: 31%; right: 4%; }
-    .n3 { bottom: 17%; right: 13%; }
-    .n4 { bottom: 8%; left: 38%; }
-    .n5 { bottom: 17%; left: 10%; }
-    .n6 { top: 31%; left: 4%; }
-
-    @keyframes rotateSlow {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes rotateReverse {
-      to { transform: rotate(-360deg); }
-    }
-
-    @keyframes breathe {
-      0%,100% {
-        transform: scale(1);
-        opacity: 0.72;
-      }
-
-      50% {
-        transform: scale(1.05);
-        opacity: 1;
-      }
+    .rack-tag strong {
+      color: var(--bone);
+      line-height: 1.42;
+      font-size: 0.95rem;
     }
 
     .section-kicker {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       align-items: start;
       margin-bottom: 14px;
     }
 
     .panel,
+    .vault-schematic,
     .terminal-panel,
-    .archive-verdict {
+    .journal-panel {
       padding: 24px;
       margin-bottom: 18px;
     }
 
     .panel h2,
+    .vault-schematic h2,
     .terminal-panel h2,
-    .archive-verdict h2 {
+    .journal-panel h2 {
       margin: 0 0 12px;
       font-size: clamp(1.9rem, 3vw, 2.9rem);
-      line-height: 1.03;
+      line-height: 1.04;
     }
 
     .panel p,
     .terminal-panel p,
-    .archive-verdict p,
+    .journal-panel p,
     .name-card p,
+    .schematic-note,
     .terminal-output p {
       color: var(--bone-dim);
       line-height: 1.72;
@@ -371,19 +378,19 @@
 
     .name-card {
       padding: 20px;
-      min-height: 280px;
-      transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+      min-height: 292px;
+      transition: 240ms ease;
     }
 
     .name-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-7px);
       border-color: var(--line-strong);
-      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
+      box-shadow: 0 0 50px rgba(163, 198, 74, 0.13);
     }
 
     .name-card .status {
       display: block;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: var(--rot-bright);
       font-family: Arial, sans-serif;
       font-size: 0.68rem;
@@ -402,14 +409,9 @@
       margin-bottom: 12px;
       color: var(--rot-bright);
       font-style: italic;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
-    .active-name {
-      border-color: rgba(220, 237, 132, 0.44);
-    }
-
-    .invoke-btn,
     .entry-link,
     .terminal-btn {
       border: 1px solid rgba(220, 237, 132, 0.24);
@@ -429,7 +431,6 @@
       text-align: center;
     }
 
-    .invoke-btn:hover,
     .entry-link:hover,
     .terminal-btn:hover {
       border-color: rgba(220, 237, 132, 0.56);
@@ -437,14 +438,14 @@
       background: rgba(163, 198, 74, 0.08);
     }
 
-    .dossier-grid {
+    .two-col {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 18px;
       margin-bottom: 18px;
     }
 
-    .dossier-principles {
+    .principles {
       display: grid;
       gap: 12px;
       margin-top: 16px;
@@ -458,23 +459,57 @@
 
     .principle span {
       display: block;
+      margin-bottom: 6px;
       color: var(--rot);
       font-family: Arial, sans-serif;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      margin-bottom: 6px;
     }
 
     .principle strong {
-      display: block;
       color: var(--bone);
       line-height: 1.4;
     }
 
+    .vault-schematic pre {
+      margin: 16px 0 10px;
+      padding: 16px;
+      border: 1px solid rgba(220, 237, 132, 0.14);
+      background: rgba(0,0,0,0.24);
+      color: var(--bone);
+      overflow-x: auto;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      font-family: "Courier New", monospace;
+    }
+
+    .schematic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .schematic-cell {
+      padding: 14px;
+      border: 1px solid rgba(220, 237, 132, 0.12);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .schematic-cell span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.64rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
     .terminal-grid {
       display: grid;
-      grid-template-columns: 0.78fr 1.22fr;
+      grid-template-columns: 0.8fr 1.2fr;
       gap: 18px;
       align-items: start;
     }
@@ -484,8 +519,17 @@
       gap: 10px;
     }
 
+    .terminal-status {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid rgba(220, 237, 132, 0.12);
+      background: rgba(0,0,0,0.18);
+      line-height: 1.6;
+      color: var(--bone-dim);
+    }
+
     .terminal-output {
-      min-height: 360px;
+      min-height: 340px;
       padding: 18px;
       border: 1px solid rgba(220, 237, 132, 0.14);
       background:
@@ -498,7 +542,6 @@
       content: "";
       position: absolute;
       inset: 0;
-      pointer-events: none;
       background:
         repeating-linear-gradient(
           to bottom,
@@ -507,72 +550,49 @@
           transparent 1px,
           transparent 8px
         );
-      opacity: 0.16;
+      opacity: 0.15;
+      pointer-events: none;
     }
 
-    .terminal-output p,
-    .terminal-output h3 {
+    .terminal-output h3,
+    .terminal-output p {
       position: relative;
       z-index: 1;
     }
 
     .terminal-output h3 {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: var(--rot-bright);
-      font-size: 1.45rem;
+      font-size: 1.5rem;
       line-height: 1.12;
     }
 
-    .terminal-output strong {
-      color: var(--rot-bright);
-    }
-
-    .terminal-status {
-      margin-top: 14px;
-      padding: 14px;
-      border: 1px solid rgba(220, 237, 132, 0.12);
-      background: rgba(0,0,0,0.18);
-      color: var(--bone-dim);
-      line-height: 1.6;
-    }
-
-    .archive-verdict {
-      border-left: 4px solid var(--rot);
-    }
-
-    .verdict-grid {
+    .journal-list {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
-    .verdict-box {
-      padding: 16px;
-      border: 1px solid rgba(220, 237, 132, 0.13);
-      background: rgba(0,0,0,0.2);
+    .journal-note {
+      border-left: 3px solid rgba(163, 198, 74, 0.4);
+      padding: 14px 14px 14px 16px;
+      background: rgba(0,0,0,0.18);
     }
 
-    .verdict-box span {
+    .journal-note span {
       display: block;
-      margin-bottom: 8px;
-      color: var(--rot);
+      margin-bottom: 6px;
+      color: var(--rot-bright);
       font-family: Arial, sans-serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
+      font-size: 0.64rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-    }
-
-    .verdict-box strong {
-      display: block;
-      color: var(--bone);
-      line-height: 1.45;
     }
 
     .site-footer {
       position: relative;
       z-index: 2;
-      width: min(1320px, calc(100% - 28px));
+      width: min(1360px, calc(100% - 28px));
       margin: 0 auto;
       padding: 26px 0 46px;
       border-top: 1px solid rgba(220, 237, 132, 0.12);
@@ -581,37 +601,9 @@
       letter-spacing: 0.03em;
     }
 
-    .hover-liturgy {
-      position: fixed;
-      z-index: 999;
-      max-width: 360px;
-      padding: 13px 15px;
-      border: 1px solid rgba(220, 237, 132, 0.42);
-      background:
-        linear-gradient(135deg, rgba(5, 8, 5, 0.97), rgba(12, 18, 10, 0.94)),
-        radial-gradient(circle at top left, rgba(163, 198, 74, 0.12), transparent 45%);
-      color: var(--rot-bright);
-      box-shadow: 0 0 32px rgba(163, 198, 74, 0.16);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 0.92rem;
-      line-height: 1.45;
-      pointer-events: none;
-      opacity: 0;
-      transform: translate(14px, 14px);
-      transition: opacity 160ms ease;
-    }
-
-    .hover-liturgy.show {
-      opacity: 1;
-    }
-
-    [data-lore] {
-      cursor: crosshair;
-    }
-
     @media (max-width: 1180px) {
       .hero,
-      .dossier-grid,
+      .two-col,
       .terminal-grid {
         grid-template-columns: 1fr;
       }
@@ -620,7 +612,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .verdict-grid {
+      .schematic-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -633,14 +625,15 @@
 
       .site-shell,
       .site-footer {
-        width: min(100% - 18px, 1320px);
+        width: min(100% - 18px, 1360px);
       }
 
       .hero h1 {
         font-size: clamp(3rem, 16vw, 4.8rem);
       }
 
-      .names-grid {
+      .names-grid,
+      .rack-row {
         grid-template-columns: 1fr;
       }
 
@@ -651,55 +644,76 @@
     }
   </style>
 </head>
-
 <body>
+  <div class="boot-screen" id="bootScreen">
+    <div class="boot-box">
+      <p class="boot-title">NAME-CRYPT INDEX WAKE // PLAGUEBOUND DOSSIER</p>
+      <div class="boot-lines" id="bootLines"></div>
+      <button class="boot-button" id="enterButton">Permit Name-Crypt Access</button>
+    </div>
+  </div>
+
   <div class="spore-field" aria-hidden="true"></div>
   <div class="void-haze" aria-hidden="true"></div>
   <div class="rot-grid" aria-hidden="true"></div>
 
   <header class="topbar">
-    <div>PLAGUEBOUND DOSSIER // NAME-CRYPT OPEN</div>
+    <div>PLAGUEBOUND DOSSIER // NAME-CRYPT INDEX OPEN</div>
     <div><a href="index.html">RETURN TO COMMAND DECK</a> // THE SEPTICARIUM</div>
   </header>
 
   <main class="site-shell">
-
     <section class="hero">
       <div>
         <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULT</p>
-        <h1>PLAGUEBOUND DOSSIER</h1>
+        <h1>Plaguebound Dossier</h1>
         <p class="subtitle">Names preserved until they become useful infections.</p>
 
         <p class="lead">
-          This datavault contains the internal classifications, command contradictions, plague-lineage records,
-          oath fragments, ascension omens, and identity disputes of those bound to
+          This datavault contains plague-lineage records, internal classifications, command contradictions,
+          oath-remnants, ascension omens, and the gathered rot-signatures of those bound to
           <span>The Rotfather’s Vanguard</span>.
         </p>
 
         <p class="lead dim">
-          The Plaguebound Dossier does not produce clean biography. Clean biography is for the living,
-          the obedient, and the soon-forgotten. Here, a warrior is recorded by what clings to him:
-          titles, symptoms, witnesses, wounds, contradictions, and the rot that refuses to leave his name.
+          The Plaguebound Dossier is not a roll-call. It is a pressure-chamber for identity.
+          A subject is not entered here because he is understood. He is entered because understanding him
+          has begun to fail in interesting ways.
         </p>
       </div>
 
-      <div class="hero-sigil">
-        <div
-          class="dossier-seal"
-          id="dossierSeal"
-          data-lore="The Dossier Seal does not verify identity. It preserves contradiction until contradiction becomes doctrine."
-        >
-          <div class="seal-ring outer"></div>
-          <div class="seal-ring middle"></div>
-          <div class="seal-ring inner"></div>
-          <div class="seal-core">XIV</div>
+      <div class="name-rack">
+        <div class="rack-row">
+          <div class="rack-tag">
+            <span>Archive Function</span>
+            <strong>Identity surveillance through devotional decay</strong>
+          </div>
+          <div class="rack-tag">
+            <span>Known Host</span>
+            <strong>The Rotfather’s Vanguard</strong>
+          </div>
+        </div>
 
-          <div class="seal-node n1">NAME</div>
-          <div class="seal-node n2">OATH</div>
-          <div class="seal-node n3">ROT</div>
-          <div class="seal-node n4">TALLY</div>
-          <div class="seal-node n5">FLESH</div>
-          <div class="seal-node n6">OMEN</div>
+        <div class="rack-row">
+          <div class="rack-tag">
+            <span>Primary Name Under Strain</span>
+            <strong>Mortivus Classarion</strong>
+          </div>
+          <div class="rack-tag">
+            <span>Condition of Records</span>
+            <strong>Contradictory // productive</strong>
+          </div>
+        </div>
+
+        <div class="rack-row">
+          <div class="rack-tag">
+            <span>Method</span>
+            <strong>Rank weighed against symptom, omen, and battlefield recurrence</strong>
+          </div>
+          <div class="rack-tag">
+            <span>Final Principle</span>
+            <strong>A title is only useful when it continues to rot</strong>
+          </div>
         </div>
       </div>
     </section>
@@ -714,46 +728,38 @@
 
       <p>
         No number is sacred here. The name matters. The wound beneath it matters more.
-        Each bound name opens elsewhere, under heavier seal. This page is the index, not the confession.
+        Each bound name opens elsewhere, under heavier seal. This chamber is the rack from which the plaguebound
+        may be drawn.
       </p>
     </section>
 
     <section class="names-grid">
-      <article class="name-card active-name">
+      <article class="name-card">
         <span class="status">UNSEALED NAME</span>
         <h3>Mortivus Classarion</h3>
         <span class="quote">“Blessed by Nurgle. Unfinished by design.”</span>
         <p>
-          Plague Champion of uncertain station. Commander, omen-bearer, occult tactician,
-          and aspirant toward daemonhood.
+          Commander of uncertain station. Cunning, occult, attritional, and subject to unresolved ascension pressure.
         </p>
-        <a
-          class="entry-link"
-          href="mortivus-classarion.html"
-          data-lore="The first name opens only under contradiction. Mortivus is not finished becoming."
-        >
-          Open Name-Crypt
-        </a>
+        <a class="entry-link" href="mortivus-classarion.html">Open Name-Crypt</a>
       </article>
 
       <article class="name-card">
-        <span class="status">SEALED NAME</span>
+        <span class="status">SEALED HOST</span>
         <h3>The Rotfather’s Vanguard</h3>
         <span class="quote">“The host advances where hope has already begun to spoil.”</span>
         <p>
-          Warhost structure, plague doctrine, internal rites, contradictory muster records,
-          and the private prophecy that moves beneath the host.
+          Warhost structure, plague doctrine, internal rites, contradictory muster memory, and private prophecy.
         </p>
         <button class="entry-link sealed-entry">Await Clearance</button>
       </article>
 
       <article class="name-card">
-        <span class="status">SEALED NAME</span>
+        <span class="status">SEALED VESSEL</span>
         <h3>The Rotfather’s Mercy</h3>
-        <span class="quote">“The vessel remembers what the living misplace.”</span>
+        <span class="quote">“The vessel remembers what flesh misplaces.”</span>
         <p>
-          Vessel-lore, command decks, devotional machinery, plague-hold anatomy,
-          shipborne omens, and the slow intelligence of the hull.
+          Ship-decks, plague-hold anatomy, shrine engines, machine-spirit corruption, and internal command sectors.
         </p>
         <button class="entry-link sealed-entry">Await Clearance</button>
       </article>
@@ -763,14 +769,13 @@
         <h3>Lieutenants Unrecorded</h3>
         <span class="quote">“Some servants must ripen before they are named.”</span>
         <p>
-          Future plaguebound champions, tally-keepers, surgeons, blightlords,
-          oath-rotted servants, and lesser names still breathing in the dark.
+          Lesser champions, tally-bearers, surgeons, blightlords, relic-keepers, and oath-rotted servants.
         </p>
         <button class="entry-link sealed-entry">Await Clearance</button>
       </article>
     </section>
 
-    <section class="dossier-grid">
+    <section class="two-col">
       <article class="panel">
         <div class="section-kicker">
           <p class="eyebrow">DATAVAULT PURPOSE</p>
@@ -786,33 +791,22 @@
 
         <p>
           It records plaguebound figures not by rank alone, but by devotional pressure:
-          what they survived, what they spread, what they lost, what they became, and what the archive
-          suspects they are becoming.
+          what they survived, what they spread, what they lost, what they became, and what the archive suspects
+          they are becoming.
         </p>
 
-        <div class="dossier-principles">
-          <div
-            class="principle"
-            data-lore="The Dossier accepts contradiction because contradiction is often the first sign of ascension."
-          >
+        <div class="principles">
+          <div class="principle">
             <span>Principle I</span>
             <strong>Rank is less reliable than symptom.</strong>
           </div>
-
-          <div
-            class="principle"
-            data-lore="Names are preserved because names can carry infection long after flesh has failed."
-          >
+          <div class="principle">
             <span>Principle II</span>
-            <strong>A title is only useful when it continues to rot.</strong>
+            <strong>Contradiction is not an error. It is often the first mark of favor.</strong>
           </div>
-
-          <div
-            class="principle"
-            data-lore="Witness accounts are not corrected. They are allowed to decay beside one another."
-          >
+          <div class="principle">
             <span>Principle III</span>
-            <strong>Conflicting records may all be true in the warp’s shadow.</strong>
+            <strong>Witness accounts are not corrected. They are allowed to decay beside one another.</strong>
           </div>
         </div>
       </article>
@@ -827,100 +821,135 @@
 
         <p>
           The first Plaguebound Dossier was not written by a scribe. It was assembled from failed orders,
-          corrupted vox returns, stained armor manifests, confessions extracted from dying serfs,
-          and the muttering of plague-censers aboard <span style="color: var(--rot-bright);">The Rotfather’s Mercy</span>.
+          corrupted vox returns, stained armor manifests, plague-serf confessions, and the muttering
+          of censers hung too close to shipboard ventilation shrines.
         </p>
 
         <p>
-          Mortivus permitted the archive to continue because the Dossier served a purpose beyond memory.
-          It watched the host from within. It studied loyalty as a contagion. It tracked which warriors merely
-          obeyed and which had begun to ripen toward something stranger.
+          Mortivus permitted the archive to continue because it served a purpose beyond memory.
+          It watched the host from within. It tracked which warriors merely obeyed and which had begun
+          to ripen toward stranger stations.
         </p>
 
         <p>
-          In time, the datavault became less a roster and more an omen-engine. It does not simply ask
-          who serves the Vanguard. It asks who among them is closest to being claimed, transformed,
-          elevated, or erased.
+          Over time the chamber ceased to be a roster and became an omen-engine. It does not only ask
+          who serves the Vanguard. It asks who is nearest to becoming something the current host is not yet
+          prepared to name aloud.
         </p>
       </article>
     </section>
 
+    <section class="vault-schematic">
+      <div class="section-kicker">
+        <p class="eyebrow">NAME-CRYPT RACK SCHEMATIC</p>
+        <span class="tag">ARCHIVE FLOW</span>
+      </div>
+
+      <h2>Internal Progression of a Bound Name</h2>
+
+      <p class="schematic-note">
+        A subject does not enter the Dossier as a completed entity. He passes through filters of wound,
+        witness, doctrine, and omen until the chamber judges the name worthy of preservation.
+      </p>
+
+      <pre>
+   [FIELD STAIN]
+        │
+        ▼
+   [NAME RECOVERED]
+        │
+        ▼
+   [RANK DISPUTED] ───────▶ [WITNESS CONTRADICTION]
+        │                           │
+        ▼                           ▼
+   [BATTLE RECURRENCE] ─────▶ [SYMPTOM TALLY]
+        │                           │
+        └──────────────┬────────────┘
+                       ▼
+                 [OMEN PRESSURE]
+                       │
+                       ▼
+               [NAME-CRYPT ENTRY]
+                       │
+                       ▼
+               [SUBJECT KEPT OPEN]
+      </pre>
+
+      <div class="schematic-grid">
+        <div class="schematic-cell">
+          <span>Field Stain</span>
+          First usable trace of a subject in battle, prayer, or shipboard rot-memory.
+        </div>
+        <div class="schematic-cell">
+          <span>Symptom Tally</span>
+          Tracks changes that rank alone cannot explain.
+        </div>
+        <div class="schematic-cell">
+          <span>Omen Pressure</span>
+          Measures whether the subject’s future appears to be leaning forward.
+        </div>
+      </div>
+    </section>
+
     <section class="terminal-panel">
       <div class="section-kicker">
-        <p class="eyebrow">PLAGUEBOUND VOX-TERMINAL</p>
+        <p class="eyebrow">ARCHIVE WHISPER ENGINE</p>
         <span class="tag">MACHINE-SPIRIT OUTPUT</span>
       </div>
 
-      <h2>Recovered Fragments From the Warhost</h2>
+      <h2>Recovered Fragments From the Rack</h2>
 
       <p>
-        The terminal draws from corrupted battle-memory, plague doctrine, enemy contact reports,
-        and half-digested vox echoes. It does not answer cleanly. It returns what the datavault can stomach.
+        The archive spirit does not answer direct questions. It exhumes fragments from proximity, battle-smear,
+        and devotional residue. Select the class of fragment to disturb it.
       </p>
 
       <div class="terminal-grid">
         <div class="terminal-controls">
-          <button class="terminal-btn" data-terminal="imperium">Imperial Contact Fragment</button>
-          <button class="terminal-btn" data-terminal="astartes">Astartes Opposition Fragment</button>
-          <button class="terminal-btn" data-terminal="xenos">Xenos Contamination Note</button>
-          <button class="terminal-btn" data-terminal="chaos">Rival Heretic Observation</button>
-          <button class="terminal-btn" data-terminal="nurgle">Plaguebound Litany</button>
+          <button class="terminal-btn" data-type="name">Name Fragment</button>
+          <button class="terminal-btn" data-type="omen">Omen Fragment</button>
+          <button class="terminal-btn" data-type="battle">Battle Fragment</button>
+          <button class="terminal-btn" data-type="litany">Litany Fragment</button>
 
           <div class="terminal-status">
-            TERMINAL CONDITION: phlegmatic coherence unstable.
-            <br />
-            OUTPUT PURITY: unacceptable.
-            <br />
-            RESULT: suitable for use.
+            ARCHIVE STATE: damply coherent.<br />
+            PURITY LEVEL: unacceptable.<br />
+            RESULT: trustworthy enough.
           </div>
         </div>
 
         <div class="terminal-output" id="terminalOutput">
-          <h3>VOX-TERMINAL AWAITS OFFERING</h3>
+          <h3>RACK-SPIRIT AWAITS DISTURBANCE</h3>
           <p>
-            Select a fragment class. The Dossier will exhume a battle-clip, enemy weakness,
-            or plaguebound utterance from the sump of stored war-memory.
+            Disturb the rack. It will answer with something incomplete, which is to say something useful.
           </p>
         </div>
       </div>
     </section>
 
-    <section class="archive-verdict">
+    <section class="journal-panel">
       <div class="section-kicker">
-        <p class="eyebrow">SEPTICARIUM VERDICT</p>
-        <span class="tag">DATAVAULT STATUS</span>
+        <p class="eyebrow">MARGINAL SCRAPS</p>
+        <span class="tag">ARCHIVE NOTES</span>
       </div>
 
-      <h2>The Dossier Remains Open</h2>
+      <h2>Recovered Scribal Residue</h2>
 
-      <p>
-        The Plaguebound Dossier is not a biography vault. It is a surveillance organ pointed inward.
-        It records the host so that the host may be understood, weaponized, disciplined, and ripened.
-      </p>
-
-      <p>
-        Each future name will open under its own seal. The index remembers the name. The name-crypt will decide
-        whether the name deserves a body.
-      </p>
-
-      <div class="verdict-grid">
-        <div class="verdict-box">
-          <span>Datavault Function</span>
-          <strong>Internal plaguebound classification and identity surveillance.</strong>
+      <div class="journal-list">
+        <div class="journal-note">
+          <span>Unsigned Margin</span>
+          “A name held too tightly remains biography. A name loosened in the right place becomes a plague-vector.”
         </div>
-
-        <div class="verdict-box">
-          <span>Unsealed Name</span>
-          <strong>Mortivus Classarion // name-crypt prepared separately.</strong>
+        <div class="journal-note">
+          <span>Tally-Slave Correction</span>
+          “Do not write ‘stable rank’ beside Mortivus again. The last one who did so died politely and in sections.”
         </div>
-
-        <div class="verdict-box">
-          <span>Final Note</span>
-          <strong>A name is not numbered here. It is marked for deeper infection.</strong>
+        <div class="journal-note">
+          <span>Censer-Bearer Fragment</span>
+          “The host does not fear being watched by the Dossier. It fears being understood by it.”
         </div>
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
@@ -928,212 +957,128 @@
     <p>Names entered into the Dossier are not remembered. They are preserved until they worsen.</p>
   </footer>
 
-  <div class="hover-liturgy" id="hoverLiturgy"></div>
-
   <script>
+    const bootScreen = document.getElementById("bootScreen");
+    const bootLines = document.getElementById("bootLines");
+    const enterButton = document.getElementById("enterButton");
     const sporeField = document.querySelector(".spore-field");
-    const hoverLiturgy = document.getElementById("hoverLiturgy");
     const sealedEntries = document.querySelectorAll(".sealed-entry");
-    const dossierSeal = document.getElementById("dossierSeal");
     const terminalOutput = document.getElementById("terminalOutput");
     const terminalButtons = document.querySelectorAll(".terminal-btn");
 
+    const bootSequence = [
+      "Opening Plaguebound Dossier...",
+      "Index rack awakes.",
+      "Name-crypt braces disengaged.",
+      "Contradiction filters active.",
+      "Omen pressure thresholds rising.",
+      "Bound names available for handling.",
+      "Warning: some identities remain wet.",
+      "Archive spirit prepared to answer badly."
+    ];
+
     const fragments = {
-      imperium: [
+      name: [
         {
-          title: "IMPERIAL CONTACT FRAGMENT // FAILED QUARANTINE",
-          body:
-            "The enemy commander ordered the infected hab-blocks sealed by dawn. By third bell, the seals had become shrines. By fourth, the guardsmen assigned to burn the doors were kneeling before them. Their prayers were not accurate, but they were moist enough to be accepted.",
-          weakness:
-            "WEAKNESS OBSERVED: Imperial command mistook obedience for resilience."
+          title: "NAME FRAGMENT // MORTIVUS",
+          body: "The archive refuses to decide whether the title follows the warrior or the warrior follows the title. This uncertainty is considered fertile."
         },
         {
-          title: "IMPERIAL CONTACT FRAGMENT // TRENCH-LINE COLLAPSE",
-          body:
-            "Las-fire continued for nine hours after morale death. This is common among loyalist infantry. The body repeats doctrine after the soul has deserted. Mortivus allowed the barrage to continue until ammunition discipline became panic.",
-          weakness:
-            "WEAKNESS OBSERVED: Faith remained upright longer than thought, but not longer than fever."
+          title: "NAME FRAGMENT // VANGUARD",
+          body: "The host did not form all at once. It clotted around recurrence, attrition, and the pressure of being near a commander who made defeat feel instructional."
         },
         {
-          title: "IMPERIAL CONTACT FRAGMENT // SHRINE-WORLD OUTER PRECINCT",
-          body:
-            "Priests called for purity rites. The rites required water. The water had listened to the flies. The first blessing was administered through contaminated hands and received with gratitude.",
-          weakness:
-            "WEAKNESS OBSERVED: Ritual dependency created predictable infection vectors."
+          title: "NAME FRAGMENT // VESSEL",
+          body: "The Rotfather’s Mercy is not simply inhabited. It is slowly being agreed with by rust, oil, bells, and tissue."
         }
       ],
-
-      astartes: [
+      omen: [
         {
-          title: "ASTARTES OPPOSITION FRAGMENT // PRIDE IN CERAMITE",
-          body:
-            "The opposing transhuman element advanced with disciplined hatred. Admirable. Wasteful. Their line did not break when the first plague shells landed. It broke later, when their wounded began speaking in voices their helms could not identify.",
-          weakness:
-            "WEAKNESS OBSERVED: Pride resisted fear but amplified confusion."
+          title: "OMEN FRAGMENT // ASCENSION",
+          body: "Several records concerning Mortivus appear to have been written before the engagements that justified them."
         },
         {
-          title: "ASTARTES OPPOSITION FRAGMENT // HONOR FAILURE",
-          body:
-            "The loyalist captain challenged Mortivus by name. The archive notes no verbal reply. Only seven bells. After the seventh, the captain’s honor guard reported insects moving beneath their oaths.",
-          weakness:
-            "WEAKNESS OBSERVED: Challenge rituals can be inverted into devotional traps."
+          title: "OMEN FRAGMENT // SHIPBOARD",
+          body: "A bell tolled in Hold-Seven where no bell had yet been mounted. Three plague marines knelt anyway."
         },
         {
-          title: "ASTARTES OPPOSITION FRAGMENT // SEALED HELM INCIDENT",
-          body:
-            "A fly was heard inside a sealed helm. The helm was never breached. The warrior wearing it continued fighting for eleven minutes after requesting absolution from a chaplain no longer present.",
-          weakness:
-            "WEAKNESS OBSERVED: Transhuman discipline fails poorly when certainty becomes supernatural."
+          title: "OMEN FRAGMENT // NAME-RACK",
+          body: "Two sealed tags darkened overnight. By dawn a third tag had begun sweating."
         }
       ],
-
-      xenos: [
+      battle: [
         {
-          title: "XENOS CONTAMINATION NOTE // ADAPTIVE BIOLOGY",
-          body:
-            "The xenos strain adapted quickly to the first infection. This was expected. Grandfather’s gifts do not require immediate victory. They require contact, memory, recurrence, and the slow education of living systems.",
-          weakness:
-            "WEAKNESS OBSERVED: Adaptation is not immunity. It is conversation."
+          title: "BATTLE FRAGMENT // SHRINE LOCK",
+          body: "An enemy chapel remained intact after bombardment. Mortivus declined to shell it further. The defenders were more useful alive and enclosed."
         },
         {
-          title: "XENOS CONTAMINATION NOTE // ALIEN COMMAND PATTERN",
-          body:
-            "The alien mind-network displayed no fear in the human sense. Useful. Fear is not required. Interruption is sufficient. A perfect chorus needs only one wet note to become music of another god.",
-          weakness:
-            "WEAKNESS OBSERVED: Collective coordination can become collective contamination."
+          title: "BATTLE FRAGMENT // TRENCH PERSISTENCE",
+          body: "Loyalist infantry fired for six hours after morale death. Mortivus called this admirable and irrelevant."
         },
         {
-          title: "XENOS CONTAMINATION NOTE // SPORE COMPETITION",
-          body:
-            "Foreign spores contested the lower holds. Several were permitted to grow. Mortivus ordered no purge. The resulting rot was more interesting than obedience.",
-          weakness:
-            "WEAKNESS OBSERVED: Rival biology may be harvested as sacrament."
+          title: "BATTLE FRAGMENT // VOIDBOARD",
+          body: "A sealed boarding corridor was left unopened for a full watch cycle. By the time the hatch parted, resistance had become liturgical rather than tactical."
         }
       ],
-
-      chaos: [
+      litany: [
         {
-          title: "RIVAL HERETIC OBSERVATION // EXCESSIVE HASTE",
-          body:
-            "The rival host sought spectacle, screaming revelation, and immediate ruin. They mistook noise for devotion. The Death Guard did not answer. The rust answered later.",
-          weakness:
-            "WEAKNESS OBSERVED: Frenzy leaves patterns. Patterns invite infection."
+          title: "LITANY FRAGMENT // NAMEKEEPING",
+          body: "Keep the name damp. Dry names crack. Cracked names become Imperial."
         },
         {
-          title: "RIVAL HERETIC OBSERVATION // FALSE PROPHECY",
-          body:
-            "Their prophet claimed the gods had chosen him. His lungs disagreed by dusk. The Dossier notes that prophecy spoken too loudly often invites correction.",
-          weakness:
-            "WEAKNESS OBSERVED: Ambition without endurance curdles quickly."
+          title: "LITANY FRAGMENT // CONTRADICTION",
+          body: "When two records disagree, let them rot together until they breed a third truth."
         },
         {
-          title: "RIVAL HERETIC OBSERVATION // WARP-DRUNK RAIDERS",
-          body:
-            "The enemy raiders crossed the deck laughing. By the time they reached the second bulkhead, they had begun hearing bells. By the third, several mistook the sound for home.",
-          weakness:
-            "WEAKNESS OBSERVED: Warp exposure does not prevent plague-theology. It seasons it."
-        }
-      ],
-
-      nurgle: [
-        {
-          title: "PLAGUEBOUND LITANY // THE KINDNESS OF CONTINUATION",
-          body:
-            "Grandfather does not ask the flesh to remain beautiful. He asks it to remain. To split, swell, flower, leak, host, remember, forgive, and continue in forms terror has not yet learned to bless.",
-          weakness:
-            "LITANY RESULT: Mercy confirmed as continuation."
-        },
-        {
-          title: "PLAGUEBOUND LITANY // THE SEVENTH PATIENCE",
-          body:
-            "Count not the dead alone. Count the cough before the wound. Count the rust before the breach. Count the doubt before surrender. Count the silence after the bell. Count the fly. Count the name. Count again.",
-          weakness:
-            "LITANY RESULT: The tally deepens by repetition."
-        },
-        {
-          title: "PLAGUEBOUND LITANY // MORTIVUS UNRESOLVED",
-          body:
-            "Do not decide what Mortivus is. Decision is a clean habit. Let the title swell. Let the armor disagree with the body. Let the witnesses rot into harmony.",
-          weakness:
-            "LITANY RESULT: Contradiction preserved as sacred pressure."
+          title: "LITANY FRAGMENT // TALLY",
+          body: "Do not count only the dead. Count the cough before the wound and the doubt before surrender."
         }
       ]
     };
 
-    function createSpores() {
-      const sporeCount = 74;
+    function runBootSequence() {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i >= bootSequence.length) {
+          clearInterval(interval);
+          return;
+        }
+        const p = document.createElement("p");
+        p.textContent = `// ${bootSequence[i]}`;
+        bootLines.appendChild(p);
+        i += 1;
+      }, 270);
+    }
 
+    function createSpores() {
+      const sporeCount = 80;
       for (let i = 0; i < sporeCount; i++) {
         const spore = document.createElement("span");
-
         spore.classList.add("spore");
         spore.style.left = `${Math.random() * 100}%`;
         spore.style.animationDuration = `${10 + Math.random() * 22}s`;
         spore.style.animationDelay = `${Math.random() * 16}s`;
         spore.style.opacity = `${0.15 + Math.random() * 0.65}`;
         spore.style.transform = `scale(${0.6 + Math.random() * 1.8})`;
-
         sporeField.appendChild(spore);
       }
     }
 
-    function randomFrom(array) {
-      return array[Math.floor(Math.random() * array.length)];
+    function randomFrom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function renderTerminal(type) {
-      const fragment = randomFrom(fragments[type]);
-
+    function renderFragment(type) {
+      const item = randomFrom(fragments[type]);
       terminalOutput.innerHTML = `
-        <h3>${fragment.title}</h3>
-        <p>${fragment.body}</p>
-        <p><strong>${fragment.weakness}</strong></p>
+        <h3>${item.title}</h3>
+        <p>${item.body}</p>
       `;
-    }
-
-    function positionHoverLiturgy(event) {
-      if (!hoverLiturgy) return;
-
-      const offset = 18;
-      const tooltipWidth = hoverLiturgy.offsetWidth || 320;
-      const tooltipHeight = hoverLiturgy.offsetHeight || 120;
-
-      let x = event.clientX + offset;
-      let y = event.clientY + offset;
-
-      if (x + tooltipWidth > window.innerWidth - 12) {
-        x = event.clientX - tooltipWidth - offset;
-      }
-
-      if (y + tooltipHeight > window.innerHeight - 12) {
-        y = event.clientY - tooltipHeight - offset;
-      }
-
-      hoverLiturgy.style.left = `${x}px`;
-      hoverLiturgy.style.top = `${y}px`;
-    }
-
-    function initializeHoverLore() {
-      const loreTargets = document.querySelectorAll("[data-lore]");
-
-      loreTargets.forEach((target) => {
-        target.addEventListener("mouseenter", (event) => {
-          hoverLiturgy.textContent = target.dataset.lore;
-          hoverLiturgy.classList.add("show");
-          positionHoverLiturgy(event);
-        });
-
-        target.addEventListener("mousemove", positionHoverLiturgy);
-
-        target.addEventListener("mouseleave", () => {
-          hoverLiturgy.classList.remove("show");
-        });
-      });
     }
 
     terminalButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        renderTerminal(button.dataset.terminal);
+        renderFragment(button.dataset.type);
       });
     });
 
@@ -1141,32 +1086,18 @@
       button.addEventListener("click", () => {
         terminalOutput.innerHTML = `
           <h3>NAME-CRYPT REFUSES OPENING</h3>
-          <p>The requested name has not yet finished becoming useful. The Dossier will not open a subject before the rot has earned it.</p>
-          <p><strong>RESULT:</strong> Await further corruption.</p>
+          <p>The requested chamber has not finished becoming useful. Return when the rot has instructed it more thoroughly.</p>
         `;
-
-        window.scrollTo({
-          top: document.querySelector(".terminal-panel").offsetTop - 20,
-          behavior: "smooth"
-        });
+        document.querySelector(".terminal-panel").scrollIntoView({ behavior: "smooth" });
       });
     });
 
-    dossierSeal.addEventListener("click", () => {
-      terminalOutput.innerHTML = `
-        <h3>DOSSIER SEAL STIRRED</h3>
-        <p>Identity is not a fact aboard The Rotfather’s Mercy. It is a wound that keeps receiving names.</p>
-        <p><strong>ARCHIVE RESPONSE:</strong> Do not number the plaguebound. Number the bells that toll before they arrive.</p>
-      `;
-
-      window.scrollTo({
-        top: document.querySelector(".terminal-panel").offsetTop - 20,
-        behavior: "smooth"
-      });
+    enterButton.addEventListener("click", () => {
+      bootScreen.classList.add("hidden");
     });
 
+    runBootSequence();
     createSpores();
-    initializeHoverLore();
   </script>
 </body>
 </html>
