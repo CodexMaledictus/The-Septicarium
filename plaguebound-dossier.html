@@ -8,7 +8,7 @@
 
   <meta
     name="description"
-    content="Datavault 01 of The Septicarium. The Plaguebound Dossier. First active entry: Mortivus Classarion."
+    content="The Plaguebound Dossier of The Septicarium. Names preserved until they become useful infections."
   />
 
   <style>
@@ -168,9 +168,8 @@
 
     .hero,
     .panel,
-    .entry-card,
-    .index-node,
-    .identity-module,
+    .name-card,
+    .terminal-panel,
     .archive-verdict {
       position: relative;
       border: 1px solid var(--line);
@@ -183,9 +182,8 @@
 
     .hero::before,
     .panel::before,
-    .entry-card::before,
-    .index-node::before,
-    .identity-module::before,
+    .name-card::before,
+    .terminal-panel::before,
     .archive-verdict::before {
       content: "";
       position: absolute;
@@ -340,14 +338,15 @@
       margin-bottom: 14px;
     }
 
-    .panel {
+    .panel,
+    .terminal-panel,
+    .archive-verdict {
       padding: 24px;
       margin-bottom: 18px;
     }
 
     .panel h2,
-    .identity-module h2,
-    .entry-card h2,
+    .terminal-panel h2,
     .archive-verdict h2 {
       margin: 0 0 12px;
       font-size: clamp(1.9rem, 3vw, 2.9rem);
@@ -355,13 +354,87 @@
     }
 
     .panel p,
-    .identity-module p,
-    .entry-card p,
+    .terminal-panel p,
     .archive-verdict p,
-    .index-node p,
-    .entry-line p {
+    .name-card p,
+    .terminal-output p {
       color: var(--bone-dim);
       line-height: 1.72;
+    }
+
+    .names-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .name-card {
+      padding: 20px;
+      min-height: 280px;
+      transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+    }
+
+    .name-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--line-strong);
+      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
+    }
+
+    .name-card .status {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .name-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.55rem;
+      line-height: 1.08;
+    }
+
+    .name-card .quote {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--rot-bright);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .active-name {
+      border-color: rgba(220, 237, 132, 0.44);
+    }
+
+    .invoke-btn,
+    .entry-link,
+    .terminal-btn {
+      border: 1px solid rgba(220, 237, 132, 0.24);
+      background: rgba(0,0,0,0.28);
+      color: var(--bone);
+      padding: 12px 14px;
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 220ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .invoke-btn:hover,
+    .entry-link:hover,
+    .terminal-btn:hover {
+      border-color: rgba(220, 237, 132, 0.56);
+      color: var(--rot-bright);
+      background: rgba(163, 198, 74, 0.08);
     }
 
     .dossier-grid {
@@ -399,181 +472,71 @@
       line-height: 1.4;
     }
 
-    .identity-module {
-      padding: 24px;
-      margin-bottom: 18px;
-    }
-
-    .classification-grid {
+    .terminal-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .terminal-controls {
+      display: grid;
       gap: 10px;
-      margin: 18px 0;
     }
 
-    .class-btn,
-    .invoke-btn,
-    .entry-link {
-      border: 1px solid rgba(220, 237, 132, 0.24);
-      background: rgba(0,0,0,0.28);
-      color: var(--bone);
-      padding: 12px 14px;
-      font-family: Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 220ms ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .class-btn:hover,
-    .invoke-btn:hover,
-    .entry-link:hover {
-      border-color: rgba(220, 237, 132, 0.56);
-      color: var(--rot-bright);
-      background: rgba(163, 198, 74, 0.08);
-    }
-
-    .classification-output {
-      min-height: 108px;
+    .terminal-output {
+      min-height: 360px;
       padding: 18px;
       border: 1px solid rgba(220, 237, 132, 0.14);
       background:
-        linear-gradient(135deg, rgba(4, 7, 4, 0.92), rgba(12, 18, 10, 0.8));
-      color: var(--bone);
-      line-height: 1.72;
+        linear-gradient(135deg, rgba(4, 7, 4, 0.95), rgba(12, 18, 10, 0.82));
+      position: relative;
+      overflow: hidden;
     }
 
-    .classification-output strong {
+    .terminal-output::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.025),
+          rgba(255,255,255,0.025) 1px,
+          transparent 1px,
+          transparent 8px
+        );
+      opacity: 0.16;
+    }
+
+    .terminal-output p,
+    .terminal-output h3 {
+      position: relative;
+      z-index: 1;
+    }
+
+    .terminal-output h3 {
+      margin: 0 0 14px;
       color: var(--rot-bright);
-    }
-
-    .index-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .index-node {
-      padding: 20px;
-      min-height: 260px;
-      transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
-    }
-
-    .index-node:hover {
-      transform: translateY(-8px);
-      border-color: var(--line-strong);
-      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
-    }
-
-    .index-node small {
-      display: block;
-      margin-bottom: 10px;
-      color: var(--rot-bright);
-      font-family: Arial, sans-serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .index-node h3 {
-      margin: 0 0 12px;
       font-size: 1.45rem;
-      line-height: 1.08;
+      line-height: 1.12;
     }
 
-    .active-entry {
-      border-color: rgba(220, 237, 132, 0.44);
-    }
-
-    .entry-card {
-      padding: 26px;
-      margin-bottom: 18px;
-    }
-
-    .entry-title-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 18px;
-      align-items: start;
-      margin-bottom: 20px;
-    }
-
-    .entry-title-row h2 {
-      font-size: clamp(2.4rem, 5vw, 4.8rem);
-      letter-spacing: -0.045em;
-      margin-bottom: 4px;
-    }
-
-    .entry-subtitle {
+    .terminal-output strong {
       color: var(--rot-bright);
-      font-style: italic;
-      font-size: clamp(1.1rem, 2vw, 1.55rem);
-      margin: 0;
     }
 
-    .mortivus-grid {
-      display: grid;
-      grid-template-columns: 0.85fr 1.15fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .data-slab {
-      display: grid;
-      gap: 10px;
-    }
-
-    .data-row {
-      padding: 13px 14px;
-      border: 1px solid rgba(220, 237, 132, 0.12);
-      background: rgba(0,0,0,0.2);
-    }
-
-    .data-row span {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--rot);
-      font-family: Arial, sans-serif;
-      font-size: 0.66rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .data-row strong {
-      display: block;
-      color: var(--bone);
-      font-size: 1rem;
-      line-height: 1.42;
-    }
-
-    .entry-lines {
-      display: grid;
-      gap: 14px;
-    }
-
-    .entry-line {
-      padding: 16px;
+    .terminal-status {
+      margin-top: 14px;
+      padding: 14px;
       border: 1px solid rgba(220, 237, 132, 0.12);
       background: rgba(0,0,0,0.18);
-    }
-
-    .entry-line h3 {
-      margin: 0 0 8px;
-      color: var(--bone);
-      font-size: 1.25rem;
-      line-height: 1.15;
+      color: var(--bone-dim);
+      line-height: 1.6;
     }
 
     .archive-verdict {
-      padding: 24px;
-      margin-bottom: 18px;
       border-left: 4px solid var(--rot);
     }
 
@@ -649,15 +612,11 @@
     @media (max-width: 1180px) {
       .hero,
       .dossier-grid,
-      .mortivus-grid {
+      .terminal-grid {
         grid-template-columns: 1fr;
       }
 
-      .index-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .classification-grid {
+      .names-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -681,13 +640,13 @@
         font-size: clamp(3rem, 16vw, 4.8rem);
       }
 
-      .index-grid,
-      .classification-grid {
+      .names-grid {
         grid-template-columns: 1fr;
       }
 
-      .entry-title-row {
-        grid-template-columns: 1fr;
+      .section-kicker {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -699,7 +658,7 @@
   <div class="rot-grid" aria-hidden="true"></div>
 
   <header class="topbar">
-    <div>DATAVAULT // 01 // PLAGUEBOUND DOSSIER</div>
+    <div>PLAGUEBOUND DOSSIER // NAME-CRYPT OPEN</div>
     <div><a href="index.html">RETURN TO COMMAND DECK</a> // THE SEPTICARIUM</div>
   </header>
 
@@ -707,7 +666,7 @@
 
     <section class="hero">
       <div>
-        <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULT // 01</p>
+        <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULT</p>
         <h1>PLAGUEBOUND DOSSIER</h1>
         <p class="subtitle">Names preserved until they become useful infections.</p>
 
@@ -743,6 +702,72 @@
           <div class="seal-node n6">OMEN</div>
         </div>
       </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-kicker">
+        <p class="eyebrow">DOSSIER INDEX</p>
+        <span class="tag">BOUND NAMES</span>
+      </div>
+
+      <h2>Names Under Seal</h2>
+
+      <p>
+        No number is sacred here. The name matters. The wound beneath it matters more.
+        Each bound name opens elsewhere, under heavier seal. This page is the index, not the confession.
+      </p>
+    </section>
+
+    <section class="names-grid">
+      <article class="name-card active-name">
+        <span class="status">UNSEALED NAME</span>
+        <h3>Mortivus Classarion</h3>
+        <span class="quote">“Blessed by Nurgle. Unfinished by design.”</span>
+        <p>
+          Plague Champion of uncertain station. Commander, omen-bearer, occult tactician,
+          and aspirant toward daemonhood.
+        </p>
+        <a
+          class="entry-link"
+          href="mortivus-classarion.html"
+          data-lore="The first name opens only under contradiction. Mortivus is not finished becoming."
+        >
+          Open Name-Crypt
+        </a>
+      </article>
+
+      <article class="name-card">
+        <span class="status">SEALED NAME</span>
+        <h3>The Rotfather’s Vanguard</h3>
+        <span class="quote">“The host advances where hope has already begun to spoil.”</span>
+        <p>
+          Warhost structure, plague doctrine, internal rites, contradictory muster records,
+          and the private prophecy that moves beneath the host.
+        </p>
+        <button class="entry-link sealed-entry">Await Clearance</button>
+      </article>
+
+      <article class="name-card">
+        <span class="status">SEALED NAME</span>
+        <h3>The Rotfather’s Mercy</h3>
+        <span class="quote">“The vessel remembers what the living misplace.”</span>
+        <p>
+          Vessel-lore, command decks, devotional machinery, plague-hold anatomy,
+          shipborne omens, and the slow intelligence of the hull.
+        </p>
+        <button class="entry-link sealed-entry">Await Clearance</button>
+      </article>
+
+      <article class="name-card">
+        <span class="status">NAME NOT YET SPOKEN</span>
+        <h3>Lieutenants Unrecorded</h3>
+        <span class="quote">“Some servants must ripen before they are named.”</span>
+        <p>
+          Future plaguebound champions, tally-keepers, surgeons, blightlords,
+          oath-rotted servants, and lesser names still breathing in the dark.
+        </p>
+        <button class="entry-link sealed-entry">Await Clearance</button>
+      </article>
     </section>
 
     <section class="dossier-grid">
@@ -820,190 +845,42 @@
       </article>
     </section>
 
-    <section class="identity-module">
+    <section class="terminal-panel">
       <div class="section-kicker">
-        <p class="eyebrow">UNIQUE MODULE</p>
-        <span class="tag">RITE OF UNCERTAIN STATION</span>
+        <p class="eyebrow">PLAGUEBOUND VOX-TERMINAL</p>
+        <span class="tag">MACHINE-SPIRIT OUTPUT</span>
       </div>
 
-      <h2>Attempt Classification</h2>
+      <h2>Recovered Fragments From the Warhost</h2>
 
       <p>
-        The Septicarium permits no final classification of Mortivus Classarion. Select a station and the
-        archive will return what it allows. Certainty is denied by design.
+        The terminal draws from corrupted battle-memory, plague doctrine, enemy contact reports,
+        and half-digested vox echoes. It does not answer cleanly. It returns what the datavault can stomach.
       </p>
 
-      <div class="classification-grid">
-        <button class="class-btn" data-class="champion">Plague Champion</button>
-        <button class="class-btn" data-class="contagion">Lord of Contagion</button>
-        <button class="class-btn" data-class="blightlord">Blightlord Ascendant</button>
-        <button class="class-btn" data-class="deathshroud">Deathshroud-Linked</button>
-        <button class="class-btn" data-class="daemon">Daemonhood Petition</button>
-      </div>
+      <div class="terminal-grid">
+        <div class="terminal-controls">
+          <button class="terminal-btn" data-terminal="imperium">Imperial Contact Fragment</button>
+          <button class="terminal-btn" data-terminal="astartes">Astartes Opposition Fragment</button>
+          <button class="terminal-btn" data-terminal="xenos">Xenos Contamination Note</button>
+          <button class="terminal-btn" data-terminal="chaos">Rival Heretic Observation</button>
+          <button class="terminal-btn" data-terminal="nurgle">Plaguebound Litany</button>
 
-      <div class="classification-output" id="classificationOutput">
-        <strong>CLASSIFICATION STATE:</strong> Unsettled. The archive refuses stable rank. Mortivus remains recorded as Blessed by Nurgle.
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="section-kicker">
-        <p class="eyebrow">DOSSIER INDEX</p>
-        <span class="tag">ENTRIES</span>
-      </div>
-
-      <h2>Bound Entries</h2>
-
-      <p>
-        The datavault is incomplete by design. Some entries remain sealed. Some have not yet earned names.
-        Some names have begun to earn bodies.
-      </p>
-    </section>
-
-    <section class="index-grid">
-      <article class="index-node active-entry">
-        <small>ENTRY // 001 // ACTIVE</small>
-        <h3>Mortivus Classarion</h3>
-        <p>
-          Plague Champion of uncertain station. Commander, omen-bearer, occult tactician,
-          and aspirant toward daemonhood.
-        </p>
-        <a class="entry-link" href="#mortivus">Open Entry</a>
-      </article>
-
-      <article class="index-node">
-        <small>ENTRY // 002 // SEALED</small>
-        <h3>The Rotfather’s Vanguard</h3>
-        <p>
-          Warhost structure, plague doctrine, internal rites, and contradictory muster records.
-        </p>
-        <button class="entry-link sealed-entry">Await Clearance</button>
-      </article>
-
-      <article class="index-node">
-        <small>ENTRY // 003 // SEALED</small>
-        <h3>The Rotfather’s Mercy</h3>
-        <p>
-          Vessel-lore, command decks, devotional machinery, plague-hold anatomy, and shipborne omens.
-        </p>
-        <button class="entry-link sealed-entry">Await Clearance</button>
-      </article>
-
-      <article class="index-node">
-        <small>ENTRY // 004 // UNNAMED</small>
-        <h3>Lieutenants Unrecorded</h3>
-        <p>
-          Future plaguebound champions, tally-keepers, surgeons, blightlords, and oath-rotted servants.
-        </p>
-        <button class="entry-link sealed-entry">Await Clearance</button>
-      </article>
-    </section>
-
-    <section class="entry-card" id="mortivus">
-      <div class="entry-title-row">
-        <div>
-          <p class="eyebrow">ENTRY // 001</p>
-          <h2>Mortivus Classarion</h2>
-          <p class="entry-subtitle">Blessed by Nurgle. Unsettled in rank. Ripening toward apotheosis.</p>
-        </div>
-
-        <span class="tag">CLASSIFICATION DISPUTED</span>
-      </div>
-
-      <p>
-        Mortivus Classarion is recorded as a Plague Champion by the oldest surviving tally-stains,
-        yet later records refuse agreement. Some name him a Lord of Contagion. Some place him among
-        Blightlord elites. A few forbidden witness-fragments imply he has stood where only the Deathshroud
-        should stand. The Septicarium confirms none of these accounts. It preserves them all.
-      </p>
-
-      <div class="mortivus-grid">
-        <div class="data-slab">
-          <div
-            class="data-row"
-            data-lore="The archive denies final station because Mortivus himself appears to weaponize uncertainty."
-          >
-            <span>Recorded Station</span>
-            <strong>Plague Champion // Rank Unsettled</strong>
-          </div>
-
-          <div
-            class="data-row"
-            data-lore="The title survives because those who use it tend to die before correcting themselves."
-          >
-            <span>Common Designation</span>
-            <strong>Blessed by Nurgle</strong>
-          </div>
-
-          <div
-            class="data-row"
-            data-lore="His command is not merely tactical. It is liturgical, biological, and psychological."
-          >
-            <span>Command Nature</span>
-            <strong>Cunning, occult, spiritually corrosive</strong>
-          </div>
-
-          <div
-            class="data-row"
-            data-lore="Mortivus does not pursue daemonhood as reward. He appears to treat it as proof."
-          >
-            <span>Ascension Vector</span>
-            <strong>Daemonhood aspiration // unconfirmed progress</strong>
-          </div>
-
-          <div
-            class="data-row"
-            data-lore="The doctrine targets the soul first, the flesh second, and command structure always."
-          >
-            <span>Preferred Doctrine</span>
-            <strong>Spiritual decay, biological corruption, occult rot</strong>
-          </div>
-
-          <div
-            class="data-row"
-            data-lore="The host follows prophecy, but the archive suspects the prophecy may be following him."
-          >
-            <span>Prophetic Status</span>
-            <strong>Bearer of a private plague-omen</strong>
+          <div class="terminal-status">
+            TERMINAL CONDITION: phlegmatic coherence unstable.
+            <br />
+            OUTPUT PURITY: unacceptable.
+            <br />
+            RESULT: suitable for use.
           </div>
         </div>
 
-        <div class="entry-lines">
-          <div class="entry-line">
-            <h3>Appearance in the Records</h3>
-            <p>
-              Mortivus appears most often where classification has already failed. His armor is described
-              as command plate, terminator plate, corpse-shrine, rusted reliquary, and living wound depending
-              on the witness. No single description has survived contact with him unaltered.
-            </p>
-          </div>
-
-          <div class="entry-line">
-            <h3>Command Method</h3>
-            <p>
-              He favors attrition, contamination, morale collapse, and ritualized pressure. Mortivus does not
-              merely seek to defeat an enemy position. He seeks to teach it that its fall began before the first
-              shot was fired.
-            </p>
-          </div>
-
-          <div class="entry-line">
-            <h3>Occult Tendency</h3>
-            <p>
-              Unlike crude champions who mistake decay for simple ruin, Mortivus studies rot as a metaphysical
-              law. He reads infection as scripture, counts symptoms as omens, and treats every battlefield
-              as a body waiting to confess.
-            </p>
-          </div>
-
-          <div class="entry-line">
-            <h3>Daemonhood Aspiration</h3>
-            <p>
-              The Dossier does not state that Mortivus will ascend. It states that many records behave as if
-              his ascension has already begun. Several entries written before major engagements contain titles
-              not yet earned, wounds not yet taken, and victories not yet fought.
-            </p>
-          </div>
+        <div class="terminal-output" id="terminalOutput">
+          <h3>VOX-TERMINAL AWAITS OFFERING</h3>
+          <p>
+            Select a fragment class. The Dossier will exhume a battle-clip, enemy weakness,
+            or plaguebound utterance from the sump of stored war-memory.
+          </p>
         </div>
       </div>
     </section>
@@ -1011,36 +888,35 @@
     <section class="archive-verdict">
       <div class="section-kicker">
         <p class="eyebrow">SEPTICARIUM VERDICT</p>
-        <span class="tag">ENTRY STATUS</span>
+        <span class="tag">DATAVAULT STATUS</span>
       </div>
 
-      <h2>The Archive Refuses Closure</h2>
+      <h2>The Dossier Remains Open</h2>
 
       <p>
-        Mortivus Classarion is not filed as a finished subject. He is filed as a developing contamination.
-        His name remains active, unstable, and watched by the Dossier.
+        The Plaguebound Dossier is not a biography vault. It is a surveillance organ pointed inward.
+        It records the host so that the host may be understood, weaponized, disciplined, and ripened.
       </p>
 
       <p>
-        The Septicarium recognizes him as Plague Champion, commander, omen-bearer, and aspirant,
-        but denies all attempts to make the record clean. Clean records are Imperial habits.
-        The Death Guard know better.
+        Each future name will open under its own seal. The index remembers the name. The name-crypt will decide
+        whether the name deserves a body.
       </p>
 
       <div class="verdict-grid">
         <div class="verdict-box">
-          <span>Threat Nature</span>
-          <strong>Spiritual corrosion before physical annihilation.</strong>
+          <span>Datavault Function</span>
+          <strong>Internal plaguebound classification and identity surveillance.</strong>
         </div>
 
         <div class="verdict-box">
-          <span>Archive Concern</span>
-          <strong>Identity instability may indicate favor, mutation, or pending ascension.</strong>
+          <span>Unsealed Name</span>
+          <strong>Mortivus Classarion // name-crypt prepared separately.</strong>
         </div>
 
         <div class="verdict-box">
-          <span>Final Entry Note</span>
-          <strong>Do not resolve the contradiction. Feed it.</strong>
+          <span>Final Note</span>
+          <strong>A name is not numbered here. It is marked for deeper infection.</strong>
         </div>
       </div>
     </section>
@@ -1048,7 +924,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>THE SEPTICARIUM // DATAVAULT 01 // PLAGUEBOUND DOSSIER // ENTRY 001 ACTIVE</p>
+    <p>THE SEPTICARIUM // PLAGUEBOUND DOSSIER // NAME-CRYPT INDEX ACTIVE</p>
     <p>Names entered into the Dossier are not remembered. They are preserved until they worsen.</p>
   </footer>
 
@@ -1057,26 +933,131 @@
   <script>
     const sporeField = document.querySelector(".spore-field");
     const hoverLiturgy = document.getElementById("hoverLiturgy");
-    const classButtons = document.querySelectorAll(".class-btn");
-    const classificationOutput = document.getElementById("classificationOutput");
     const sealedEntries = document.querySelectorAll(".sealed-entry");
     const dossierSeal = document.getElementById("dossierSeal");
+    const terminalOutput = document.getElementById("terminalOutput");
+    const terminalButtons = document.querySelectorAll(".terminal-btn");
 
-    const classificationResponses = {
-      champion:
-        "<strong>PLAGUE CHAMPION:</strong> Oldest confirmed stain. The archive accepts this as origin, not conclusion. Mortivus is recorded as champion because the first tally had no darker category available.",
+    const fragments = {
+      imperium: [
+        {
+          title: "IMPERIAL CONTACT FRAGMENT // FAILED QUARANTINE",
+          body:
+            "The enemy commander ordered the infected hab-blocks sealed by dawn. By third bell, the seals had become shrines. By fourth, the guardsmen assigned to burn the doors were kneeling before them. Their prayers were not accurate, but they were moist enough to be accepted.",
+          weakness:
+            "WEAKNESS OBSERVED: Imperial command mistook obedience for resilience."
+        },
+        {
+          title: "IMPERIAL CONTACT FRAGMENT // TRENCH-LINE COLLAPSE",
+          body:
+            "Las-fire continued for nine hours after morale death. This is common among loyalist infantry. The body repeats doctrine after the soul has deserted. Mortivus allowed the barrage to continue until ammunition discipline became panic.",
+          weakness:
+            "WEAKNESS OBSERVED: Faith remained upright longer than thought, but not longer than fever."
+        },
+        {
+          title: "IMPERIAL CONTACT FRAGMENT // SHRINE-WORLD OUTER PRECINCT",
+          body:
+            "Priests called for purity rites. The rites required water. The water had listened to the flies. The first blessing was administered through contaminated hands and received with gratitude.",
+          weakness:
+            "WEAKNESS OBSERVED: Ritual dependency created predictable infection vectors."
+        }
+      ],
 
-      contagion:
-        "<strong>LORD OF CONTAGION:</strong> Some records support the implication. Others rot through at the title-line. The Dossier permits the suspicion but withholds confirmation.",
+      astartes: [
+        {
+          title: "ASTARTES OPPOSITION FRAGMENT // PRIDE IN CERAMITE",
+          body:
+            "The opposing transhuman element advanced with disciplined hatred. Admirable. Wasteful. Their line did not break when the first plague shells landed. It broke later, when their wounded began speaking in voices their helms could not identify.",
+          weakness:
+            "WEAKNESS OBSERVED: Pride resisted fear but amplified confusion."
+        },
+        {
+          title: "ASTARTES OPPOSITION FRAGMENT // HONOR FAILURE",
+          body:
+            "The loyalist captain challenged Mortivus by name. The archive notes no verbal reply. Only seven bells. After the seventh, the captain’s honor guard reported insects moving beneath their oaths.",
+          weakness:
+            "WEAKNESS OBSERVED: Challenge rituals can be inverted into devotional traps."
+        },
+        {
+          title: "ASTARTES OPPOSITION FRAGMENT // SEALED HELM INCIDENT",
+          body:
+            "A fly was heard inside a sealed helm. The helm was never breached. The warrior wearing it continued fighting for eleven minutes after requesting absolution from a chaplain no longer present.",
+          weakness:
+            "WEAKNESS OBSERVED: Transhuman discipline fails poorly when certainty becomes supernatural."
+        }
+      ],
 
-      blightlord:
-        "<strong>BLIGHTLORD ASCENDANT:</strong> Terminator-linked accounts persist. Witnesses describe him as too deliberate for ordinary command and too symbolically burdened for simple elite station.",
+      xenos: [
+        {
+          title: "XENOS CONTAMINATION NOTE // ADAPTIVE BIOLOGY",
+          body:
+            "The xenos strain adapted quickly to the first infection. This was expected. Grandfather’s gifts do not require immediate victory. They require contact, memory, recurrence, and the slow education of living systems.",
+          weakness:
+            "WEAKNESS OBSERVED: Adaptation is not immunity. It is conversation."
+        },
+        {
+          title: "XENOS CONTAMINATION NOTE // ALIEN COMMAND PATTERN",
+          body:
+            "The alien mind-network displayed no fear in the human sense. Useful. Fear is not required. Interruption is sufficient. A perfect chorus needs only one wet note to become music of another god.",
+          weakness:
+            "WEAKNESS OBSERVED: Collective coordination can become collective contamination."
+        },
+        {
+          title: "XENOS CONTAMINATION NOTE // SPORE COMPETITION",
+          body:
+            "Foreign spores contested the lower holds. Several were permitted to grow. Mortivus ordered no purge. The resulting rot was more interesting than obedience.",
+          weakness:
+            "WEAKNESS OBSERVED: Rival biology may be harvested as sacrament."
+        }
+      ],
 
-      deathshroud:
-        "<strong>DEATHSHROUD-LINKED:</strong> Censured. Several fragments imply proximity to rites not meant for common record. The Dossier does not clarify whether this is history, honor, hallucination, or omen.",
+      chaos: [
+        {
+          title: "RIVAL HERETIC OBSERVATION // EXCESSIVE HASTE",
+          body:
+            "The rival host sought spectacle, screaming revelation, and immediate ruin. They mistook noise for devotion. The Death Guard did not answer. The rust answered later.",
+          weakness:
+            "WEAKNESS OBSERVED: Frenzy leaves patterns. Patterns invite infection."
+        },
+        {
+          title: "RIVAL HERETIC OBSERVATION // FALSE PROPHECY",
+          body:
+            "Their prophet claimed the gods had chosen him. His lungs disagreed by dusk. The Dossier notes that prophecy spoken too loudly often invites correction.",
+          weakness:
+            "WEAKNESS OBSERVED: Ambition without endurance curdles quickly."
+        },
+        {
+          title: "RIVAL HERETIC OBSERVATION // WARP-DRUNK RAIDERS",
+          body:
+            "The enemy raiders crossed the deck laughing. By the time they reached the second bulkhead, they had begun hearing bells. By the third, several mistook the sound for home.",
+          weakness:
+            "WEAKNESS OBSERVED: Warp exposure does not prevent plague-theology. It seasons it."
+        }
+      ],
 
-      daemon:
-        "<strong>DAEMONHOOD PETITION:</strong> Not granted. Not denied. The archive notes repeated ascension pressure, prophetic contamination, and title-instability consistent with a soul under Grandfather’s extended consideration."
+      nurgle: [
+        {
+          title: "PLAGUEBOUND LITANY // THE KINDNESS OF CONTINUATION",
+          body:
+            "Grandfather does not ask the flesh to remain beautiful. He asks it to remain. To split, swell, flower, leak, host, remember, forgive, and continue in forms terror has not yet learned to bless.",
+          weakness:
+            "LITANY RESULT: Mercy confirmed as continuation."
+        },
+        {
+          title: "PLAGUEBOUND LITANY // THE SEVENTH PATIENCE",
+          body:
+            "Count not the dead alone. Count the cough before the wound. Count the rust before the breach. Count the doubt before surrender. Count the silence after the bell. Count the fly. Count the name. Count again.",
+          weakness:
+            "LITANY RESULT: The tally deepens by repetition."
+        },
+        {
+          title: "PLAGUEBOUND LITANY // MORTIVUS UNRESOLVED",
+          body:
+            "Do not decide what Mortivus is. Decision is a clean habit. Let the title swell. Let the armor disagree with the body. Let the witnesses rot into harmony.",
+          weakness:
+            "LITANY RESULT: Contradiction preserved as sacred pressure."
+        }
+      ]
     };
 
     function createSpores() {
@@ -1094,6 +1075,20 @@
 
         sporeField.appendChild(spore);
       }
+    }
+
+    function randomFrom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function renderTerminal(type) {
+      const fragment = randomFrom(fragments[type]);
+
+      terminalOutput.innerHTML = `
+        <h3>${fragment.title}</h3>
+        <p>${fragment.body}</p>
+        <p><strong>${fragment.weakness}</strong></p>
+      `;
     }
 
     function positionHoverLiturgy(event) {
@@ -1136,27 +1131,38 @@
       });
     }
 
-    classButtons.forEach((button) => {
+    terminalButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        const selectedClass = button.dataset.class;
-        classificationOutput.innerHTML = classificationResponses[selectedClass];
+        renderTerminal(button.dataset.terminal);
       });
     });
 
     sealedEntries.forEach((button) => {
       button.addEventListener("click", () => {
-        classificationOutput.innerHTML =
-          "<strong>ACCESS REFUSED:</strong> The requested entry has not yet finished becoming true. The Dossier will not open a name before the rot has earned it.";
+        terminalOutput.innerHTML = `
+          <h3>NAME-CRYPT REFUSES OPENING</h3>
+          <p>The requested name has not yet finished becoming useful. The Dossier will not open a subject before the rot has earned it.</p>
+          <p><strong>RESULT:</strong> Await further corruption.</p>
+        `;
+
         window.scrollTo({
-          top: document.querySelector(".identity-module").offsetTop - 20,
+          top: document.querySelector(".terminal-panel").offsetTop - 20,
           behavior: "smooth"
         });
       });
     });
 
     dossierSeal.addEventListener("click", () => {
-      classificationOutput.innerHTML =
-        "<strong>DOSSIER SEAL STIRRED:</strong> Identity is not a fact aboard The Rotfather’s Mercy. It is a wound that keeps receiving names.";
+      terminalOutput.innerHTML = `
+        <h3>DOSSIER SEAL STIRRED</h3>
+        <p>Identity is not a fact aboard The Rotfather’s Mercy. It is a wound that keeps receiving names.</p>
+        <p><strong>ARCHIVE RESPONSE:</strong> Do not number the plaguebound. Number the bells that toll before they arrive.</p>
+      `;
+
+      window.scrollTo({
+        top: document.querySelector(".terminal-panel").offsetTop - 20,
+        behavior: "smooth"
+      });
     });
 
     createSpores();
