@@ -337,9 +337,9 @@
     .secret-panel,
     .outcome-card,
     .weapon-schematic-panel,
-    .strife-panel,
     .abilities-panel,
-    .rpg-panel {
+    .trial-panel,
+    .armor-deep-panel {
       position: relative;
       border: 1px solid var(--line);
       background:
@@ -361,9 +361,9 @@
     .secret-panel::before,
     .outcome-card::before,
     .weapon-schematic-panel::before,
-    .strife-panel::before,
     .abilities-panel::before,
-    .rpg-panel::before {
+    .trial-panel::before,
+    .armor-deep-panel::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -424,8 +424,8 @@
     .close-vox,
     .secret-btn,
     .tab-button,
-    .rpg-btn,
-    .rpg-choice {
+    .trial-btn,
+    .trial-choice {
       border: 1px solid rgba(214, 227, 123, 0.24);
       background: rgba(0,0,0,0.28);
       color: var(--bone);
@@ -453,9 +453,9 @@
     .secret-btn:hover,
     .tab-button:hover,
     .tab-button.active,
-    .rpg-btn:hover,
-    .rpg-choice:hover,
-    .rpg-choice.active {
+    .trial-btn:hover,
+    .trial-choice:hover,
+    .trial-choice.active {
       border-color: rgba(214, 227, 123, 0.58);
       color: var(--rot2);
       background: rgba(159, 186, 79, 0.08);
@@ -533,8 +533,9 @@
     .outcome-card span,
     .ability-card span,
     .tab-output span,
-    .rpg-stat span,
-    .log-entry span {
+    .trial-stat span,
+    .log-entry span,
+    .armor-note span {
       display: block;
       margin-bottom: 8px;
       color: var(--rot2);
@@ -564,9 +565,9 @@
     .panic-panel,
     .secret-panel,
     .weapon-schematic-panel,
-    .strife-panel,
     .abilities-panel,
-    .rpg-panel {
+    .trial-panel,
+    .armor-deep-panel {
       padding: 24px;
       margin-bottom: 18px;
     }
@@ -577,9 +578,9 @@
     .panic-panel h2,
     .secret-panel h2,
     .weapon-schematic-panel h2,
-    .strife-panel h2,
     .abilities-panel h2,
-    .rpg-panel h2 {
+    .trial-panel h2,
+    .armor-deep-panel h2 {
       margin: 0 0 12px;
       font-family: "Cinzel", Georgia, serif;
       font-size: clamp(2rem, 3vw, 3rem);
@@ -596,10 +597,10 @@
     .secret-panel p,
     .outcome-card p,
     .weapon-schematic-panel p,
-    .strife-panel p,
     .abilities-panel p,
     .reliquary-panel p,
-    .rpg-panel p {
+    .trial-panel p,
+    .armor-deep-panel p {
       color: var(--bone2);
       line-height: 1.76;
     }
@@ -626,12 +627,6 @@
     .reliquary-svg {
       width: min(880px, 100%);
       filter: drop-shadow(0 0 38px rgba(159, 186, 79, 0.18));
-    }
-
-    .relic-overlay {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
     }
 
     .hotspot-list {
@@ -707,7 +702,7 @@
       font-weight: normal;
       color: var(--bone);
       line-height: 1.45;
-    }    }
+    }
 
     .two-col {
       display: grid;
@@ -735,7 +730,8 @@
     .outcome-card h3,
     .ability-card h3,
     .tab-output h3,
-    .log-entry h3 {
+    .log-entry h3,
+    .armor-note h3 {
       margin: 0 0 8px;
       color: var(--bone);
       font-family: "Cinzel", Georgia, serif;
@@ -747,7 +743,8 @@
     .campaign-grid,
     .weapon-grid,
     .subcrypt-grid,
-    .ability-grid {
+    .ability-grid,
+    .armor-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
@@ -758,7 +755,8 @@
     .weapon-card,
     .subcrypt-card,
     .outcome-card,
-    .ability-card {
+    .ability-card,
+    .armor-note {
       padding: 18px;
       min-height: 330px;
       transition: 240ms ease;
@@ -769,11 +767,16 @@
       box-shadow: var(--green-shadow);
     }
 
+    .armor-note {
+      min-height: 270px;
+    }
+
     .campaign-card:hover,
     .weapon-card:hover,
     .subcrypt-card:hover,
     .outcome-card:hover,
-    .ability-card:hover {
+    .ability-card:hover,
+    .armor-note:hover {
       transform: translateY(-7px);
       border-color: var(--line2);
       box-shadow: 0 0 46px rgba(159, 186, 79, 0.12);
@@ -800,7 +803,7 @@
     .armor-svg,
     .doctrine-svg,
     .weapon-svg,
-    .strife-svg {
+    .trial-svg {
       width: 100%;
       min-height: 420px;
       filter: drop-shadow(0 0 24px rgba(159, 186, 79, 0.1));
@@ -824,7 +827,7 @@
 
     .weapon-schematic {
       padding: 16px;
-      min-height: 520px;
+      min-height: 610px;
       border: 1px solid rgba(214, 227, 123, 0.14);
       background: rgba(0,0,0,0.18);
     }
@@ -834,6 +837,10 @@
       color: var(--bone);
       font-family: "Cinzel", Georgia, serif;
       font-size: 1.2rem;
+    }
+
+    .weapon-schematic p {
+      margin-bottom: 0;
     }
 
     .battle-tabs {
@@ -848,37 +855,37 @@
       border: 1px solid rgba(214, 227, 123, 0.16);
       background:
         linear-gradient(135deg, rgba(5, 7, 5, 0.95), rgba(13, 17, 12, 0.84));
-      min-height: 390px;
+      min-height: 460px;
     }
 
-    .rpg-grid {
+    .trial-grid {
       display: grid;
       grid-template-columns: 0.42fr 0.58fr;
       gap: 18px;
       margin-top: 18px;
     }
 
-    .rpg-console,
-    .rpg-output {
+    .trial-console,
+    .trial-output {
       border: 1px solid rgba(214,227,123,0.14);
       background: rgba(0,0,0,0.18);
       padding: 16px;
     }
 
-    .rpg-choices {
+    .trial-choices {
       display: grid;
       gap: 10px;
       margin: 12px 0 18px;
     }
 
-    .rpg-stat-grid {
+    .trial-stat-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       margin-top: 12px;
     }
 
-    .rpg-stat {
+    .trial-stat {
       padding: 12px;
       border: 1px solid rgba(214,227,123,0.12);
       background: rgba(0,0,0,0.16);
@@ -901,7 +908,7 @@
     .log {
       display: grid;
       gap: 10px;
-      max-height: 460px;
+      max-height: 520px;
       overflow: auto;
       padding-right: 6px;
     }
@@ -914,6 +921,8 @@
 
     .log-entry p {
       margin: 0;
+      color: var(--bone2);
+      line-height: 1.65;
     }
 
     .secret-panel {
@@ -1037,16 +1046,11 @@
       line-height: 1.65;
     }
 
-    .toast,
-    .tooltip-box {
-      position: fixed;
-      z-index: 120;
-      pointer-events: none;
-    }
-
     .toast {
+      position: fixed;
       left: 50%;
       bottom: 24px;
+      z-index: 120;
       transform: translateX(-50%) translateY(120px);
       max-width: calc(100% - 28px);
       padding: 14px 18px;
@@ -1059,34 +1063,11 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       transition: transform 280ms ease;
+      pointer-events: none;
     }
 
     .toast.show {
       transform: translateX(-50%) translateY(0);
-    }
-
-    .tooltip-box {
-      max-width: 340px;
-      padding: 12px 14px;
-      border: 1px solid rgba(214, 227, 123, 0.4);
-      background:
-        linear-gradient(135deg, rgba(7, 9, 7, 0.98), rgba(15, 18, 13, 0.96)),
-        radial-gradient(circle at top left, rgba(159,186,79,0.1), transparent 42%);
-      color: var(--rot2);
-      box-shadow: 0 0 26px rgba(159, 186, 79, 0.16);
-      opacity: 0;
-      transform: translate(16px, 16px);
-      transition: opacity 160ms ease;
-      font-size: 0.9rem;
-      line-height: 1.45;
-    }
-
-    .tooltip-box.show {
-      opacity: 1;
-    }
-
-    [data-tip] {
-      cursor: crosshair;
     }
 
     .site-footer {
@@ -1106,7 +1087,7 @@
       .two-col,
       .boot-grid,
       .reliquary-layout,
-      .rpg-grid {
+      .trial-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1119,7 +1100,8 @@
       .weapon-grid,
       .subcrypt-grid,
       .ability-grid,
-      .weapon-schematic-grid {
+      .weapon-schematic-grid,
+      .armor-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1128,7 +1110,7 @@
         min-height: auto;
       }
 
-      .rpg-stat-grid {
+      .trial-stat-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -1173,6 +1155,11 @@
         display: flex;
         flex-wrap: wrap;
         padding: 10px;
+      }
+
+      .verdict-row,
+      .brief-row {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -1256,7 +1243,8 @@
           <a class="button" href="#weapons">Weapons</a>
           <a class="button" href="#abilities">Abilities</a>
           <a class="button" href="#battles">Campaigns</a>
-          <a class="button" href="#warcogitator">War-Cogitator</a>
+          <a class="button" href="#attached-records">Attached Records</a>
+          <a class="button" href="#trial">Command Trial</a>
         </div>
       </div>
 
@@ -1266,6 +1254,10 @@
           <div class="brief-row">
             <span>Recorded Origin</span>
             <strong>Plague Champion by earliest viable record.</strong>
+          </div>
+          <div class="brief-row">
+            <span>Legionary Root</span>
+            <strong>Death Guard, XIV Legion line. Exact company lineage withheld by corruption and competing testimony.</strong>
           </div>
           <div class="brief-row">
             <span>Present Station</span>
@@ -1278,10 +1270,6 @@
           <div class="brief-row">
             <span>Warhost</span>
             <strong>The Rotfather’s Vanguard, an attritional plague-host shaped by spiritual decay, biological corruption, and occult rot.</strong>
-          </div>
-          <div class="brief-row">
-            <span>Recent Wound</span>
-            <strong>Draxis II reversal. Astra Militarum armor and artillery forced withdrawal. Vengeance pressure rising.</strong>
           </div>
           <div class="brief-row">
             <span>Final Warning</span>
@@ -1313,8 +1301,8 @@
         <strong>Detected, increasing, insufficiently contained by present titles</strong>
       </article>
       <article class="status-slab">
-        <span>Strife Pull</span>
-        <strong>Repeated returns to Phocerii and Draxis II suggest obsession, omen, or hubris</strong>
+        <span>Archive Risk</span>
+        <strong>Subject may eventually discover this record and approve it for the wrong reasons</strong>
       </article>
     </section>
 
@@ -1547,7 +1535,8 @@
         </p>
       </article>
     </section>
-      <section class="timeline-panel">
+
+    <section class="timeline-panel">
       <div class="section-kicker">
         <p class="eyebrow">Selected History</p>
         <span class="tag">Long War Trace</span>
@@ -1688,6 +1677,69 @@
       </article>
     </section>
 
+    <section class="armor-deep-panel">
+      <div class="section-kicker">
+        <p class="eyebrow">Armor Deep Record</p>
+        <span class="tag">War-Plate as Shrine // Shrine as Weapon</span>
+      </div>
+
+      <h2>The armor is not merely worn. It is obeyed.</h2>
+
+      <p>
+        Mortivus’ panoply is treated within the Septicarium as a semi-liturgical object. It protects, displays, intimidates, records, and instructs. Its silhouette changes from witness to witness because the viewer does not merely see mass and plate. They see a battlefield interpretation of him: champion, lord, executioner, prophet, or unfinished ascendant.
+      </p>
+
+      <div class="armor-grid">
+        <article class="armor-note">
+          <span>Helm Assembly</span>
+          <h3>The Shrine-Mask</h3>
+          <p>
+            The helm carries no reliable pattern designation. It has been described as a plague mask, a horned shrine, a broken halo, and a sealed reliquary-face. Its optics do not flare like clean lenses. They smolder behind scratched burial glass. Enemy witnesses often remember the visor more clearly than the weapon that killed beside it.
+          </p>
+        </article>
+
+        <article class="armor-note">
+          <span>Chest Reliquary</span>
+          <h3>The Sternum Shrine</h3>
+          <p>
+            The central torso plate bears layered corrosion, scratched tally-lines, and small devotional chambers whose contents are not consistent between sightings. Shell fragments, teeth, corpse-tags, and sealed scraps of vellum have all been recorded. The plate is believed to record proximity to major victories by deepening its own corrosion.
+          </p>
+        </article>
+
+        <article class="armor-note">
+          <span>Vents and Censers</span>
+          <h3>Breath of the War-Plate</h3>
+          <p>
+            Mortivus’ armor exhales through vents, censers, and cracked brass filtration organs. The smoke behaves differently in enclosed terrain. It pools low during patience, rises during execution, and clings around prisoners marked for instruction.
+          </p>
+        </article>
+
+        <article class="armor-note">
+          <span>Pauldron Mass</span>
+          <h3>Rot-Burdened Shoulders</h3>
+          <p>
+            His shoulders are recorded as asymmetrical and overbuilt, not with the clean grandeur of parade armor, but with the swollen authority of something that has absorbed years of shrapnel, ritual scrap, and battlefield residue.
+          </p>
+        </article>
+
+        <article class="armor-note">
+          <span>Lower Plate</span>
+          <h3>Greaves of the Long Walk</h3>
+          <p>
+            The greaves bear trench scoring, mine-dust, grave-pitting, and a granular residue that does not fully clean away. Mortivus is repeatedly observed closing distance on foot, turning the approach itself into psychological artillery.
+          </p>
+        </article>
+
+        <article class="armor-note">
+          <span>Chain Layer</span>
+          <h3>The Mobile Archive</h3>
+          <p>
+            Chains on the armor are not only trophies. They bind his history to his body. Every movement produces small, irregular sounds: brass tapping bone, shell casing striking seal, oath-plate rubbing against rust. Those sounds have preceded several recorded executions.
+          </p>
+        </article>
+      </div>
+    </section>
+
     <section class="weapon-schematic-panel" id="weapons">
       <div class="section-kicker">
         <p class="eyebrow">Armament Vault</p>
@@ -1723,6 +1775,9 @@
           <p>
             A harvesting blade of uncertain exact pattern, recorded somewhere between plague-cleaver, manreaper, and ritual implement. It is feared not merely for lethality but for its psychological effect. Those struck often cease speaking before they cease moving, as if the weapon harvests refusal or dignity before it harvests flesh.
           </p>
+          <p>
+            Mortivus does not swing the weapon with theatrical frenzy. He uses it like a sentence being carried out. He cuts after the enemy understands the shape of the loss. He often pauses before the terminal motion, not from mercy, but to permit recognition.
+          </p>
         </article>
 
         <article class="weapon-schematic">
@@ -1740,6 +1795,9 @@
           </svg>
           <p>
             A corrupted ranged armament whose reports vary between plague-belcher, altered bolt weapon, and toxin projector. Whatever the mechanism, impact is followed by fever, lung bloom, pulmonary collapse, and liturgical disorientation. Enemy priests mispronounce prayers. Sergeants forget command cant. Vox discipline curdles into coughing.
+          </p>
+          <p>
+            The weapon is most often used before the decisive advance. Mortivus fires not to destroy the line outright, but to make its commands unreliable. When the Rite-Spitter speaks, orders begin arriving late, shouted names sound unfamiliar, and fortified rooms start feeling like lungs filling from the inside.
           </p>
         </article>
 
@@ -1763,6 +1821,9 @@
           <p>
             Chain-linked seals, brass tags, shell fragments, teeth, relic shards, and identity plates are carried not as ornament but as a mobile record. Mortivus touches this chain before sparing, condemning, or delaying an assault. Retainers suspect it functions as a private calculus, a divinatory abacus, or both.
           </p>
+          <p>
+            The chain is not always heard during battle. It is heard before choices. A small clatter before a door is sealed. A brass tap before prisoners are preserved. A scrape of metal when an officer asks whether to advance and Mortivus already knows the answer.
+          </p>
         </article>
       </div>
     </section>
@@ -1780,7 +1841,7 @@
           <span>Function I</span>
           <h3>Spiritual Decay Induction</h3>
           <p>
-            Mortivus excels at attacking the meaning structures that allow resistance to hold. Under his pressure, chapels become quarantine errors, discipline becomes ritual rigidity, and courage becomes another surface through which rot enters.
+            Mortivus excels at attacking the meaning structures that allow resistance to hold. Under his pressure, chapels become quarantine errors, discipline becomes ritual rigidity, and courage becomes another surface through which rot enters. This does not always require sorcery in the visible sense. Sometimes it requires only patience, pressure, and the correct wound in the enemy’s faith.
           </p>
         </article>
 
@@ -1788,7 +1849,7 @@
           <span>Function II</span>
           <h3>Morale Collapse Pressure</h3>
           <p>
-            He allows defenders to continue fighting after their inner certainty has already failed. This creates the cruelest possible battlefield state: armed bodies performing duty after the soul has deserted the position.
+            He allows defenders to continue fighting after their inner certainty has already failed. This creates the cruelest possible battlefield state: armed bodies performing duty after the soul has deserted the position. Mortivus values that interval. He treats it as the moment when the enemy becomes readable.
           </p>
         </article>
 
@@ -1804,7 +1865,7 @@
           <span>Function IV</span>
           <h3>Omen Reading</h3>
           <p>
-            Mortivus frequently delays violence until hidden conditions ripen. The result is the impression that he reads battlefield collapse before it occurs, or perhaps helps write it in advance.
+            Mortivus frequently delays violence until hidden conditions ripen. The result is the impression that he reads battlefield collapse before it occurs, or perhaps helps write it in advance. He does not rush the rot. He waits until it can speak through the battlefield clearly.
           </p>
         </article>
 
@@ -1812,7 +1873,7 @@
           <span>Function V</span>
           <h3>Command Contagion</h3>
           <p>
-            Those who serve beneath him begin thinking in stages of corruption rather than exchanges of fire. His officers increasingly measure victory by collapse-quality, not territory seized.
+            Those who serve beneath him begin thinking in stages of corruption rather than exchanges of fire. His officers increasingly measure victory by collapse-quality, not territory seized. A battlefield is not taken when the enemy dies. It is taken when the enemy’s interpretation of reality fails.
           </p>
         </article>
 
@@ -1820,7 +1881,7 @@
           <span>Function VI</span>
           <h3>Mercy Inversion</h3>
           <p>
-            Mortivus does not define mercy as release. He defines it as forced participation in shared suffering. This makes his restraint more feared than his violence.
+            Mortivus does not define mercy as release. He defines it as forced participation in shared suffering. This makes his restraint more feared than his violence. If he leaves an enemy alive, the archive assumes the survival has become useful.
           </p>
         </article>
       </div>
@@ -1849,18 +1910,21 @@
 
     <section class="panel" id="battles">
       <div class="section-kicker">
-        <p class="eyebrow">Major Outcomes</p>
-        <span class="tag">Victory // Tragedy // Pyrrhic Law</span>
+        <p class="eyebrow">Major Campaign Stains</p>
+        <span class="tag">Victory // Defeat // Pyrrhic Law</span>
       </div>
 
-      <h2>Selected campaign stains around the name.</h2>
+      <h2>Selected battles preserved because they changed him.</h2>
 
       <div class="outcome-grid">
         <article class="outcome-card">
           <span>Greatest Victory</span>
           <h3>The Weeping Redoubt of Solkhar IX</h3>
           <p>
-            Mortivus’ most complete strategic victory came during the reduction of a fortress-shrine complex on Solkhar IX. Rather than breaking the bastion by conventional siege alone, he poisoned prayer circulation, burial procedures, and chapel rotation. By the time the walls were breached, the defenders had turned their own sanctity into an infection engine. Entire companies were found dead at their posts, still in formation, believing they had held.
+            Mortivus’ most complete strategic victory came during the reduction of a fortress-shrine complex on Solkhar IX. Rather than breaking the bastion by conventional siege alone, he poisoned prayer circulation, burial procedures, and chapel rotation. By the time the walls were breached, the defenders had turned their own sanctity into an infection engine.
+          </p>
+          <p>
+            Entire companies were found dead at their posts, still in formation, believing they had held. The victory remains studied inside the Vanguard because it proved one of Mortivus’ central convictions: faith, under the correct pressure, can be made to betray its own fortress.
           </p>
         </article>
 
@@ -1868,7 +1932,10 @@
           <span>Greatest Tragedy and Defeat</span>
           <h3>The Pallid Reversal</h3>
           <p>
-            Mortivus’ most devastating failure began when he misread a retreat as spiritual collapse rather than tactical lure. He advanced into prepared killing architecture and lost a large portion of the earliest cadre that would become his inner circle. Among the dead was a bell-bearer oracle credited with first naming the private plague-prophecy Mortivus later followed. He survived. The host survived. But the defeat carved something into him.
+            Mortivus’ most devastating failure began when he misread a retreat as spiritual collapse rather than tactical lure. He advanced into prepared killing architecture and lost a large portion of the earliest cadre that would become his inner circle.
+          </p>
+          <p>
+            Among the dead was a bell-bearer oracle credited with first naming the private plague-prophecy Mortivus later followed. He survived. The host survived. But the defeat carved something into him. After the Pallid Reversal, Mortivus became colder, slower, and far less likely to grant swift endings.
           </p>
         </article>
 
@@ -1876,7 +1943,10 @@
           <span>Pyrrhic Victory</span>
           <h3>The Ashen Pilgrimage of Oltane Spire</h3>
           <p>
-            Mortivus succeeded in taking Oltane Spire, a vertical industrial-sanctuary whose defenders were finally broken through disease, deprivation, and sacramental contamination. Yet the cost was severe. The Vanguard lost irreplaceable specialists, several reliquary assets, and an entire veteran boarding contingent during the final climb. Mortivus claimed the site and transformed it into a plague altar, but the victory remains a warning inside the host.
+            Mortivus succeeded in taking Oltane Spire, a vertical industrial-sanctuary whose defenders were finally broken through disease, deprivation, and sacramental contamination. Yet the cost was severe. The Vanguard lost irreplaceable specialists, several reliquary assets, and an entire veteran boarding contingent during the final climb.
+          </p>
+          <p>
+            Mortivus claimed the site and transformed it into a plague altar, but the victory remains a warning inside the host: even revelation can be purchased too eagerly.
           </p>
         </article>
       </div>
@@ -1885,93 +1955,23 @@
         <button class="tab-button active" data-battle="solkhar">Solkhar IX</button>
         <button class="tab-button" data-battle="pallid">Pallid Reversal</button>
         <button class="tab-button" data-battle="oltane">Oltane Spire</button>
-        <button class="tab-button" data-battle="draxis">Draxis II</button>
       </div>
 
       <div class="tab-output" id="battleOutput">
         <span>Combat Reconstruction</span>
         <h3>The Weeping Redoubt of Solkhar IX</h3>
         <p>
-          The fortress-shrine did not fall when its gates broke. It fell three days earlier, when Mortivus ordered the burial crypts left intact and the chapel bells contaminated. Loyalist defenders continued to rotate through prayer stations, kissing reliquaries whose silverwork had already begun sweating green-black fluid.
+          The fortress-shrine did not fall when its gates broke. It fell three days earlier, when Mortivus ordered the burial crypts left intact and the chapel bells contaminated. Loyalist defenders continued to rotate through prayer stations, kissing reliquaries whose silverwork had already begun sweating green-black fluid. Their vox-chaplains blamed fever, then sabotage, then cowardice, then one another. Mortivus waited.
         </p>
         <p>
-          By the time the Vanguard advanced, the defenders were firing through fever, reciting hymns with blood in their mouths, and mistaking the tolling of corrupted bells for orders from their own clergy. Mortivus entered through the eastern reliquary arch after the third plagueburst detonation. He did not run. He walked behind a curtain of diseased smoke while plague marines dragged broken shrine-guard into the nave and piled them against the walls.
+          By the time The Rotfather’s Vanguard advanced, the defenders were firing through fever, reciting hymns with blood in their mouths, and mistaking the tolling of corrupted bells for orders from their own clergy. Plague Marines crossed the outer killing field in disciplined silence. Bolter fire punched craters into diseased plate. The wounded did not fall cleanly. They kept moving, dragged forward by armor, hatred, and blessing.
         </p>
         <p>
-          The final defenders formed a shield cordon around the inner altar. Mortivus let them complete their prayer before cutting the first man in half. The others screamed, but their timing was wrong. The bells had already told them they were saved.
+          Mortivus entered through the eastern reliquary arch after the third plagueburst detonation. He did not run. He walked behind a curtain of diseased smoke while plague marines dragged broken shrine-guard into the nave and piled them against the walls as if arranging offerings. The final defenders formed a shield cordon around the inner altar. Mortivus let them complete their prayer before cutting the first man down.
         </p>
-      </div>
-    </section>
-
-    <section class="strife-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">Strife System Battle Record</p>
-        <span class="tag">Restricted Allusions Only</span>
-      </div>
-
-      <h2>Something keeps pulling Mortivus back.</h2>
-
-      <p>
-        The Septicarium does not treat the Strife System as its own mythology. It appears here only where battle records demand it. Still, the pattern is difficult to ignore. Phocerii. Draxis II. Skirmishes against Space Wolves, Necrons, Astra Militarum, Adepta Sororitas, Votann, Tyranids, and Orks. Mortivus returns too often for coincidence and too violently for simple opportunity.
-      </p>
-
-      <p>
-        The charitable reading is strategic fixation. The less charitable reading is hubris. The archive’s preferred reading is worse: something in that region recognizes the unfinished pressure around him and keeps offering him wounds large enough to become prophecy.
-      </p>
-
-      <div class="diagram-wrap">
-        <svg class="strife-svg" viewBox="0 0 980 430" role="img" aria-label="Strife system incursion map">
-          <defs>
-            <radialGradient id="systemGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#d6e27b" stop-opacity="0.75"/>
-              <stop offset="62%" stop-color="#9fba4f" stop-opacity="0.18"/>
-              <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect x="18" y="18" width="944" height="394" rx="24" fill="rgba(0,0,0,0.22)" stroke="rgba(214,227,123,0.14)" />
-          <circle cx="490" cy="215" r="74" fill="url(#systemGlow)" />
-          <circle cx="490" cy="215" r="136" fill="none" stroke="rgba(214,227,123,0.18)" stroke-width="2" stroke-dasharray="7 10" />
-          <circle cx="490" cy="215" r="202" fill="none" stroke="rgba(214,227,123,0.1)" stroke-width="2" stroke-dasharray="7 10" />
-          <circle cx="260" cy="146" r="28" fill="rgba(0,0,0,0.36)" stroke="rgba(214,227,123,0.42)" />
-          <circle cx="680" cy="284" r="28" fill="rgba(0,0,0,0.36)" stroke="rgba(214,227,123,0.42)" />
-          <circle cx="730" cy="120" r="22" fill="rgba(0,0,0,0.36)" stroke="rgba(120,49,26,0.62)" />
-          <circle cx="330" cy="308" r="22" fill="rgba(0,0,0,0.36)" stroke="rgba(120,49,26,0.62)" />
-          <path class="path-flow" d="M490 215 C410 166 340 146 260 146" fill="none" stroke="rgba(214,227,123,0.32)" stroke-width="3" />
-          <path class="path-flow" d="M490 215 C556 250 610 276 680 284" fill="none" stroke="rgba(214,227,123,0.32)" stroke-width="3" />
-          <path class="path-flow" d="M490 215 C572 178 646 138 730 120" fill="none" stroke="rgba(120,49,26,0.46)" stroke-width="3" />
-          <path class="path-flow" d="M490 215 C424 254 378 286 330 308" fill="none" stroke="rgba(120,49,26,0.46)" stroke-width="3" />
-          <text x="490" y="220" text-anchor="middle" fill="#d6e27b" font-size="16" font-family="Cinzel">STRIFE PULL</text>
-          <text x="260" y="150" text-anchor="middle" fill="#d6e27b" font-size="12" font-family="Cinzel">PHOCERII</text>
-          <text x="680" y="288" text-anchor="middle" fill="#d6e27b" font-size="12" font-family="Cinzel">DRAXIS II</text>
-          <text x="730" y="124" text-anchor="middle" fill="#aaa486" font-size="11" font-family="Cinzel">WOLVES</text>
-          <text x="330" y="312" text-anchor="middle" fill="#aaa486" font-size="11" font-family="Cinzel">NECRONS</text>
-        </svg>
-      </div>
-
-      <div class="campaign-grid">
-        <article class="campaign-card">
-          <span>Phocerii Rumor</span>
-          <h3>The Wolf-Hunt in the Ash Rifts</h3>
-          <p>
-            Space Wolves contact records describe a Death Guard commander who allowed himself to be outflanked, then collapsed the rift behind the pursuing pack. The Wolves escaped, bloodied and furious, carrying plague-ash in their pelts and a hatred that has not cooled.
-          </p>
-        </article>
-
-        <article class="campaign-card tragedy">
-          <span>Draxis II Reversal</span>
-          <h3>The Iron Rain Humiliation</h3>
-          <p>
-            Astra Militarum armor and artillery forced Mortivus from Draxis II after he overextended into a prepared kill zone. Basilisk fire, armored counter-pushes, and disciplined sacrifice broke his timing. He withdrew under falling iron, not broken, but publicly denied. The record remains raw. Vengeance is expected.
-          </p>
-        </article>
-
-        <article class="campaign-card">
-          <span>Unresolved Pull</span>
-          <h3>The Enemies That Keep Returning</h3>
-          <p>
-            Necron stillness, Ork momentum, Tyranid hunger, Votann stubbornness, Sororitas fire, and Imperial discipline have all crossed his path in that region. The pattern may be strategy. It may be bait. It may be Nurgle’s humor ripening into war.
-          </p>
-        </article>
+        <p>
+          The others screamed, but their timing was wrong. The bells had already told them they were saved. When the redoubt was opened from within, its defenders were still positioned in perfect order, their corpses turned toward the altar, their armor marked by their own contaminated prayers. Mortivus ordered the bells preserved.
+        </p>
       </div>
     </section>
 
@@ -2011,134 +2011,133 @@
       </div>
     </section>
 
-    <section class="panel" id="subcrypts">
+    <section class="panel" id="attached-records">
       <div class="section-kicker">
-        <p class="eyebrow">Bound Sub-Crypts</p>
-        <span class="tag">Nine Chambers // Three Tripled</span>
+        <p class="eyebrow">Attached Records</p>
+        <span class="tag">Living Index // The Archive Opens Only What Has Ripened</span>
       </div>
 
-      <h2>Additional chambers around the name.</h2>
+      <h2>The archive does not force every rumor into a chamber.</h2>
+
+      <p>
+        Mortivus Classarion has too many stains around his name to bind them into a clean sequence. Some records have ripened into full sub-crypts. Others remain fragments, battle-notes, whispered failures, relic rumors, or sealed accusations waiting for enough evidence to justify their own chamber.
+      </p>
+
+      <p>
+        The Septicarium does not create pages for symmetry. It opens records only when the wound has weight.
+      </p>
 
       <div class="subcrypt-grid">
         <article class="subcrypt-card">
           <span>Open Sub-Crypt</span>
           <h3>The Mercy He Gave</h3>
-          <p>A censured Votann atrocity record showing Mortivus’ most infamous doctrine of mercy.</p>
+          <p>
+            A recovered Kin blackbox archive from a ruined Votann claim-force. This record preserves the battle in the enemy’s own words, where Mortivus turned oath, memory, and preservation into instruments of rot.
+          </p>
           <a class="entry-link" href="the-mercy-he-gave.html">Open Sub-Crypt</a>
         </article>
+
         <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
+          <span>Sealed Battle Fragment</span>
           <h3>The Pallid Reversal</h3>
-          <p>Full reconstruction of his greatest defeat, the dead inner circle, and the tragedy that reshaped his patience into cruelty.</p>
+          <p>
+            The greatest known wound in Mortivus’ history. Not yet opened as a full record. The archive retains only enough to confirm that the defeat changed him, hardened him, and taught him never again to mistake retreat for spiritual collapse.
+          </p>
           <button class="sealed-entry">Await Clearance</button>
         </article>
+
         <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
-          <h3>The Weeping Redoubt of Solkhar IX</h3>
-          <p>His greatest victory: a fortress-shrine reduced by liturgical infection before the walls ever fell.</p>
-          <button class="sealed-entry">Await Clearance</button>
-        </article>
-        <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
-          <h3>The Ashen Pilgrimage of Oltane Spire</h3>
-          <p>The pyrrhic victory chamber: reliquary losses, veteran dead, and the price of sanctified ruin.</p>
-          <button class="sealed-entry">Await Clearance</button>
-        </article>
-        <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
+          <span>Sealed Relic Fragment</span>
           <h3>The Mercy-Sickle</h3>
-          <p>Full relic chamber for the blade’s provenance, transformations, kill-records, and whispered behavior.</p>
+          <p>
+            The blade has not yet earned a full reliquary chamber, but its behavior is under watch. Reports suggest it does more than cut. It appears to harvest refusal, silence, and the final dignity of those Mortivus chooses to instruct.
+          </p>
           <button class="sealed-entry">Await Clearance</button>
         </article>
+
         <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
+          <span>Sealed Omen Fragment</span>
           <h3>The Rotfather’s Omen</h3>
-          <p>The plague-prophecy Mortivus follows, or pretends to follow, or may be unknowingly writing through war.</p>
+          <p>
+            Mortivus follows a plague-prophecy known only in pieces. Whether he discovered it, invented it, inherited it, or is being written by it remains unresolved. The archive will not open this chamber until the omen repeats clearly.
+          </p>
           <button class="sealed-entry">Await Clearance</button>
         </article>
+
         <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
-          <h3>Strife System Incursions</h3>
-          <p>Restricted battle-records from Phocerii, Draxis II, and related skirmish-zones.</p>
-          <button class="sealed-entry">Await Clearance</button>
-        </article>
-        <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
-          <h3>The Draxis II Vengeance Ledger</h3>
-          <p>A record of humiliation, names owed death, and the artillery officers Mortivus has not forgotten.</p>
-          <button class="sealed-entry">Await Clearance</button>
-        </article>
-        <article class="subcrypt-card">
-          <span>Future Sub-Crypt</span>
-          <h3>The Seventh Bell Doctrine</h3>
-          <p>A tactical and occult record of delayed assaults, morale collapse, and battlefields made to confess before being taken.</p>
+          <span>Unindexed Fragment</span>
+          <h3>Record Not Yet Named</h3>
+          <p>
+            Not every future wound has a title. The next chamber will be opened when a battle, relic, defeat, prophecy, or atrocity becomes too heavy to remain inside the main dossier.
+          </p>
           <button class="sealed-entry">Await Clearance</button>
         </article>
       </div>
     </section>
 
-    <section class="rpg-panel" id="warcogitator">
+    <section class="trial-panel" id="trial">
       <div class="section-kicker">
-        <p class="eyebrow">War-Cogitator of Classarion</p>
-        <span class="tag">RPG Command Engine</span>
+        <p class="eyebrow">The Plague-Command Trial</p>
+        <span class="tag">Doctrinal Simulation // No Campaign Record Attached</span>
       </div>
 
-      <h2>Issue the order. Watch the enemy rot differently.</h2>
+      <h2>Issue doctrine. Learn what kind of ruin follows.</h2>
 
       <p>
-        The War-Cogitator simulates a command fragment from the Draxis II revenge ledger. You are not asked to win cleanly. Clean victory is not the Death Guard way. You are asked to decide whether the enemy breaks before the Vanguard does.
+        This trial is not a named battle and does not bind the archive to any specific warzone. It is a command simulation built from Mortivus’ known habits: patience, contamination, morale pressure, ritual timing, and the refusal to mistake speed for victory.
       </p>
 
-      <div class="rpg-grid">
-        <div class="rpg-console">
+      <div class="trial-grid">
+        <div class="trial-console">
           <p class="eyebrow">Command Selection</p>
 
-          <p>Enemy Force</p>
-          <div class="rpg-choices" id="enemyChoices">
-            <button class="rpg-choice active" data-enemy="guard">Astra Militarum</button>
-            <button class="rpg-choice" data-enemy="wolves">Space Wolves</button>
-            <button class="rpg-choice" data-enemy="necrons">Necrons</button>
-            <button class="rpg-choice" data-enemy="orks">Orks</button>
+          <p>Enemy Temperament</p>
+          <div class="trial-choices" id="enemyChoices">
+            <button class="trial-choice active" data-enemy="zealots">Zealous Defenders</button>
+            <button class="trial-choice" data-enemy="soldiers">Disciplined Soldiers</button>
+            <button class="trial-choice" data-enemy="xenos">Calculating Xenos</button>
+            <button class="trial-choice" data-enemy="horde">Howling Horde</button>
           </div>
 
-          <p>Orders</p>
-          <div class="rpg-choices">
-            <button class="rpg-btn" data-order="contaminate">Contaminate Supply Lines</button>
-            <button class="rpg-btn" data-order="advance">Begin Slow Advance</button>
-            <button class="rpg-btn" data-order="bell">Invoke Seventh Bell</button>
-            <button class="rpg-btn" data-order="retreat">Feign Withdrawal</button>
-            <button class="rpg-btn" data-order="commander">Target Enemy Command</button>
-            <button class="rpg-btn" id="resetRpg">Reset Cogitator</button>
+          <p>Doctrine Orders</p>
+          <div class="trial-choices">
+            <button class="trial-btn" data-order="contaminate">Contaminate Supply and Rite</button>
+            <button class="trial-btn" data-order="advance">Begin the Slow Advance</button>
+            <button class="trial-btn" data-order="bell">Ring the Seventh Bell</button>
+            <button class="trial-btn" data-order="preserve">Preserve Prisoners</button>
+            <button class="trial-btn" data-order="faith">Break Command Faith</button>
+            <button class="trial-btn" data-order="sickle">Send the Mercy-Sickle Forward</button>
+            <button class="trial-btn" id="resetTrial">Reset Trial</button>
           </div>
 
-          <div class="rpg-stat-grid">
-            <div class="rpg-stat">
+          <div class="trial-stat-grid">
+            <div class="trial-stat">
               <span>Contagion</span>
               <div class="meter"><div class="meter-fill" id="contagionMeter"></div></div>
             </div>
-            <div class="rpg-stat">
+            <div class="trial-stat">
               <span>Morale Collapse</span>
               <div class="meter"><div class="meter-fill" id="moraleMeter"></div></div>
             </div>
-            <div class="rpg-stat">
+            <div class="trial-stat">
               <span>Vanguard Losses</span>
               <div class="meter"><div class="meter-fill" id="lossMeter"></div></div>
             </div>
-            <div class="rpg-stat">
+            <div class="trial-stat">
               <span>Omen Pressure</span>
               <div class="meter"><div class="meter-fill" id="omenMeter"></div></div>
             </div>
           </div>
         </div>
 
-        <div class="rpg-output">
-          <p class="eyebrow">Battle Log</p>
+        <div class="trial-output">
+          <p class="eyebrow">Doctrinal Reading</p>
           <div class="log" id="battleLog">
             <div class="log-entry">
-              <span>Draxis II // Revenge Simulation</span>
-              <h3>The Iron Rain remains unpaid.</h3>
+              <span>Trial Awaiting Doctrine</span>
+              <h3>No named warzone attached.</h3>
               <p>
-                Astra Militarum artillery once forced Mortivus from Draxis II. The cogitator reopens the wound. Select orders and see whether the enemy breaks, the Vanguard bleeds, or the omen refuses completion.
+                Select enemy temperament and issue doctrine. The trial will interpret the collapse pattern according to observed Mortivus Classarion command tendencies.
               </p>
             </div>
           </div>
@@ -2186,8 +2185,7 @@
     <div class="vox-body" id="voxBody"></div>
   </div>
 
-  <div class="toast" id="toast">SUB-CRYPT NOT YET UNSEALED. RETURN WHEN THE ROT HAS INSTRUCTED IT.</div>
-  <div class="tooltip-box" id="tooltipBox"></div>
+  <div class="toast" id="toast">RECORD SEALED. THE WOUND HAS NOT RIPENED.</div>
 
   <script>
     const bootScreen = document.getElementById("bootScreen");
@@ -2212,11 +2210,9 @@
     const voxDrawer = document.getElementById("voxDrawer");
     const voxBody = document.getElementById("voxBody");
 
-    const tooltipBox = document.getElementById("tooltipBox");
-
     const enemyChoices = document.querySelectorAll("[data-enemy]");
-    const rpgButtons = document.querySelectorAll("[data-order]");
-    const resetRpg = document.getElementById("resetRpg");
+    const trialButtons = document.querySelectorAll("[data-order]");
+    const resetTrial = document.getElementById("resetTrial");
     const battleLog = document.getElementById("battleLog");
 
     const contagionMeter = document.getElementById("contagionMeter");
@@ -2299,36 +2295,30 @@
         className: "",
         title: "The Weeping Redoubt of Solkhar IX",
         body: [
-          "The fortress-shrine did not fall when its gates broke. It fell three days earlier, when Mortivus ordered the burial crypts left intact and the chapel bells contaminated. Loyalist defenders continued to rotate through prayer stations, kissing reliquaries whose silverwork had already begun sweating green-black fluid.",
-          "By the time the Vanguard advanced, the defenders were firing through fever, reciting hymns with blood in their mouths, and mistaking the tolling of corrupted bells for orders from their own clergy. Mortivus entered through the eastern reliquary arch after the third plagueburst detonation. He did not run. He walked behind a curtain of diseased smoke while plague marines dragged broken shrine-guard into the nave and piled them against the walls.",
-          "The final defenders formed a shield cordon around the inner altar. Mortivus let them complete their prayer before cutting the first man in half. The others screamed, but their timing was wrong. The bells had already told them they were saved."
+          "The fortress-shrine did not fall when its gates broke. It fell three days earlier, when Mortivus ordered the burial crypts left intact and the chapel bells contaminated. Loyalist defenders continued to rotate through prayer stations, kissing reliquaries whose silverwork had already begun sweating green-black fluid. Their vox-chaplains blamed fever, then sabotage, then cowardice, then one another. Mortivus waited.",
+          "By the time The Rotfather’s Vanguard advanced, the defenders were firing through fever, reciting hymns with blood in their mouths, and mistaking the tolling of corrupted bells for orders from their own clergy. Plague Marines crossed the outer killing field in disciplined silence. Bolter fire punched craters into diseased plate. The wounded did not fall cleanly. They kept moving, dragged forward by armor, hatred, and blessing.",
+          "Mortivus entered through the eastern reliquary arch after the third plagueburst detonation. He did not run. He walked behind a curtain of diseased smoke while plague marines dragged broken shrine-guard into the nave and piled them against the walls as if arranging offerings. The final defenders formed a shield cordon around the inner altar. Mortivus let them complete their prayer before cutting the first man down.",
+          "The others screamed, but their timing was wrong. The bells had already told them they were saved. When the redoubt was opened from within, its defenders were still positioned in perfect order, their corpses turned toward the altar, their armor marked by their own contaminated prayers. Mortivus ordered the bells preserved."
         ]
       },
       pallid: {
         className: "tragedy",
         title: "The Pallid Reversal",
         body: [
-          "The Pallid Reversal remains Mortivus’ greatest tragedy because it was not merely a battlefield defeat. It was a failure of interpretation. He mistook disciplined retreat for spiritual collapse and advanced into prepared killing architecture.",
-          "The killing field opened like an iron mouth. Mines bloomed beneath rusted feet. Enemy guns fired from angles he had judged already broken. The earliest cadre of his inner circle died in sequence: bell-bearers first, then plague-veterans, then the oracle whose mutterings had given shape to the Rotfather’s private omen.",
-          "Mortivus was dragged from the field by survivors who did not dare meet his gaze. He did not rage. That was worse. After the Pallid Reversal, he became colder, slower, and far less likely to grant swift endings."
+          "The Pallid Reversal remains Mortivus’ greatest tragedy because it was not merely a battlefield defeat. It was a failure of interpretation. He mistook disciplined retreat for spiritual collapse and advanced into prepared killing architecture. The enemy had not lost belief. They had weaponized his assumption that belief was already dying.",
+          "The killing field opened like an iron mouth. Mines bloomed beneath rusted feet. Hidden guns fired from angles he had judged already broken. The Vanguard endured, but endurance did not solve the trap. Plague Marines were pinned under collapsing ruin, isolated by fire curtains, and denied the slow approach that usually favored them.",
+          "The earliest cadre of his inner circle died in sequence: bell-bearers first, then plague-veterans, then the oracle whose mutterings had given shape to the Rotfather’s private omen. Mortivus fought his way toward the center of the trap, not because it would win the field, but because the dead were there and he had not yet learned to retreat from the lesson.",
+          "He was dragged from the field by survivors who did not dare meet his gaze. He did not rage. That was worse. After the Pallid Reversal, Mortivus became colder, slower, and far less likely to grant swift endings. The defeat did not break his doctrine. It infected it with patience."
         ]
       },
       oltane: {
         className: "",
         title: "The Ashen Pilgrimage of Oltane Spire",
         body: [
-          "Oltane Spire was a vertical industrial-sanctuary, a tower of iron chapels, lift-shafts, promethium ducts, and sainted machine platforms. Mortivus took it floor by floor, turning each landing into a pressure chamber.",
-          "The Vanguard climbed through fire, rust rain, and falling bodies. Veteran boarders died sealing side routes. Reliquary assets were lost in furnace-chapels. Mortivus reached the upper sanctum with fewer warriors than any tally had predicted.",
+          "Oltane Spire was a vertical industrial-sanctuary, a tower of iron chapels, lift-shafts, promethium ducts, and sainted machine platforms. Mortivus took it floor by floor, turning each landing into a pressure chamber. The defenders used height, heat, and machine discipline. The Vanguard answered with corrosion, smoke, and the ugly certainty of warriors who could lose limbs and still climb.",
+          "The lower tiers were choked with rust-fog and burning manufactorum ash. Mortivus ordered no full withdrawal from any taken level. Each captured platform became a plague anchor. Each anchor thickened the air above it. By the ninth ascent, defenders on the upper levels were breathing the lower battle.",
+          "The Vanguard climbed through fire, rust rain, and falling bodies. Veteran boarders died sealing side routes. Reliquary assets were lost in furnace-chapels. Mortivus reached the upper sanctum with fewer warriors than any tally had predicted, his armor scorched, his chains fused in places, his blade dragging sparks from the stair.",
           "He won. The spire became a plague altar. But the victory tasted expensive even by Death Guard standards. The archive marks the Ashen Pilgrimage as pyrrhic: proof that Mortivus can purchase revelation too eagerly when the symbol is tempting enough."
-        ]
-      },
-      draxis: {
-        className: "tragedy",
-        title: "Draxis II // The Iron Rain Humiliation",
-        body: [
-          "Draxis II is the wound that still smokes. Astra Militarum commanders allowed Mortivus to believe their outer lines were collapsing, then drew the Vanguard into a prepared artillery-and-armor lattice.",
-          "Basilisk shells fell in patient sequence. Leman Russ formations advanced through their own smoke with brutal discipline. Infantry died by the hundreds to hold targeting corridors open just long enough for the guns to find plague armor. The Vanguard did not break, but it was forced back. Mortivus withdrew under falling iron, his censer smoke whipped apart by shell concussion.",
-          "The reversal was not annihilation. That made it worse. It left witnesses alive. It left enemies proud. It left names to be remembered. The Draxis II vengeance ledger remains open."
         ]
       }
     };
@@ -2341,8 +2331,8 @@
       { channel: "Internal Leakage 05", body: "The ship remembers his footsteps differently after major victories. The decking rusts faster where he stood longest." }
     ];
 
-    let rpg = {
-      enemy: "guard",
+    let trial = {
+      enemy: "zealots",
       contagion: 22,
       morale: 18,
       losses: 10,
@@ -2352,16 +2342,16 @@
     };
 
     const enemyLabels = {
-      guard: "Astra Militarum",
-      wolves: "Space Wolves",
-      necrons: "Necrons",
-      orks: "Orks"
+      zealots: "Zealous Defenders",
+      soldiers: "Disciplined Soldiers",
+      xenos: "Calculating Xenos",
+      horde: "Howling Horde"
     };
 
     const orderText = {
       contaminate: {
-        title: "Supply Lines Contaminated",
-        body: "Water, ration packs, fuel rites, and ammunition chants begin to disagree with their users. The enemy remains armed, but trust in routine begins to soften.",
+        title: "Supply and Rite Contaminated",
+        body: "Water, ration, fuel, prayer, and procedure begin to disagree with their users. The enemy remains armed, but trust in routine begins to soften.",
         effects: { contagion: 18, morale: 10, losses: 4, omen: 8 }
       },
       advance: {
@@ -2370,25 +2360,26 @@
         effects: { contagion: 8, morale: 14, losses: 12, omen: 6 }
       },
       bell: {
-        title: "The Seventh Bell Is Invoked",
+        title: "The Seventh Bell Is Rung",
         body: "A bell rings where no bell stands. Some enemies hear it as command. Some hear it as burial. Some hear nothing and become afraid of that silence.",
         effects: { contagion: 10, morale: 20, losses: 6, omen: 18 }
       },
-      retreat: {
-        title: "False Withdrawal Ordered",
-        body: "The Vanguard gives ground like a wound opening. The enemy advances into rot already prepared to receive them.",
-        effects: { contagion: 12, morale: 12, losses: 8, omen: 12 }
+      preserve: {
+        title: "Prisoners Preserved",
+        body: "Survivors are not released and not immediately slain. They are positioned where their continued breathing becomes an argument against hope.",
+        effects: { contagion: 12, morale: 18, losses: 3, omen: 14 }
       },
-      commander: {
-        title: "Enemy Command Targeted",
-        body: "Mortivus marks the officer, lord, noble, or central node holding the enemy’s will together. The strike is not immediate. It is staged for maximum spiritual damage.",
-        effects: { contagion: 6, morale: 22, losses: 10, omen: 10 }
+      faith: {
+        title: "Command Faith Broken",
+        body: "Mortivus marks the structure holding obedience together. The strike is not immediate. It is staged so the enemy watches authority become unreliable.",
+        effects: { contagion: 6, morale: 25, losses: 8, omen: 10 }
+      },
+      sickle: {
+        title: "The Mercy-Sickle Goes Forward",
+        body: "Mortivus enters the decisive range. The enemy understands too late that the blade is not being used to win the battle. The battle has been arranged to justify the blade.",
+        effects: { contagion: 8, morale: 24, losses: 18, omen: 16 }
       }
     };
-
-    function randomFrom(array) {
-      return array[Math.floor(Math.random() * array.length)];
-    }
 
     function runBootSequence() {
       let index = 0;
@@ -2475,76 +2466,76 @@
       });
     }
 
-    function updateRpgMeters() {
-      contagionMeter.style.width = `${Math.min(100, rpg.contagion)}%`;
-      moraleMeter.style.width = `${Math.min(100, rpg.morale)}%`;
-      lossMeter.style.width = `${Math.min(100, rpg.losses)}%`;
-      omenMeter.style.width = `${Math.min(100, rpg.omen)}%`;
+    function updateTrialMeters() {
+      contagionMeter.style.width = `${Math.min(100, trial.contagion)}%`;
+      moraleMeter.style.width = `${Math.min(100, trial.morale)}%`;
+      lossMeter.style.width = `${Math.min(100, trial.losses)}%`;
+      omenMeter.style.width = `${Math.min(100, trial.omen)}%`;
     }
 
-    function addLog(title, body, label = "War-Cogitator") {
+    function addLog(title, body, label = "Doctrinal Reading") {
       const div = document.createElement("div");
       div.className = "log-entry";
       div.innerHTML = `<span>${label}</span><h3>${title}</h3><p>${body}</p>`;
       battleLog.prepend(div);
     }
 
-    function resolveRpg() {
-      if (rpg.ended) return;
+    function resolveTrial() {
+      if (trial.ended) return;
 
-      if (rpg.morale >= 100 && rpg.contagion >= 75) {
-        rpg.ended = true;
-        addLog("Total Victory", `${enemyLabels[rpg.enemy]} cohesion collapses. The enemy line continues firing for several minutes after it has already become spiritually dead. Mortivus allows the survivors to understand before the Vanguard closes.`, "End State");
-      } else if (rpg.morale >= 92 && rpg.losses >= 65) {
-        rpg.ended = true;
-        addLog("Pyrrhic Victory", `The enemy breaks, but the Vanguard bleeds heavily. Mortivus claims the field and says nothing. The tally-serfs record the victory in ink darkened with cost.`, "End State");
-      } else if (rpg.losses >= 92) {
-        rpg.ended = true;
-        addLog("Tactical Withdrawal", `The enemy refuses to soften quickly enough. Mortivus withdraws before waste becomes pride. This is not forgiveness. It is postponement.`, "End State");
-      } else if (rpg.omen >= 100) {
-        rpg.ended = true;
-        addLog("Omen Unresolved", `The battlefield begins behaving like prophecy before either side can claim it. Mortivus orders the record sealed. The war is not over. It has merely become more interesting.`, "End State");
+      if (trial.morale >= 100 && trial.contagion >= 75) {
+        trial.ended = true;
+        addLog("Collapse Achieved", `${enemyLabels[trial.enemy]} cohesion fails before the killing is complete. Mortivus would likely preserve witnesses, then let the survivors teach the next fortress how defeat felt.`, "End State");
+      } else if (trial.morale >= 92 && trial.losses >= 65) {
+        trial.ended = true;
+        addLog("Pyrrhic Instruction", `The enemy breaks, but the Vanguard pays heavily. Mortivus would claim the result useful, but the archive would mark the price for later scrutiny.`, "End State");
+      } else if (trial.losses >= 92) {
+        trial.ended = true;
+        addLog("Withdrawal Without Forgiveness", `The trial indicates unacceptable expenditure. Mortivus would not call this mercy. He would call it postponement, and remember the shape of the refusal.`, "End State");
+      } else if (trial.omen >= 100) {
+        trial.ended = true;
+        addLog("Omen Supersedes Battle", `The field becomes more valuable as prophecy than as territory. Mortivus would order the record sealed until the same pattern appears elsewhere.`, "End State");
       }
     }
 
-    function handleRpgOrder(order) {
-      if (rpg.ended) {
-        addLog("Cogitator Locked", "The result has already been entered. Begin again to reopen the wound.", "System");
+    function handleTrialOrder(order) {
+      if (trial.ended) {
+        addLog("Trial Locked", "The result has already been entered. Begin again to reopen the doctrinal reading.", "System");
         return;
       }
 
       const item = orderText[order];
-      const enemyMod = rpg.enemy === "necrons" ? -6 : rpg.enemy === "orks" ? 5 : rpg.enemy === "wolves" ? -2 : 0;
+      const enemyMod = trial.enemy === "xenos" ? -6 : trial.enemy === "horde" ? 4 : trial.enemy === "soldiers" ? -2 : 3;
 
-      rpg.turns += 1;
-      rpg.contagion += item.effects.contagion + Math.floor(Math.random() * 7);
-      rpg.morale += item.effects.morale + enemyMod + Math.floor(Math.random() * 8);
-      rpg.losses += item.effects.losses + Math.floor(Math.random() * 6);
-      rpg.omen += item.effects.omen + Math.floor(Math.random() * 8);
+      trial.turns += 1;
+      trial.contagion += item.effects.contagion + Math.floor(Math.random() * 7);
+      trial.morale += item.effects.morale + enemyMod + Math.floor(Math.random() * 8);
+      trial.losses += item.effects.losses + Math.floor(Math.random() * 6);
+      trial.omen += item.effects.omen + Math.floor(Math.random() * 8);
 
-      if (rpg.enemy === "necrons") {
-        rpg.contagion -= 3;
-        rpg.omen += 4;
+      if (trial.enemy === "xenos") {
+        trial.contagion -= 3;
+        trial.omen += 4;
       }
 
-      if (rpg.enemy === "orks") {
-        rpg.losses += 4;
-        rpg.morale -= 2;
+      if (trial.enemy === "horde") {
+        trial.losses += 4;
+        trial.morale -= 2;
       }
 
-      updateRpgMeters();
-      addLog(item.title, `${item.body} Enemy: ${enemyLabels[rpg.enemy]}.`, "Order Issued");
-      resolveRpg();
+      updateTrialMeters();
+      addLog(item.title, `${item.body} Enemy temperament: ${enemyLabels[trial.enemy]}.`, "Doctrine Issued");
+      resolveTrial();
 
-      if (!rpg.ended && rpg.turns >= 7) {
-        rpg.ended = true;
-        addLog("Seven Orders Given", "The sacred count completes. The battlefield does not end. It changes category. Mortivus smiles behind the shrine-mask.", "End State");
+      if (!trial.ended && trial.turns >= 7) {
+        trial.ended = true;
+        addLog("Seven Orders Given", "The sacred count completes. The battlefield does not end. It changes category. Mortivus would consider the trial successful because the enemy no longer understands what victory means.", "End State");
       }
     }
 
-    function resetRpgState() {
-      rpg = {
-        enemy: rpg.enemy,
+    function resetTrialState() {
+      trial = {
+        enemy: trial.enemy,
         contagion: 22,
         morale: 18,
         losses: 10,
@@ -2554,40 +2545,12 @@
       };
       battleLog.innerHTML = `
         <div class="log-entry">
-          <span>Draxis II // Revenge Simulation</span>
-          <h3>The Iron Rain remains unpaid.</h3>
-          <p>Astra Militarum artillery once forced Mortivus from Draxis II. The cogitator reopens the wound. Select orders and see whether the enemy breaks, the Vanguard bleeds, or the omen refuses completion.</p>
+          <span>Trial Awaiting Doctrine</span>
+          <h3>No named warzone attached.</h3>
+          <p>Select enemy temperament and issue doctrine. The trial will interpret the collapse pattern according to observed Mortivus Classarion command tendencies.</p>
         </div>
       `;
-      updateRpgMeters();
-    }
-
-    function positionTooltip(event) {
-      const offset = 18;
-      const width = tooltipBox.offsetWidth || 300;
-      const height = tooltipBox.offsetHeight || 110;
-
-      let x = event.clientX + offset;
-      let y = event.clientY + offset;
-
-      if (x + width > window.innerWidth - 12) x = event.clientX - width - offset;
-      if (y + height > window.innerHeight - 12) y = event.clientY - height - offset;
-
-      tooltipBox.style.left = `${x}px`;
-      tooltipBox.style.top = `${y}px`;
-    }
-
-    function initializeTooltips() {
-      document.querySelectorAll("[data-tip]").forEach(item => {
-        item.addEventListener("mouseenter", e => {
-          tooltipBox.textContent = item.dataset.tip;
-          tooltipBox.classList.add("show");
-          positionTooltip(e);
-        });
-
-        item.addEventListener("mousemove", positionTooltip);
-        item.addEventListener("mouseleave", () => tooltipBox.classList.remove("show"));
-      });
+      updateTrialMeters();
     }
 
     relicButtons.forEach(button => {
@@ -2600,7 +2563,7 @@
 
     sealedEntries.forEach(button => {
       button.addEventListener("click", () => {
-        showToast("SUB-CRYPT NOT YET UNSEALED. RETURN WHEN THE ROT HAS INSTRUCTED IT.");
+        showToast("RECORD SEALED. THE WOUND HAS NOT RIPENED.");
       });
     });
 
@@ -2624,17 +2587,17 @@
       choice.addEventListener("click", () => {
         enemyChoices.forEach(c => c.classList.remove("active"));
         choice.classList.add("active");
-        rpg.enemy = choice.dataset.enemy;
-        resetRpgState();
-        addLog("Enemy Reclassified", `The cogitator now simulates contact against ${enemyLabels[rpg.enemy]}.`, "System");
+        trial.enemy = choice.dataset.enemy;
+        resetTrialState();
+        addLog("Enemy Temperament Reclassified", `The trial now interprets doctrine against ${enemyLabels[trial.enemy]}.`, "System");
       });
     });
 
-    rpgButtons.forEach(button => {
-      button.addEventListener("click", () => handleRpgOrder(button.dataset.order));
+    trialButtons.forEach(button => {
+      button.addEventListener("click", () => handleTrialOrder(button.dataset.order));
     });
 
-    resetRpg.addEventListener("click", resetRpgState);
+    resetTrial.addEventListener("click", resetTrialState);
 
     enterButton.addEventListener("click", () => {
       bootScreen.classList.add("hidden");
@@ -2642,8 +2605,7 @@
 
     runBootSequence();
     createMotes();
-    initializeTooltips();
-    updateRpgMeters();
+    updateTrialMeters();
   </script>
 </body>
 </html>
