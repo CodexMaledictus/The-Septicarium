@@ -21,6 +21,8 @@ const restartContainment = document.getElementById("restartContainment");
 const sigil = document.getElementById("sigil");
 const liturgyOutput = document.getElementById("liturgyOutput");
 
+const hoverLiturgy = document.getElementById("hoverLiturgy");
+
 let containment = {
   purity: 27,
   corruption: 19,
@@ -35,7 +37,10 @@ const liturgyPool = [
   "The tally has no end state. Only deeper entries.",
   "What the Imperium seals, Grandfather ripens.",
   "The kindest rot is the one that arrives slowly enough to be understood as fate.",
-  "The warp does not always scream. Sometimes it ferments."
+  "The warp does not always scream. Sometimes it ferments.",
+  "A clean wound is only an unfinished sermon.",
+  "Mercy is not release. Mercy is continuation through blessed decay.",
+  "The Fourteenth remembers what swifter legions waste."
 ];
 
 const prognosisSubjects = [
@@ -138,12 +143,14 @@ function createSpores() {
 
   for (let i = 0; i < sporeCount; i++) {
     const spore = document.createElement("span");
+
     spore.classList.add("spore");
     spore.style.left = `${Math.random() * 100}%`;
     spore.style.animationDuration = `${10 + Math.random() * 22}s`;
     spore.style.animationDelay = `${Math.random() * 16}s`;
     spore.style.opacity = `${0.15 + Math.random() * 0.65}`;
     spore.style.transform = `scale(${0.6 + Math.random() * 1.8})`;
+
     sporeField.appendChild(spore);
   }
 }
@@ -262,6 +269,46 @@ function resetContainment() {
   updateContainmentUI();
 }
 
+function positionHoverLiturgy(event) {
+  if (!hoverLiturgy) return;
+
+  const offset = 18;
+  const tooltipWidth = hoverLiturgy.offsetWidth || 320;
+  const tooltipHeight = hoverLiturgy.offsetHeight || 120;
+
+  let x = event.clientX + offset;
+  let y = event.clientY + offset;
+
+  if (x + tooltipWidth > window.innerWidth - 12) {
+    x = event.clientX - tooltipWidth - offset;
+  }
+
+  if (y + tooltipHeight > window.innerHeight - 12) {
+    y = event.clientY - tooltipHeight - offset;
+  }
+
+  hoverLiturgy.style.left = `${x}px`;
+  hoverLiturgy.style.top = `${y}px`;
+}
+
+function initializeHoverLore() {
+  const loreTargets = document.querySelectorAll("[data-lore]");
+
+  loreTargets.forEach((target) => {
+    target.addEventListener("mouseenter", (event) => {
+      hoverLiturgy.textContent = target.dataset.lore;
+      hoverLiturgy.classList.add("show");
+      positionHoverLiturgy(event);
+    });
+
+    target.addEventListener("mousemove", positionHoverLiturgy);
+
+    target.addEventListener("mouseleave", () => {
+      hoverLiturgy.classList.remove("show");
+    });
+  });
+}
+
 sealedButtons.forEach((button) => {
   button.addEventListener("click", () => {
     showToast("ACCESS DENIED. THE DATAVAULT REMAINS CENSURED BY SACRED ROT.");
@@ -287,4 +334,6 @@ createSpores();
 updateContainmentUI();
 generateTransmission();
 updateLiturgy();
+initializeHoverLore();
+
 setInterval(updateLiturgy, 6000);
