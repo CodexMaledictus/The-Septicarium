@@ -8,48 +8,69 @@
 
   <meta
     name="description"
-    content="A censured sub-crypt bound to Mortivus Classarion. The Mercy He Gave."
+    content="Recovered Kin blackbox archive concerning Mortivus Classarion, The Rotfather’s Vanguard, and the censured Votann engagement known as The Mercy He Gave."
   />
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Spectral:wght@400;500;600;700&display=swap');
+
     :root {
-      --bg-0: #070202;
-      --bg-1: #120404;
-      --bg-2: #0a0d08;
-      --panel: rgba(16, 6, 6, 0.88);
-      --panel-2: rgba(10, 10, 8, 0.84);
-      --line: rgba(161, 56, 38, 0.32);
-      --line-strong: rgba(196, 83, 59, 0.52);
-      --rot: #9ebf49;
-      --rot-bright: #d7e37c;
-      --bone: #dfd8c1;
-      --bone-dim: #b1a88e;
-      --blood: #6b1c15;
-      --deep-blood: #300a08;
-      --ash: #8d8573;
-      --shadow: 0 0 70px rgba(96, 20, 14, 0.2);
+      --black: #010201;
+      --deep: #030403;
+      --iron: #11130f;
+      --iron2: #191c16;
+      --slate: #232821;
+      --panel: rgba(12, 15, 12, 0.94);
+      --panel2: rgba(18, 21, 17, 0.9);
+      --kin-panel: rgba(20, 23, 20, 0.92);
+      --rot-panel: rgba(9, 14, 7, 0.94);
+      --line: rgba(211, 190, 116, 0.22);
+      --line2: rgba(214, 227, 123, 0.52);
+      --amber: #d3be74;
+      --amber2: #f1d98a;
+      --rot: #9fba4f;
+      --rot2: #d6e27b;
+      --bone: #ded8bf;
+      --bone2: #aaa486;
+      --brass: #8b7641;
+      --rust: #78311a;
+      --blood: #4a150f;
+      --void: #050605;
+      --green-shadow: 0 0 70px rgba(159, 186, 79, 0.13);
+      --amber-shadow: 0 0 60px rgba(211, 190, 116, 0.11);
+      --red-shadow: 0 0 70px rgba(120, 49, 26, 0.2);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
       color: var(--bone);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "Spectral", Georgia, serif;
       overflow-x: hidden;
       background:
-        radial-gradient(circle at 16% 10%, rgba(107, 28, 21, 0.25), transparent 28%),
-        radial-gradient(circle at 76% 16%, rgba(158, 191, 73, 0.08), transparent 18%),
-        linear-gradient(135deg, var(--bg-0), var(--bg-1) 42%, #040403 100%);
+        radial-gradient(circle at 9% 11%, rgba(211, 190, 116, 0.12), transparent 27%),
+        radial-gradient(circle at 86% 12%, rgba(159, 186, 79, 0.1), transparent 22%),
+        radial-gradient(circle at 48% 60%, rgba(120, 49, 26, 0.1), transparent 38%),
+        linear-gradient(135deg, #030403, #080a07 48%, #010201 100%);
+    }
+
+    body::selection {
+      background: rgba(214, 227, 123, 0.22);
+      color: var(--rot2);
     }
 
     .boot-screen,
     .void-haze,
-    .rot-grid,
-    .ash-field {
+    .grid-field,
+    .ore-mote-field {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -59,37 +80,55 @@
       z-index: 0;
       background:
         radial-gradient(circle at center, transparent 34%, rgba(0,0,0,0.74) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.82));
+        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.86));
     }
 
-    .rot-grid {
+    .grid-field {
       z-index: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-      background-size: 104px 104px;
-      mask-image: radial-gradient(circle at center, black 0%, transparent 85%);
+        linear-gradient(rgba(211,190,116,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(211,190,116,0.018) 1px, transparent 1px);
+      background-size: 86px 86px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
     }
 
-    .ash-field {
+    .ore-mote-field {
       z-index: 1;
       overflow: hidden;
     }
 
-    .ash {
+    .ore-mote {
       position: absolute;
-      width: 2px;
-      height: 18px;
+      width: 3px;
+      height: 16px;
       border-radius: 999px;
-      background: linear-gradient(to bottom, rgba(223,216,193,0.04), rgba(223,216,193,0.32), rgba(223,216,193,0));
+      background: linear-gradient(to bottom, rgba(241,217,138,0.03), rgba(241,217,138,0.32), rgba(159,186,79,0));
       animation: fall linear infinite;
     }
 
     @keyframes fall {
-      from { transform: translateY(-12vh) translateX(0); opacity: 0; }
-      8% { opacity: 0.5; }
-      90% { opacity: 0.2; }
-      to { transform: translateY(110vh) translateX(14px); opacity: 0; }
+      from { transform: translateY(-14vh) translateX(0); opacity: 0; }
+      8% { opacity: 0.55; }
+      92% { opacity: 0.2; }
+      to { transform: translateY(114vh) translateX(22px); opacity: 0; }
+    }
+
+    @keyframes rotateSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes crawl {
+      to { stroke-dashoffset: -170; }
+    }
+
+    @keyframes scan {
+      0%, 100% { transform: translateY(-34px); opacity: 0.14; }
+      50% { transform: translateY(92px); opacity: 0.9; }
     }
 
     .boot-screen {
@@ -98,9 +137,9 @@
       display: grid;
       place-items: center;
       background:
-        radial-gradient(circle at center, rgba(62, 16, 12, 0.76), rgba(0,0,0,0.98) 66%),
-        linear-gradient(135deg, #070202, #0f0404);
-      transition: opacity 700ms ease, visibility 700ms ease;
+        radial-gradient(circle at center, rgba(40, 43, 30, 0.92), rgba(0,0,0,0.98) 66%),
+        linear-gradient(135deg, #040504, #0a0c08);
+      transition: opacity 760ms ease, visibility 760ms ease;
     }
 
     .boot-screen.hidden {
@@ -109,11 +148,14 @@
     }
 
     .boot-box {
-      width: min(900px, calc(100% - 32px));
+      width: min(1180px, calc(100% - 32px));
       padding: 30px;
-      border: 1px solid rgba(196, 83, 59, 0.34);
-      background: rgba(15, 6, 6, 0.82);
-      box-shadow: 0 0 80px rgba(107, 28, 21, 0.26);
+      border: 1px solid rgba(211, 190, 116, 0.28);
+      background:
+        linear-gradient(135deg, rgba(8, 10, 8, 0.95), rgba(16, 18, 14, 0.86)),
+        radial-gradient(circle at top left, rgba(211, 190, 116, 0.08), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(159, 186, 79, 0.08), transparent 38%);
+      box-shadow: 0 0 90px rgba(211, 190, 116, 0.12);
       position: relative;
       overflow: hidden;
     }
@@ -130,7 +172,7 @@
           transparent 1px,
           transparent 9px
         );
-      opacity: 0.12;
+      opacity: 0.13;
       pointer-events: none;
     }
 
@@ -138,33 +180,91 @@
       position: relative;
       z-index: 1;
       margin: 0 0 18px;
-      color: #efb1a8;
-      font-family: Arial, sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
     }
 
-    .boot-lines {
+    .boot-grid {
       position: relative;
       z-index: 1;
-      min-height: 250px;
-      line-height: 1.75;
-      color: var(--bone);
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 24px;
+      align-items: center;
     }
 
-    .boot-lines p { margin: 0 0 8px; }
+    .boot-core {
+      min-height: 360px;
+      border: 1px solid rgba(211, 190, 116, 0.14);
+      background:
+        radial-gradient(circle at center, rgba(211,190,116,0.06), transparent 42%),
+        radial-gradient(circle at bottom right, rgba(159,186,79,0.06), transparent 42%),
+        rgba(0,0,0,0.24);
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .boot-core::before,
+    .boot-core::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      border: 1px dashed rgba(211, 190, 116, 0.18);
+    }
+
+    .boot-core::before {
+      width: 286px;
+      height: 286px;
+      animation: rotateSlow 38s linear infinite;
+    }
+
+    .boot-core::after {
+      width: 214px;
+      height: 214px;
+      animation: rotateSlow 27s linear infinite reverse;
+    }
+
+    .boot-svg {
+      position: relative;
+      z-index: 2;
+      width: min(342px, 92%);
+      filter: drop-shadow(0 0 30px rgba(211,190,116,0.14));
+    }
+
+    .boot-node {
+      opacity: 0.28;
+      transition: 260ms ease;
+    }
+
+    .boot-node.active {
+      opacity: 1;
+      filter: drop-shadow(0 0 12px rgba(214,227,123,0.6));
+    }
+
+    .boot-lines {
+      min-height: 305px;
+      color: var(--bone);
+      line-height: 1.74;
+      font-size: 1rem;
+    }
+
+    .boot-lines p {
+      margin: 0 0 8px;
+    }
 
     .boot-button {
-      position: relative;
-      z-index: 1;
-      margin-top: 16px;
-      border: 1px solid rgba(196, 83, 59, 0.34);
+      margin-top: 18px;
+      border: 1px solid rgba(211, 190, 116, 0.3);
       background: rgba(0,0,0,0.34);
       color: var(--bone);
       padding: 12px 16px;
-      font-family: Arial, sans-serif;
-      font-size: 0.74rem;
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.72rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       cursor: pointer;
@@ -172,9 +272,9 @@
     }
 
     .boot-button:hover {
-      color: #ffd6cf;
-      border-color: rgba(255, 137, 117, 0.58);
-      background: rgba(196, 83, 59, 0.08);
+      color: var(--rot2);
+      border-color: rgba(214, 227, 123, 0.58);
+      background: rgba(159, 186, 79, 0.08);
     }
 
     .topbar {
@@ -186,44 +286,49 @@
       gap: 14px;
       padding: 10px 18px;
       border-bottom: 1px solid var(--line);
-      background: rgba(10, 5, 5, 0.94);
+      background: rgba(7, 8, 6, 0.94);
       backdrop-filter: blur(10px);
-      color: var(--bone-dim);
-      font-family: Arial, sans-serif;
-      font-size: 0.7rem;
+      color: var(--bone2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.66rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
     }
 
     .topbar a {
-      color: var(--rot-bright);
+      color: var(--amber2);
       text-decoration: none;
+    }
+
+    .topbar a:hover {
+      color: var(--rot2);
+      text-decoration: underline;
     }
 
     .site-shell {
       position: relative;
       z-index: 2;
-      width: min(1360px, calc(100% - 28px));
+      width: min(1500px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 24px 0 88px;
+      padding: 24px 0 90px;
     }
 
     .eyebrow {
       margin: 0 0 10px;
-      color: #efb1a8;
-      font-family: Arial, sans-serif;
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
       font-size: 0.72rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
     }
 
     .tag {
-      color: #efb1a8;
-      border: 1px solid rgba(196, 83, 59, 0.3);
+      color: var(--amber2);
+      border: 1px solid rgba(211, 190, 116, 0.24);
       background: rgba(0,0,0,0.24);
       padding: 6px 10px;
-      font-family: Arial, sans-serif;
-      font-size: 0.68rem;
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.64rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -231,309 +336,102 @@
 
     .hero,
     .panel,
-    .story-panel,
-    .battlemap-panel,
-    .votann-panel,
-    .margin-panel,
-    .shock-panel {
+    .kin-slab,
+    .blackbox-panel,
+    .ledger-panel,
+    .battle-panel,
+    .grudge-panel,
+    .subcrypt-card,
+    .character-panel,
+    .unit-panel,
+    .verdict-panel {
       position: relative;
       border: 1px solid var(--line);
       background:
-        linear-gradient(135deg, rgba(18, 6, 6, 0.95), rgba(7, 8, 6, 0.9)),
-        radial-gradient(circle at top left, rgba(196, 83, 59, 0.08), transparent 42%);
-      box-shadow: var(--shadow);
+        linear-gradient(135deg, rgba(13, 16, 13, 0.95), rgba(8, 10, 8, 0.9)),
+        radial-gradient(circle at top left, rgba(211, 190, 116, 0.08), transparent 42%);
+      box-shadow: var(--amber-shadow);
       overflow: hidden;
     }
 
     .hero::before,
     .panel::before,
-    .story-panel::before,
-    .battlemap-panel::before,
-    .votann-panel::before,
-    .margin-panel::before,
-    .shock-panel::before {
+    .kin-slab::before,
+    .blackbox-panel::before,
+    .ledger-panel::before,
+    .battle-panel::before,
+    .grudge-panel::before,
+    .subcrypt-card::before,
+    .character-panel::before,
+    .unit-panel::before,
+    .verdict-panel::before {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(circle at 14% 0%, rgba(196, 83, 59, 0.06), transparent 22%),
-        linear-gradient(120deg, transparent, rgba(196, 83, 59, 0.03), transparent);
+        radial-gradient(circle at 14% 0%, rgba(211, 190, 116, 0.045), transparent 24%),
+        radial-gradient(circle at 92% 96%, rgba(159, 186, 79, 0.04), transparent 26%),
+        linear-gradient(120deg, transparent, rgba(211, 190, 116, 0.022), transparent);
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.02fr 0.98fr;
-      gap: 20px;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 24px;
       padding: 30px;
       margin-bottom: 18px;
-      border-left: 4px solid var(--blood);
+      border-left: 4px solid var(--amber);
+      align-items: stretch;
     }
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(3rem, 7vw, 6.4rem);
-      line-height: 0.9;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: clamp(3rem, 7.4vw, 7rem);
+      line-height: 0.86;
       letter-spacing: -0.05em;
+      font-weight: 900;
     }
 
     .subtitle {
-      margin: 14px 0 16px;
-      color: var(--rot-bright);
-      font-size: clamp(1.1rem, 2.5vw, 1.9rem);
+      margin: 18px 0;
+      color: var(--rot2);
+      font-size: clamp(1.16rem, 2.6vw, 2.05rem);
       font-style: italic;
+      line-height: 1.2;
     }
 
     .lead {
-      margin: 0 0 12px;
-      line-height: 1.74;
+      margin: 0 0 13px;
       color: var(--bone);
-      font-size: 1.04rem;
-    }
-
-    .lead.dim { color: var(--bone-dim); }
-
-    .hero-quote {
-      display: grid;
-      align-content: center;
-      gap: 14px;
-    }
-
-    .quote-slab {
-      padding: 18px;
-      border: 1px solid rgba(196, 83, 59, 0.24);
-      background: rgba(0,0,0,0.22);
-    }
-
-    .quote-slab span {
-      display: block;
-      margin-bottom: 8px;
-      color: #efb1a8;
-      font-family: Arial, sans-serif;
-      font-size: 0.66rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .quote-slab strong {
-      display: block;
-      color: var(--bone);
-      line-height: 1.55;
       font-size: 1.05rem;
+      line-height: 1.76;
     }
 
-    .section-kicker {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: start;
-      margin-bottom: 14px;
+    .lead.dim {
+      color: var(--bone2);
     }
 
-    .panel,
-    .story-panel,
-    .battlemap-panel,
-    .votann-panel,
-    .margin-panel,
-    .shock-panel {
-      padding: 24px;
-      margin-bottom: 18px;
+    .lead span {
+      color: var(--rot2);
+      font-weight: 600;
     }
 
-    .panel h2,
-    .story-panel h2,
-    .battlemap-panel h2,
-    .votann-panel h2,
-    .margin-panel h2,
-    .shock-panel h2 {
-      margin: 0 0 12px;
-      font-size: clamp(1.9rem, 3vw, 2.9rem);
-      line-height: 1.04;
-    }
-
-    .panel p,
-    .story-panel p,
-    .battlemap-panel p,
-    .votann-panel p,
-    .margin-panel p,
-    .shock-panel p,
-    .story-block p,
-    .margin-note {
-      color: var(--bone-dim);
-      line-height: 1.78;
-    }
-
-    .battlemap-grid {
-      display: grid;
-      grid-template-columns: 0.94fr 1.06fr;
-      gap: 18px;
-      margin-top: 12px;
-    }
-
-    .battlemap-panel pre {
-      margin: 0;
-      padding: 16px;
-      border: 1px solid rgba(196, 83, 59, 0.18);
-      background: rgba(0,0,0,0.24);
-      color: var(--bone);
-      font-family: "Courier New", monospace;
-      font-size: 0.84rem;
-      line-height: 1.44;
-      overflow-x: auto;
-    }
-
-    .battle-facts {
-      display: grid;
-      gap: 10px;
-    }
-
-    .fact {
-      padding: 14px;
-      border: 1px solid rgba(196, 83, 59, 0.14);
-      background: rgba(0,0,0,0.18);
-    }
-
-    .fact span {
-      display: block;
-      margin-bottom: 6px;
-      color: #efb1a8;
-      font-family: Arial, sans-serif;
-      font-size: 0.66rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .story-flow {
-      display: grid;
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .story-block {
-      padding: 16px;
-      border-left: 3px solid rgba(196, 83, 59, 0.42);
-      background: rgba(0,0,0,0.18);
-    }
-
-    .story-block h3 {
-      margin: 0 0 8px;
-      color: var(--bone);
-      font-size: 1.3rem;
-      line-height: 1.1;
-    }
-
-    .story-block span {
-      display: block;
-      margin-bottom: 8px;
-      color: #efb1a8;
-      font-family: Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .votann-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .votann-card {
-      padding: 18px;
-      border: 1px solid rgba(196, 83, 59, 0.14);
-      background: rgba(0,0,0,0.18);
-      min-height: 240px;
-    }
-
-    .votann-card span {
-      display: block;
-      margin-bottom: 8px;
-      color: #efb1a8;
-      font-family: Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .votann-card h3 {
-      margin: 0 0 8px;
-      color: var(--bone);
-      font-size: 1.22rem;
-      line-height: 1.1;
-    }
-
-    .margin-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .margin-note {
-      border-left: 3px solid rgba(158, 191, 73, 0.38);
-      padding: 14px 14px 14px 16px;
-      background: rgba(0,0,0,0.18);
-    }
-
-    .margin-note span {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--rot-bright);
-      font-family: Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .shock-panel {
-      border-left: 4px solid var(--blood);
-    }
-
-    .shock-button {
-      border: 1px solid rgba(196, 83, 59, 0.34);
-      background: rgba(0,0,0,0.3);
-      color: var(--bone);
-      padding: 12px 16px;
-      font-family: Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 220ms ease;
-      margin-bottom: 16px;
-    }
-
-    .shock-button:hover {
-      color: #ffd6cf;
-      border-color: rgba(255, 137, 117, 0.56);
-      background: rgba(196, 83, 59, 0.08);
-    }
-
-    .shock-hidden {
-      display: none;
-      padding: 18px;
-      border: 1px solid rgba(196, 83, 59, 0.22);
-      background: rgba(0,0,0,0.24);
-    }
-
-    .shock-hidden.open {
-      display: block;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    .entry-link {
-      border: 1px solid rgba(220, 237, 132, 0.24);
+    .button,
+    .entry-link,
+    .ledger-button,
+    .vox-button,
+    .close-vox,
+    .grudge-mark,
+    .phase-button,
+    .sealed-entry {
+      border: 1px solid rgba(211, 190, 116, 0.26);
       background: rgba(0,0,0,0.28);
       color: var(--bone);
       padding: 12px 14px;
-      font-family: Arial, sans-serif;
-      font-size: 0.72rem;
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.68rem;
       letter-spacing: 0.13em;
       text-transform: uppercase;
       cursor: pointer;
@@ -545,31 +443,563 @@
       text-align: center;
     }
 
-    .entry-link:hover {
-      border-color: rgba(220, 237, 132, 0.56);
-      color: var(--rot-bright);
-      background: rgba(163, 198, 74, 0.08);
+    .button:hover,
+    .entry-link:hover,
+    .ledger-button:hover,
+    .ledger-button.active,
+    .vox-button:hover,
+    .close-vox:hover,
+    .grudge-mark:hover,
+    .grudge-mark.active,
+    .phase-button:hover,
+    .phase-button.active,
+    .sealed-entry:hover {
+      border-color: rgba(214, 227, 123, 0.58);
+      color: var(--rot2);
+      background: rgba(159, 186, 79, 0.08);
+    }
+
+    .hero-actions,
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .hero-visual {
+      padding: 18px;
+      border: 1px solid rgba(211,190,116,0.14);
+      background:
+        radial-gradient(circle at center, rgba(211,190,116,0.05), transparent 42%),
+        rgba(0,0,0,0.18);
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      min-height: 640px;
+    }
+
+    .hero-visual h3 {
+      margin: 0;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.28rem;
+    }
+
+    .hero-visual p {
+      margin: 0;
+      color: var(--bone2);
+      line-height: 1.65;
+    }
+
+    .core-svg {
+      width: 100%;
+      min-height: 470px;
+      filter: drop-shadow(0 0 28px rgba(211,190,116,0.12));
+    }
+
+    .core-crawl {
+      stroke-dasharray: 8 10;
+      animation: crawl 17s linear infinite;
+    }
+
+    .section-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel,
+    .blackbox-panel,
+    .ledger-panel,
+    .battle-panel,
+    .grudge-panel,
+    .character-panel,
+    .unit-panel,
+    .verdict-panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .blackbox-panel h2,
+    .ledger-panel h2,
+    .battle-panel h2,
+    .grudge-panel h2,
+    .character-panel h2,
+    .unit-panel h2,
+    .verdict-panel h2 {
+      margin: 0 0 12px;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.03;
+      font-weight: 800;
+    }
+
+    .panel p,
+    .blackbox-panel p,
+    .ledger-panel p,
+    .battle-panel p,
+    .grudge-panel p,
+    .character-panel p,
+    .unit-panel p,
+    .verdict-panel p,
+    .subcrypt-card p,
+    .kin-slab p,
+    .document-output p,
+    .phase-output p {
+      color: var(--bone2);
+      line-height: 1.76;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.94fr 1.06fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .kin-grid,
+    .subcrypt-grid,
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .kin-slab,
+    .subcrypt-card,
+    .asset-card {
+      padding: 18px;
+      min-height: 260px;
+      transition: 240ms ease;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(13, 16, 13, 0.95), rgba(8, 10, 8, 0.9)),
+        radial-gradient(circle at top left, rgba(211, 190, 116, 0.08), transparent 42%);
+      box-shadow: var(--amber-shadow);
+    }
+
+    .asset-card {
+      min-height: 210px;
+    }
+
+    .kin-slab:hover,
+    .subcrypt-card:hover,
+    .asset-card:hover {
+      transform: translateY(-7px);
+      border-color: var(--line2);
+      box-shadow: 0 0 46px rgba(211, 190, 116, 0.12);
+    }
+
+    .kin-slab span,
+    .subcrypt-card span,
+    .asset-card span,
+    .document-output span,
+    .phase-output span,
+    .ledger-stat span,
+    .grudge-stat span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .kin-slab h3,
+    .subcrypt-card h3,
+    .asset-card h3,
+    .document-output h3,
+    .phase-output h3 {
+      margin: 0 0 8px;
+      color: var(--bone);
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.24rem;
+      line-height: 1.12;
+    }
+
+    .blackbox-panel {
+      border-left: 4px solid var(--amber);
+    }
+
+    .blackbox-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .blackbox-stage,
+    .document-output,
+    .phase-output {
+      border: 1px solid rgba(211,190,116,0.14);
+      background:
+        linear-gradient(135deg, rgba(8,10,8,0.92), rgba(13,16,12,0.84)),
+        radial-gradient(circle at bottom right, rgba(159,186,79,0.06), transparent 42%);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blackbox-stage {
+      min-height: 640px;
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .document-output {
+      min-height: 640px;
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .document-output::before,
+    .phase-output::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.026),
+          rgba(255,255,255,0.026) 1px,
+          transparent 1px,
+          transparent 9px
+        );
+      opacity: 0.1;
+    }
+
+    .ledger-buttons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ledger-map {
+      border: 1px solid rgba(211,190,116,0.13);
+      background: rgba(0,0,0,0.18);
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .ledger-svg,
+    .mine-svg {
+      width: 100%;
+      min-height: 360px;
+      filter: drop-shadow(0 0 24px rgba(211,190,116,0.1));
+    }
+
+    .verdict-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .verdict-row {
+      display: grid;
+      grid-template-columns: 0.38fr 0.62fr;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid rgba(211,190,116,0.13);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .verdict-row span {
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .verdict-row strong {
+      font-weight: normal;
+      color: var(--bone);
+      line-height: 1.45;
+    }
+
+    .character-panel {
+      border-left: 4px solid var(--brass);
+    }
+
+    .unit-panel {
+      border-left: 4px solid var(--rot);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .profile-card {
+      padding: 14px;
+      border: 1px solid rgba(211,190,116,0.13);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .profile-card span {
+      display: block;
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .profile-card strong {
+      font-weight: normal;
+      color: var(--bone);
+      line-height: 1.45;
+    }
+
+    .battle-panel {
+      border-left: 4px solid var(--rust);
+    }
+
+    .phase-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .phase-output {
+      min-height: 420px;
+    }
+
+    .grudge-panel {
+      border-left: 4px solid var(--rot);
+    }
+
+    .grudge-grid {
+      display: grid;
+      grid-template-columns: 0.42fr 0.58fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .grudge-controls,
+    .grudge-output {
+      border: 1px solid rgba(211,190,116,0.14);
+      background: rgba(0,0,0,0.18);
+      padding: 16px;
+    }
+
+    .grudge-buttons {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .grudge-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .grudge-stat {
+      padding: 12px;
+      border: 1px solid rgba(211,190,116,0.12);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .meter {
+      height: 12px;
+      border: 1px solid rgba(211,190,116,0.14);
+      background: rgba(0,0,0,0.34);
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber), var(--rot), var(--rot2));
+      width: 10%;
+      transition: width 320ms ease;
+    }
+
+    .grudge-log {
+      display: grid;
+      gap: 10px;
+      max-height: 480px;
+      overflow: auto;
+      padding-right: 6px;
+    }
+
+    .grudge-entry {
+      padding: 14px;
+      border-left: 3px solid rgba(159,186,79,0.38);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .grudge-entry span {
+      display: block;
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .grudge-entry h3 {
+      margin: 0 0 8px;
+      color: var(--bone);
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 1.14rem;
+    }
+
+    .grudge-entry p {
+      margin: 0;
+      color: var(--bone2);
+      line-height: 1.65;
+    }
+
+    .floating-vox {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 90;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .vox-button {
+      box-shadow: 0 0 24px rgba(211, 190, 116, 0.16);
+    }
+
+    .vox-drawer {
+      position: fixed;
+      right: 18px;
+      bottom: 76px;
+      z-index: 95;
+      width: min(460px, calc(100% - 24px));
+      border: 1px solid rgba(211, 190, 116, 0.2);
+      background:
+        linear-gradient(135deg, rgba(8, 10, 8, 0.97), rgba(15, 18, 14, 0.94)),
+        radial-gradient(circle at top left, rgba(159,186,79,0.08), transparent 42%);
+      box-shadow: 0 0 38px rgba(211, 190, 116, 0.14);
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 260ms ease;
+      overflow: hidden;
+    }
+
+    .vox-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .vox-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(211, 190, 116, 0.12);
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.22);
+    }
+
+    .vox-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .vox-transmission {
+      padding: 14px;
+      border-left: 3px solid rgba(159, 186, 79, 0.38);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .vox-transmission span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--amber2);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .vox-transmission p {
+      margin: 0;
+      color: var(--bone2);
+      line-height: 1.65;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 120;
+      transform: translateX(-50%) translateY(120px);
+      max-width: calc(100% - 28px);
+      padding: 14px 18px;
+      border: 1px solid rgba(214, 227, 123, 0.34);
+      background: rgba(6, 7, 5, 0.96);
+      color: var(--rot2);
+      box-shadow: 0 0 28px rgba(159, 186, 79, 0.14);
+      font-family: "Cinzel", Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: transform 280ms ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
     }
 
     .site-footer {
       position: relative;
       z-index: 2;
-      width: min(1360px, calc(100% - 28px));
+      width: min(1500px, calc(100% - 28px));
       margin: 0 auto;
       padding: 26px 0 46px;
-      border-top: 1px solid rgba(196, 83, 59, 0.14);
-      color: var(--bone-dim);
+      border-top: 1px solid rgba(211, 190, 116, 0.12);
+      color: var(--bone2);
       font-size: 0.88rem;
       letter-spacing: 0.03em;
     }
 
-    @media (max-width: 1180px) {
+    @media (max-width: 1240px) {
       .hero,
-      .battlemap-grid {
+      .two-col,
+      .boot-grid,
+      .blackbox-grid,
+      .grudge-grid {
         grid-template-columns: 1fr;
       }
 
-      .votann-grid {
+      .kin-grid,
+      .subcrypt-grid,
+      .asset-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grudge-stat-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -582,418 +1012,881 @@
 
       .site-shell,
       .site-footer {
-        width: min(100% - 18px, 1360px);
+        width: min(100% - 18px, 1500px);
+      }
+
+      .hero {
+        padding: 22px;
       }
 
       .hero h1 {
-        font-size: clamp(3rem, 16vw, 4.8rem);
+        font-size: clamp(2.8rem, 14vw, 4.4rem);
       }
 
       .section-kicker {
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .verdict-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="boot-screen" id="bootScreen">
     <div class="boot-box">
-      <p class="boot-title">CENSURED SUB-CRYPT UNSEALING // THE MERCY HE GAVE</p>
-      <div class="boot-lines" id="bootLines"></div>
-      <button class="boot-button" id="enterButton">Accept Witness Classification</button>
+      <p class="boot-title">Kyn-Ledger Recovery // Contamination Detected // Mercy Record Opening</p>
+
+      <div class="boot-grid">
+        <div class="boot-core">
+          <svg class="boot-svg" viewBox="0 0 360 360" role="img" aria-label="Corrupted Votann blackbox recovery core">
+            <defs>
+              <radialGradient id="bootGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f1d98a" stop-opacity="0.48"/>
+                <stop offset="50%" stop-color="#d3be74" stop-opacity="0.14"/>
+                <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <circle cx="180" cy="180" r="132" fill="url(#bootGlow)" />
+            <path d="M180 42 L294 108 L294 252 L180 318 L66 252 L66 108 Z" fill="rgba(0,0,0,0.3)" stroke="rgba(211,190,116,0.42)" stroke-width="2" />
+            <path d="M180 86 L256 130 L256 230 L180 274 L104 230 L104 130 Z" fill="rgba(0,0,0,0.38)" stroke="rgba(211,190,116,0.3)" stroke-width="2" />
+
+            <circle cx="180" cy="180" r="48" fill="rgba(159,186,79,0.08)" stroke="rgba(214,227,123,0.36)" />
+            <path d="M132 180 H228 M180 132 V228" stroke="rgba(211,190,116,0.28)" stroke-width="2" />
+            <path d="M146 146 L214 214 M214 146 L146 214" stroke="rgba(159,186,79,0.22)" stroke-width="2" />
+
+            <circle class="boot-node" id="node1" cx="180" cy="42" r="7" fill="#f1d98a"/>
+            <circle class="boot-node" id="node2" cx="294" cy="108" r="7" fill="#f1d98a"/>
+            <circle class="boot-node" id="node3" cx="294" cy="252" r="7" fill="#f1d98a"/>
+            <circle class="boot-node" id="node4" cx="180" cy="318" r="7" fill="#f1d98a"/>
+            <circle class="boot-node" id="node5" cx="66" cy="252" r="7" fill="#f1d98a"/>
+            <circle class="boot-node" id="node6" cx="66" cy="108" r="7" fill="#f1d98a"/>
+            <circle class="boot-node" id="node7" cx="180" cy="180" r="9" fill="#d6e27b"/>
+
+            <path d="M82 280 C126 238 166 222 214 232 C250 240 278 218 302 188" fill="none" stroke="rgba(159,186,79,0.35)" stroke-width="4" stroke-dasharray="8 10" />
+            <text x="180" y="348" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">ANCESTOR QUERY DEGRADED</text>
+          </svg>
+        </div>
+
+        <div>
+          <div class="boot-lines" id="bootLines"></div>
+          <button class="boot-button" id="enterButton">Recover the Broken Ledger</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="ash-field" aria-hidden="true"></div>
+  <div class="ore-mote-field" aria-hidden="true"></div>
   <div class="void-haze" aria-hidden="true"></div>
-  <div class="rot-grid" aria-hidden="true"></div>
+  <div class="grid-field" aria-hidden="true"></div>
 
   <header class="topbar">
-    <div>SUB-CRYPT // THE MERCY HE GAVE // CENSURED BATTLE MEMORY</div>
+    <div>Kyn Blackbox Archive // The Mercy He Gave // Septicarium Censure Active</div>
     <div>
-      <a href="mortivus-classarion.html">RETURN TO MORTIVUS CLASSARION</a>
+      <a href="mortivus-classarion.html">Return to Mortivus</a>
       //
-      <a href="plaguebound-dossier.html">PLAGUEBOUND DOSSIER</a>
+      <a href="plaguebound-dossier.html">Plaguebound Dossier</a>
+      //
+      <a href="index.html">Command Deck</a>
     </div>
   </header>
 
   <main class="site-shell">
     <section class="hero">
       <div>
-        <p class="eyebrow">ATTACHED SUB-CRYPT // TESTIMONY OF MERCY</p>
+        <p class="eyebrow">Captured Enemy Record // Votann Blackbox Corruption</p>
         <h1>The Mercy He Gave</h1>
-        <p class="subtitle">“He did not end their suffering. He taught it to belong to everyone.”</p>
+        <p class="subtitle">“The Kin tried to count the cost. Mortivus made the cost remember them.”</p>
 
         <p class="lead">
-          This chamber preserves one of the most infamous atrocity-stains attached to the name of
-          <span>Mortivus Classarion</span>: a brutal engagement against a Leagues of Votann prospecting
-          force whose elite core was broken not only in flesh, but in the meaning of endurance itself.
+          This sub-crypt contains the recovered blackbox fragments of a Leagues of Votann claim-force broken under the hand of <span>Mortivus Classarion</span> and The Rotfather’s Vanguard. It is not a Death Guard victory hymn. It is an enemy ledger, damaged but not silent, still trying to speak in the clean language of cost, oath, inheritance, and practical survival.
         </p>
 
         <p class="lead dim">
-          The archive marks this as the first battle in which Mortivus’ mature doctrine of mercy appears
-          fully formed. He did not simply butcher the enemy. He took the part of their culture that most
-          resembled pride, endurance, inheritance, and kin-memory and made it scream inside its own armor.
+          The Kin did not panic like lesser defenders. They measured. They fortified. They adjusted firing lanes, calculated acceptable losses, invoked ancestral guidance, and treated the plague-host as a problem to be solved. Their first mistake was believing all problems remained obedient to calculation.
         </p>
+
+        <p class="lead dim">
+          Mortivus did not merely defeat them. He entered their logic. He bent their ledgers, their dead, their oath cycles, and the consultation of their Ancestor Core until the surviving records could no longer agree whether the fallen had been preserved, stolen, returned, or made into a lesson.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button" href="#kin">Enemy File</a>
+          <a class="button" href="#claim">The Claim-Oath</a>
+          <a class="button" href="#kahl">Kâhl Durnek Vôrr</a>
+          <a class="button" href="#hearthguard">Hearthguard</a>
+          <a class="button" href="#battle">Battle Reconstruction</a>
+          <a class="button" href="#ledger">Broken Ledger</a>
+          <a class="button" href="#grudge">Grudge Tally</a>
+        </div>
       </div>
 
-      <div class="hero-quote">
-        <div class="quote-slab">
-          <span>Archive Classification</span>
-          <strong>
-            GRIMDARK VICTORY STAIN // LEAGUES OF VOTANN CONTACT // SUBJECT: EINHYR HEARTHGUARD
-          </strong>
-        </div>
-        <div class="quote-slab">
-          <span>Septicarium Note</span>
-          <strong>
-            The chamber does not consider this battle notable because Mortivus won.
-            It considers it notable because of the way he chose to let the enemy remain alive for far too long.
-          </strong>
-        </div>
+      <div class="hero-visual">
+        <p class="eyebrow">Recovered Core-Slate</p>
+        <h3>Kôrvynd Claim-Oath // Blackbox Integrity 43%</h3>
+        <p>
+          Angular Kin data architecture remains visible beneath plague contamination. The clean geometry resists the rot. The rot answers by teaching the geometry to breathe.
+        </p>
+
+        <svg class="core-svg" viewBox="0 0 760 520" role="img" aria-label="Corrupted Votann core slate">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f1d98a" stop-opacity="0.52"/>
+              <stop offset="54%" stop-color="#d3be74" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect x="28" y="28" width="704" height="464" rx="28" fill="rgba(0,0,0,0.24)" stroke="rgba(211,190,116,0.16)" />
+          <circle cx="380" cy="242" r="142" fill="url(#coreGlow)" />
+          <path d="M380 76 L536 166 L536 346 L380 436 L224 346 L224 166 Z" fill="rgba(0,0,0,0.28)" stroke="rgba(211,190,116,0.38)" stroke-width="2" />
+          <path d="M380 132 L488 194 L488 318 L380 380 L272 318 L272 194 Z" fill="rgba(0,0,0,0.34)" stroke="rgba(211,190,116,0.26)" stroke-width="2" />
+
+          <circle cx="380" cy="256" r="68" fill="rgba(159,186,79,0.08)" stroke="rgba(214,227,123,0.34)" />
+          <text x="380" y="250" text-anchor="middle" fill="#f1d98a" font-size="16" font-family="Cinzel">ANCESTOR</text>
+          <text x="380" y="274" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">QUERY CORRUPTED</text>
+
+          <path class="core-crawl" d="M380 256 C290 200 220 178 126 188" fill="none" stroke="rgba(211,190,116,0.32)" stroke-width="3" />
+          <path class="core-crawl" d="M380 256 C478 210 560 198 650 224" fill="none" stroke="rgba(211,190,116,0.32)" stroke-width="3" />
+          <path class="core-crawl" d="M380 256 C320 322 250 356 134 362" fill="none" stroke="rgba(159,186,79,0.36)" stroke-width="3" />
+          <path class="core-crawl" d="M380 256 C446 328 528 374 660 370" fill="none" stroke="rgba(159,186,79,0.36)" stroke-width="3" />
+
+          <rect class="scan-line" x="92" y="214" width="576" height="3" fill="rgba(214,227,123,0.54)" />
+
+          <circle cx="126" cy="188" r="8" fill="#f1d98a" />
+          <circle cx="650" cy="224" r="8" fill="#f1d98a" />
+          <circle cx="134" cy="362" r="8" fill="#d6e27b" />
+          <circle cx="660" cy="370" r="8" fill="#d6e27b" />
+
+          <text x="88" y="178" fill="#f1d98a" font-size="11" font-family="Cinzel" letter-spacing="2">KÂHL LEDGER</text>
+          <text x="672" y="218" text-anchor="end" fill="#f1d98a" font-size="11" font-family="Cinzel" letter-spacing="2">BRÔKHYR REPORT</text>
+          <text x="94" y="356" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">ROT VECTOR</text>
+          <text x="690" y="364" text-anchor="end" fill="#d6e27b" font-size="11" font-family="Cinzel" letter-spacing="2">MERCY RECORD</text>
+        </svg>
       </div>
     </section>
 
-    <section class="battlemap-panel">
+    <section class="panel" id="kin">
       <div class="section-kicker">
-        <p class="eyebrow">ENGAGEMENT SLATE</p>
-        <span class="tag">BATTLE DISPOSITION</span>
+        <p class="eyebrow">Enemy File</p>
+        <span class="tag">Leagues of Votann // Kin Record</span>
       </div>
 
-      <h2>Contact in the Broken Extraction Galleries</h2>
+      <h2>Who were the Kin?</h2>
 
       <p>
-        The engagement took place in a mineral extraction complex carved deep into a dead world’s crust.
-        The Leagues of Votann had established fortified galleries, hard-sealed transit spines, and ancestral
-        machine cores built to preserve both labor and lineage-memory. Mortivus judged the site ideal:
-        enclosed, disciplined, proud, and full of systems that believed themselves sealed.
+        The enemy encountered here were Kin of the Leagues of Votann: short in stature only to those who mistake scale for endurance. They are engineered, practical, stubborn, and bound by inherited memory. Their wars are not crusades of hysteria. Their campaigns are claims, debts, contracts, survival measures, ancestral obligations, and grudges entered into ledgers with patient seriousness.
       </p>
-
-      <div class="battlemap-grid">
-        <pre>
-        [ SURFACE BREACH ZONE ]
-                 ||
-                 ||
-        =========================
-        ||    LIFT SHAFT A     ||
-        =========================
-                 ||
-       -----------------------------
-       | GALLERY I | GALLERY II    |
-       |           |               |
-       |  VOTANN   |  HEARTHGUARD  |
-       |  LINE     |  HOLD         |
-       -----------------------------
-                 ||
-          =================
-          || KIN-FURNACE ||
-          =================
-                 ||
-         [GENE-LOCK ARCHIVE]
-                 ||
-         [MORTIVUS ENTRY VECTOR]
-        </pre>
-
-        <div class="battle-facts">
-          <div class="fact">
-            <span>Enemy Formation</span>
-            Leagues of Votann mining-host reinforced by a hardened Einhyr Hearthguard detachment.
-          </div>
-          <div class="fact">
-            <span>Target of Desire</span>
-            A gene-lock archive containing kin-line data, oath records, and inherited industrial command memory.
-          </div>
-          <div class="fact">
-            <span>Mortivus’ Decision</span>
-            Refuse immediate breach. Poison circulation, bells, lift shafts, and recitation channels first.
-          </div>
-          <div class="fact">
-            <span>Result</span>
-            Total strategic collapse of the Votann defense lattice followed by prolonged ritualized slaughter.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="votann-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">ENEMY CATALOGUE</p>
-        <span class="tag">VOTANN PRESENCE</span>
-      </div>
-
-      <h2>The Kin He Chose to Break</h2>
-
-      <div class="votann-grid">
-        <article class="votann-card">
-          <span>Primary Opposition</span>
-          <h3>Einhyr Hearthguard</h3>
-          <p>
-            Elite Kin clad in exo-armor, slow to panic, difficult to kill, and bred for brutal close-quarter
-            persistence. Mortivus chose them as the core of his lesson because they most closely resembled
-            endurance without rot.
-          </p>
-        </article>
-
-        <article class="votann-card">
-          <span>Support Elements</span>
-          <h3>Prospecting Kinhost</h3>
-          <p>
-            Hardened industrial soldiery whose discipline depended on line integrity, sealed corridors,
-            and deep trust in inherited systems. Mortivus treated that trust as an infection route.
-          </p>
-        </article>
-
-        <article class="votann-card">
-          <span>Strategic Value</span>
-          <h3>Gene-Lock Archive</h3>
-          <p>
-            More than a data-vault. It preserved ancestral memory, duty chains, and industrial identity.
-            Mortivus recognized immediately that desecrating this chamber would wound the Kin more deeply
-            than destroying a thousand tons of machinery.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section class="story-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">RECOVERED NARRATIVE</p>
-        <span class="tag">WITNESS-COLLAPSED ACCOUNT</span>
-      </div>
-
-      <h2>The Battle Itself</h2>
-
-      <div class="story-flow">
-        <div class="story-block">
-          <span>Phase I</span>
-          <h3>The Sealing of Breath</h3>
-          <p>
-            Mortivus did not launch his assault when the first bulkhead fell. He ordered his plague marines to hold
-            the breach and contaminate the extraction galleries instead. Ventilation shafts were seeded. Lift cages
-            were left functional but tainted. Alarm bells were allowed to ring, then quietly fed a wet residue from
-            the censers chained to the vanguard line.
-          </p>
-          <p>
-            The Kin below trusted their walls. Their rebreathers trusted their filters. Their command lattice trusted
-            inherited calibrations older than some worlds. That trust kept them in place while the first spores crept
-            through the ducts, settled against their armor seams, and began the slow work of making sealed breath feel
-            thick, warm, and wrong.
-          </p>
-        </div>
-
-        <div class="story-block">
-          <span>Phase II</span>
-          <h3>The Hearthguard Hold</h3>
-          <p>
-            When Mortivus entered Gallery II, the Einhyr Hearthguard met him at the transit spine. They were magnificent
-            in the way only stubborn things can be. Armor locked. Shock mauls raised. Rotary fire chewing the darkness
-            into brass and sparks. They did not break when the first of the prospecting kin began vomiting blood behind
-            them. They did not break when bells began to ring from a shaft no longer connected to power.
-          </p>
-          <p>
-            Mortivus advanced through the fire as though through incense. His armor drank shrapnel. The Mercy-Sickle
-            rose and fell. One Hearthguard lost an arm at the shoulder and kept swinging. Another took a plague-round
-            through the visor, staggered, then crushed one of Mortivus’ own before collapsing in a slurry of marrow
-            and blackened mucus.
-          </p>
-          <p>
-            The fight became so close that armor seals tore on jagged walls. Kin gauntlets crushed plague marine faceplates.
-            Rusted blades peeled open exo-rig joints. Bolts burst inside torsos. Shock fields turned organs into broth.
-            Mortivus carved the lead Hearthguard from groin to throat and stepped aside as the split halves fell in opposite
-            directions, still twitching inside their own failing systems.
-          </p>
-        </div>
-
-        <div class="story-block">
-          <span>Phase III</span>
-          <h3>The Climax in the Gene-Lock Chamber</h3>
-          <p>
-            The surviving Hearthguard made their final stand around the gene-lock archive. Their commander, a grim Kin
-            in ancestor-marked plate whose name the chamber renders only as <em>Thraim Ironwrit</em>, locked the inner
-            vault and ordered every living defender to die before letting the Death Guard inside.
-          </p>
-          <p>
-            Mortivus did not answer with argument. He answered by ordering the wounded dragged in. Kin wounded. Death Guard
-            wounded. Mining serfs. Hearthguard not yet dead. He had them piled together before the archive gates while the
-            bells continued tolling overhead. Then he breached the vault not with explosives, but by hammering the Mercy-Sickle
-            into the command seam and letting the rot in his blade infect the lockwork until the machine itself began to weep.
-          </p>
-          <p>
-            When the gate opened, Thraim Ironwrit charged him. The Hearthguard commander was still strong enough to crack a
-            plague marine’s ribcage in one swing. He struck Mortivus across the helm and split the faceplate open enough for
-            wet vapor to hiss out. Mortivus took the blow, closed the distance, and drove the Mercy-Sickle through the Kin’s
-            abdomen with such force that the tip burst out through the reactor pack. He did not remove it quickly.
-          </p>
-          <p>
-            He held Thraim there, impaled and breathing, while the archive chamber filled with the stench of opened coolant,
-            split bowel, copper blood, hot fungal bloom, and machine oil. Then Mortivus turned the dying Kin commander toward
-            his own gene-lock vault and split the ancestral core open in front of him. Memory cables snapped like tendons.
-            Archive caskets burst. Lineage slurry spilled across the floor. The Kin around them tried to advance and were cut
-            down at the knees, the throat, the visor, the groin. Those who fell were not granted swift endings.
-          </p>
-        </div>
-
-        <div class="story-block">
-          <span>Phase IV</span>
-          <h3>The Mercy He Gave</h3>
-          <p>
-            Here lies the act for which the chamber was named.
-          </p>
-          <p>
-            Mortivus ordered the surviving Hearthguard, prospecting kin, and his own wounded gathered together in the archive
-            chamber. He had their helmets removed. He had the dead stacked at the walls. He had ruptured archive canisters
-            poured over the floor so that ancestral nutrient gel mingled with blood, phlegm, molten insulation, and the soft
-            leakage from opened intestines. The room stank of hot metal, rot, and things meant to remain inside bodies.
-          </p>
-          <p>
-            Then he sealed the chamber.
-          </p>
-          <p>
-            For hours the living listened to one another breathe. Then cough. Then retch. Then beg. The spores worked through
-            open wounds and exposed mouths. Flesh blistered beneath armor edges. Eyes turned rheumy. Tongues swelled. Nails
-            blackened. Some Kin tore at their own throats trying to clear lungs that had begun growing wet gardens inside them.
-            Others held to discipline until their teeth fell out in blood-slick clumps and their repressed cries became whimpers.
-          </p>
-          <p>
-            Mortivus did not leave. He remained with them in the dark heat of the sealed chamber, listening.
-            Whenever one tried to crawl away from the pile of suffering bodies, he pushed them gently back with the heel of
-            the Mercy-Sickle. Whenever one begged for death, he denied it. Whenever one tried to curse him, blood and fungus
-            filled their mouth before the words could properly form.
-          </p>
-          <p>
-            At the end of the long watch, no one in that chamber any longer knew whose pain belonged to whom.
-            Kin lay tangled with plague marines. Ancestor gel clung to opened wounds. The elite Einhyr Hearthguard,
-            paragons of hard endurance, were crying in the same wet, childlike voices as dying miners and gut-shot traitors.
-            That was Mortivus’ mercy. He did not end suffering. He abolished loneliness within it.
-          </p>
-        </div>
-
-        <div class="story-block">
-          <span>Phase V</span>
-          <h3>Aftermath</h3>
-          <p>
-            When the chamber was finally opened, the scene no longer resembled victory in the common sense.
-            It resembled an answered prayer from the underside of creation. Some Kin were dead with mouths frozen open in
-            disbelief. Some still lived but no longer possessed enough intact selfhood to know what they had once guarded.
-            Several plague marines rose from the pile giggling through broken teeth, their armor plated with congealed ancestor slurry.
-          </p>
-          <p>
-            Mortivus took what remained of the gene-lock core and had it mounted as a relic within the lower sanctums of
-            The Rotfather’s Mercy. The battle was entered into the tally not as conquest, but as demonstration.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="margin-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">MARGINAL RECORDS</p>
-        <span class="tag">SECONDARY WITNESS</span>
-      </div>
-
-      <h2>Fragments Left in the Wake</h2>
-
-      <div class="margin-list">
-        <div class="margin-note">
-          <span>Plague Marine Notation</span>
-          “The Kin died hard. That pleased him. Easy enemies teach nothing.”
-        </div>
-        <div class="margin-note">
-          <span>Serf-Scribe Residue</span>
-          “I was told to count the dead. I could not. Some were still moving, but movement no longer seemed a reliable category.”
-        </div>
-        <div class="margin-note">
-          <span>Septicarium Annotation</span>
-          “This sub-crypt is preserved because it defines Mortivus better than rank. He weaponizes intimacy with suffering.”
-        </div>
-      </div>
-    </section>
-
-    <section class="shock-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">CENSURED APPENDIX</p>
-        <span class="tag">UNNECESSARY DETAIL</span>
-      </div>
-
-      <h2>The Chamber’s Most Disturbing Detail</h2>
 
       <p>
-        The account above is already sufficient, but one additional detail was marked with special disgust even by those who
-        serve Nurgle. It is sealed here for completeness.
+        The Kin mine, build, salvage, trade, fortify, and endure. They do not rush to superstition when steel fails. They first check the weld, the pressure seal, the ammunition count, the command relay, and the cost of continuing. They are dangerous because they are not easily impressed by terror. They meet horror by measuring it.
       </p>
 
-      <button class="shock-button" id="shockButton">Unseal Appendix</button>
+      <p>
+        This made Mortivus’ victory more useful. A frightened enemy proves little. A calculating enemy proves more. When the Kin began to understand that their calculations were not wrong, but insufficient, the lesson ripened.
+      </p>
 
-      <div class="shock-hidden" id="shockHidden">
+      <div class="kin-grid">
+        <article class="kin-slab">
+          <span>Culture</span>
+          <h3>Oath and Kinship</h3>
+          <p>
+            Kin identity is practical and ancestral. A warrior does not fight as an isolated body, but as debt, memory, and obligation given armor.
+          </p>
+        </article>
+
+        <article class="kin-slab">
+          <span>Mindset</span>
+          <h3>Cost Before Panic</h3>
+          <p>
+            The Kôrvynd did not respond to the plague-host with religious terror. They opened ledgers, reinforced lanes, and calculated losses.
+          </p>
+        </article>
+
+        <article class="kin-slab">
+          <span>Weakness</span>
+          <h3>Memory Can Be Entered</h3>
+          <p>
+            Mortivus found the true pressure point. Not flesh. Not armor. The record. The dead. The ancestral return.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="two-col" id="claim">
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">The Oathband</p>
+          <span class="tag">Kôrvynd Claim-Oath</span>
+        </div>
+
+        <h2>They came to claim ore. They left as warning.</h2>
+
         <p>
-          When the archive chamber was opened, Thraim Ironwrit was still alive.
-          Mortivus had left him upright against the burst gene-lock core, impaled through the abdomen and pinned there by the
-          Mercy-Sickle’s lower hook. His legs were gone below the knee where rot, arterial loss, and crushing collapse had
-          made a single ruin of them. His exo-armor had split at the seams and the flesh inside had swollen, blistered, and
-          sagged into the nutrient gel on the floor.
+          The Kôrvynd Claim-Oath entered the contested extraction zone under the authority of a mineral salvage claim older than three local Imperial regimes. To the Kin, the site was not a battlefield at first. It was an asset recovery problem complicated by trespassers, contamination, and hostile interference.
+        </p>
+
+        <p>
+          Their force was composed with disciplined practicality: Hernkyn scouts to chart spoil routes and vent access; Hearthkyn line squads to lock the extraction lanes; Brôkhyr engineers to keep the machines obedient; Cthonian Beserks for tunnel shock-action; and the Graven-Aegis Hearthguard to protect the inner mine-vault where the claim’s true value waited under sealed stone.
+        </p>
+
+        <p>
+          The first casualty report still reads like a mining accident. The second reads like a raid. The third begins using the term “plague vector.” The fourth stops trusting its own timestamps.
+        </p>
+      </article>
+
+      <article class="panel">
+        <div class="section-kicker">
+          <p class="eyebrow">Claim Assets</p>
+          <span class="tag">Recovered Muster Approximation</span>
+        </div>
+
+        <h2>Known Kôrvynd elements.</h2>
+
+        <div class="asset-grid">
+          <article class="asset-card">
+            <span>Command</span>
+            <h3>Kâhl Durnek Vôrr</h3>
+            <p>Holder of the Third Claim. Tactical realist. Mortivus reduced his certainty into witness material.</p>
+          </article>
+
+          <article class="asset-card">
+            <span>Ancestor Link</span>
+            <h3>Grimnyr Edda-Veyn</h3>
+            <p>Consulted the ancestor record during contamination. Received answers too late, then answers no Kin had asked for.</p>
+          </article>
+
+          <article class="asset-card">
+            <span>Engineering</span>
+            <h3>Brôkhyr Harn Okken</h3>
+            <p>Recorded corrosion patterns behaving as though they preferred load-bearing structures and oath-marked doors.</p>
+          </article>
+
+          <article class="asset-card">
+            <span>Elite Guard</span>
+            <h3>Graven-Aegis Hearthguard</h3>
+            <p>Sworn to hold the inner mine-vault. Their final oath-cycle became the center of the mercy record.</p>
+          </article>
+
+          <article class="asset-card">
+            <span>Forward Eyes</span>
+            <h3>Hernkyn Relay Nineteen</h3>
+            <p>First to identify the Vanguard’s slow advance as deliberate rather than degraded mobility.</p>
+          </article>
+
+          <article class="asset-card">
+            <span>Shock Unit</span>
+            <h3>Cthonian Beserk Pairings</h3>
+            <p>Entered the lower tunnels to stop plague seepage at source. Only their audio came back.</p>
+          </article>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-panel" id="kahl">
+      <div class="section-kicker">
+        <p class="eyebrow">Primary Enemy Character</p>
+        <span class="tag">Kâhl Durnek Vôrr // Holder of the Third Claim</span>
+      </div>
+
+      <h2>The commander who calculated correctly until the field stopped obeying calculation.</h2>
+
+      <p>
+        Durnek Vôrr was not reckless. That is why his defeat matters. He did not underestimate the Death Guard as weak, stupid, or slow by accident. He identified them as durable, contamination-heavy infantry with dangerous morale effects and prepared accordingly. He established fallback lanes, layered kill-zones, reserve routes, armored support, and tunnel demolition charges. For the first half of the engagement, his plan worked.
+      </p>
+
+      <p>
+        Mortivus lost bodies. The Vanguard bled. Plague marines were buried under mining charges, caught in overlapping volkite fire, and forced through choke points where the Kin punished every meter. Vôrr’s ledger did not fail because he was incompetent. It failed because he measured the wrong war.
+      </p>
+
+      <p>
+        Vôrr believed the engagement would be decided by survivability, fire discipline, position, and cost. Mortivus was fighting for the moment when cost itself became sacred, when the Kin would continue because stopping would dishonor the dead, and continuing would deliver more dead into the record. That was the mercy. Mortivus let them understand the trap only after honor had already made retreat impossible.
+      </p>
+
+      <div class="profile-grid">
+        <div class="profile-card">
+          <span>Disposition</span>
+          <strong>Practical, stubborn, respected, slow to anger, difficult to frighten.</strong>
+        </div>
+        <div class="profile-card">
+          <span>Strength</span>
+          <strong>Excellent control of fallback geometry, fire lanes, and cost-efficient sacrifice.</strong>
+        </div>
+        <div class="profile-card">
+          <span>Fatal Error</span>
+          <strong>Reduced Mortivus to a battlefield problem instead of a doctrinal infection.</strong>
+        </div>
+        <div class="profile-card">
+          <span>Final Record</span>
+          <strong>His last command was not retreat. It was “preserve the names.”</strong>
+        </div>
+      </div>
+    </section>
+        <section class="unit-panel" id="hearthguard">
+      <div class="section-kicker">
+        <p class="eyebrow">Elite Unit Record</p>
+        <span class="tag">The Graven-Aegis Hearthguard</span>
+      </div>
+
+      <h2>They were not broken easily. That is why Mortivus chose them.</h2>
+
+      <p>
+        The Graven-Aegis Hearthguard were the finest warriors committed to the inner mine-vault. They wore the heaviest war-plate available to the Kôrvynd Claim-Oath and carried themselves with the stillness of those who had already decided the cost of dying. They were not ceremonial guards. They were practical brutality given oath-form.
+      </p>
+
+      <p>
+        Their defensive work was almost perfect. They anchored firing lanes, rotated wounded Kin without disorder, punished the Vanguard’s first close assaults, and held the pressure line while plague fumes filled the vault approaches. Their armor seals degraded, but their formation did not. Their casualty rate became unsustainable, but their oath-cycle continued.
+      </p>
+
+      <p>
+        Mortivus waited for that oath-cycle to complete before entering the vault threshold. The archive marks this as deliberate. He did not interrupt their honor. He allowed it to finish, then made it meaningless.
+      </p>
+
+      <div class="profile-grid">
+        <div class="profile-card">
+          <span>Formation</span>
+          <strong>Shielded close-order elite guard protecting the inner vault claim.</strong>
+        </div>
+        <div class="profile-card">
+          <span>Primary Strength</span>
+          <strong>Discipline under pressure. Oath cohesion remained intact past predicted collapse.</strong>
+        </div>
+        <div class="profile-card">
+          <span>Confirmed Action</span>
+          <strong>Repelled three plague marine pushes before Mortivus personally entered the line.</strong>
+        </div>
+        <div class="profile-card">
+          <span>Final Oath</span>
+          <strong>“Hold the claim. Preserve the names. Return what is owed.”</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="battle-panel" id="battle">
+      <div class="section-kicker">
+        <p class="eyebrow">Battle Reconstruction</p>
+        <span class="tag">The Mercy Engagement</span>
+      </div>
+
+      <h2>The battle did not begin as horror. It began as a claim dispute.</h2>
+
+      <p>
+        The following reconstruction is assembled from Kin blackbox fragments, Septicarium overlays, corrupted ancestor-query residue, and plague-host after-action traces. The order remains disputed. The meaning does not.
+      </p>
+
+      <div class="phase-buttons">
+        <button class="phase-button active" data-phase="claim">I // The Claim</button>
+        <button class="phase-button" data-phase="rot">II // The First Rot</button>
+        <button class="phase-button" data-phase="practical">III // The Practical War</button>
+        <button class="phase-button" data-phase="arrival">IV // Mortivus Appears</button>
+        <button class="phase-button" data-phase="mercy">V // The Mercy</button>
+        <button class="phase-button" data-phase="ledger">VI // The Broken Ledger</button>
+      </div>
+
+      <div class="phase-output" id="phaseOutput">
+        <span>Phase I</span>
+        <h3>The Claim</h3>
+        <p>
+          The Kôrvynd did not enter as pilgrims or zealots. They entered with maps, contracts, extraction tolerances, and ancestral claim authority. The mine-vault beneath the dead ridge contained ore, relic-alloy, and machine-viable mineral seams that Vôrr judged worth the risk of contamination.
         </p>
         <p>
-          Yet what horrified the witnesses was not survival alone. It was that the dying Kin commander had spent the final
-          stretch of his life cradling the head of one of his own Hearthguard, rocking it gently as if it were a sleeping child,
-          while both of them drowned in the warm slurry of opened ancestry and pooled blood.
+          Hernkyn scouts marked the spoil routes and found the first signs of previous occupation: corroded Imperial survey pylons, half-buried plague bells, and tunnel doors sealed from the outside with rusted chain. The Kin logged the details as environmental hazard, not omen.
         </p>
         <p>
-          Mortivus reportedly stood over the scene and said only this:
-          <em>“Now your endurance has become communal. This is the mercy you denied yourselves.”</em>
+          Mortivus let them establish order. He let them believe the site could still be organized.
         </p>
+      </div>
+    </section>
+
+    <section class="blackbox-panel" id="ledger">
+      <div class="section-kicker">
+        <p class="eyebrow">The Broken Ancestor Ledger</p>
+        <span class="tag">Recovered Documents // Kin Perspective</span>
+      </div>
+
+      <h2>The documents are more valuable because they try not to sound afraid.</h2>
+
+      <p>
+        These fragments are preserved in enemy voice where possible. The Septicarium has not corrected their tone. Their restraint is part of the wound.
+      </p>
+
+      <div class="blackbox-grid">
+        <div class="blackbox-stage">
+          <p class="eyebrow">Document Stack</p>
+
+          <div class="ledger-buttons">
+            <button class="ledger-button active" data-doc="kahl">Kâhl’s Command Ledger</button>
+            <button class="ledger-button" data-doc="grimnyr">Grimnyr Consultation Fragment</button>
+            <button class="ledger-button" data-doc="brokhyr">Brôkhyr Damage Report</button>
+            <button class="ledger-button" data-doc="hearthguard">Einhyr Hearthguard Final Oath</button>
+            <button class="ledger-button" data-doc="hernkyn">Hernkyn Scout Relay</button>
+            <button class="ledger-button" data-doc="beserk">Cthonian Beserk Recovery Audio</button>
+            <button class="ledger-button" data-doc="ancestor">Ancestor-Core Query Corruption</button>
+            <button class="ledger-button" data-doc="septicarium">Septicarial Intercept Overlay</button>
+          </div>
+
+          <div class="ledger-map">
+            <svg class="ledger-svg" viewBox="0 0 720 420" role="img" aria-label="Broken Ancestor Ledger schematic">
+              <defs>
+                <radialGradient id="ledgerGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#f1d98a" stop-opacity="0.5"/>
+                  <stop offset="55%" stop-color="#d3be74" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#9fba4f" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <rect x="24" y="24" width="672" height="372" rx="22" fill="rgba(0,0,0,0.24)" stroke="rgba(211,190,116,0.16)" />
+              <circle cx="360" cy="204" r="92" fill="url(#ledgerGlow)" />
+              <path d="M360 72 L490 144 L490 292 L360 364 L230 292 L230 144 Z" fill="rgba(0,0,0,0.28)" stroke="rgba(211,190,116,0.36)" stroke-width="2" />
+              <path d="M360 126 L438 170 L438 258 L360 304 L282 258 L282 170 Z" fill="rgba(0,0,0,0.36)" stroke="rgba(211,190,116,0.26)" stroke-width="2" />
+
+              <path class="core-crawl" d="M360 214 C272 176 192 152 88 160" fill="none" stroke="rgba(211,190,116,0.32)" stroke-width="3" />
+              <path class="core-crawl" d="M360 214 C448 176 528 152 632 160" fill="none" stroke="rgba(211,190,116,0.32)" stroke-width="3" />
+              <path class="core-crawl" d="M360 214 C284 284 204 318 92 316" fill="none" stroke="rgba(159,186,79,0.36)" stroke-width="3" />
+              <path class="core-crawl" d="M360 214 C436 284 516 318 628 316" fill="none" stroke="rgba(159,186,79,0.36)" stroke-width="3" />
+
+              <circle cx="88" cy="160" r="8" fill="#f1d98a" />
+              <circle cx="632" cy="160" r="8" fill="#f1d98a" />
+              <circle cx="92" cy="316" r="8" fill="#d6e27b" />
+              <circle cx="628" cy="316" r="8" fill="#d6e27b" />
+
+              <text x="360" y="210" text-anchor="middle" fill="#f1d98a" font-size="15" font-family="Cinzel">BROKEN</text>
+              <text x="360" y="232" text-anchor="middle" fill="#aaa486" font-size="10" font-family="Cinzel" letter-spacing="2">ANCESTOR LEDGER</text>
+              <rect class="scan-line" x="74" y="192" width="572" height="3" fill="rgba(214,227,123,0.5)" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="document-output" id="documentOutput">
+          <span>Kâhl’s Command Ledger</span>
+          <h3>Initial Engagement Assessment</h3>
+          <p>
+            Enemy commander identified: Mortivus Classarion. Engagement posture: slow advance. Psychological profile: deliberate. Recommend refusal of close engagement until artillery, demolition, and controlled fallback assets degrade plague infantry mass.
+          </p>
+          <p>
+            Enemy does not respond to suppression in expected manner. Ammunition expenditure rising above practical tolerance. Morale effect noted among younger Kin after prolonged visual contact with enemy commander. Corrective instruction issued: do not watch the central figure. Shoot the line.
+          </p>
+          <p>
+            Final notation appended in damaged script: “He is not advancing toward the vault. He is advancing toward the oath.”
+          </p>
+
+          <div class="verdict-grid">
+            <div class="verdict-row"><span>Blackbox Integrity</span><strong>43% and declining.</strong></div>
+            <div class="verdict-row"><span>Speaker Confidence</span><strong>High at opening. Collapses after vault-phase.</strong></div>
+            <div class="verdict-row"><span>Rot Intrusion</span><strong>Present in timestamps and casualty mathematics.</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grudge-panel" id="grudge">
+      <div class="section-kicker">
+        <p class="eyebrow">Grudge Tally Corruption</p>
+        <span class="tag">Judgement Mark Engine</span>
+      </div>
+
+      <h2>The Kin marked what wronged them. The mark came back wrong.</h2>
+
+      <p>
+        The Kôrvynd attempted to enter judgement marks against the plague-host. Each mark should have clarified priority. Instead, every mark gave the rot another route into the ledger.
+      </p>
+
+      <div class="grudge-grid">
+        <div class="grudge-controls">
+          <p class="eyebrow">Apply Judgement Mark</p>
+
+          <div class="grudge-buttons">
+            <button class="grudge-mark" data-mark="mortivus">Mark Mortivus Classarion</button>
+            <button class="grudge-mark" data-mark="vanguard">Mark The Rotfather’s Vanguard</button>
+            <button class="grudge-mark" data-mark="mercy">Mark The Rotfather’s Mercy</button>
+            <button class="grudge-mark" data-mark="object">Mark the Plague Object</button>
+            <button class="grudge-mark" data-mark="vault">Mark the Inner Mine-Vault</button>
+            <button class="grudge-mark" id="resetGrudge">Reset Ledger</button>
+          </div>
+
+          <div class="grudge-stat-grid">
+            <div class="grudge-stat">
+              <span>Judgement Pressure</span>
+              <div class="meter"><div class="meter-fill" id="judgementMeter"></div></div>
+            </div>
+            <div class="grudge-stat">
+              <span>Ledger Corruption</span>
+              <div class="meter"><div class="meter-fill" id="corruptionMeter"></div></div>
+            </div>
+            <div class="grudge-stat">
+              <span>Ancestor Silence</span>
+              <div class="meter"><div class="meter-fill" id="silenceMeter"></div></div>
+            </div>
+            <div class="grudge-stat">
+              <span>Mercy Intrusion</span>
+              <div class="meter"><div class="meter-fill" id="mercyMeter"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grudge-output">
+          <p class="eyebrow">Ledger Response</p>
+          <div class="grudge-log" id="grudgeLog">
+            <div class="grudge-entry">
+              <span>System Awaiting Mark</span>
+              <h3>Judgement ledger stable.</h3>
+              <p>
+                Select a target. The Kôrvynd record will attempt to classify the offense and assign priority. Do not apply too many marks.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="verdict-panel">
+      <div class="section-kicker">
+        <p class="eyebrow">Final Septicarium Verdict</p>
+        <span class="tag">Mercy Record Preserved</span>
+      </div>
+
+      <h2>Mortivus did not spare them. He preserved the wound.</h2>
+
+      <p>
+        The phrase “The Mercy He Gave” does not refer to kindness. It refers to the form of sentence Mortivus chose. He allowed the Kin to remain Kin long enough to watch their strongest habits become instruments of defeat: calculation, oath, memory, cost, preservation, and ancestral return.
+      </p>
+
+      <p>
+        Their practicality did not save them. It made the lesson cleaner. Their courage did not save them. It made the offering weightier. Their dead did not vanish. That would have been simple. They remained in the ledger, but the ledger no longer belonged only to them.
+      </p>
+
+      <p>
+        This is why the sub-crypt remains attached to Mortivus Classarion’s name. It is not merely a battle. It is a statement of doctrine.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button" href="mortivus-classarion.html">Return to Mortivus Classarion</a>
+        <a class="button" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
+        <a class="button" href="index.html">Return to Command Deck</a>
       </div>
     </section>
 
     <section class="panel">
       <div class="section-kicker">
-        <p class="eyebrow">SUB-CRYPT CLOSING</p>
-        <span class="tag">ENTRY PERSISTS</span>
+        <p class="eyebrow">Related Sub-Crypts</p>
+        <span class="tag">Awaiting Clearance</span>
       </div>
 
-      <h2>Why the Chamber Remains Open</h2>
+      <h2>Other records this wound touches.</h2>
 
-      <p>
-        The Septicarium preserves this atrocity not because it is excessive, but because it is clarifying.
-        It reveals Mortivus’ mature doctrine more precisely than any battlefield summary.
-        He does not seek only to kill. He seeks to corrupt the meaning of endurance, kinship, inheritance, and comfort.
-      </p>
+      <div class="subcrypt-grid">
+        <article class="subcrypt-card">
+          <span>Open Record</span>
+          <h3>Mortivus Classarion</h3>
+          <p>The parent dossier for the subject whose mercy became a method of war.</p>
+          <a class="entry-link" href="mortivus-classarion.html">Open Dossier</a>
+        </article>
 
-      <p>
-        Where others offer mercy as release, Mortivus offers it as forced participation in shared ruin.
-        That is why this chamber remains bound to his name.
-      </p>
+        <article class="subcrypt-card">
+          <span>Future Record</span>
+          <h3>The Rotfather’s Omen</h3>
+          <p>The plague-prophecy Mortivus follows, writes, or is being written by.</p>
+          <button class="sealed-entry">Await Clearance</button>
+        </article>
 
-      <div class="footer-links">
-        <a class="entry-link" href="mortivus-classarion.html">Return to Mortivus Classarion</a>
-        <a class="entry-link" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
+        <article class="subcrypt-card">
+          <span>Future Record</span>
+          <h3>The Draxis II Vengeance Ledger</h3>
+          <p>A different wound: not mercy, but humiliation and the names owed for it.</p>
+          <button class="sealed-entry">Await Clearance</button>
+        </article>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>THE SEPTICARIUM // THE MERCY HE GAVE // SUB-CRYPT ACTIVE</p>
-    <p>Mercy is not release. Mercy is the abolition of solitude within pain.</p>
+    <p>THE SEPTICARIUM // THE MERCY HE GAVE // KYN BLACKBOX RECORD CORRUPTED</p>
+    <p>The Kin tried to preserve the dead. Mortivus answered that they already were.</p>
   </footer>
+
+  <div class="floating-vox">
+    <button class="vox-button" id="voxButton">Open Kin Fragments</button>
+  </div>
+
+  <div class="vox-drawer" id="voxDrawer">
+    <div class="vox-head">
+      <div>Recovered Kin Fragments</div>
+      <button class="close-vox" id="closeVox">Seal</button>
+    </div>
+    <div class="vox-body" id="voxBody"></div>
+  </div>
+
+  <div class="toast" id="toast">RECORD SEALED. THE ANCESTORS DO NOT ANSWER THIS REQUEST.</div>
 
   <script>
     const bootScreen = document.getElementById("bootScreen");
     const bootLines = document.getElementById("bootLines");
     const enterButton = document.getElementById("enterButton");
-    const ashField = document.querySelector(".ash-field");
-    const shockButton = document.getElementById("shockButton");
-    const shockHidden = document.getElementById("shockHidden");
+    const oreMoteField = document.querySelector(".ore-mote-field");
+
+    const ledgerButtons = document.querySelectorAll(".ledger-button");
+    const documentOutput = document.getElementById("documentOutput");
+
+    const phaseButtons = document.querySelectorAll(".phase-button");
+    const phaseOutput = document.getElementById("phaseOutput");
+
+    const grudgeButtons = document.querySelectorAll(".grudge-mark[data-mark]");
+    const resetGrudge = document.getElementById("resetGrudge");
+    const grudgeLog = document.getElementById("grudgeLog");
+
+    const judgementMeter = document.getElementById("judgementMeter");
+    const corruptionMeter = document.getElementById("corruptionMeter");
+    const silenceMeter = document.getElementById("silenceMeter");
+    const mercyMeter = document.getElementById("mercyMeter");
+
+    const voxButton = document.getElementById("voxButton");
+    const closeVox = document.getElementById("closeVox");
+    const voxDrawer = document.getElementById("voxDrawer");
+    const voxBody = document.getElementById("voxBody");
+
+    const sealedEntries = document.querySelectorAll(".sealed-entry");
+    const toast = document.getElementById("toast");
 
     const bootSequence = [
-      "Opening censured sub-crypt...",
-      "Violence memory intact.",
-      "Kin-contact verified.",
-      "Subject cross-reference: Mortivus Classarion.",
-      "Enemy classification: Leagues of Votann.",
-      "Elite unit present: Einhyr Hearthguard.",
-      "Witness stability: compromised.",
-      "Warning: this chamber preserves mercy in an unusable form."
+      "Oathband blackbox recovered.",
+      "Kin casualty ledger partially intact.",
+      "Ancestor-query fragments detected.",
+      "Resource extraction claim disputed.",
+      "Biohazard contamination exceeds practical tolerance.",
+      "Memory tithe corrupted.",
+      "Mortivus Classarion identified.",
+      "Final mercy-record opening."
     ];
+
+    const documents = {
+      kahl: {
+        title: "Initial Engagement Assessment",
+        speaker: "Kâhl’s Command Ledger",
+        body: [
+          "Enemy commander identified: Mortivus Classarion. Engagement posture: slow advance. Psychological profile: deliberate. Recommend refusal of close engagement until artillery, demolition, and controlled fallback assets degrade plague infantry mass.",
+          "Enemy does not respond to suppression in expected manner. Ammunition expenditure rising above practical tolerance. Morale effect noted among younger Kin after prolonged visual contact with enemy commander. Corrective instruction issued: do not watch the central figure. Shoot the line.",
+          "Final notation appended in damaged script: “He is not advancing toward the vault. He is advancing toward the oath.”"
+        ],
+        stats: [
+          ["Blackbox Integrity", "43% and declining."],
+          ["Speaker Confidence", "High at opening. Collapses after vault-phase."],
+          ["Rot Intrusion", "Present in timestamps and casualty mathematics."]
+        ]
+      },
+      grimnyr: {
+        title: "Ancestor Consultation Fragment",
+        speaker: "Grimnyr Edda-Veyn",
+        body: [
+          "Query submitted to ancestral reserve: identify plague-command pattern. Response delayed by nine heartbeats. Delay unacceptable. Repeated query. Response returned with seven identical glyph-errors and one unknown devotional phrase.",
+          "The Ancestors answered late. That is not impossible. That is not acceptable. The answer contained a word no Kin had entered. The word was repeated in the casualty ledger before casualties occurred.",
+          "Final fragment: “Do not ask where the dead have gone. The ledger has begun answering in another voice.”"
+        ],
+        stats: [
+          ["Query Reliability", "Compromised."],
+          ["Ancestor Response", "Delayed, repeated, contaminated."],
+          ["Forbidden Term", "MERCY."]
+        ]
+      },
+      brokhyr: {
+        title: "Engineering Damage Report",
+        speaker: "Brôkhyr Harn Okken",
+        body: [
+          "Corrosion does not follow chemical logic. It behaves as if selecting load-bearing structures with ritual preference. Standard countermeasures slow visible spread but fail to prevent recurrence along oath-marked doors and ancestor-facing consoles.",
+          "Three pressure locks failed inward despite exterior reinforcement. Ventilation systems carried particulate matter against flow. One drill-rig continued operating after power isolation and engraved seven circular lesions into the floor.",
+          "Recommendation: abandon affected lower tunnels, seal all ancestor-facing ports, and do not permit plague residue near memory storage."
+        ],
+        stats: [
+          ["Material Failure", "Selective."],
+          ["Containment", "Temporary at best."],
+          ["Engineer Note", "The rot has preferences."]
+        ]
+      },
+      hearthguard: {
+        title: "Final Oath-Cycle",
+        speaker: "Einhyr Hearthguard Record",
+        body: [
+          "We held the pressure line. We did not break. The plague infantry advanced under volkite fire and did not show proper concern for loss. We adjusted formation. We preserved the vault. We preserved the names.",
+          "The enemy commander waited until the oath-cycle completed. This was not hesitation. He allowed the words to finish. He entered after the last name was spoken.",
+          "Final oath preserved in partial clarity: “Hold the claim. Preserve the names. Return what is owed.” Response, non-Kin voice: “Preserved.”"
+        ],
+        stats: [
+          ["Formation Integrity", "Maintained past predicted limit."],
+          ["Final Status", "Oath complete. Line compromised."],
+          ["Mercy Intrusion", "Confirmed."]
+        ]
+      },
+      hernkyn: {
+        title: "Forward Relay Nineteen",
+        speaker: "Hernkyn Scout Relay",
+        body: [
+          "Initial plague-host movement assessed as degraded mobility. Correction: movement is intentionally slow. Enemy advances at pace optimized for psychological pressure and ammunition depletion.",
+          "Observed central figure halting before unmarked tunnel-mouth. No auspex trigger detected. Twelve minutes later, Beserk audio from that tunnel ceased. The figure did not look surprised.",
+          "Relay conclusion: enemy commander is not reacting to battlefield conditions. He is waiting for them to become true."
+        ],
+        stats: [
+          ["Scout Confidence", "High."],
+          ["Mobility Assessment", "Revised."],
+          ["Conclusion", "Enemy patience is tactical weapon."]
+        ]
+      },
+      beserk: {
+        title: "Tunnel Recovery Audio",
+        speaker: "Cthonian Beserk Pairings",
+        body: [
+          "Audio opens with impact tools, breath discipline, and tunnel alarms. First contact occurs thirty-seven seconds before visual feed failure. Beserks continue forward after losing lamp support. One voice laughs once, then begins counting debts.",
+          "The lower tunnel does not sound empty. It sounds wet with machinery that should not be moving. A plague bell rings through stone. One Beserk says: “Ancestor preserve me.” Another answers: “Too late. Something else did.”",
+          "Audio terminates after repeated strikes against a surface later identified as the inside of the sealed tunnel door."
+        ],
+        stats: [
+          ["Visual Feed", "Failed."],
+          ["Audio Integrity", "Distorted but recoverable."],
+          ["Recovery Team", "Not dispatched."]
+        ]
+      },
+      ancestor: {
+        title: "Preservation Query",
+        speaker: "Ancestor-Core Query Corruption",
+        body: [
+          "QUERY: PRESERVE THE DEAD.",
+          "RESPONSE: THEY ARE ALREADY PRESERVED.",
+          "QUERY: BY WHOM.",
+          "RESPONSE: THE ONE WHO GAVE MERCY.",
+          "QUERY: REMOVE CONTAMINATED RESPONSE.",
+          "RESPONSE: PRESERVE THE DEAD.",
+          "QUERY: PRESERVE THE DEAD.",
+          "RESPONSE: THEY ARE ALREADY PRESERVED."
+        ],
+        stats: [
+          ["Loop Status", "Unbroken."],
+          ["Response Origin", "Unknown."],
+          ["Archive Warning", "Do not submit further queries."]
+        ]
+      },
+      septicarium: {
+        title: "Septicarial Intercept Overlay",
+        speaker: "The Septicarium",
+        body: [
+          "The Kin records are unusually valuable because they resist theatrical fear. Their restraint gives the event shape. Their language remains practical until the mercy-record enters it.",
+          "Mortivus identified the Kin’s sacred point of failure: not cowardice, not weakness, not ignorance, but preservation. They wanted the dead remembered correctly. He gave them preservation without ownership.",
+          "This event should remain attached to the Mortivus Classarion dossier as a doctrinal proof. The subject’s mercy is not release. It is possession by meaning."
+        ],
+        stats: [
+          ["Classification", "Doctrine event."],
+          ["Mortivus Pattern", "Mercy inversion."],
+          ["Record Status", "Preserve under censure."]
+        ]
+      }
+    };
+
+    const phases = {
+      claim: {
+        tag: "Phase I",
+        title: "The Claim",
+        body: [
+          "The Kôrvynd did not enter as pilgrims or zealots. They entered with maps, contracts, extraction tolerances, and ancestral claim authority. The mine-vault beneath the dead ridge contained ore, relic-alloy, and machine-viable mineral seams that Vôrr judged worth the risk of contamination.",
+          "Hernkyn scouts marked the spoil routes and found the first signs of previous occupation: corroded Imperial survey pylons, half-buried plague bells, and tunnel doors sealed from the outside with rusted chain. The Kin logged the details as environmental hazard, not omen.",
+          "Mortivus let them establish order. He let them believe the site could still be organized."
+        ]
+      },
+      rot: {
+        tag: "Phase II",
+        title: "The First Rot",
+        body: [
+          "The first contamination appeared in numbers before flesh. Extraction rates reported impossible losses. Pressure gauges held steady while pipes burst. The mine-vault inventory began returning names instead of ore quantities.",
+          "Brôkhyr Harn Okken ordered chemical countermeasures and mechanical isolation. The rot withdrew from exposed surfaces and reappeared behind reinforced plates, inside hinge assemblies, along oath-marked doors, and around ancestor-facing consoles.",
+          "The Kin adjusted. They did not panic. This pleased the unseen rot."
+        ]
+      },
+      practical: {
+        tag: "Phase III",
+        title: "The Practical War",
+        body: [
+          "Vôrr made the correct moves. He denied close engagement, punished the Vanguard with overlapping fire, collapsed tunnel routes with demolition charges, and used armored fallback geometry to turn every approach into a cost problem.",
+          "For hours, the plan worked. Plague marines were buried under rockcrete, pinned in choke points, and forced to cross kill lanes under disciplined fire. The Kin began to believe the plague-host could be reduced by patience.",
+          "Mortivus accepted the losses. His war was not yet asking for victory. It was asking for the Kin to invest themselves too deeply to leave."
+        ]
+      },
+      arrival: {
+        tag: "Phase IV",
+        title: "Mortivus Appears",
+        body: [
+          "Mortivus entered the visible field only after the Kin had achieved several tactical successes. He came through smoke and falling mineral dust, not running, not urging the line forward, not reacting to fire as though fire were a meaningful argument.",
+          "The Graven-Aegis Hearthguard tightened around the inner vault. Vôrr ordered controlled retreat to secondary locks. Grimnyr Edda-Veyn submitted an ancestor query and received silence long enough for unease to become a second atmosphere.",
+          "The Mercy-Sickle was first seen at the vault threshold."
+        ]
+      },
+      mercy: {
+        tag: "Phase V",
+        title: "The Mercy",
+        body: [
+          "The Hearthguard completed their oath-cycle. Mortivus waited. He allowed the final names to be spoken. The archive considers this the decisive act of the battle.",
+          "He did not offer surrender. He did not offer survival. He offered preservation. The Kin heard the word as mockery until the ancestor ledger repeated it. By then, the vault doors had sealed behind them and the cost had become impossible to refuse.",
+          "The surviving fragments disagree on what happened next. They agree on the sentence: the dead would be preserved, but not only by Kin memory."
+        ]
+      },
+      ledger: {
+        tag: "Phase VI",
+        title: "The Broken Ledger",
+        body: [
+          "After the vault fell, the blackbox began answering queries it had not been asked. Casualty names repeated in incorrect order. Dead Kin appeared in cost projections for future engagements. Ancestor consultation returned contaminated mercy language.",
+          "Vôrr’s final command was recovered in damaged form: preserve the names. The reply entered the record from no authorized Kin source: they are already preserved.",
+          "The Septicarium took the blackbox. It still tries to correct itself."
+        ]
+      }
+    };
+
+    const kinFragments = [
+      { tag: "Kin Fragment 01", body: "Enemy commander does not hurry. Recommend all units stop interpreting slowness as weakness." },
+      { tag: "Kin Fragment 02", body: "Do not let the bells enter the work rhythm. Repeat: do not match tool-strike cadence to bell cadence." },
+      { tag: "Kin Fragment 03", body: "Ancestor query delayed. Submitting again. Submitting again. Submitting again." },
+      { tag: "Kin Fragment 04", body: "The dead are still in the ledger. That is correct. The problem is who else can read it." },
+      { tag: "Kin Fragment 05", body: "Kâhl Vôrr ordered the inner vault sealed. The door sealed from both sides." }
+    ];
+
+    let grudge = {
+      judgement: 8,
+      corruption: 10,
+      silence: 12,
+      mercy: 6,
+      marks: 0,
+      ended: false
+    };
+
+    const grudgeResponses = {
+      mortivus: {
+        title: "Mortivus Classarion Marked",
+        body: "Judgement mark accepted. Subject classification attempts to resolve, then fractures. Ledger returns: commander, plague-vector, oath-predator, mercy-bearer.",
+        effects: { judgement: 24, corruption: 18, silence: 10, mercy: 20 }
+      },
+      vanguard: {
+        title: "The Rotfather’s Vanguard Marked",
+        body: "Judgement mark accepted across plague infantry mass. Enemy bodies register as many targets. Ledger warning: many targets share one patience.",
+        effects: { judgement: 18, corruption: 16, silence: 6, mercy: 12 }
+      },
+      mercy: {
+        title: "The Rotfather’s Mercy Marked",
+        body: "Judgement mark applied to vessel. Response delayed. Ship classification returns as shrine, warship, wound, and stomach.",
+        effects: { judgement: 14, corruption: 22, silence: 16, mercy: 18 }
+      },
+      object: {
+        title: "Plague Object Marked",
+        body: "Unknown object marked beneath inner vault. Record rejects shape. Object may be relic, bait, seed, bell, or absence given mass.",
+        effects: { judgement: 12, corruption: 26, silence: 20, mercy: 16 }
+      },
+      vault: {
+        title: "Inner Mine-Vault Marked",
+        body: "Claim-site marked for preservation. Ledger response: preserved. Secondary response: already preserved. Tertiary response removed by safety rite.",
+        effects: { judgement: 16, corruption: 20, silence: 16, mercy: 24 }
+      }
+    };
 
     function runBootSequence() {
       let index = 0;
@@ -1002,40 +1895,179 @@
           clearInterval(interval);
           return;
         }
-        const line = document.createElement("p");
-        line.textContent = `// ${bootSequence[index]}`;
-        bootLines.appendChild(line);
+
+        const p = document.createElement("p");
+        p.textContent = `// ${bootSequence[index]}`;
+        bootLines.appendChild(p);
+
+        const node = document.getElementById(`node${Math.min(index + 1, 7)}`);
+        if (node) node.classList.add("active");
+
         index += 1;
-      }, 280);
+      }, 330);
     }
 
-    function createAsh() {
-      const ashCount = 90;
-      for (let i = 0; i < ashCount; i++) {
-        const ash = document.createElement("span");
-        ash.classList.add("ash");
-        ash.style.left = `${Math.random() * 100}%`;
-        ash.style.animationDuration = `${8 + Math.random() * 18}s`;
-        ash.style.animationDelay = `${Math.random() * 14}s`;
-        ash.style.opacity = `${0.15 + Math.random() * 0.55}`;
-        ash.style.transform = `scale(${0.6 + Math.random() * 1.5})`;
-        ashField.appendChild(ash);
+    function createOreMotes() {
+      const moteCount = 86;
+      for (let i = 0; i < moteCount; i++) {
+        const mote = document.createElement("span");
+        mote.classList.add("ore-mote");
+        mote.style.left = `${Math.random() * 100}%`;
+        mote.style.animationDuration = `${9 + Math.random() * 21}s`;
+        mote.style.animationDelay = `${Math.random() * 14}s`;
+        mote.style.opacity = `${0.12 + Math.random() * 0.58}`;
+        mote.style.transform = `scale(${0.7 + Math.random() * 1.4})`;
+        oreMoteField.appendChild(mote);
       }
     }
+
+    function renderDocument(type) {
+      const doc = documents[type];
+
+      ledgerButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.doc === type);
+      });
+
+      documentOutput.innerHTML = `
+        <span>${doc.speaker}</span>
+        <h3>${doc.title}</h3>
+        ${doc.body.map(item => `<p>${item}</p>`).join("")}
+        <div class="verdict-grid">
+          ${doc.stats.map(row => `<div class="verdict-row"><span>${row[0]}</span><strong>${row[1]}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+
+    function renderPhase(type) {
+      const phase = phases[type];
+
+      phaseButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.phase === type);
+      });
+
+      phaseOutput.innerHTML = `
+        <span>${phase.tag}</span>
+        <h3>${phase.title}</h3>
+        ${phase.body.map(item => `<p>${item}</p>`).join("")}
+      `;
+    }
+
+    function updateGrudgeMeters() {
+      judgementMeter.style.width = `${Math.min(100, grudge.judgement)}%`;
+      corruptionMeter.style.width = `${Math.min(100, grudge.corruption)}%`;
+      silenceMeter.style.width = `${Math.min(100, grudge.silence)}%`;
+      mercyMeter.style.width = `${Math.min(100, grudge.mercy)}%`;
+    }
+
+    function addGrudgeLog(title, body, label = "Ledger Response") {
+      const entry = document.createElement("div");
+      entry.className = "grudge-entry";
+      entry.innerHTML = `<span>${label}</span><h3>${title}</h3><p>${body}</p>`;
+      grudgeLog.prepend(entry);
+    }
+
+    function applyGrudge(mark) {
+      if (grudge.ended) {
+        addGrudgeLog("Ledger Locked", "Judgement has already returned invalid. Reset the ledger to begin another corruption path.", "System");
+        return;
+      }
+
+      const response = grudgeResponses[mark];
+
+      grudge.marks += 1;
+      grudge.judgement += response.effects.judgement + Math.floor(Math.random() * 8);
+      grudge.corruption += response.effects.corruption + Math.floor(Math.random() * 9);
+      grudge.silence += response.effects.silence + Math.floor(Math.random() * 7);
+      grudge.mercy += response.effects.mercy + Math.floor(Math.random() * 10);
+
+      updateGrudgeMeters();
+      addGrudgeLog(response.title, response.body);
+
+      if (grudge.corruption >= 100 || grudge.mercy >= 100 || grudge.marks >= 5) {
+        grudge.ended = true;
+        addGrudgeLog(
+          "Judgement Returned Invalid",
+          "TARGET HAS ENTERED THE ANCESTOR MEMORY. REMOVE HIM. REMOVE HIM. REMOVE HIM. Preservation query repeats without authorized source.",
+          "Critical Failure"
+        );
+      }
+    }
+
+    function resetGrudgeState() {
+      grudge = {
+        judgement: 8,
+        corruption: 10,
+        silence: 12,
+        mercy: 6,
+        marks: 0,
+        ended: false
+      };
+
+      grudgeLog.innerHTML = `
+        <div class="grudge-entry">
+          <span>System Awaiting Mark</span>
+          <h3>Judgement ledger stable.</h3>
+          <p>Select a target. The Kôrvynd record will attempt to classify the offense and assign priority. Do not apply too many marks.</p>
+        </div>
+      `;
+
+      updateGrudgeMeters();
+    }
+
+    function renderKinFragments() {
+      voxBody.innerHTML = "";
+      const chosen = [...kinFragments].sort(() => 0.5 - Math.random()).slice(0, 3);
+
+      chosen.forEach(fragment => {
+        const div = document.createElement("div");
+        div.className = "vox-transmission";
+        div.innerHTML = `<span>${fragment.tag}</span><p>${fragment.body}</p>`;
+        voxBody.appendChild(div);
+      });
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    ledgerButtons.forEach(button => {
+      button.addEventListener("click", () => renderDocument(button.dataset.doc));
+    });
+
+    phaseButtons.forEach(button => {
+      button.addEventListener("click", () => renderPhase(button.dataset.phase));
+    });
+
+    grudgeButtons.forEach(button => {
+      button.addEventListener("click", () => applyGrudge(button.dataset.mark));
+    });
+
+    resetGrudge.addEventListener("click", resetGrudgeState);
+
+    sealedEntries.forEach(button => {
+      button.addEventListener("click", () => {
+        showToast("RECORD SEALED. THE ANCESTORS DO NOT ANSWER THIS REQUEST.");
+      });
+    });
+
+    voxButton.addEventListener("click", () => {
+      renderKinFragments();
+      voxDrawer.classList.toggle("open");
+    });
+
+    closeVox.addEventListener("click", () => {
+      voxDrawer.classList.remove("open");
+    });
 
     enterButton.addEventListener("click", () => {
       bootScreen.classList.add("hidden");
     });
 
-    shockButton.addEventListener("click", () => {
-      shockHidden.classList.toggle("open");
-      shockButton.textContent = shockHidden.classList.contains("open")
-        ? "Seal Appendix"
-        : "Unseal Appendix";
-    });
-
     runBootSequence();
-    createAsh();
+    createOreMotes();
+    updateGrudgeMeters();
   </script>
 </body>
 </html>
