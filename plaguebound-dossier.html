@@ -13,25 +13,32 @@
 
   <style>
     :root {
-      --bg-0: #040503;
-      --bg-1: #0a0d08;
-      --bg-2: #11170f;
+      --bg-0: #030402;
+      --bg-1: #080b06;
+      --bg-2: #10170d;
       --panel: rgba(8, 12, 8, 0.9);
-      --panel-2: rgba(14, 20, 14, 0.74);
-      --line: rgba(186, 220, 92, 0.18);
-      --line-strong: rgba(186, 220, 92, 0.48);
+      --panel-2: rgba(14, 20, 12, 0.76);
+      --line: rgba(186, 220, 92, 0.2);
+      --line-strong: rgba(186, 220, 92, 0.52);
       --rot: #a3c64a;
       --rot-bright: #dced84;
       --bone: #ddd7bc;
       --bone-dim: #aaa483;
       --brass: #8f7d43;
       --rust: #5b2617;
-      --shadow: 0 0 50px rgba(163, 198, 74, 0.09);
+      --black: #010201;
+      --blood: #37100d;
+      --shadow: 0 0 60px rgba(163, 198, 74, 0.1);
+      --green-glow: 0 0 40px rgba(163, 198, 74, 0.14);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -40,9 +47,10 @@
       font-family: Georgia, "Times New Roman", serif;
       overflow-x: hidden;
       background:
-        radial-gradient(circle at 12% 10%, rgba(91, 38, 23, 0.18), transparent 26%),
-        radial-gradient(circle at 80% 8%, rgba(163, 198, 74, 0.08), transparent 18%),
-        linear-gradient(135deg, var(--bg-0), var(--bg-1) 42%, #020301 100%);
+        radial-gradient(circle at 12% 10%, rgba(91, 38, 23, 0.19), transparent 28%),
+        radial-gradient(circle at 78% 8%, rgba(163, 198, 74, 0.1), transparent 20%),
+        radial-gradient(circle at 48% 60%, rgba(42, 77, 31, 0.08), transparent 40%),
+        linear-gradient(135deg, var(--bg-0), var(--bg-1) 43%, #010201 100%);
     }
 
     .boot-screen,
@@ -57,16 +65,16 @@
     .void-haze {
       z-index: 0;
       background:
-        radial-gradient(circle at center, transparent 34%, rgba(0,0,0,0.7) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,0.14), rgba(0,0,0,0.8));
+        radial-gradient(circle at center, transparent 36%, rgba(0,0,0,0.72) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.16), rgba(0,0,0,0.78));
     }
 
     .rot-grid {
       z-index: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
-      background-size: 96px 96px;
+        linear-gradient(rgba(255,255,255,0.014) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
+      background-size: 98px 98px;
       mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
     }
 
@@ -80,16 +88,29 @@
       width: 3px;
       height: 3px;
       border-radius: 999px;
-      background: rgba(220, 237, 132, 0.44);
-      box-shadow: 0 0 10px rgba(220, 237, 132, 0.36);
+      background: rgba(220, 237, 132, 0.45);
+      box-shadow: 0 0 12px rgba(220, 237, 132, 0.4);
       animation: drift linear infinite;
     }
 
     @keyframes drift {
-      from { transform: translateY(105vh) translateX(0); opacity: 0; }
-      8% { opacity: 0.8; }
-      90% { opacity: 0.3; }
-      to { transform: translateY(-12vh) translateX(88px); opacity: 0; }
+      from {
+        transform: translateY(105vh) translateX(0);
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 0.8;
+      }
+
+      90% {
+        opacity: 0.3;
+      }
+
+      to {
+        transform: translateY(-12vh) translateX(88px);
+        opacity: 0;
+      }
     }
 
     .boot-screen {
@@ -98,9 +119,9 @@
       display: grid;
       place-items: center;
       background:
-        radial-gradient(circle at center, rgba(19, 34, 16, 0.8), rgba(0,0,0,0.98) 66%),
-        linear-gradient(135deg, #040503, #090d08);
-      transition: opacity 700ms ease, visibility 700ms ease;
+        radial-gradient(circle at center, rgba(22, 38, 15, 0.86), rgba(0,0,0,0.98) 66%),
+        linear-gradient(135deg, #030402, #080b06);
+      transition: opacity 760ms ease, visibility 760ms ease;
     }
 
     .boot-screen.hidden {
@@ -109,11 +130,13 @@
     }
 
     .boot-box {
-      width: min(860px, calc(100% - 28px));
-      padding: 28px;
+      width: min(980px, calc(100% - 32px));
+      padding: 30px;
       border: 1px solid rgba(220, 237, 132, 0.28);
-      background: rgba(6, 8, 6, 0.76);
-      box-shadow: 0 0 60px rgba(163, 198, 74, 0.12);
+      background:
+        linear-gradient(135deg, rgba(4, 7, 4, 0.9), rgba(12, 18, 10, 0.76)),
+        radial-gradient(circle at top left, rgba(163, 198, 74, 0.08), transparent 40%);
+      box-shadow: 0 0 90px rgba(163, 198, 74, 0.14);
       position: relative;
       overflow: hidden;
     }
@@ -125,10 +148,10 @@
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,0.03),
-          rgba(255,255,255,0.03) 1px,
+          rgba(255,255,255,0.032),
+          rgba(255,255,255,0.032) 1px,
           transparent 1px,
-          transparent 7px
+          transparent 8px
         );
       opacity: 0.12;
       pointer-events: none;
@@ -145,12 +168,95 @@
       text-transform: uppercase;
     }
 
-    .boot-lines {
+    .boot-grid {
       position: relative;
       z-index: 1;
-      min-height: 220px;
-      line-height: 1.7;
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .boot-sigil {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(220, 237, 132, 0.14);
+      background: rgba(0,0,0,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .boot-sigil::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px dashed rgba(220, 237, 132, 0.18);
+      border-radius: 999px;
+      animation: rotateSlow 42s linear infinite;
+    }
+
+    .stamp-wheel {
+      position: relative;
+      width: 230px;
+      height: 230px;
+      border-radius: 999px;
+      border: 1px solid rgba(220, 237, 132, 0.2);
+      display: grid;
+      place-items: center;
+    }
+
+    .stamp-wheel::before {
+      content: "DOSSIER";
+      width: 92px;
+      height: 92px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(220, 237, 132, 0.42);
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      background: rgba(0,0,0,0.35);
+      box-shadow: inset 0 0 20px rgba(163, 198, 74, 0.08);
+    }
+
+    .stamp {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid rgba(220, 237, 132, 0.22);
+      background: rgba(0,0,0,0.3);
+      color: rgba(220, 237, 132, 0.5);
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      transition: 300ms ease;
+    }
+
+    .stamp.active {
+      color: var(--rot-bright);
+      border-color: rgba(220, 237, 132, 0.62);
+      box-shadow: 0 0 22px rgba(163, 198, 74, 0.22);
+      background: rgba(163, 198, 74, 0.08);
+    }
+
+    .s1 { top: 0; left: 96px; }
+    .s2 { top: 39px; right: 21px; }
+    .s3 { top: 125px; right: 8px; }
+    .s4 { bottom: 0; left: 96px; }
+    .s5 { top: 125px; left: 8px; }
+    .s6 { top: 39px; left: 21px; }
+    .s7 { top: 96px; left: 96px; }
+
+    .boot-lines {
+      min-height: 268px;
       color: var(--bone);
+      line-height: 1.72;
+      font-size: 1rem;
     }
 
     .boot-lines p {
@@ -160,13 +266,13 @@
     .boot-button {
       position: relative;
       z-index: 1;
-      margin-top: 16px;
-      border: 1px solid rgba(220, 237, 132, 0.28);
-      background: rgba(0,0,0,0.32);
+      margin-top: 18px;
+      border: 1px solid rgba(220, 237, 132, 0.3);
+      background: rgba(0,0,0,0.35);
       color: var(--bone);
       padding: 12px 16px;
       font-family: Arial, sans-serif;
-      font-size: 0.73rem;
+      font-size: 0.74rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       cursor: pointer;
@@ -175,8 +281,12 @@
 
     .boot-button:hover {
       color: var(--rot-bright);
-      border-color: rgba(220, 237, 132, 0.58);
+      border-color: rgba(220, 237, 132, 0.62);
       background: rgba(163, 198, 74, 0.08);
+    }
+
+    @keyframes rotateSlow {
+      to { transform: rotate(360deg); }
     }
 
     .topbar {
@@ -202,12 +312,16 @@
       text-decoration: none;
     }
 
+    .topbar a:hover {
+      text-decoration: underline;
+    }
+
     .site-shell {
       position: relative;
       z-index: 2;
-      width: min(1360px, calc(100% - 28px));
+      width: min(1380px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 24px 0 88px;
+      padding: 24px 0 90px;
     }
 
     .eyebrow {
@@ -234,9 +348,10 @@
     .hero,
     .panel,
     .name-card,
-    .vault-schematic,
-    .terminal-panel,
-    .journal-panel {
+    .schematic-panel,
+    .inquest-panel,
+    .journal-panel,
+    .seal-card {
       position: relative;
       border: 1px solid var(--line);
       background:
@@ -249,46 +364,48 @@
     .hero::before,
     .panel::before,
     .name-card::before,
-    .vault-schematic::before,
-    .terminal-panel::before,
-    .journal-panel::before {
+    .schematic-panel::before,
+    .inquest-panel::before,
+    .journal-panel::before,
+    .seal-card::before {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(circle at 14% 0%, rgba(163, 198, 74, 0.05), transparent 22%),
+        radial-gradient(circle at 14% 0%, rgba(163, 198, 74, 0.05), transparent 24%),
         linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.025), transparent);
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 18px;
-      padding: 30px;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 24px;
+      padding: 32px;
       margin-bottom: 18px;
       border-left: 4px solid var(--rot);
+      align-items: center;
     }
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(3rem, 7vw, 6.4rem);
-      line-height: 0.9;
-      letter-spacing: -0.05em;
+      font-size: clamp(3rem, 7vw, 6.8rem);
+      line-height: 0.88;
+      letter-spacing: -0.055em;
     }
 
     .subtitle {
-      margin: 14px 0 16px;
+      margin: 16px 0 18px;
       color: var(--rot-bright);
-      font-size: clamp(1.1rem, 2.5vw, 1.9rem);
+      font-size: clamp(1.15rem, 2.7vw, 2.05rem);
       font-style: italic;
     }
 
     .lead {
-      margin: 0 0 12px;
-      line-height: 1.72;
+      margin: 0 0 13px;
       color: var(--bone);
-      font-size: 1.04rem;
+      font-size: 1.06rem;
+      line-height: 1.75;
     }
 
     .lead.dim {
@@ -299,121 +416,18 @@
       color: var(--rot-bright);
     }
 
-    .name-rack {
-      display: grid;
-      gap: 12px;
-      align-content: start;
-    }
-
-    .rack-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .rack-tag {
-      border: 1px solid rgba(220, 237, 132, 0.16);
-      background: rgba(0,0,0,0.22);
-      padding: 14px 12px;
-      min-height: 74px;
-    }
-
-    .rack-tag span {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--rot);
-      font-family: Arial, sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .rack-tag strong {
-      color: var(--bone);
-      line-height: 1.42;
-      font-size: 0.95rem;
-    }
-
-    .section-kicker {
+    .hero-actions {
       display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: start;
-      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
     }
 
-    .panel,
-    .vault-schematic,
-    .terminal-panel,
-    .journal-panel {
-      padding: 24px;
-      margin-bottom: 18px;
-    }
-
-    .panel h2,
-    .vault-schematic h2,
-    .terminal-panel h2,
-    .journal-panel h2 {
-      margin: 0 0 12px;
-      font-size: clamp(1.9rem, 3vw, 2.9rem);
-      line-height: 1.04;
-    }
-
-    .panel p,
-    .terminal-panel p,
-    .journal-panel p,
-    .name-card p,
-    .schematic-note,
-    .terminal-output p {
-      color: var(--bone-dim);
-      line-height: 1.72;
-    }
-
-    .names-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .name-card {
-      padding: 20px;
-      min-height: 292px;
-      transition: 240ms ease;
-    }
-
-    .name-card:hover {
-      transform: translateY(-7px);
-      border-color: var(--line-strong);
-      box-shadow: 0 0 50px rgba(163, 198, 74, 0.13);
-    }
-
-    .name-card .status {
-      display: block;
-      margin-bottom: 10px;
-      color: var(--rot-bright);
-      font-family: Arial, sans-serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .name-card h3 {
-      margin: 0 0 8px;
-      font-size: 1.55rem;
-      line-height: 1.08;
-    }
-
-    .name-card .quote {
-      display: block;
-      margin-bottom: 12px;
-      color: var(--rot-bright);
-      font-style: italic;
-      line-height: 1.45;
-    }
-
+    .button,
     .entry-link,
-    .terminal-btn {
+    .inquest-btn,
+    .sealed-entry,
+    .seal-btn {
       border: 1px solid rgba(220, 237, 132, 0.24);
       background: rgba(0,0,0,0.28);
       color: var(--bone);
@@ -431,16 +445,158 @@
       text-align: center;
     }
 
+    .button:hover,
     .entry-link:hover,
-    .terminal-btn:hover {
-      border-color: rgba(220, 237, 132, 0.56);
+    .inquest-btn:hover,
+    .sealed-entry:hover,
+    .seal-btn:hover {
+      border-color: rgba(220, 237, 132, 0.58);
       color: var(--rot-bright);
       background: rgba(163, 198, 74, 0.08);
     }
 
+    .registry-visual {
+      min-height: 570px;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .registry-svg {
+      width: min(690px, 100%);
+      filter: drop-shadow(0 0 38px rgba(163, 198, 74, 0.16));
+    }
+
+    .scan-line {
+      animation: scanMove 5s ease-in-out infinite;
+    }
+
+    @keyframes scanMove {
+      0%, 100% { transform: translateY(-18px); opacity: 0.2; }
+      50% { transform: translateY(54px); opacity: 0.9; }
+    }
+
+    .chain-pulse {
+      stroke-dasharray: 4 8;
+      animation: chainCrawl 14s linear infinite;
+    }
+
+    @keyframes chainCrawl {
+      to { stroke-dashoffset: -160; }
+    }
+
+    .tag-glow {
+      animation: tagPulse 3.4s ease-in-out infinite;
+    }
+
+    .tag-glow.delay-a { animation-delay: 0.5s; }
+    .tag-glow.delay-b { animation-delay: 1s; }
+    .tag-glow.delay-c { animation-delay: 1.5s; }
+
+    @keyframes tagPulse {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 1; }
+    }
+
+    .section-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .panel,
+    .schematic-panel,
+    .inquest-panel,
+    .journal-panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .schematic-panel h2,
+    .inquest-panel h2,
+    .journal-panel h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      line-height: 1.03;
+    }
+
+    .panel p,
+    .name-card p,
+    .schematic-panel p,
+    .inquest-panel p,
+    .journal-panel p,
+    .terminal-output p,
+    .seal-card p {
+      color: var(--bone-dim);
+      line-height: 1.72;
+    }
+
+    .names-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .name-card {
+      padding: 20px;
+      min-height: 304px;
+      transition: 240ms ease;
+    }
+
+    .name-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--line-strong);
+      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
+    }
+
+    .name-card.open {
+      border-color: rgba(220, 237, 132, 0.46);
+    }
+
+    .name-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 14px;
+    }
+
+    .name-card span,
+    .seal-card span,
+    .journal-note span,
+    .terminal-output span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--rot-bright);
+      font-family: Arial, sans-serif;
+      font-size: 0.66rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .name-card h3,
+    .seal-card h3,
+    .terminal-output h3 {
+      margin: 0 0 9px;
+      color: var(--bone);
+      font-size: 1.45rem;
+      line-height: 1.1;
+    }
+
+    .name-card .quote {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--rot-bright);
+      font-style: italic;
+      line-height: 1.45;
+      font-size: 0.98rem;
+    }
+
     .two-col {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 0.94fr 1.06fr;
       gap: 18px;
       margin-bottom: 18px;
     }
@@ -472,64 +628,80 @@
       line-height: 1.4;
     }
 
-    .vault-schematic pre {
-      margin: 16px 0 10px;
-      padding: 16px;
+    .schematic-wrap {
+      margin-top: 18px;
       border: 1px solid rgba(220, 237, 132, 0.14);
-      background: rgba(0,0,0,0.24);
-      color: var(--bone);
-      overflow-x: auto;
-      font-size: 0.84rem;
-      line-height: 1.45;
-      font-family: "Courier New", monospace;
+      background: rgba(0,0,0,0.2);
+      padding: 18px;
     }
 
-    .schematic-grid {
+    .flow-svg {
+      width: 100%;
+      min-height: 420px;
+      filter: drop-shadow(0 0 28px rgba(163, 198, 74, 0.1));
+    }
+
+    .flow-path {
+      stroke-dasharray: 8 10;
+      animation: chainCrawl 18s linear infinite;
+    }
+
+    .flow-node {
+      transition: 220ms ease;
+    }
+
+    .flow-node:hover {
+      filter: drop-shadow(0 0 16px rgba(220, 237, 132, 0.4));
+    }
+
+    .seal-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(7, 1fr);
       gap: 10px;
-      margin-top: 14px;
+      margin-bottom: 18px;
     }
 
-    .schematic-cell {
-      padding: 14px;
-      border: 1px solid rgba(220, 237, 132, 0.12);
-      background: rgba(0,0,0,0.18);
+    .seal-card {
+      padding: 16px;
+      min-height: 210px;
+      transition: 240ms ease;
     }
 
-    .schematic-cell span {
-      display: block;
-      margin-bottom: 6px;
+    .seal-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--line-strong);
+      box-shadow: 0 0 48px rgba(163, 198, 74, 0.12);
+    }
+
+    .seal-number {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(220, 237, 132, 0.25);
       color: var(--rot-bright);
+      background: rgba(0,0,0,0.28);
       font-family: Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
     }
 
-    .terminal-grid {
+    .inquest-grid {
       display: grid;
       grid-template-columns: 0.8fr 1.2fr;
       gap: 18px;
       align-items: start;
     }
 
-    .terminal-controls {
+    .inquest-controls {
       display: grid;
       gap: 10px;
     }
 
-    .terminal-status {
-      margin-top: 14px;
-      padding: 14px;
-      border: 1px solid rgba(220, 237, 132, 0.12);
-      background: rgba(0,0,0,0.18);
-      line-height: 1.6;
-      color: var(--bone-dim);
-    }
-
     .terminal-output {
-      min-height: 340px;
+      min-height: 360px;
       padding: 18px;
       border: 1px solid rgba(220, 237, 132, 0.14);
       background:
@@ -555,44 +727,73 @@
     }
 
     .terminal-output h3,
-    .terminal-output p {
+    .terminal-output p,
+    .terminal-output span {
       position: relative;
       z-index: 1;
     }
 
     .terminal-output h3 {
-      margin: 0 0 12px;
       color: var(--rot-bright);
-      font-size: 1.5rem;
-      line-height: 1.12;
+      font-size: 1.55rem;
+    }
+
+    .terminal-status {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid rgba(220, 237, 132, 0.12);
+      background: rgba(0,0,0,0.18);
+      color: var(--bone-dim);
+      line-height: 1.6;
     }
 
     .journal-list {
       display: grid;
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
       margin-top: 16px;
     }
 
     .journal-note {
-      border-left: 3px solid rgba(163, 198, 74, 0.4);
-      padding: 14px 14px 14px 16px;
+      padding: 18px;
+      border-left: 3px solid rgba(163, 198, 74, 0.42);
       background: rgba(0,0,0,0.18);
+      min-height: 210px;
     }
 
-    .journal-note span {
-      display: block;
-      margin-bottom: 6px;
+    .journal-note p {
+      margin: 0;
+      color: var(--bone-dim);
+      line-height: 1.7;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 100;
+      transform: translateX(-50%) translateY(120px);
+      max-width: calc(100% - 28px);
+      padding: 14px 18px;
+      border: 1px solid rgba(220, 237, 132, 0.34);
+      background: rgba(4, 6, 4, 0.96);
       color: var(--rot-bright);
+      box-shadow: 0 0 28px rgba(163, 198, 74, 0.14);
       font-family: Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.15em;
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      transition: transform 280ms ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
     }
 
     .site-footer {
       position: relative;
       z-index: 2;
-      width: min(1360px, calc(100% - 28px));
+      width: min(1380px, calc(100% - 28px));
       margin: 0 auto;
       padding: 26px 0 46px;
       border-top: 1px solid rgba(220, 237, 132, 0.12);
@@ -604,15 +805,20 @@
     @media (max-width: 1180px) {
       .hero,
       .two-col,
-      .terminal-grid {
+      .inquest-grid {
         grid-template-columns: 1fr;
       }
 
-      .names-grid {
+      .names-grid,
+      .journal-list {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .schematic-grid {
+      .seal-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .boot-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -625,7 +831,11 @@
 
       .site-shell,
       .site-footer {
-        width: min(100% - 18px, 1360px);
+        width: min(100% - 18px, 1380px);
+      }
+
+      .hero {
+        padding: 22px;
       }
 
       .hero h1 {
@@ -633,7 +843,8 @@
       }
 
       .names-grid,
-      .rack-row {
+      .journal-list,
+      .seal-grid {
         grid-template-columns: 1fr;
       }
 
@@ -644,12 +855,30 @@
     }
   </style>
 </head>
+
 <body>
   <div class="boot-screen" id="bootScreen">
     <div class="boot-box">
-      <p class="boot-title">NAME-CRYPT INDEX WAKE // PLAGUEBOUND DOSSIER</p>
-      <div class="boot-lines" id="bootLines"></div>
-      <button class="boot-button" id="enterButton">Permit Name-Crypt Access</button>
+      <p class="boot-title">THE SEVEN REGISTRATIONS // PLAGUEBOUND DOSSIER WAKE-RITE</p>
+
+      <div class="boot-grid">
+        <div class="boot-sigil">
+          <div class="stamp-wheel">
+            <div class="stamp s1" id="stamp1">I</div>
+            <div class="stamp s2" id="stamp2">II</div>
+            <div class="stamp s3" id="stamp3">III</div>
+            <div class="stamp s4" id="stamp4">IV</div>
+            <div class="stamp s5" id="stamp5">V</div>
+            <div class="stamp s6" id="stamp6">VI</div>
+            <div class="stamp s7" id="stamp7">VII</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="boot-lines" id="bootLines"></div>
+          <button class="boot-button" id="enterButton">Submit the Name to the Tally</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -678,43 +907,81 @@
         <p class="lead dim">
           The Plaguebound Dossier is not a roll-call. It is a pressure-chamber for identity.
           A subject is not entered here because he is understood. He is entered because understanding him
-          has begun to fail in interesting ways.
+          has begun to fail in useful ways.
         </p>
+
+        <div class="hero-actions">
+          <a class="button" href="mortivus-classarion.html">Open Mortivus Classarion</a>
+          <a class="button" href="the-mercy-he-gave.html">Open Censured Sub-Crypt</a>
+        </div>
       </div>
 
-      <div class="name-rack">
-        <div class="rack-row">
-          <div class="rack-tag">
-            <span>Archive Function</span>
-            <strong>Identity surveillance through devotional decay</strong>
-          </div>
-          <div class="rack-tag">
-            <span>Known Host</span>
-            <strong>The Rotfather’s Vanguard</strong>
-          </div>
-        </div>
+      <div class="registry-visual">
+        <svg class="registry-svg" viewBox="0 0 760 620" role="img" aria-label="Cinematic name-crypt rack schematic">
+          <defs>
+            <filter id="greenGlow">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
 
-        <div class="rack-row">
-          <div class="rack-tag">
-            <span>Primary Name Under Strain</span>
-            <strong>Mortivus Classarion</strong>
-          </div>
-          <div class="rack-tag">
-            <span>Condition of Records</span>
-            <strong>Contradictory // productive</strong>
-          </div>
-        </div>
+            <linearGradient id="tagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#dced84" stop-opacity="0.14"/>
+              <stop offset="55%" stop-color="#8f7d43" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#5b2617" stop-opacity="0.2"/>
+            </linearGradient>
 
-        <div class="rack-row">
-          <div class="rack-tag">
-            <span>Method</span>
-            <strong>Rank weighed against symptom, omen, and battlefield recurrence</strong>
-          </div>
-          <div class="rack-tag">
-            <span>Final Principle</span>
-            <strong>A title is only useful when it continues to rot</strong>
-          </div>
-        </div>
+            <radialGradient id="smallGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#dced84" stop-opacity="1"/>
+              <stop offset="65%" stop-color="#a3c64a" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#a3c64a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect x="24" y="24" width="712" height="572" rx="30" fill="rgba(0,0,0,0.25)" stroke="rgba(220,237,132,0.15)" />
+
+          <path d="M120 96 H640" stroke="rgba(220,237,132,0.25)" stroke-width="3" />
+          <path d="M120 524 H640" stroke="rgba(220,237,132,0.16)" stroke-width="3" />
+
+          <path class="chain-pulse" d="M190 96 V180" stroke="rgba(220,237,132,0.3)" stroke-width="3" />
+          <path class="chain-pulse" d="M380 96 V180" stroke="rgba(220,237,132,0.3)" stroke-width="3" />
+          <path class="chain-pulse" d="M570 96 V180" stroke="rgba(220,237,132,0.3)" stroke-width="3" />
+
+          <g filter="url(#greenGlow)">
+            <rect x="98" y="180" width="184" height="118" rx="16" fill="url(#tagGrad)" stroke="rgba(220,237,132,0.4)" />
+            <circle cx="190" cy="180" r="12" fill="rgba(0,0,0,0.4)" stroke="rgba(220,237,132,0.35)" />
+            <circle cx="190" cy="180" r="5" fill="url(#smallGlow)" class="tag-glow" />
+            <text x="190" y="232" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">MORTIVUS</text>
+            <text x="190" y="254" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">UNSEALED NAME</text>
+          </g>
+
+          <g>
+            <rect x="288" y="180" width="184" height="118" rx="16" fill="rgba(0,0,0,0.22)" stroke="rgba(220,237,132,0.24)" />
+            <circle cx="380" cy="180" r="12" fill="rgba(0,0,0,0.4)" stroke="rgba(220,237,132,0.25)" />
+            <circle cx="380" cy="180" r="5" fill="url(#smallGlow)" class="tag-glow delay-a" />
+            <text x="380" y="232" text-anchor="middle" fill="#ddd7bc" font-size="14" font-family="Georgia">VANGUARD</text>
+            <text x="380" y="254" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">SEALED HOST</text>
+          </g>
+
+          <g>
+            <rect x="478" y="180" width="184" height="118" rx="16" fill="rgba(0,0,0,0.22)" stroke="rgba(220,237,132,0.24)" />
+            <circle cx="570" cy="180" r="12" fill="rgba(0,0,0,0.4)" stroke="rgba(220,237,132,0.25)" />
+            <circle cx="570" cy="180" r="5" fill="url(#smallGlow)" class="tag-glow delay-b" />
+            <text x="570" y="232" text-anchor="middle" fill="#ddd7bc" font-size="14" font-family="Georgia">THE MERCY</text>
+            <text x="570" y="254" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">SEALED VESSEL</text>
+          </g>
+
+          <path d="M190 298 C190 370 266 414 380 414 C494 414 570 370 570 298" fill="none" stroke="rgba(220,237,132,0.2)" stroke-width="2" />
+          <path d="M190 298 C190 370 266 414 380 414 C494 414 570 370 570 298" fill="none" stroke="rgba(220,237,132,0.35)" stroke-width="2" class="chain-pulse" />
+
+          <rect x="238" y="392" width="284" height="92" rx="18" fill="rgba(0,0,0,0.24)" stroke="rgba(220,237,132,0.26)" />
+          <text x="380" y="432" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">OMEN PRESSURE</text>
+          <text x="380" y="456" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">RANK IS LESS RELIABLE THAN SYMPTOM</text>
+
+          <rect class="scan-line" x="92" y="330" width="576" height="2" fill="rgba(220,237,132,0.62)" />
+        </svg>
       </div>
     </section>
 
@@ -734,8 +1001,13 @@
     </section>
 
     <section class="names-grid">
-      <article class="name-card">
-        <span class="status">UNSEALED NAME</span>
+      <article class="name-card open">
+        <svg class="name-icon" viewBox="0 0 100 100">
+          <path d="M50 8 L82 24 L82 76 L50 92 L18 76 L18 24 Z" fill="rgba(163,198,74,0.08)" stroke="rgba(220,237,132,0.48)" stroke-width="2"/>
+          <circle cx="50" cy="50" r="22" fill="rgba(0,0,0,0.25)" stroke="rgba(220,237,132,0.35)" />
+          <path d="M35 50 H65 M50 35 V65" stroke="rgba(220,237,132,0.65)" stroke-width="3"/>
+        </svg>
+        <span>UNSEALED NAME</span>
         <h3>Mortivus Classarion</h3>
         <span class="quote">“Blessed by Nurgle. Unfinished by design.”</span>
         <p>
@@ -745,33 +1017,45 @@
       </article>
 
       <article class="name-card">
-        <span class="status">SEALED HOST</span>
+        <svg class="name-icon" viewBox="0 0 100 100">
+          <rect x="18" y="20" width="64" height="58" rx="10" fill="rgba(163,198,74,0.06)" stroke="rgba(220,237,132,0.38)" stroke-width="2"/>
+          <path d="M28 38 H72 M28 50 H62 M28 62 H68" stroke="rgba(220,237,132,0.5)" stroke-width="3"/>
+        </svg>
+        <span>SEALED HOST</span>
         <h3>The Rotfather’s Vanguard</h3>
-        <span class="quote">“The host advances where hope has already begun to spoil.”</span>
+        <span class="quote">“The host advances where hope has begun to spoil.”</span>
         <p>
           Warhost structure, plague doctrine, internal rites, contradictory muster memory, and private prophecy.
         </p>
-        <button class="entry-link sealed-entry">Await Clearance</button>
+        <button class="sealed-entry">Await Clearance</button>
       </article>
 
       <article class="name-card">
-        <span class="status">SEALED VESSEL</span>
+        <svg class="name-icon" viewBox="0 0 100 100">
+          <path d="M50 10 C66 22 78 34 78 54 C78 74 66 88 50 88 C34 88 22 74 22 54 C22 34 34 22 50 10 Z" fill="rgba(163,198,74,0.06)" stroke="rgba(220,237,132,0.38)" stroke-width="2"/>
+          <circle cx="50" cy="54" r="14" fill="rgba(0,0,0,0.28)" stroke="rgba(220,237,132,0.38)" />
+        </svg>
+        <span>SEALED VESSEL</span>
         <h3>The Rotfather’s Mercy</h3>
         <span class="quote">“The vessel remembers what flesh misplaces.”</span>
         <p>
           Ship-decks, plague-hold anatomy, shrine engines, machine-spirit corruption, and internal command sectors.
         </p>
-        <button class="entry-link sealed-entry">Await Clearance</button>
+        <button class="sealed-entry">Await Clearance</button>
       </article>
 
       <article class="name-card">
-        <span class="status">NAME NOT YET SPOKEN</span>
+        <svg class="name-icon" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="34" fill="rgba(163,198,74,0.05)" stroke="rgba(220,237,132,0.35)" stroke-width="2"/>
+          <path d="M34 38 H66 M30 50 H70 M38 62 H62" stroke="rgba(220,237,132,0.45)" stroke-width="3"/>
+        </svg>
+        <span>NAME NOT YET SPOKEN</span>
         <h3>Lieutenants Unrecorded</h3>
         <span class="quote">“Some servants must ripen before they are named.”</span>
         <p>
           Lesser champions, tally-bearers, surgeons, blightlords, relic-keepers, and oath-rotted servants.
         </p>
-        <button class="entry-link sealed-entry">Await Clearance</button>
+        <button class="sealed-entry">Await Clearance</button>
       </article>
     </section>
 
@@ -839,89 +1123,166 @@
       </article>
     </section>
 
-    <section class="vault-schematic">
+    <section class="schematic-panel">
       <div class="section-kicker">
-        <p class="eyebrow">NAME-CRYPT RACK SCHEMATIC</p>
-        <span class="tag">ARCHIVE FLOW</span>
+        <p class="eyebrow">NAME-CRYPT ANATOMY</p>
+        <span class="tag">REGISTRATION FLOW</span>
       </div>
 
-      <h2>Internal Progression of a Bound Name</h2>
+      <h2>How a Name Becomes Preserved</h2>
 
-      <p class="schematic-note">
-        A subject does not enter the Dossier as a completed entity. He passes through filters of wound,
-        witness, doctrine, and omen until the chamber judges the name worthy of preservation.
+      <p>
+        A subject does not enter the Dossier as a completed entity. He is pulled through wound, witness,
+        contradiction, recurrence, and omen until the chamber judges the name worthy of preservation.
       </p>
 
-      <pre>
-   [FIELD STAIN]
-        │
-        ▼
-   [NAME RECOVERED]
-        │
-        ▼
-   [RANK DISPUTED] ───────▶ [WITNESS CONTRADICTION]
-        │                           │
-        ▼                           ▼
-   [BATTLE RECURRENCE] ─────▶ [SYMPTOM TALLY]
-        │                           │
-        └──────────────┬────────────┘
-                       ▼
-                 [OMEN PRESSURE]
-                       │
-                       ▼
-               [NAME-CRYPT ENTRY]
-                       │
-                       ▼
-               [SUBJECT KEPT OPEN]
-      </pre>
+      <div class="schematic-wrap">
+        <svg class="flow-svg" viewBox="0 0 1100 440" role="img" aria-label="Name-crypt registration flow diagram">
+          <defs>
+            <filter id="flowGlow">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
 
-      <div class="schematic-grid">
-        <div class="schematic-cell">
-          <span>Field Stain</span>
-          First usable trace of a subject in battle, prayer, or shipboard rot-memory.
-        </div>
-        <div class="schematic-cell">
-          <span>Symptom Tally</span>
-          Tracks changes that rank alone cannot explain.
-        </div>
-        <div class="schematic-cell">
-          <span>Omen Pressure</span>
-          Measures whether the subject’s future appears to be leaning forward.
-        </div>
+          <path class="flow-path" d="M110 220 C220 90 350 90 460 220 C570 350 700 350 810 220 C880 140 960 140 1030 220"
+                fill="none"
+                stroke="rgba(220,237,132,0.34)"
+                stroke-width="4" />
+
+          <g class="flow-node" filter="url(#flowGlow)">
+            <circle cx="110" cy="220" r="54" fill="rgba(0,0,0,0.38)" stroke="rgba(220,237,132,0.38)" stroke-width="2"/>
+            <text x="110" y="216" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">FIELD</text>
+            <text x="110" y="236" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">STAIN</text>
+          </g>
+
+          <g class="flow-node" filter="url(#flowGlow)">
+            <circle cx="300" cy="122" r="54" fill="rgba(0,0,0,0.38)" stroke="rgba(220,237,132,0.38)" stroke-width="2"/>
+            <text x="300" y="118" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">NAME</text>
+            <text x="300" y="138" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">RECOVERED</text>
+          </g>
+
+          <g class="flow-node" filter="url(#flowGlow)">
+            <circle cx="500" cy="220" r="54" fill="rgba(0,0,0,0.38)" stroke="rgba(220,237,132,0.38)" stroke-width="2"/>
+            <text x="500" y="216" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">RANK</text>
+            <text x="500" y="236" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">DISPUTED</text>
+          </g>
+
+          <g class="flow-node" filter="url(#flowGlow)">
+            <circle cx="700" cy="318" r="54" fill="rgba(0,0,0,0.38)" stroke="rgba(220,237,132,0.38)" stroke-width="2"/>
+            <text x="700" y="314" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">OMEN</text>
+            <text x="700" y="334" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">PRESSURE</text>
+          </g>
+
+          <g class="flow-node" filter="url(#flowGlow)">
+            <circle cx="910" cy="220" r="60" fill="rgba(163,198,74,0.08)" stroke="rgba(220,237,132,0.55)" stroke-width="2"/>
+            <text x="910" y="216" text-anchor="middle" fill="#dced84" font-size="15" font-family="Georgia">NAME-CRYPT</text>
+            <text x="910" y="236" text-anchor="middle" fill="#aaa483" font-size="10" font-family="Arial" letter-spacing="2">KEPT OPEN</text>
+          </g>
+        </svg>
       </div>
     </section>
 
-    <section class="terminal-panel">
+    <section class="panel">
       <div class="section-kicker">
-        <p class="eyebrow">ARCHIVE WHISPER ENGINE</p>
+        <p class="eyebrow">THE SEVEN CONDITIONS</p>
+        <span class="tag">RACK LAW</span>
+      </div>
+
+      <h2>A name must rot through seven permissions before the Dossier will keep it.</h2>
+    </section>
+
+    <section class="seal-grid">
+      <article class="seal-card">
+        <div class="seal-number">I</div>
+        <span>Witness</span>
+        <h3>The name must be seen.</h3>
+        <p>A subject begins as rumor, stain, casualty note, or damaged vox utterance.</p>
+      </article>
+
+      <article class="seal-card">
+        <div class="seal-number">II</div>
+        <span>Wound</span>
+        <h3>The name must suffer mark.</h3>
+        <p>Unwounded names are too dry. The archive prefers subjects opened by consequence.</p>
+      </article>
+
+      <article class="seal-card">
+        <div class="seal-number">III</div>
+        <span>Contradiction</span>
+        <h3>The name must disagree with itself.</h3>
+        <p>Clean agreement suggests the subject is not yet interesting enough to preserve.</p>
+      </article>
+
+      <article class="seal-card">
+        <div class="seal-number">IV</div>
+        <span>Recurrence</span>
+        <h3>The name must return.</h3>
+        <p>A single mention is evidence. Repetition is infection.</p>
+      </article>
+
+      <article class="seal-card">
+        <div class="seal-number">V</div>
+        <span>Symptom</span>
+        <h3>The name must alter those nearby.</h3>
+        <p>True subjects leave pressure, fear, loyalty, fever, or devotion around them.</p>
+      </article>
+
+      <article class="seal-card">
+        <div class="seal-number">VI</div>
+        <span>Omen</span>
+        <h3>The name must lean forward.</h3>
+        <p>Some names behave as if their futures have already begun pulling on them.</p>
+      </article>
+
+      <article class="seal-card">
+        <div class="seal-number">VII</div>
+        <span>Tally</span>
+        <h3>The name must be kept open.</h3>
+        <p>Closure is a clean habit. The Dossier preserves what continues to worsen.</p>
+      </article>
+    </section>
+
+    <section class="inquest-panel">
+      <div class="section-kicker">
+        <p class="eyebrow">PLAGUEBOUND INQUEST ENGINE</p>
         <span class="tag">MACHINE-SPIRIT OUTPUT</span>
       </div>
 
-      <h2>Recovered Fragments From the Rack</h2>
+      <h2>The rack-spirit does not answer. It exhumes.</h2>
 
       <p>
-        The archive spirit does not answer direct questions. It exhumes fragments from proximity, battle-smear,
-        and devotional residue. Select the class of fragment to disturb it.
+        Disturb the Dossier. It will return a fragment from the name-rack: rank, symptom, oath, omen,
+        battle residue, or corrupted marginalia.
       </p>
 
-      <div class="terminal-grid">
-        <div class="terminal-controls">
-          <button class="terminal-btn" data-type="name">Name Fragment</button>
-          <button class="terminal-btn" data-type="omen">Omen Fragment</button>
-          <button class="terminal-btn" data-type="battle">Battle Fragment</button>
-          <button class="terminal-btn" data-type="litany">Litany Fragment</button>
+      <div class="inquest-grid">
+        <div>
+          <div class="inquest-controls">
+            <button class="inquest-btn" data-type="rank">Disturb Rank Record</button>
+            <button class="inquest-btn" data-type="symptom">Disturb Symptom Tally</button>
+            <button class="inquest-btn" data-type="oath">Disturb Oath Chain</button>
+            <button class="inquest-btn" data-type="omen">Disturb Omen Pressure</button>
+            <button class="inquest-btn" data-type="battle">Disturb Battle Smear</button>
+          </div>
 
           <div class="terminal-status">
-            ARCHIVE STATE: damply coherent.<br />
-            PURITY LEVEL: unacceptable.<br />
+            RACK-SPIRIT CONDITION: damply coherent.
+            <br />
+            PURITY LEVEL: unacceptable.
+            <br />
             RESULT: trustworthy enough.
           </div>
         </div>
 
         <div class="terminal-output" id="terminalOutput">
+          <span>INQUEST OUTPUT</span>
           <h3>RACK-SPIRIT AWAITS DISTURBANCE</h3>
           <p>
-            Disturb the rack. It will answer with something incomplete, which is to say something useful.
+            Select a fragment class. The Plaguebound Dossier will exhume what the name-rack can stomach.
           </p>
         </div>
       </div>
@@ -929,24 +1290,32 @@
 
     <section class="journal-panel">
       <div class="section-kicker">
-        <p class="eyebrow">MARGINAL SCRAPS</p>
-        <span class="tag">ARCHIVE NOTES</span>
+        <p class="eyebrow">SCRIBAL RESIDUE</p>
+        <span class="tag">MARGINALIA</span>
       </div>
 
-      <h2>Recovered Scribal Residue</h2>
+      <h2>The margins are often more honest than the records.</h2>
 
       <div class="journal-list">
         <div class="journal-note">
           <span>Unsigned Margin</span>
-          “A name held too tightly remains biography. A name loosened in the right place becomes a plague-vector.”
+          <p>
+            “A name held too tightly remains biography. A name loosened in the right place becomes a plague-vector.”
+          </p>
         </div>
+
         <div class="journal-note">
           <span>Tally-Slave Correction</span>
-          “Do not write ‘stable rank’ beside Mortivus again. The last one who did so died politely and in sections.”
+          <p>
+            “Do not write stable rank beside Mortivus again. The last one who did so died politely and in sections.”
+          </p>
         </div>
+
         <div class="journal-note">
           <span>Censer-Bearer Fragment</span>
-          “The host does not fear being watched by the Dossier. It fears being understood by it.”
+          <p>
+            “The host does not fear being watched by the Dossier. It fears being understood by it.”
+          </p>
         </div>
       </div>
     </section>
@@ -957,101 +1326,135 @@
     <p>Names entered into the Dossier are not remembered. They are preserved until they worsen.</p>
   </footer>
 
+  <div class="toast" id="toast">NAME-CRYPT REFUSES OPENING. RETURN WHEN THE ROT HAS INSTRUCTED IT.</div>
+
   <script>
     const bootScreen = document.getElementById("bootScreen");
     const bootLines = document.getElementById("bootLines");
     const enterButton = document.getElementById("enterButton");
     const sporeField = document.querySelector(".spore-field");
-    const sealedEntries = document.querySelectorAll(".sealed-entry");
+    const toast = document.getElementById("toast");
     const terminalOutput = document.getElementById("terminalOutput");
-    const terminalButtons = document.querySelectorAll(".terminal-btn");
+    const inquestButtons = document.querySelectorAll(".inquest-btn");
+    const sealedEntries = document.querySelectorAll(".sealed-entry");
 
     const bootSequence = [
-      "Opening Plaguebound Dossier...",
-      "Index rack awakes.",
-      "Name-crypt braces disengaged.",
-      "Contradiction filters active.",
-      "Omen pressure thresholds rising.",
-      "Bound names available for handling.",
-      "Warning: some identities remain wet.",
-      "Archive spirit prepared to answer badly."
+      "First registration: witness recovered.",
+      "Second registration: wound accepted.",
+      "Third registration: contradiction preserved.",
+      "Fourth registration: recurrence detected.",
+      "Fifth registration: symptom tally awakened.",
+      "Sixth registration: omen pressure rising.",
+      "Seventh registration: name entered into the tally.",
+      "The Plaguebound Dossier opens. Do not expect clean truth."
     ];
 
     const fragments = {
-      name: [
+      rank: [
         {
-          title: "NAME FRAGMENT // MORTIVUS",
-          body: "The archive refuses to decide whether the title follows the warrior or the warrior follows the title. This uncertainty is considered fertile."
+          title: "RANK RECORD // MORTIVUS CLASSARION",
+          body: "The oldest stain names him Plague Champion. Later stains refuse obedience. The Dossier accepts champion as origin, not conclusion."
         },
         {
-          title: "NAME FRAGMENT // VANGUARD",
-          body: "The host did not form all at once. It clotted around recurrence, attrition, and the pressure of being near a commander who made defeat feel instructional."
+          title: "RANK RECORD // DISPUTED STATION",
+          body: "Lord of Contagion, Blightlord ascendant, shrine-armored commander, plague-prophet. The titles circle him without landing cleanly."
         },
         {
-          title: "NAME FRAGMENT // VESSEL",
-          body: "The Rotfather’s Mercy is not simply inhabited. It is slowly being agreed with by rust, oil, bells, and tissue."
+          title: "RANK RECORD // WARNING",
+          body: "Stable rank is useful for Imperial ledgers. The Death Guard require only endurance, favor, and the slow proof of war."
         }
       ],
+
+      symptom: [
+        {
+          title: "SYMPTOM TALLY // COMMAND PROXIMITY",
+          body: "Warriors stationed near Mortivus for prolonged campaigns display increased tolerance for silence, attrition, fever-dreams, and orders that appear meaningless until later."
+        },
+        {
+          title: "SYMPTOM TALLY // OATH ROT",
+          body: "Several plaguebound retainers no longer describe loyalty as choice. They describe it as pressure, heat, and the smell of wet bells."
+        },
+        {
+          title: "SYMPTOM TALLY // TITLE INSTABILITY",
+          body: "Records naming Mortivus differently do not overwrite one another. They accumulate like symptoms around a body that has not finished changing."
+        }
+      ],
+
+      oath: [
+        {
+          title: "OATH CHAIN // VANGUARD RETAINERS",
+          body: "The host does not swear cleanly. Its oaths are repeated until the words soften, swell, and become easier to inhale than speak."
+        },
+        {
+          title: "OATH CHAIN // SHIPBOARD RITE",
+          body: "Newly bound servants of The Rotfather’s Mercy are not asked whether they accept decay. They are asked what they have mistaken for separation."
+        },
+        {
+          title: "OATH CHAIN // MORTIVUS CLAUSE",
+          body: "No retainer shall correct the title of Mortivus Classarion unless willing to become the ink by which the correction is made."
+        }
+      ],
+
       omen: [
         {
-          title: "OMEN FRAGMENT // ASCENSION",
-          body: "Several records concerning Mortivus appear to have been written before the engagements that justified them."
+          title: "OMEN PRESSURE // PRE-BATTLE ENTRY",
+          body: "Three victory traces attributed to Mortivus appear in the Dossier before the battles they describe. The chamber refuses explanation."
         },
         {
-          title: "OMEN FRAGMENT // SHIPBOARD",
-          body: "A bell tolled in Hold-Seven where no bell had yet been mounted. Three plague marines knelt anyway."
+          title: "OMEN PRESSURE // SEVEN BELLS",
+          body: "Whenever seven bells are heard in sequence aboard The Rotfather’s Mercy, one name-tag in the Dossier is found damp by morning."
         },
         {
-          title: "OMEN FRAGMENT // NAME-RACK",
-          body: "Two sealed tags darkened overnight. By dawn a third tag had begun sweating."
+          title: "OMEN PRESSURE // ASCENSION STATIC",
+          body: "The title Daemon Prince does not appear in the open record. It appears only as corrosion around words adjacent to his name."
         }
       ],
+
       battle: [
         {
-          title: "BATTLE FRAGMENT // SHRINE LOCK",
-          body: "An enemy chapel remained intact after bombardment. Mortivus declined to shell it further. The defenders were more useful alive and enclosed."
+          title: "BATTLE SMEAR // SHRINE-TRANSPORT",
+          body: "A chapel was left standing after bombardment. Mortivus declined to destroy it. The defenders were more useful alive, enclosed, and listening."
         },
         {
-          title: "BATTLE FRAGMENT // TRENCH PERSISTENCE",
-          body: "Loyalist infantry fired for six hours after morale death. Mortivus called this admirable and irrelevant."
+          title: "BATTLE SMEAR // VOTANN CONTACT",
+          body: "The Mercy He Gave remains attached to Mortivus as a censured sub-crypt. The Dossier marks it as doctrine, not indulgence."
         },
         {
-          title: "BATTLE FRAGMENT // VOIDBOARD",
-          body: "A sealed boarding corridor was left unopened for a full watch cycle. By the time the hatch parted, resistance had become liturgical rather than tactical."
-        }
-      ],
-      litany: [
-        {
-          title: "LITANY FRAGMENT // NAMEKEEPING",
-          body: "Keep the name damp. Dry names crack. Cracked names become Imperial."
-        },
-        {
-          title: "LITANY FRAGMENT // CONTRADICTION",
-          body: "When two records disagree, let them rot together until they breed a third truth."
-        },
-        {
-          title: "LITANY FRAGMENT // TALLY",
-          body: "Do not count only the dead. Count the cough before the wound and the doubt before surrender."
+          title: "BATTLE SMEAR // PALLID REVERSAL",
+          body: "Mortivus survived a genuine defeat and denied no part of it. The dead from that loss were not buried. They were promoted into later doctrine."
         }
       ]
     };
 
+    function randomFrom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
     function runBootSequence() {
-      let i = 0;
+      let index = 0;
+
       const interval = setInterval(() => {
-        if (i >= bootSequence.length) {
+        if (index >= bootSequence.length) {
           clearInterval(interval);
           return;
         }
-        const p = document.createElement("p");
-        p.textContent = `// ${bootSequence[i]}`;
-        bootLines.appendChild(p);
-        i += 1;
-      }, 270);
+
+        const line = document.createElement("p");
+        line.textContent = `// ${bootSequence[index]}`;
+        bootLines.appendChild(line);
+
+        const stamp = document.getElementById(`stamp${Math.min(index + 1, 7)}`);
+        if (stamp) {
+          stamp.classList.add("active");
+        }
+
+        index += 1;
+      }, 360);
     }
 
     function createSpores() {
-      const sporeCount = 80;
+      const sporeCount = 88;
+
       for (let i = 0; i < sporeCount; i++) {
         const spore = document.createElement("span");
         spore.classList.add("spore");
@@ -1064,19 +1467,25 @@
       }
     }
 
-    function randomFrom(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
     function renderFragment(type) {
       const item = randomFrom(fragments[type]);
       terminalOutput.innerHTML = `
+        <span>INQUEST OUTPUT</span>
         <h3>${item.title}</h3>
         <p>${item.body}</p>
       `;
     }
 
-    terminalButtons.forEach((button) => {
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    inquestButtons.forEach((button) => {
       button.addEventListener("click", () => {
         renderFragment(button.dataset.type);
       });
@@ -1084,11 +1493,13 @@
 
     sealedEntries.forEach((button) => {
       button.addEventListener("click", () => {
+        showToast("NAME-CRYPT REFUSES OPENING. RETURN WHEN THE ROT HAS INSTRUCTED IT.");
         terminalOutput.innerHTML = `
-          <h3>NAME-CRYPT REFUSES OPENING</h3>
-          <p>The requested chamber has not finished becoming useful. Return when the rot has instructed it more thoroughly.</p>
+          <span>REFUSAL OUTPUT</span>
+          <h3>SEALED NAME RESISTS HANDLING</h3>
+          <p>The requested chamber has not finished becoming useful. The Dossier will not open a subject before the rot has earned it.</p>
         `;
-        document.querySelector(".terminal-panel").scrollIntoView({ behavior: "smooth" });
+        document.querySelector(".inquest-panel").scrollIntoView({ behavior: "smooth" });
       });
     });
 
