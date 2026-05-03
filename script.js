@@ -10,8 +10,6 @@ const designationText = document.getElementById("designationText");
 const symptomText = document.getElementById("symptomText");
 const verdictText = document.getElementById("verdictText");
 
-const sigil = document.getElementById("sigil");
-
 const purityFill = document.getElementById("purityFill");
 const corruptionFill = document.getElementById("corruptionFill");
 const purityValue = document.getElementById("purityValue");
@@ -20,22 +18,35 @@ const containmentStatus = document.getElementById("containmentStatus");
 const ritualButtons = document.querySelectorAll(".ritual-btn[data-action]");
 const restartContainment = document.getElementById("restartContainment");
 
+const sigil = document.getElementById("sigil");
+const liturgyOutput = document.getElementById("liturgyOutput");
+
 let containment = {
-  purity: 28,
-  corruption: 18,
+  purity: 27,
+  corruption: 19,
   turns: 0,
   failed: false
 };
 
+const liturgyPool = [
+  "The bells are silent. This is not mercy. It is only the pause before recognition.",
+  "Rust flowers beneath the paint. Beneath the rust, devotion.",
+  "A single fly circles where no atmosphere should permit it.",
+  "The tally has no end state. Only deeper entries.",
+  "What the Imperium seals, Grandfather ripens.",
+  "The kindest rot is the one that arrives slowly enough to be understood as fate.",
+  "The warp does not always scream. Sometimes it ferments."
+];
+
 const prognosisSubjects = [
   "An Imperial bastion-world",
   "A shrine convoy under false blessing",
+  "A void station whose liturgies have thinned",
   "A xenos scouting host",
-  "A zealot regiment entrenched in ash wastes",
-  "A void-station whose liturgies have thinned",
-  "A Chapter outpost grown proud in isolation",
   "A hive district already coughing beneath its masks",
-  "A pilgrim fleet ripe for devotional fracture"
+  "A Chapter outpost grown proud in isolation",
+  "A pilgrim fleet ripe for devotional fracture",
+  "A manufactorum-city that mistakes rust for age"
 ];
 
 const prognosisWeaknesses = [
@@ -43,32 +54,32 @@ const prognosisWeaknesses = [
   "conceals an undetected contagion vector",
   "depends upon brittle chains of command",
   "mistakes delay for safety",
-  "prays loudly to cover the scent of fear",
   "has mistaken ritual repetition for true faith",
   "is overconfident in quarantine doctrine",
-  "carries rot in its stores and cannot yet smell it"
+  "carries rot in its stores and cannot yet smell it",
+  "has sealed its weakness in layers thin enough to weep"
 ];
 
 const prognosisOutcomes = [
   "Prediction: surrender will arrive before comprehension.",
   "Prediction: seven days of denial, then devotional collapse.",
-  "Prediction: resistance will persist only long enough to become exemplary.",
   "Prediction: the first rupture will be spiritual, the second biological.",
   "Prediction: attrition will be mistaken for chance until the tally closes.",
   "Prediction: command will fail in increments small enough to be ignored.",
-  "Prediction: hope will outlive reason by less than a night cycle.",
-  "Prediction: the survivors will call the rot mercy when pain becomes familiar."
+  "Prediction: the survivors will call the rot mercy when pain becomes familiar.",
+  "Prediction: faith will remain upright two days longer than flesh.",
+  "Prediction: quarantine will become chapel, then tomb, then nursery."
 ];
 
 const prognosisOmens = [
-  "Auspex spoor glistens along the outer decks.",
-  "The sump-censers burn sweet and wet.",
   "A bell tolls where no bell was mounted.",
+  "The sump-censers burn sweet and wet.",
   "Three lumen-globes have spoiled into green dusk.",
-  "The machine-spirit coughs phlegm through its hymnal vents.",
   "A fly has been heard inside a sealed helm.",
-  "The lower hold reports weeping steel and obedient mildew.",
-  "Devotional runes have begun to swell like living scabs."
+  "The machine-spirit coughs phlegm through its vent-choirs.",
+  "The lower hold reports obedient mildew and weeping steel.",
+  "Devotional runes have begun to swell like scabs.",
+  "Spoor signatures have appeared across clean parchment."
 ];
 
 const designationPool = [
@@ -107,23 +118,23 @@ const verdictPool = [
 const containmentResponses = {
   seal: [
     "Bulkheads sealed. The rot answered by blooming within the rivets.",
-    "Pressure-locks engaged. Devotional mucus has crossed the seam.",
+    "Pressure-locks engaged. Devotional mucus crossed the seam.",
     "Sealant applied. Beneath it, the contamination learned your shape."
   ],
   quarantine: [
-    "Deck quarantined. The spores complied by taking root inside the warning runes.",
-    "Isolation protocol enacted. The sickness now regards the quarantine as shelter.",
-    "Perimeter held for a moment. Then the prayers inside began to curdle."
+    "Quarantine invoked. The spores accepted the perimeter as shelter.",
+    "Isolation protocol enacted. The sickness now regards the quarantine as chapel.",
+    "Containment cordon raised. The prayers inside began to curdle."
   ],
   purge: [
     "Flame washed the breach. The smoke returned bearing blessings.",
     "Purge sequence completed. The dead blackened, split, and continued breathing.",
-    "Cauterization successful only in the narrowest technical sense."
+    "Cauterization succeeded only in the narrowest technical sense."
   ]
 };
 
 function createSpores() {
-  const sporeCount = 80;
+  const sporeCount = 82;
 
   for (let i = 0; i < sporeCount; i++) {
     const spore = document.createElement("span");
@@ -137,6 +148,10 @@ function createSpores() {
   }
 }
 
+function randomFrom(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 function showToast(message) {
   toastMessage.textContent = message;
   toastMessage.classList.add("show");
@@ -146,8 +161,8 @@ function showToast(message) {
   }, 2600);
 }
 
-function randomFrom(array) {
-  return array[Math.floor(Math.random() * array.length)];
+function updateLiturgy() {
+  liturgyOutput.textContent = randomFrom(liturgyPool);
 }
 
 function generateTransmission() {
@@ -179,9 +194,11 @@ function updateContainmentUI() {
 function failContainment(finalLine) {
   containment.failed = true;
   containment.corruption = 100;
+
   if (containment.purity > 70) {
-    containment.purity = 12;
+    containment.purity = 11;
   }
+
   updateContainmentUI();
 
   containmentStatus.textContent =
@@ -201,7 +218,7 @@ function handleContainmentAction(action) {
 
   containment.turns += 1;
 
-  const purityGain = Math.floor(Math.random() * 10) + 6;
+  const purityGain = Math.floor(Math.random() * 10) + 5;
   const corruptionGain = Math.floor(Math.random() * 14) + 12;
 
   containment.purity = Math.min(100, containment.purity + purityGain);
@@ -217,7 +234,7 @@ function handleContainmentAction(action) {
 
   if (containment.purity >= 82) {
     containmentStatus.textContent =
-      `${line} A brief stability has been observed. The contamination adapted immediately.`;
+      `${line} A moment of stability was observed. The contagion adapted immediately.`;
     containment.corruption = Math.min(100, containment.corruption + 10);
   }
 
@@ -226,8 +243,8 @@ function handleContainmentAction(action) {
 
 function resetContainment() {
   containment = {
-    purity: 28,
-    corruption: 18,
+    purity: 27,
+    corruption: 19,
     turns: 0,
     failed: false
   };
@@ -239,14 +256,15 @@ function resetContainment() {
   });
 
   containmentStatus.textContent =
-    "First spoor detected in lower devotional ducts. The system awaits your futile response.";
+    "Initial rot-signatures detected beneath devotional plating. The system awaits a doomed command.";
+
   restartContainment.classList.add("hidden");
   updateContainmentUI();
 }
 
 sealedButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    showToast("ACCESS DENIED. THE DATA-CRYPT REMAINS CENSURED BY SACRED ROT.");
+    showToast("ACCESS DENIED. THE DATAVAULT REMAINS CENSURED BY SACRED ROT.");
   });
 });
 
@@ -257,14 +275,16 @@ ritualButtons.forEach((button) => {
 });
 
 restartContainment.addEventListener("click", resetContainment);
-
 generateTransmissionBtn.addEventListener("click", generateTransmission);
 adjudicateVisitorBtn.addEventListener("click", adjudicateVisitor);
 
 sigil.addEventListener("click", () => {
   showToast("XIV LEGION MEMORY-STIR CONFIRMED. THE SEAL RECOGNIZES LIVING FLESH.");
+  updateLiturgy();
 });
 
 createSpores();
 updateContainmentUI();
 generateTransmission();
+updateLiturgy();
+setInterval(updateLiturgy, 6000);
