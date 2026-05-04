@@ -3,1462 +3,1905 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Septicarium</title>
 
-  <title>The Septicarium | Where Mercy Is Counted in Rot</title>
-
-  <meta
-    name="description"
-    content="The Septicarium. Where Mercy Is Counted in Rot. Occult plague-intelligence command archive aboard The Rotfather’s Mercy."
-  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg-0: #030402;
-      --bg-1: #070a06;
-      --bg-2: #10170d;
-      --panel: rgba(8, 12, 8, 0.88);
-      --panel-2: rgba(12, 18, 10, 0.72);
-      --line: rgba(186, 220, 92, 0.2);
-      --line-strong: rgba(186, 220, 92, 0.5);
-      --rot: #a3c64a;
-      --rot-bright: #dced84;
-      --bone: #ddd7bc;
-      --bone-dim: #aaa483;
-      --brass: #8e7b42;
-      --rust: #5b2617;
-      --blood: #34110d;
-      --shadow: 0 0 60px rgba(163, 198, 74, 0.1);
-      --red-glow: 0 0 50px rgba(91, 38, 23, 0.18);
+    :root{
+      --bg:#060805;
+      --bg2:#0a0f09;
+      --panel:#10150f;
+      --panel-2:#111a11;
+      --line:rgba(182, 199, 102, 0.22);
+      --line-strong:rgba(196, 214, 108, 0.45);
+      --text:#e9e2c8;
+      --muted:#aba58d;
+      --muted-2:#8f9673;
+      --green:#bac95a;
+      --green-bright:#d3e76f;
+      --rot:#7db04a;
+      --danger:#8f4e35;
+      --shadow:0 24px 80px rgba(0,0,0,0.55);
+      --radius:22px;
+      --radius-sm:14px;
+      --canvas-glow:rgba(168, 214, 97, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--bone);
-      font-family: Georgia, "Times New Roman", serif;
-      overflow-x: hidden;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
       background:
-        radial-gradient(circle at 14% 12%, rgba(91, 38, 23, 0.2), transparent 28%),
-        radial-gradient(circle at 80% 10%, rgba(163, 198, 74, 0.1), transparent 20%),
-        radial-gradient(circle at 45% 55%, rgba(50, 90, 32, 0.08), transparent 34%),
-        linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, #010201 100%);
+        radial-gradient(circle at 20% 10%, rgba(108,135,58,0.10), transparent 30%),
+        radial-gradient(circle at 80% 15%, rgba(132,89,40,0.12), transparent 28%),
+        linear-gradient(180deg, #050704 0%, #070a07 100%);
+      color:var(--text);
+      font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x:hidden;
+      min-height:100vh;
     }
 
-    .void-haze,
-    .rot-grid,
-    .spore-field {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
+    body.booted .boot-overlay{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
     }
 
-    .void-haze {
-      z-index: 0;
-      background:
-        radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.72) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.76));
+    #sporeCanvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+      opacity:0.92;
     }
 
-    .rot-grid {
-      z-index: 0;
+    .noise{
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      opacity:0.08;
       background-image:
-        linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
-      background-size: 96px 96px;
-      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 4px);
+      mix-blend-mode:soft-light;
     }
 
-    .spore-field {
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .spore {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      border-radius: 999px;
-      background: rgba(220, 237, 132, 0.44);
-      box-shadow: 0 0 12px rgba(220, 237, 132, 0.42);
-      animation: drift linear infinite;
-    }
-
-    @keyframes drift {
-      from {
-        transform: translateY(105vh) translateX(0);
-        opacity: 0;
-      }
-
-      8% {
-        opacity: 0.8;
-      }
-
-      90% {
-        opacity: 0.32;
-      }
-
-      to {
-        transform: translateY(-12vh) translateX(90px);
-        opacity: 0;
-      }
-    }
-
-    .boot-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: grid;
-      place-items: center;
+    .boot-overlay{
+      position:fixed;
+      inset:0;
+      z-index:99;
+      display:grid;
+      place-items:center;
       background:
-        radial-gradient(circle at center, rgba(28, 44, 19, 0.82), rgba(0,0,0,0.98) 66%),
-        linear-gradient(135deg, #020302, #070a06);
-      transition: opacity 700ms ease, visibility 700ms ease;
+        radial-gradient(circle at center, rgba(93,121,45,0.16), transparent 35%),
+        linear-gradient(180deg, rgba(4,7,5,0.98), rgba(2,4,3,0.995));
+      transition:opacity .7s ease, visibility .7s ease;
     }
 
-    .boot-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
+    .boot-panel{
+      width:min(760px, calc(100vw - 32px));
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(10,15,10,0.92), rgba(6,10,6,0.94));
+      box-shadow:var(--shadow);
+      border-radius:26px;
+      padding:26px;
+      position:relative;
+      overflow:hidden;
     }
 
-    .boot-box {
-      width: min(900px, calc(100% - 32px));
-      padding: 30px;
-      border: 1px solid rgba(220, 237, 132, 0.28);
-      background: rgba(4, 7, 4, 0.78);
-      box-shadow: 0 0 80px rgba(163, 198, 74, 0.12);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .boot-box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .boot-panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.032),
-          rgba(255,255,255,0.032) 1px,
-          transparent 1px,
-          transparent 8px
-        );
-      opacity: 0.12;
-      pointer-events: none;
+        radial-gradient(circle at 70% 10%, rgba(178,212,87,0.14), transparent 22%),
+        radial-gradient(circle at 10% 80%, rgba(130,83,34,0.10), transparent 25%);
+      pointer-events:none;
     }
 
-    .boot-title {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 18px;
-      color: var(--rot-bright);
-      font-family: Arial, sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+    .boot-top{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:18px;
     }
 
-    .boot-lines {
-      position: relative;
-      z-index: 1;
-      min-height: 240px;
-      color: var(--bone);
-      line-height: 1.72;
-      font-size: 1rem;
+    .boot-top img{
+      width:92px;
+      height:92px;
+      object-fit:cover;
+      border-radius:50%;
+      border:1px solid var(--line-strong);
+      box-shadow:0 0 24px rgba(172,199,91,0.18);
+      background:#0a0d08;
     }
 
-    .boot-lines p {
-      margin: 0 0 8px;
+    .boot-kicker{
+      font-size:12px;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      color:var(--green);
+      margin-bottom:6px;
     }
 
-    .boot-button {
-      position: relative;
-      z-index: 1;
-      margin-top: 16px;
-      border: 1px solid rgba(220, 237, 132, 0.3);
-      background: rgba(0,0,0,0.34);
-      color: var(--bone);
-      padding: 12px 16px;
-      font-family: Arial, sans-serif;
-      font-size: 0.74rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 220ms ease;
+    .boot-title{
+      font-family:"Cinzel", serif;
+      font-size:clamp(2rem, 3vw, 3rem);
+      line-height:0.95;
+      margin:0;
+      letter-spacing:.03em;
     }
 
-    .boot-button:hover {
-      color: var(--rot-bright);
-      border-color: rgba(220, 237, 132, 0.62);
-      background: rgba(163, 198, 74, 0.08);
+    .boot-sub{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:540px;
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(4, 6, 4, 0.92);
-      backdrop-filter: blur(10px);
-      color: var(--bone-dim);
-      font-family: Arial, sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+    .boot-log{
+      position:relative;
+      z-index:2;
+      margin-top:20px;
+      border:1px solid rgba(181, 202, 101, 0.18);
+      background:rgba(8, 13, 8, 0.78);
+      border-radius:18px;
+      padding:18px;
+      min-height:192px;
     }
 
-    .site-shell {
-      position: relative;
-      z-index: 2;
-      width: min(1380px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 24px 0 90px;
+    .boot-line{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:7px 0;
+      font-size:0.98rem;
+      color:#d6d1ba;
+      opacity:0;
+      transform:translateY(6px);
+      animation:lineReveal .32s ease forwards;
     }
 
-    .eyebrow {
-      margin: 0 0 10px;
-      color: var(--rot-bright);
-      font-family: Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
+    .boot-line .sig{
+      color:var(--green);
+      font-weight:700;
+      letter-spacing:.18em;
+      font-size:.76rem;
+      margin-top:3px;
+      flex:0 0 auto;
     }
 
-    .tag {
-      color: var(--rot-bright);
-      border: 1px solid rgba(220, 237, 132, 0.24);
-      background: rgba(0,0,0,0.26);
-      padding: 6px 10px;
-      font-family: Arial, sans-serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      white-space: nowrap;
+    @keyframes lineReveal{
+      to{opacity:1; transform:none;}
     }
 
-    .hero,
-    .panel,
-    .datavault-card,
-    .chain-card,
-    .console-card,
-    .mandate-panel,
-    .adjudication-panel {
-      position: relative;
-      border: 1px solid var(--line);
+    .boot-footer{
+      position:relative;
+      z-index:2;
+      margin-top:18px;
+      display:grid;
+      gap:12px;
+    }
+
+    .progress-shell{
+      height:10px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(180,202,101,0.12);
+    }
+
+    .progress-bar{
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg, #5b3c20, #95a64e 55%, #d4e975);
+      box-shadow:0 0 20px rgba(183, 215, 91, 0.35);
+      transition:width .24s linear;
+    }
+
+    .boot-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .ghost-note{
+      color:var(--muted-2);
+      font-size:0.92rem;
+    }
+
+    .skip-btn{
+      cursor:pointer;
+      border:1px solid var(--line-strong);
+      background:rgba(16, 24, 14, 0.7);
+      color:var(--text);
+      padding:12px 18px;
+      border-radius:999px;
+      font-weight:600;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:0.76rem;
+      transition:.25s ease;
+    }
+
+    .skip-btn:hover{
+      background:rgba(28, 38, 21, 0.92);
+      transform:translateY(-2px);
+    }
+
+    .page{
+      position:relative;
+      z-index:2;
+      width:min(1460px, calc(100vw - 28px));
+      margin:0 auto;
+      padding:18px 0 46px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:12px;
+      z-index:15;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:14px;
+      align-items:center;
+      margin-bottom:18px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(8, 12, 8, 0.72);
+      backdrop-filter:blur(14px);
+      box-shadow:0 10px 30px rgba(0,0,0,0.22);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+      flex-wrap:wrap;
+    }
+
+    .tiny-seal{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      border:1px solid var(--line-strong);
+      object-fit:cover;
+      box-shadow:0 0 16px rgba(170, 201, 89, 0.16);
+      background:#0a0d08;
+      flex:0 0 auto;
+    }
+
+    .trail{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      flex-wrap:wrap;
+    }
+
+    .trail-main{
+      font-family:"Cinzel", serif;
+      font-weight:700;
+      font-size:1rem;
+      letter-spacing:.05em;
+      white-space:nowrap;
+    }
+
+    .trail-sub{
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .pill-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--text);
+      font-size:.82rem;
+      background:rgba(10, 15, 9, 0.58);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 14px rgba(190, 221, 99, 0.65);
+      flex:0 0 auto;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:30px;
+      min-height:680px;
+      display:grid;
+      grid-template-columns:1.16fr .84fr;
+      gap:24px;
+      padding:28px;
+      margin-bottom:22px;
+      box-shadow:var(--shadow);
+      isolation:isolate;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        linear-gradient(135deg, rgba(8, 12, 8, 0.95), rgba(5, 7, 5, 0.88)),
-        radial-gradient(circle at top left, rgba(143, 125, 67, 0.08), transparent 42%);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+        linear-gradient(110deg, rgba(3,6,4,0.90) 12%, rgba(6,10,6,0.72) 45%, rgba(7,10,7,0.76) 100%),
+        linear-gradient(180deg, rgba(6,8,6,0.12), rgba(3,4,3,0.74)),
+        url("Assets/Index/index-hero.jpeg") center/cover no-repeat;
+      z-index:-2;
+      transform:scale(1.03);
+      transition:transform .6s ease;
     }
 
-    .hero::before,
-    .panel::before,
-    .datavault-card::before,
-    .chain-card::before,
-    .console-card::before,
-    .mandate-panel::before,
-    .adjudication-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
       background:
-        radial-gradient(circle at 14% 0%, rgba(163, 198, 74, 0.05), transparent 24%),
-        linear-gradient(120deg, transparent, rgba(163, 198, 74, 0.025), transparent);
+        radial-gradient(circle at 78% 22%, rgba(188, 220, 96, 0.14), transparent 20%),
+        radial-gradient(circle at 10% 82%, rgba(136, 79, 34, 0.16), transparent 26%);
+      pointer-events:none;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      gap: 24px;
-      padding: 32px;
-      margin-bottom: 18px;
-      border-left: 4px solid var(--rot);
-      min-height: 680px;
-      align-items: center;
+    .hero:hover::before{
+      transform:scale(1.06);
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(3.6rem, 8vw, 7.4rem);
-      line-height: 0.86;
-      letter-spacing: -0.06em;
+    .hero-left,
+    .hero-right{
+      position:relative;
+      z-index:2;
     }
 
-    .subtitle {
-      margin: 18px 0 18px;
-      color: var(--rot-bright);
-      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
-      font-style: italic;
+    .hero-kicker{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:18px;
     }
 
-    .lead {
-      max-width: 960px;
-      margin: 0 0 13px;
-      color: var(--bone);
-      font-size: 1.06rem;
-      line-height: 1.75;
+    .hero-kicker span{
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(10, 15, 10, 0.55);
+      color:var(--green);
+      font-size:0.78rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
     }
 
-    .lead.dim {
-      color: var(--bone-dim);
+    .hero-title{
+      font-family:"Cinzel", serif;
+      font-size:clamp(3rem, 6.4vw, 6rem);
+      line-height:0.88;
+      margin:0;
+      letter-spacing:.02em;
+      max-width:850px;
+      text-shadow:0 10px 40px rgba(0,0,0,0.5);
     }
 
-    .lead span {
-      color: var(--rot-bright);
+    .hero-subtitle{
+      font-family:"Cinzel", serif;
+      font-style:italic;
+      color:var(--green-bright);
+      font-size:clamp(1.3rem, 2vw, 2rem);
+      margin:14px 0 0;
     }
 
-    .hero-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
+    .hero-desc{
+      margin:24px 0 0;
+      max-width:830px;
+      color:#d1ccb7;
+      font-size:1.06rem;
+      line-height:1.9;
     }
 
-    .button,
-    .crypt-button,
-    .sealed-button {
-      border: 1px solid rgba(220, 237, 132, 0.24);
-      background: rgba(0,0,0,0.28);
-      color: var(--bone);
-      padding: 12px 14px;
-      font-family: Arial, sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 220ms ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+    .hero-desc strong{color:#f0ead0}
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:28px;
     }
 
-    .button:hover,
-    .crypt-button:hover,
-    .sealed-button:hover {
-      border-color: rgba(220, 237, 132, 0.58);
-      color: var(--rot-bright);
-      background: rgba(163, 198, 74, 0.08);
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:.85rem;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      transition:.25s ease;
+      position:relative;
+      overflow:hidden;
     }
 
-    .hero-visual {
-      position: relative;
-      min-height: 560px;
-      display: grid;
-      place-items: center;
+    .btn-primary{
+      background:linear-gradient(180deg, rgba(199,219,103,0.14), rgba(91,113,44,0.18));
+      color:var(--text);
+      border:1px solid var(--line-strong);
+      box-shadow:0 10px 22px rgba(117,145,52,0.18);
     }
 
-    .ship-schematic {
-      width: min(640px, 100%);
-      filter: drop-shadow(0 0 35px rgba(163, 198, 74, 0.14));
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 28px rgba(117,145,52,0.24);
+      background:linear-gradient(180deg, rgba(209,229,114,0.20), rgba(104,127,49,0.24));
     }
 
-    .schematic-line {
-      stroke-dasharray: 6 10;
-      animation: crawl 16s linear infinite;
+    .btn-secondary{
+      background:rgba(9, 13, 9, 0.7);
+      border:1px solid rgba(198, 214, 106, 0.16);
+      color:var(--text);
     }
 
-    @keyframes crawl {
-      to {
-        stroke-dashoffset: -180;
-      }
+    .btn-secondary:hover{
+      transform:translateY(-2px);
+      background:rgba(18, 26, 17, 0.88);
+      border-color:rgba(198, 214, 106, 0.34);
     }
 
-    .pulse-node {
-      animation: nodePulse 3.2s ease-in-out infinite;
+    .hero-readouts{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:12px;
+      margin-top:26px;
     }
 
-    .pulse-node.delay-a {
-      animation-delay: 0.4s;
+    .readout-chip{
+      border:1px solid rgba(194,214,104,0.12);
+      background:rgba(9, 13, 9, 0.55);
+      border-radius:18px;
+      padding:14px 14px 12px;
+      min-height:92px;
+      display:grid;
+      align-content:start;
+      gap:6px;
     }
 
-    .pulse-node.delay-b {
-      animation-delay: 0.9s;
+    .chip-label{
+      color:var(--muted-2);
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
     }
 
-    .pulse-node.delay-c {
-      animation-delay: 1.4s;
+    .chip-value{
+      font-family:"Cinzel", serif;
+      font-size:1.15rem;
+      line-height:1.2;
     }
 
-    @keyframes nodePulse {
-      0%, 100% {
-        opacity: 0.45;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.06);
-      }
+    .hero-right{
+      display:grid;
+      gap:16px;
+      align-content:start;
     }
 
-    .section-kicker {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: start;
-      margin-bottom: 14px;
+    .seal-panel,
+    .transmission-panel{
+      border:1px solid var(--line);
+      background:rgba(8, 12, 8, 0.62);
+      backdrop-filter:blur(12px);
+      border-radius:24px;
+      box-shadow:0 18px 34px rgba(0,0,0,0.28);
+      overflow:hidden;
     }
 
-    .panel,
-    .mandate-panel,
-    .adjudication-panel {
-      padding: 24px;
-      margin-bottom: 18px;
+    .seal-panel{
+      padding:18px;
+      display:grid;
+      gap:16px;
     }
 
-    .panel h2,
-    .mandate-panel h2,
-    .adjudication-panel h2,
-    .console-card h2 {
-      margin: 0 0 12px;
-      font-size: clamp(1.9rem, 3vw, 3rem);
-      line-height: 1.03;
+    .seal-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
 
-    .panel p,
-    .datavault-card p,
-    .chain-card p,
-    .console-card p,
-    .mandate-panel p,
-    .adjudication-panel p,
-    .readout p {
-      color: var(--bone-dim);
-      line-height: 1.72;
+    .section-label{
+      color:var(--green);
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.22em;
     }
 
-    .symbol-row {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
+    .seal-badge{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(13, 20, 12, 0.84);
+      color:var(--muted);
+      font-size:.75rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
     }
 
-    .symbol-cell {
-      padding: 14px 10px;
-      border: 1px solid rgba(220, 237, 132, 0.14);
-      background: rgba(6, 9, 6, 0.62);
-      text-align: center;
-      transition: 220ms ease;
-    }
-
-    .symbol-cell:hover {
-      border-color: rgba(220, 237, 132, 0.5);
-      box-shadow: 0 0 28px rgba(163, 198, 74, 0.12);
-      transform: translateY(-3px);
-    }
-
-    .symbol-glyph {
-      display: block;
-      color: var(--rot-bright);
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-      letter-spacing: 0.12em;
-    }
-
-    .symbol-text {
-      display: block;
-      color: var(--bone-dim);
-      font-family: Arial, sans-serif;
-      font-size: 0.64rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .datavault-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .datavault-card {
-      padding: 20px;
-      min-height: 310px;
-      transition: 240ms ease;
-    }
-
-    .datavault-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--line-strong);
-      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
-    }
-
-    .datavault-card svg {
-      width: 70px;
-      height: 70px;
-      margin-bottom: 14px;
-      filter: drop-shadow(0 0 18px rgba(163, 198, 74, 0.14));
-    }
-
-    .datavault-card span,
-    .chain-card span,
-    .readout span {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--rot-bright);
-      font-family: Arial, sans-serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .datavault-card h3,
-    .chain-card h3,
-    .readout h3 {
-      margin: 0 0 10px;
-      color: var(--bone);
-      font-size: 1.42rem;
-      line-height: 1.08;
-    }
-
-    .chain-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .chain-card {
-      padding: 20px;
-      min-height: 300px;
-      transition: 240ms ease;
-    }
-
-    .chain-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--line-strong);
-      box-shadow: 0 0 60px rgba(163, 198, 74, 0.14);
-    }
-
-    .chain-card.mercy {
-      border-color: rgba(91, 38, 23, 0.55);
+    .seal-core{
+      position:relative;
+      display:grid;
+      place-items:center;
+      min-height:280px;
+      border:1px solid rgba(190, 215, 104, 0.14);
+      border-radius:22px;
       background:
-        linear-gradient(135deg, rgba(20, 6, 5, 0.92), rgba(6, 8, 5, 0.88)),
-        radial-gradient(circle at top left, rgba(91, 38, 23, 0.16), transparent 42%);
-      box-shadow: var(--red-glow);
+        radial-gradient(circle at center, rgba(176,204,93,0.10), transparent 35%),
+        linear-gradient(180deg, rgba(10,14,10,0.70), rgba(8,10,8,0.88));
+      overflow:hidden;
+      isolation:isolate;
     }
 
-    .system-grid {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 18px;
-      margin-bottom: 18px;
+    .seal-core::before,
+    .seal-core::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      border:1px dashed rgba(193, 213, 105, 0.22);
+      inset:16%;
+      animation:spin 28s linear infinite;
     }
 
-    .console-card {
-      padding: 24px;
+    .seal-core::after{
+      inset:9%;
+      border-style:solid;
+      border-color:rgba(193, 213, 105, 0.08);
+      animation-direction:reverse;
+      animation-duration:46s;
     }
 
-    .meter-group {
-      margin: 16px 0;
+    @keyframes spin{
+      to{transform:rotate(360deg)}
     }
 
-    .meter-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 8px;
-      color: var(--bone-dim);
+    .seal-core img{
+      width:min(74%, 260px);
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:50%;
+      border:1px solid rgba(199, 216, 112, 0.24);
+      box-shadow:0 0 38px rgba(190, 223, 96, 0.18);
+      position:relative;
+      z-index:2;
     }
 
-    .meter {
-      height: 16px;
-      border: 1px solid rgba(220, 237, 132, 0.16);
-      background: rgba(0,0,0,0.34);
-      overflow: hidden;
+    .seal-caption{
+      display:grid;
+      gap:10px;
     }
 
-    .meter-fill {
-      height: 100%;
-      width: 0;
-      transition: width 350ms ease;
+    .seal-caption h3{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:1.65rem;
+      line-height:1.1;
     }
 
-    .integrity-fill {
-      background: linear-gradient(90deg, #5d7931, var(--rot-bright));
+    .seal-caption p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
     }
 
-    .bloom-fill {
-      background: linear-gradient(90deg, #4a1712, #8ea83e, var(--rot-bright));
+    .transmission-panel{
+      padding:18px;
+      display:grid;
+      gap:12px;
     }
 
-    .action-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
+    .transmission-box{
+      border:1px solid rgba(190, 213, 105, 0.12);
+      background:rgba(9, 14, 9, 0.58);
+      border-radius:18px;
+      padding:18px;
+      min-height:138px;
+      display:grid;
+      align-content:start;
+      gap:10px;
     }
 
-    .terminal-output {
-      min-height: 265px;
-      padding: 18px;
-      border: 1px solid rgba(220, 237, 132, 0.14);
+    .transmission-title{
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--muted-2);
+    }
+
+    .transmission-text{
+      font-family:"Cinzel", serif;
+      font-size:1.18rem;
+      line-height:1.55;
+      color:#f0e9cf;
+      min-height:74px;
+      transition:opacity .25s ease, transform .25s ease;
+    }
+
+    .section{
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(9, 13, 9, 0.75), rgba(6, 9, 6, 0.88));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      padding:24px 24px 0;
+      flex-wrap:wrap;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(2rem, 3vw, 3rem);
+      line-height:1;
+    }
+
+    .section-head p{
+      margin:12px 0 0;
+      max-width:760px;
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    .section-tag{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--green);
+      background:rgba(10, 14, 10, 0.66);
+      font-size:.74rem;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      white-space:nowrap;
+    }
+
+    .command-shell{
+      display:grid;
+      grid-template-columns:1.08fr 0.92fr;
+      gap:18px;
+      padding:24px;
+    }
+
+    .module-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:16px;
+    }
+
+    .module-card{
+      position:relative;
+      min-height:290px;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(193, 214, 106, 0.14);
+      background:#0d120c;
+      cursor:pointer;
+      box-shadow:0 18px 30px rgba(0,0,0,0.28);
+      transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+      isolation:isolate;
+    }
+
+    .module-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        linear-gradient(135deg, rgba(4, 7, 4, 0.95), rgba(12, 18, 10, 0.82));
-      position: relative;
-      overflow: hidden;
+        linear-gradient(180deg, rgba(4,7,4,0.08), rgba(6,9,6,0.88) 72%, rgba(6,9,6,0.98)),
+        linear-gradient(140deg, rgba(6,8,6,0.18) 0%, rgba(6,8,6,0.03) 38%, rgba(182, 200, 103, 0.08) 100%),
+        var(--img) center/cover no-repeat;
+      z-index:-2;
+      transition:transform .5s ease, filter .35s ease;
+      transform:scale(1.02);
+      filter:saturate(0.96) brightness(0.78);
     }
 
-    .terminal-output::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .module-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
       background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.025),
-          rgba(255,255,255,0.025) 1px,
-          transparent 1px,
-          transparent 8px
-        );
-      opacity: 0.14;
-      pointer-events: none;
+        radial-gradient(circle at 85% 18%, rgba(188, 220, 95, 0.18), transparent 20%),
+        linear-gradient(180deg, transparent 25%, rgba(8,10,7,0.50) 55%, rgba(7,10,7,0.94) 100%);
     }
 
-    .terminal-output h3,
-    .terminal-output p {
-      position: relative;
-      z-index: 1;
+    .module-card:hover,
+    .module-card.active{
+      transform:translateY(-6px);
+      border-color:rgba(202, 220, 112, 0.34);
+      box-shadow:0 20px 42px rgba(0,0,0,0.42);
     }
 
-    .terminal-output h3 {
-      margin: 0 0 12px;
-      color: var(--rot-bright);
-      font-size: 1.45rem;
-      line-height: 1.12;
+    .module-card:hover::before,
+    .module-card.active::before{
+      transform:scale(1.08);
+      filter:saturate(1.04) brightness(0.90);
     }
 
-    .mandate-panel {
-      border-left: 4px solid var(--rot);
+    .module-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      padding:16px 16px 0;
     }
 
-    .adjudication-grid {
-      display: grid;
-      grid-template-columns: 0.85fr 1.15fr;
-      gap: 18px;
-      align-items: start;
-      margin-top: 16px;
+    .module-chip{
+      padding:8px 11px;
+      border-radius:999px;
+      border:1px solid rgba(195, 215, 108, 0.18);
+      background:rgba(7, 10, 7, 0.60);
+      font-size:.72rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--green);
     }
 
-    .readout-stack {
-      display: grid;
-      gap: 12px;
+    .module-state{
+      padding:7px 11px;
+      border-radius:999px;
+      background:rgba(10,15,10,0.72);
+      color:var(--muted);
+      border:1px solid rgba(190, 213, 105, 0.12);
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
     }
 
-    .readout {
-      padding: 16px;
-      border: 1px solid rgba(220, 237, 132, 0.13);
-      background: rgba(0,0,0,0.18);
+    .module-body{
+      padding:92px 16px 16px;
+      display:grid;
+      align-content:end;
+      gap:12px;
+      min-height:100%;
     }
 
-    .site-footer {
-      position: relative;
-      z-index: 2;
-      width: min(1380px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 26px 0 46px;
-      border-top: 1px solid rgba(220, 237, 132, 0.12);
-      color: var(--bone-dim);
-      font-size: 0.88rem;
-      letter-spacing: 0.03em;
+    .module-title{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:1.62rem;
+      line-height:1.02;
     }
 
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      z-index: 100;
-      transform: translateX(-50%) translateY(120px);
-      max-width: calc(100% - 28px);
-      padding: 14px 18px;
-      border: 1px solid rgba(220, 237, 132, 0.34);
-      background: rgba(4, 6, 4, 0.96);
-      color: var(--rot-bright);
-      box-shadow: 0 0 28px rgba(163, 198, 74, 0.14);
-      font-family: Arial, sans-serif;
-      font-size: 0.76rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      transition: transform 280ms ease;
+    .module-desc{
+      margin:0;
+      color:#cec9b4;
+      line-height:1.7;
+      font-size:0.98rem;
+      max-width:92%;
     }
 
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
+    .module-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:4px;
+      flex-wrap:wrap;
     }
 
-    .hover-liturgy {
-      position: fixed;
-      z-index: 999;
-      max-width: 380px;
-      padding: 13px 15px;
-      border: 1px solid rgba(220, 237, 132, 0.42);
+    .mini-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:11px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      border:1px solid rgba(198, 216, 107, 0.16);
+      background:rgba(7, 10, 7, 0.68);
+      color:var(--text);
+      font-size:.78rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-weight:700;
+      transition:.25s ease;
+    }
+
+    .mini-link:hover{
+      background:rgba(19, 27, 17, 0.92);
+      transform:translateY(-2px);
+      border-color:rgba(199, 216, 107, 0.34);
+    }
+
+    .prompt-note{
+      color:var(--muted-2);
+      font-size:.76rem;
+      text-transform:uppercase;
+      letter-spacing:.15em;
+    }
+
+    .cogitator{
+      border:1px solid rgba(195, 216, 106, 0.14);
       background:
-        linear-gradient(135deg, rgba(5, 8, 5, 0.97), rgba(12, 18, 10, 0.94)),
-        radial-gradient(circle at top left, rgba(163, 198, 74, 0.12), transparent 45%);
-      color: var(--rot-bright);
-      box-shadow: 0 0 32px rgba(163, 198, 74, 0.16);
-      font-size: 0.92rem;
-      line-height: 1.45;
-      pointer-events: none;
-      opacity: 0;
-      transform: translate(14px, 14px);
-      transition: opacity 160ms ease;
+        linear-gradient(180deg, rgba(12,18,12,0.82), rgba(6,10,6,0.94));
+      border-radius:24px;
+      padding:18px;
+      display:grid;
+      gap:16px;
+      align-content:start;
+      min-height:596px;
+      position:relative;
+      overflow:hidden;
     }
 
-    .hover-liturgy.show {
-      opacity: 1;
+    .cogitator::before{
+      content:"";
+      position:absolute;
+      inset:auto -60px -80px auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(195, 217, 109, 0.09), transparent 66%);
+      pointer-events:none;
     }
 
-    [data-lore] {
-      cursor: crosshair;
+    .cogitator-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    @media (max-width: 1180px) {
-      .hero,
-      .system-grid,
-      .adjudication-grid {
-        grid-template-columns: 1fr;
-      }
+    .cogitator h3{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:2rem;
+      line-height:1.02;
+    }
 
-      .datavault-grid,
-      .chain-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .cogitator-sub{
+      margin-top:10px;
+      color:var(--muted);
+      line-height:1.8;
+    }
 
-      .symbol-row {
-        grid-template-columns: repeat(4, 1fr);
+    .readout-image{
+      position:relative;
+      min-height:244px;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(195, 216, 106, 0.14);
+      background:#0b100b;
+    }
+
+    .readout-image::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(8,10,8,0.06), rgba(7,10,7,0.70)),
+        var(--readout-img) center/cover no-repeat;
+      filter:saturate(1.02) brightness(0.86);
+      transform:scale(1.04);
+    }
+
+    .readout-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .readout-stat{
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(195, 216, 106, 0.10);
+      background:rgba(8, 12, 8, 0.62);
+    }
+
+    .readout-stat .k{
+      color:var(--muted-2);
+      font-size:.74rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+
+    .readout-stat .v{
+      font-family:"Cinzel", serif;
+      font-size:1.1rem;
+      line-height:1.25;
+    }
+
+    .readout-body{
+      display:grid;
+      gap:10px;
+    }
+
+    .readout-title{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:2rem;
+      line-height:1.02;
+    }
+
+    .readout-subtitle{
+      color:var(--green-bright);
+      font-family:"Cinzel", serif;
+      font-style:italic;
+      font-size:1.1rem;
+    }
+
+    .readout-copy{
+      color:#d1cbb7;
+      line-height:1.85;
+      min-height:130px;
+    }
+
+    .lower-grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      padding:0 24px 24px;
+    }
+
+    .mandate,
+    .opened-fragments{
+      border:1px solid rgba(195, 216, 106, 0.12);
+      border-radius:24px;
+      background:rgba(9, 13, 9, 0.58);
+      padding:20px;
+    }
+
+    .mandate h3,
+    .opened-fragments h3{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:1.85rem;
+      line-height:1.05;
+    }
+
+    .mandate p{
+      margin:16px 0 0;
+      color:var(--muted);
+      line-height:1.9;
+    }
+
+    .fragments-list{
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .fragment-link{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid rgba(195, 216, 106, 0.12);
+      background:rgba(8, 12, 8, 0.58);
+      text-decoration:none;
+      color:var(--text);
+      transition:.25s ease;
+    }
+
+    .fragment-link:hover{
+      transform:translateY(-2px);
+      border-color:rgba(201, 220, 112, 0.30);
+      background:rgba(15, 22, 14, 0.86);
+    }
+
+    .fragment-meta{
+      display:grid;
+      gap:4px;
+    }
+
+    .fragment-meta .f-title{
+      font-family:"Cinzel", serif;
+      font-size:1.16rem;
+      line-height:1.1;
+    }
+
+    .fragment-meta .f-sub{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.55;
+    }
+
+    .fragment-tag{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(195, 216, 106, 0.14);
+      color:var(--green);
+      background:rgba(10, 16, 9, 0.74);
+      font-size:.72rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .footer-band{
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:rgba(8, 12, 8, 0.76);
+      padding:18px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      color:var(--muted);
+    }
+
+    .footer-band strong{
+      color:#e7dfc2;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links a{
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid rgba(195, 216, 106, 0.14);
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(10, 16, 9, 0.62);
+      font-size:.78rem;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      transition:.25s ease;
+    }
+
+    .footer-links a:hover{
+      transform:translateY(-2px);
+      border-color:rgba(201, 220, 112, 0.28);
+      background:rgba(16, 24, 15, 0.90);
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:70;
+      display:grid;
+      place-items:center;
+      background:rgba(4,6,4,0.70);
+      backdrop-filter:blur(8px);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:.25s ease;
+      padding:18px;
+    }
+
+    .modal.show{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+
+    .modal-card{
+      width:min(640px, 100%);
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(11,16,10,0.96), rgba(7,10,7,0.98));
+      box-shadow:var(--shadow);
+      padding:24px;
+      display:grid;
+      gap:14px;
+    }
+
+    .modal-card h4{
+      margin:0;
+      font-family:"Cinzel", serif;
+      font-size:2rem;
+      line-height:1.02;
+    }
+
+    .modal-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.85;
+    }
+
+    .modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    .status-live{
+      color:var(--muted-2);
+      font-size:.88rem;
+    }
+
+    @media (max-width: 1200px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+      .command-shell,
+      .lower-grid{
+        grid-template-columns:1fr;
+      }
+      .hero-readouts{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 760px) {
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
+    @media (max-width: 860px){
+      .page{
+        width:min(100vw - 16px, 1460px);
+        padding-top:12px;
       }
-
-      .site-shell,
-      .site-footer {
-        width: min(100% - 18px, 1380px);
+      .topbar{
+        grid-template-columns:1fr;
+        border-radius:24px;
       }
-
-      .hero {
-        padding: 22px;
+      .hero{
+        min-height:auto;
+        padding:18px;
+        border-radius:24px;
       }
-
-      .hero h1 {
-        font-size: clamp(3rem, 16vw, 4.8rem);
+      .section{
+        border-radius:24px;
       }
-
-      .datavault-grid,
-      .chain-grid,
-      .symbol-row {
-        grid-template-columns: 1fr;
+      .command-shell,
+      .lower-grid,
+      .section-head{
+        padding-left:18px;
+        padding-right:18px;
       }
-
-      .section-kicker {
-        flex-direction: column;
-        align-items: flex-start;
+      .module-grid{
+        grid-template-columns:1fr;
+      }
+      .hero-readouts{
+        grid-template-columns:1fr;
+      }
+      .readout-grid{
+        grid-template-columns:1fr;
+      }
+      .hero-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .btn{
+        width:100%;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="boot-screen" id="bootScreen">
-    <div class="boot-box">
-      <p class="boot-title">COMMAND DECK IGNITION // THE SEPTICARIUM</p>
-      <div class="boot-lines" id="bootLines"></div>
-      <button class="boot-button" id="enterButton">Enter the Command Deck</button>
+  <canvas id="sporeCanvas"></canvas>
+  <div class="noise"></div>
+
+  <div class="boot-overlay" id="bootOverlay">
+    <div class="boot-panel">
+      <div class="boot-top">
+        <div>
+          <div class="boot-kicker">Plague-Intelligence Sanctum // Initial Rouse</div>
+          <h1 class="boot-title">THE SEPTICARIUM</h1>
+          <p class="boot-sub">
+            The tally wakes. The vessel remembers you. Rot is not yet finished with your arrival.
+          </p>
+        </div>
+        <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium Seal">
+      </div>
+
+      <div class="boot-log" id="bootLog"></div>
+
+      <div class="boot-footer">
+        <div class="progress-shell">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="boot-actions">
+          <div class="ghost-note">Seal-breach may be skipped. The tally will still remember your name.</div>
+          <button class="skip-btn" id="skipBoot">Enter Septicarium</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="spore-field" aria-hidden="true"></div>
-  <div class="void-haze" aria-hidden="true"></div>
-  <div class="rot-grid" aria-hidden="true"></div>
+  <div class="page">
+    <div class="topbar">
+      <div class="topbar-left">
+        <img class="tiny-seal" src="Assets/Index/septicarium-seal.jpeg" alt="Septicarium Seal">
+        <div class="trail">
+          <div class="trail-main">The Septicarium</div>
+          <div class="trail-sub">Plague-Intelligence Sanctum // The Rotfather&rsquo;s Mercy // XIV Legion Echo</div>
+        </div>
+      </div>
+      <div class="pill-row">
+        <div class="pill"><span class="dot"></span> Intruder Status: Tally-Pending</div>
+        <div class="pill"><span class="dot"></span> Host: The Rotfather&rsquo;s Vanguard</div>
+        <div class="pill"><span class="dot"></span> Live Vessel Time: <span id="liveTime">--:--:--</span></div>
+      </div>
+    </div>
 
-  <header class="topbar">
-    <div>XIV LEGION // DEATH GUARD // THE ROTFATHER’S MERCY</div>
-    <div>SEPTICARIUM STATUS: OPEN // INTRUSION: RECORDED // PATRON: NURGLE</div>
-  </header>
-
-  <main class="site-shell">
     <section class="hero">
-      <div>
-        <p class="eyebrow">OCCULT PLAGUE-INTELLIGENCE COMMAND DECK</p>
-        <h1>The Septicarium</h1>
-        <p class="subtitle">Where Mercy Is Counted in Rot</p>
-
-        <p class="lead">
-          You have entered the command archive aboard <span>The Rotfather’s Mercy</span>,
-          war-vessel of <span>The Rotfather’s Vanguard</span>. This chamber does not remember for reverence.
-          It remembers to weaken, infect, classify, and preserve what should have died cleanly.
-        </p>
-
-        <p class="lead dim">
-          The archive is maintained beneath the will of Mortivus Classarion, called by some
-          <span>Blessed by Nurgle</span>. Its datavaults gather enemy doctrine, plaguebound identity,
-          battle memory, forbidden scripture, relic traces, and the visitors foolish enough to be counted.
-        </p>
-
-        <div class="hero-links">
-          <a class="button" href="plaguebound-dossier.html">Open Plaguebound Dossier</a>
-          <a class="button" href="mortivus-classarion.html">Open Mortivus Classarion</a>
-          <a class="button" href="the-mercy-he-gave.html">Open Censured Sub-Crypt</a>
-        </div>
-      </div>
-
-      <div class="hero-visual">
-        <svg class="ship-schematic" viewBox="0 0 760 620" role="img" aria-label="A stylized plague command schematic of The Rotfather's Mercy">
-          <defs>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-
-            <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#dced84" stop-opacity="1"/>
-              <stop offset="60%" stop-color="#a3c64a" stop-opacity="0.45"/>
-              <stop offset="100%" stop-color="#a3c64a" stop-opacity="0"/>
-            </radialGradient>
-
-            <linearGradient id="hullGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#d7c98f" stop-opacity="0.16"/>
-              <stop offset="45%" stop-color="#a3c64a" stop-opacity="0.18"/>
-              <stop offset="100%" stop-color="#5b2617" stop-opacity="0.22"/>
-            </linearGradient>
-          </defs>
-
-          <rect x="22" y="22" width="716" height="576" rx="28" fill="rgba(0,0,0,0.22)" stroke="rgba(220,237,132,0.16)" />
-
-          <path d="M380 74 C500 106 608 206 650 308 C608 416 500 516 380 546 C260 516 152 416 110 308 C152 206 260 106 380 74 Z"
-                fill="url(#hullGrad)"
-                stroke="rgba(220,237,132,0.28)"
-                stroke-width="2"
-                filter="url(#glow)" />
-
-          <path d="M380 112 C474 140 556 222 590 308 C556 394 474 476 380 504 C286 476 204 394 170 308 C204 222 286 140 380 112 Z"
-                fill="rgba(0,0,0,0.2)"
-                stroke="rgba(143,125,67,0.42)"
-                stroke-width="2" />
-
-          <path class="schematic-line" d="M380 132 L380 486" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
-          <path class="schematic-line" d="M190 308 L570 308" stroke="rgba(220,237,132,0.32)" stroke-width="2" />
-          <path class="schematic-line" d="M247 195 C310 240 450 240 513 195" stroke="rgba(220,237,132,0.24)" stroke-width="2" fill="none" />
-          <path class="schematic-line" d="M247 421 C310 376 450 376 513 421" stroke="rgba(220,237,132,0.24)" stroke-width="2" fill="none" />
-
-          <circle cx="380" cy="308" r="82" fill="rgba(0,0,0,0.32)" stroke="rgba(220,237,132,0.44)" stroke-width="2" />
-          <circle cx="380" cy="308" r="54" fill="rgba(163,198,74,0.06)" stroke="rgba(220,237,132,0.3)" stroke-width="1" />
-          <circle cx="380" cy="308" r="18" fill="url(#nodeGlow)" class="pulse-node" />
-
-          <circle cx="380" cy="164" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-a" />
-          <circle cx="520" cy="308" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-b" />
-          <circle cx="380" cy="452" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-c" />
-          <circle cx="240" cy="308" r="28" fill="rgba(0,0,0,0.34)" stroke="rgba(220,237,132,0.34)" class="pulse-node delay-a" />
-
-          <text x="380" y="314" text-anchor="middle" fill="#dced84" font-size="25" font-family="Georgia">XIV</text>
-          <text x="380" y="158" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">PLAGUEBOUND</text>
-          <text x="520" y="312" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">SCRIPTURE</text>
-          <text x="380" y="456" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">RELIQUARY</text>
-          <text x="240" y="312" text-anchor="middle" fill="#aaa483" font-size="11" font-family="Arial" letter-spacing="2">WAR-ROT</text>
-
-          <path d="M104 120 L222 120 L222 154" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
-          <path d="M656 120 L538 120 L538 154" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
-          <path d="M104 496 L222 496 L222 462" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
-          <path d="M656 496 L538 496 L538 462" stroke="rgba(220,237,132,0.22)" stroke-width="2" fill="none" />
-
-          <text x="104" y="112" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">VESSEL: ROTFATHER'S MERCY</text>
-          <text x="470" y="112" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">HOST: ROTFATHER'S VANGUARD</text>
-          <text x="104" y="514" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">COMMAND: MORTIVUS CLASSARION</text>
-          <text x="474" y="514" fill="#dced84" font-size="12" font-family="Arial" letter-spacing="2">STATUS: WEEPING</text>
-        </svg>
-      </div>
-    </section>
-
-    <section class="symbol-row">
-      <div class="symbol-cell" data-lore="Three wounds: flesh, spirit, command. The clean separate them. The rot reunites them.">
-        <span class="symbol-glyph">◉◉◉</span>
-        <span class="symbol-text">Triune Blight</span>
-      </div>
-      <div class="symbol-cell" data-lore="Seven is not completion. Seven is recurrence taught to count itself.">
-        <span class="symbol-glyph">VII</span>
-        <span class="symbol-text">Sacred Seven</span>
-      </div>
-      <div class="symbol-cell" data-lore="The Fourteenth arrives as rust arrives: quietly, then everywhere.">
-        <span class="symbol-glyph">XIV</span>
-        <span class="symbol-text">Legion Memory</span>
-      </div>
-      <div class="symbol-cell" data-lore="The warp need not tear reality open when rot can teach it to soften.">
-        <span class="symbol-glyph">✢</span>
-        <span class="symbol-text">Warp-Taint</span>
-      </div>
-      <div class="symbol-cell" data-lore="The mark is not warning. It is permission.">
-        <span class="symbol-glyph">☣</span>
-        <span class="symbol-text">Plague Sign</span>
-      </div>
-      <div class="symbol-cell" data-lore="The censer does not mask the stench. It sanctifies it.">
-        <span class="symbol-glyph">⟁</span>
-        <span class="symbol-text">Censer Rite</span>
-      </div>
-      <div class="symbol-cell" data-lore="A name entered into the tally no longer belongs entirely to itself.">
-        <span class="symbol-glyph">⟟</span>
-        <span class="symbol-text">Tally Mark</span>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="section-kicker">
-        <p class="eyebrow">PLAGUE-INTELLIGENCE DATAVAULTS</p>
-        <span class="tag">DATABASE CHAMBERS</span>
-      </div>
-      <h2>Every enemy becomes a record. Every record becomes a wound.</h2>
-      <p>
-        The datavaults are not archives in the mortal sense. They are weaponized repositories, assembled so that flesh,
-        doctrine, devotion, command, and memory may be studied until they open.
-      </p>
-    </section>
-
-    <section class="datavault-grid">
-      <article class="datavault-card">
-        <svg viewBox="0 0 100 100">
-          <path d="M50 8 L82 24 L82 76 L50 92 L18 76 L18 24 Z" fill="rgba(163,198,74,0.08)" stroke="rgba(220,237,132,0.48)" stroke-width="2"/>
-          <circle cx="50" cy="50" r="22" fill="rgba(0,0,0,0.25)" stroke="rgba(220,237,132,0.35)" />
-          <path d="M35 50 H65 M50 35 V65" stroke="rgba(220,237,132,0.65)" stroke-width="3"/>
-        </svg>
-        <span>OPEN DATAVAULT</span>
-        <h3>Plaguebound Dossier</h3>
-        <p>
-          Names, contradictions, plaguebound identity records, command hierarchy, and the active name-crypt of Mortivus Classarion.
-        </p>
-        <a class="crypt-button" href="plaguebound-dossier.html">Open Dossier</a>
-      </article>
-
-      <article class="datavault-card">
-        <svg viewBox="0 0 100 100">
-          <rect x="18" y="18" width="64" height="64" rx="8" fill="rgba(163,198,74,0.06)" stroke="rgba(220,237,132,0.42)" stroke-width="2"/>
-          <path d="M28 38 H72 M28 50 H58 M28 62 H68" stroke="rgba(220,237,132,0.58)" stroke-width="3"/>
-          <circle cx="72" cy="66" r="6" fill="rgba(220,237,132,0.58)"/>
-        </svg>
-        <span>SEALED DATAVAULT</span>
-        <h3>War-Rot Intercepts</h3>
-        <p>
-          Confirmed engagements, casualty tallies, corrupted vox returns, campaign stains, and battlefield outcomes.
-        </p>
-        <button class="sealed-button">Await Clearance</button>
-      </article>
-
-      <article class="datavault-card">
-        <svg viewBox="0 0 100 100">
-          <path d="M28 15 H72 C78 15 82 20 82 26 V84 H30 C23 84 18 79 18 72 V25 C18 19 22 15 28 15 Z" fill="rgba(163,198,74,0.07)" stroke="rgba(220,237,132,0.42)" stroke-width="2"/>
-          <path d="M32 32 H68 M32 44 H62 M32 56 H70" stroke="rgba(220,237,132,0.52)" stroke-width="3"/>
-          <path d="M71 15 V84" stroke="rgba(220,237,132,0.2)" stroke-width="2"/>
-        </svg>
-        <span>SEALED DATAVAULT</span>
-        <h3>Septic Scriptures</h3>
-        <p>
-          Plague litanies, private doctrine, prophetic rot-texts, devotional fragments, and esoteric meditations.
-        </p>
-        <button class="sealed-button">Await Clearance</button>
-      </article>
-
-      <article class="datavault-card">
-        <svg viewBox="0 0 100 100">
-          <path d="M50 12 C65 22 78 34 78 54 C78 74 66 88 50 88 C34 88 22 74 22 54 C22 34 35 22 50 12 Z" fill="rgba(163,198,74,0.07)" stroke="rgba(220,237,132,0.42)" stroke-width="2"/>
-          <circle cx="50" cy="54" r="13" fill="rgba(0,0,0,0.25)" stroke="rgba(220,237,132,0.45)"/>
-          <path d="M50 25 V43 M50 65 V78 M32 54 H40 M60 54 H68" stroke="rgba(220,237,132,0.55)" stroke-width="3"/>
-        </svg>
-        <span>SEALED DATAVAULT</span>
-        <h3>Reliquary Vault</h3>
-        <p>
-          Relics, trophies, ship fragments, corrupted heraldry, sacred rot-objects, and visual intelligence.
-        </p>
-        <button class="sealed-button">Await Clearance</button>
-      </article>
-    </section>
-
-    <section class="panel">
-      <div class="section-kicker">
-        <p class="eyebrow">ACTIVE NAME-CHAIN</p>
-        <span class="tag">OPEN THREAD</span>
-      </div>
-      <h2>The current open chain descends through Mortivus.</h2>
-      <p>
-        The Septicarium has opened one path: the Plaguebound Dossier, the name-crypt of Mortivus Classarion,
-        and a censured sub-crypt attached to his doctrine of mercy.
-      </p>
-    </section>
-
-    <section class="chain-grid">
-      <article class="chain-card">
-        <span>NAME-CRYPT INDEX</span>
-        <h3>Plaguebound Dossier</h3>
-        <p>
-          The identity rack where names are preserved until they become useful infections.
-        </p>
-        <a class="crypt-button" href="plaguebound-dossier.html">Enter Dossier</a>
-      </article>
-
-      <article class="chain-card">
-        <span>PRIMARY NAME</span>
-        <h3>Mortivus Classarion</h3>
-        <p>
-          Blessed by Nurgle. Unfinished by design. Commander, omen-bearer, occult tactician, and ascension pressure point.
-        </p>
-        <a class="crypt-button" href="mortivus-classarion.html">Open Name-Crypt</a>
-      </article>
-
-      <article class="chain-card mercy">
-        <span>CENSURED SUB-CRYPT</span>
-        <h3>The Mercy He Gave</h3>
-        <p>
-          A brutal Votann contact record preserving Mortivus’ most infamous interpretation of mercy.
-        </p>
-        <a class="crypt-button" href="the-mercy-he-gave.html">Open Sub-Crypt</a>
-      </article>
-    </section>
-
-    <section class="system-grid">
-      <article class="console-card">
-        <div class="section-kicker">
-          <p class="eyebrow">RITE OF CONTAINMENT</p>
-          <span class="tag">IMPOSSIBLE EXERCISE</span>
+      <div class="hero-left">
+        <div class="hero-kicker">
+          <span>Command Deck</span>
+          <span>Public Echo</span>
+          <span>Contamination Stable</span>
         </div>
 
-        <h2>Failure Is the Only Pure Result</h2>
+        <h1 class="hero-title">THE SEPTICARIUM</h1>
+        <div class="hero-subtitle">Where Mercy Is Counted in Rot</div>
 
-        <p>
-          Seal the breach if you can. Burn it. Quarantine it. Name it heresy. The contagion will study your response
-          and become more exact.
+        <p class="hero-desc">
+          You stand within a plague-intelligence sanctum aboard <strong>The Rotfather&rsquo;s Mercy</strong>, vessel of the plaguebound host known as <strong>The Rotfather&rsquo;s Vanguard</strong>. This archive does not gather memory for scholarship. It gathers for corrosion, targeting, doctrine, prophecy, reliquary study, and the patient conversion of resistance into tally.
         </p>
 
-        <div class="meter-group">
-          <div class="meter-head">
-            <span>Containment Integrity</span>
-            <strong id="integrityValue">29%</strong>
+        <p class="hero-desc">
+          Maintained beneath the obscure authority of <strong>Mortivus Classarion</strong>, called by some <strong>Blessed by Nurgle</strong>, the Septicarium preserves warband record, battlefield decay, hostile pattern, plague-liturgical scripture, and sealed relic intelligence. Enter gently. The archive is known to observe those who observe it.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#command-deck">Open Command Deck</a>
+          <button class="btn btn-secondary" id="sealInvocation">Invoke Septicarium Seal</button>
+        </div>
+
+        <div class="hero-readouts">
+          <div class="readout-chip">
+            <div class="chip-label">Vessel</div>
+            <div class="chip-value">The Rotfather&rsquo;s Mercy</div>
           </div>
-          <div class="meter">
-            <div class="meter-fill integrity-fill" id="integrityFill"></div>
+          <div class="readout-chip">
+            <div class="chip-label">Warhost</div>
+            <div class="chip-value">The Rotfather&rsquo;s Vanguard</div>
+          </div>
+          <div class="readout-chip">
+            <div class="chip-label">Patron</div>
+            <div class="chip-value">Grandfather Nurgle</div>
+          </div>
+          <div class="readout-chip">
+            <div class="chip-label">Current Witness</div>
+            <div class="chip-value">Entered Into Tally</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="seal-panel">
+          <div class="seal-head">
+            <div class="section-label">Archive Seal</div>
+            <div class="seal-badge">Witness-State Active</div>
+          </div>
+
+          <div class="seal-core">
+            <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium Seal">
+          </div>
+
+          <div class="seal-caption">
+            <h3>Sigil of the Septicarium</h3>
+            <p>
+              The mark by which plague-intelligence, liturgical record, and constrained memory are entered into one contamination-court. Pressing this seal does not grant safety. It merely confirms that the archive has decided to answer.
+            </p>
+            <button class="btn btn-secondary" id="sealInvocationSecondary">Request Archive Response</button>
           </div>
         </div>
 
-        <div class="meter-group">
-          <div class="meter-head">
-            <span>Corruption Bloom</span>
-            <strong id="bloomValue">17%</strong>
+        <div class="transmission-panel">
+          <div class="section-label">Latest Transmission</div>
+          <div class="transmission-box">
+            <div class="transmission-title">Vox-Static / Cogitator Leak</div>
+            <div class="transmission-text" id="transmissionText">
+              What is marked is measured. What is measured is entered into tally. What is entered into tally is no longer separate from the mercy of Grandfather Nurgle.
+            </div>
           </div>
-          <div class="meter">
-            <div class="meter-fill bloom-fill" id="bloomFill"></div>
+          <div class="status-live">
+            Archive note: transmission fragments are not guaranteed to originate from an external sender. Some appear to be emitted by the archive itself.
           </div>
         </div>
-
-        <p id="containmentStatus">
-          Initial rot-signature detected beneath devotional plating. The system awaits a doomed command.
-        </p>
-
-        <div class="action-row">
-          <button class="button" data-action="seal">Seal Breach</button>
-          <button class="button" data-action="quarantine">Quarantine Hold</button>
-          <button class="button" data-action="purge">Purge by Fire</button>
-          <button class="button" id="resetContainment" style="display: none;">Begin Again</button>
-        </div>
-      </article>
-
-      <article class="console-card">
-        <div class="section-kicker">
-          <p class="eyebrow">BLIGHT PROGNOSIS ENGINE</p>
-          <span class="tag">AUGUR OUTPUT</span>
-        </div>
-
-        <h2>The machine-spirit tastes weakness.</h2>
-
-        <p>
-          The engine does not predict the future. It measures which hope has already begun to rot.
-        </p>
-
-        <div class="terminal-output" id="terminalOutput">
-          <h3>PROGNOSIS AWAITS INVOCATION</h3>
-          <p>
-            Strike the augur-cogitator and a fresh weakness will rise from the sump of remembered wars.
-          </p>
-        </div>
-
-        <div class="action-row">
-          <button class="button" id="invokePrognosis">Invoke Prognosis</button>
-        </div>
-      </article>
+      </div>
     </section>
 
-    <section class="mandate-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">INTELLIGENCE MANDATE</p>
-        <span class="tag">DOCTRINAL</span>
-      </div>
-
-      <h2>The Work of The Septicarium</h2>
-
-      <p>
-        The Septicarium is the occult intelligence organ of The Rotfather’s Mercy. It does not gather knowledge
-        for preservation. It gathers knowledge so resistance may be understood, weakened, infected, and returned
-        to Grandfather Nurgle in a more useful state.
-      </p>
-
-      <p>
-        Within its datavaults are enemy doctrines, failed quarantines, plague omens, battlefield regressions,
-        relic contaminations, devotional fractures, and the slow arithmetic of despair. The XIV Legion was never
-        made for haste. It was made for inevitability.
-      </p>
-
-      <p>
-        What survives scrutiny is marked. What is marked is measured. What is measured is entered into the tally.
-        What is entered into the tally is no longer separate from the mercy of Grandfather Nurgle.
-      </p>
-    </section>
-
-    <section class="adjudication-panel">
-      <div class="section-kicker">
-        <p class="eyebrow">INTRUDER ADJUDICATION</p>
-        <span class="tag">WITNESS-STATUS</span>
-      </div>
-
-      <h2>The archive has taken notice of you.</h2>
-
-      <p>
-        You are not greeted here. You are sampled. The Septicarium listens for weakness in the breath,
-        for hesitation in the pulse, and for the inward collapse that precedes devotion.
-      </p>
-
-      <div class="adjudication-grid">
+    <section class="section" id="command-deck">
+      <div class="section-head">
         <div>
+          <div class="section-label">Primary Interface</div>
+          <h2>Command Deck</h2>
           <p>
-            Submit yourself to measure. You will not be granted safety, only designation.
+            These are the primary data-vaults presently surfaced to public witness. Hover or select a chamber to wake the Cogitator of Rot and draw a cleaner reading from the tally.
           </p>
-          <button class="button" id="adjudicate">Submit Flesh to Measure</button>
+        </div>
+        <div class="section-tag">Cogitator of Rot</div>
+      </div>
+
+      <div class="command-shell">
+        <div class="module-grid" id="moduleGrid">
+          <article class="module-card active" data-module="dossier" style="--img:url('Assets/Index/plaguebound-dossier.jpeg');">
+            <div class="module-top">
+              <div class="module-chip">Cryptex I</div>
+              <div class="module-state">Partially Unsealed</div>
+            </div>
+            <div class="module-body">
+              <h3 class="module-title">Plaguebound Dossier</h3>
+              <p class="module-desc">
+                Genealogies of corruption, command hierarchies, plague-prophecy, armor witness, weapons, histories, and the names of those in whom rot gathers unusual weight.
+              </p>
+              <div class="module-actions">
+                <a class="mini-link" href="plaguebound-dossier.html">Open Chamber</a>
+                <div class="prompt-note">Known Entry: Mortivus Classarion</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module-card" data-module="intercepts" style="--img:url('Assets/Index/battle-intercepts.jpeg');">
+            <div class="module-top">
+              <div class="module-chip">Cryptex II</div>
+              <div class="module-state">Sealed for Expansion</div>
+            </div>
+            <div class="module-body">
+              <h3 class="module-title">Battle Intercepts</h3>
+              <p class="module-desc">
+                Confirmed engagements, casualty tallies, hostile vectors, and the battlefield logic by which enemy conviction becomes breachable matter.
+              </p>
+              <div class="module-actions">
+                <button class="mini-link open-module" data-target="intercepts">Request Access</button>
+                <div class="prompt-note">Augur-Stations Awake</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module-card" data-module="scriptures" style="--img:url('Assets/Index/rot-scriptures.jpeg');">
+            <div class="module-top">
+              <div class="module-chip">Cryptex III</div>
+              <div class="module-state">Liturgical Access</div>
+            </div>
+            <div class="module-body">
+              <h3 class="module-title">Rot Scriptures</h3>
+              <p class="module-desc">
+                Sermons of putrescence, plague-litanies, apocryphal devotions, doctrinal fractures, and those sacred formulations from which despair learns to speak.
+              </p>
+              <div class="module-actions">
+                <button class="mini-link open-module" data-target="scriptures">Request Access</button>
+                <div class="prompt-note">Public Recital Restricted</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="module-card" data-module="vault" style="--img:url('Assets/Index/relic-vault.jpeg');">
+            <div class="module-top">
+              <div class="module-chip">Cryptex IV</div>
+              <div class="module-state">Reliquary Under Watch</div>
+            </div>
+            <div class="module-body">
+              <h3 class="module-title">Relic Vault</h3>
+              <p class="module-desc">
+                Blades, censers, plague-icons, preserved remains, relic fragmenta, wargear anomalies, and those sacred instruments that continue teaching after battle.
+              </p>
+              <div class="module-actions">
+                <button class="mini-link open-module" data-target="vault">Request Access</button>
+                <div class="prompt-note">Containment Intact</div>
+              </div>
+            </div>
+          </article>
         </div>
 
-        <div class="readout-stack">
-          <div class="readout">
-            <span>Designation</span>
-            <h3 id="designationText">Pending assessment.</h3>
+        <aside class="cogitator" id="cogitator" style="--readout-img:url('Assets/Index/plaguebound-dossier.jpeg');">
+          <div class="cogitator-top">
+            <div>
+              <div class="section-label">Live Interpretive Engine</div>
+              <h3>Cogitator of Rot</h3>
+              <div class="cogitator-sub">It does not welcome. It weighs. Hovering a chamber constitutes consent to be read back.</div>
+            </div>
+            <div class="seal-badge" id="readoutState">Partially Unsealed</div>
           </div>
-          <div class="readout">
-            <span>Observed Symptom</span>
-            <h3 id="symptomText">Awaiting closer contamination.</h3>
+
+          <div class="readout-image"></div>
+
+          <div class="readout-grid">
+            <div class="readout-stat">
+              <div class="k">Vault Status</div>
+              <div class="v" id="readoutStatus">Partially Unsealed</div>
+            </div>
+            <div class="readout-stat">
+              <div class="k">Dominant Purpose</div>
+              <div class="v" id="readoutPurpose">Subject Record</div>
+            </div>
+            <div class="readout-stat">
+              <div class="k">Archive Weight</div>
+              <div class="v" id="readoutWeight">Heavy</div>
+            </div>
+            <div class="readout-stat">
+              <div class="k">Recommended Entry</div>
+              <div class="v" id="readoutEntry">Mortivus Classarion</div>
+            </div>
           </div>
-          <div class="readout">
-            <span>Final Verdict</span>
-            <h3 id="verdictText">The tally remains open.</h3>
+
+          <div class="readout-body">
+            <h4 class="readout-title" id="readoutTitle">Plaguebound Dossier</h4>
+            <div class="readout-subtitle" id="readoutSubtitle">The names in which rot has chosen to settle more deeply.</div>
+            <div class="readout-copy" id="readoutCopy">
+              This vault preserves biographies, contradictory origin-lines, wargear witness, ideological doctrine, battle history, and private archive suspicion regarding those figures around whom plague pattern thickens into destiny. The first unsealed chamber within it concerns Mortivus Classarion, war-master of The Rotfather&rsquo;s Vanguard, whose rank and future remain productively unsettled.
+            </div>
+            <div class="hero-actions" style="margin-top:6px;">
+              <a class="btn btn-primary" href="plaguebound-dossier.html" id="readoutAction">Open Selected Chamber</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="lower-grid">
+        <div class="mandate">
+          <div class="section-label">Intelligence Mandate</div>
+          <h3>The Work of the Septicarium</h3>
+          <p>
+            The Septicarium exists to weaponize remembrance. It gathers what lesser minds would call intelligence and renders it into contagion. Here are catalogued the flaws of Imperial fortresses, the predictable prayers of shrine-worlds, the brittle pride of xenos elites, the doctrinal fractures of rival heresies, and the spoor-patterns through which despair may be guided into useful bloom.
+          </p>
+          <p>
+            The Death Guard were never made for haste. They were made for inevitability. Where other powers seek ecstasy, revelation, excess, or sudden ruin, the sons of Mortarion advance by patient certainty. Every wound is a gate. Every delay is a host. Every fortress is already sick, though it may not yet know the name of its illness.
+          </p>
+          <p>
+            Thus the Septicarium marks, measures, and remembers. What is remembered here does not remain inert. It ripens.
+          </p>
+        </div>
+
+        <div class="opened-fragments">
+          <div class="section-label">Unsealed Fragments</div>
+          <h3>Opened Chambers</h3>
+          <div class="fragments-list">
+            <a class="fragment-link" href="mortivus-classarion.html">
+              <div class="fragment-meta">
+                <div class="f-title">Mortivus Classarion</div>
+                <div class="f-sub">Primary subject chamber within the Plaguebound Dossier. Internal observation file.</div>
+              </div>
+              <div class="fragment-tag">Open</div>
+            </a>
+
+            <a class="fragment-link" href="the-mercy-sickle.html">
+              <div class="fragment-meta">
+                <div class="f-title">The Mercy-Sickle</div>
+                <div class="f-sub">Relic fragment concerning the blade borne by Mortivus and the doctrinal meaning of its use.</div>
+              </div>
+              <div class="fragment-tag">Open</div>
+            </a>
+
+            <a class="fragment-link" href="the-mercy-he-gave.html">
+              <div class="fragment-meta">
+                <div class="f-title">The Mercy He Gave</div>
+                <div class="f-sub">A censured Votann atrocity preserved in recovered Kin testimony and blackbox witness.</div>
+              </div>
+              <div class="fragment-tag">Open</div>
+            </a>
+
+            <a class="fragment-link" href="the-pallid-reversal.html">
+              <div class="fragment-meta">
+                <div class="f-title">The Pallid Reversal</div>
+                <div class="f-sub">The greatest known wound in Mortivus&rsquo; history, retained as a sealed battle fragment.</div>
+              </div>
+              <div class="fragment-tag">Open</div>
+            </a>
           </div>
         </div>
       </div>
     </section>
-  </main>
 
-  <footer class="site-footer">
-    <p>THE SEPTICARIUM // XIV LEGION MEMORY-CRYPT // MERCY IS NEVER SEPARATE FROM DECAY</p>
-    <p>The Rotfather’s Mercy remembers what clean histories refuse to keep.</p>
-  </footer>
+    <div class="footer-band">
+      <div>
+        <strong>Visitor Adjudication:</strong> The archive has taken notice of you. Whether this proves useful, instructive, or terminal remains under review.
+      </div>
+      <div class="footer-links">
+        <a href="#command-deck">Return to Deck</a>
+        <a href="plaguebound-dossier.html">Open Dossier</a>
+        <a href="mortivus-classarion.html">Subject File</a>
+      </div>
+    </div>
+  </div>
 
-  <div class="toast" id="toast">ACCESS DENIED. THE DATAVAULT REMAINS CENSURED BY SACRED ROT.</div>
-  <div class="hover-liturgy" id="hoverLiturgy"></div>
+  <div class="modal" id="archiveModal">
+    <div class="modal-card">
+      <div class="section-label">Archive Response</div>
+      <h4 id="modalTitle">Seal Answered</h4>
+      <p id="modalCopy">
+        The Septicarium acknowledges your request. That is not the same as granting it.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const bootScreen = document.getElementById("bootScreen");
-    const bootLines = document.getElementById("bootLines");
-    const enterButton = document.getElementById("enterButton");
-    const sporeField = document.querySelector(".spore-field");
-    const hoverLiturgy = document.getElementById("hoverLiturgy");
-    const toast = document.getElementById("toast");
+    const bootLines = [
+      "Seal-threads tasting witness presence...",
+      "Vessel designation recovered: The Rotfather’s Mercy.",
+      "Host authority sighted beneath grime: Mortivus Classarion.",
+      "Plague-intelligence lattice congealing around public echo.",
+      "Spore-cogitators calculating breach appetite and doctrinal value.",
+      "Cryptex I responding. Cryptex II through IV resist full recital.",
+      "Tally hooks entering new witness into low-priority remembrance.",
+      "Archive concludes: access acceptable. Survival remains unresolved."
+    ];
 
-    const integrityFill = document.getElementById("integrityFill");
-    const bloomFill = document.getElementById("bloomFill");
-    const integrityValue = document.getElementById("integrityValue");
-    const bloomValue = document.getElementById("bloomValue");
-    const containmentStatus = document.getElementById("containmentStatus");
-    const resetContainment = document.getElementById("resetContainment");
-
-    const terminalOutput = document.getElementById("terminalOutput");
-    const invokePrognosis = document.getElementById("invokePrognosis");
-
-    const adjudicate = document.getElementById("adjudicate");
-    const designationText = document.getElementById("designationText");
-    const symptomText = document.getElementById("symptomText");
-    const verdictText = document.getElementById("verdictText");
-
-    let containment = {
-      integrity: 29,
-      bloom: 17,
-      turns: 0,
-      failed: false
+    const moduleData = {
+      dossier: {
+        title: "Plaguebound Dossier",
+        subtitle: "The names in which rot has chosen to settle more deeply.",
+        copy: "This vault preserves biographies, contradictory origin-lines, wargear witness, ideological doctrine, battle history, and private archive suspicion regarding those figures around whom plague pattern thickens into destiny. The first unsealed chamber within it concerns Mortivus Classarion, war-master of The Rotfather’s Vanguard, whose rank and future remain productively unsettled.",
+        state: "Partially Unsealed",
+        purpose: "Subject Record",
+        weight: "Heavy",
+        entry: "Mortivus Classarion",
+        image: "Assets/Index/plaguebound-dossier.jpeg",
+        actionLabel: "Open Selected Chamber",
+        actionHref: "plaguebound-dossier.html",
+        available: true
+      },
+      intercepts: {
+        title: "Battle Intercepts",
+        subtitle: "War-records in which hostile certainty is taken apart and studied.",
+        copy: "This chamber preserves battlefield transmissions, campaign patterns, casualty impressions, enemy movement traces, augur readings, and those tactical recitations by which a war ceases being an event and becomes an infection route. The cryptex remains sealed while the vessel continues refining its catalogues of future enemies.",
+        state: "Sealed for Expansion",
+        purpose: "War Analysis",
+        weight: "Growing",
+        entry: "No Open Record Yet",
+        image: "Assets/Index/battle-intercepts.jpeg",
+        actionLabel: "Cryptex Not Yet Open",
+        actionHref: "#",
+        available: false
+      },
+      scriptures: {
+        title: "Rot Scriptures",
+        subtitle: "Sermon, omen, plague-liturgy, and the speech of sacred decay.",
+        copy: "Within this vault are stored devotions of putrescence, plague-psalms, apocrypha, censured litanies, ritual inversions, and those doctrinal fragments by which despair learns to name itself as revelation. Public recital remains restricted until the archive judges the witness fit to hear without improvement.",
+        state: "Liturgical Access",
+        purpose: "Doctrine & Prophecy",
+        weight: "Incensing",
+        entry: "No Public Sermon Yet",
+        image: "Assets/Index/rot-scriptures.jpeg",
+        actionLabel: "Recital Restricted",
+        actionHref: "#",
+        available: false
+      },
+      vault: {
+        title: "Relic Vault",
+        subtitle: "Where instruments of rot are catalogued, contained, and feared.",
+        copy: "The Relic Vault gathers plague-blades, censers, reliquary fragments, preserved remains, and the anomalous wargear carried by The Rotfather’s Vanguard. These items are not merely stored. They are watched for continuing behavior. The public threshold remains narrowed while containment protocols mature.",
+        state: "Reliquary Under Watch",
+        purpose: "Relic Examination",
+        weight: "Hazardous",
+        entry: "The Mercy-Sickle",
+        image: "Assets/Index/relic-vault.jpeg",
+        actionLabel: "Containment Active",
+        actionHref: "#",
+        available: false
+      }
     };
 
-    const bootSequence = [
-      "Waking command deck...",
-      "Vessel confirmed: The Rotfather's Mercy.",
-      "Warhost confirmed: The Rotfather's Vanguard.",
-      "Datavaults opening by tolerated breach.",
-      "Plaguebound Dossier available.",
-      "Mortivus Classarion name-crypt active.",
-      "Censured sub-crypt detected: The Mercy He Gave.",
-      "Intruder presence entered into lesser tally."
+    const transmissionPool = [
+      "What is marked is measured. What is measured is entered into tally. What is entered into tally is no longer separate from the mercy of Grandfather Nurgle.",
+      "The war does not always scream. Sometimes it ferments.",
+      "Faith is easiest to break when its keepers still believe it is pure.",
+      "Mortivus is not watched because he is known. He is watched because he is still becoming.",
+      "A relic is simply a weapon that has learned how to continue speaking after battle.",
+      "Every fortress is already sick. The archive merely records when the symptoms become legible."
     ];
 
-    const containmentLines = {
-      seal: [
-        "Bulkheads sealed. The rot answered through the rivets.",
-        "Pressure locks engaged. The infection accepted the seam as a mouth.",
-        "Sealant applied. The contamination learned the shape of refusal."
-      ],
-      quarantine: [
-        "Quarantine invoked. Spores accepted the perimeter as shelter.",
-        "Isolation protocol enacted. The sickness mistook the barrier for a chapel.",
-        "Containment cordon raised. The prayers inside began to curdle."
-      ],
-      purge: [
-        "Flame washed the breach. The smoke returned carrying blessings.",
-        "Purge cycle completed. The blackened matter continued breathing.",
-        "Cauterization succeeded only in the narrowest technical sense."
-      ]
-    };
+    const bootOverlay = document.getElementById("bootOverlay");
+    const bootLog = document.getElementById("bootLog");
+    const progressBar = document.getElementById("progressBar");
+    const skipBoot = document.getElementById("skipBoot");
 
-    const prognosis = [
-      {
-        title: "IMPERIAL BASTION-WORLD",
-        body: "The walls are strong, but routine has become ritual. Poison the schedule. Let the guards trust tomorrow. Tomorrow will answer with flies."
-      },
-      {
-        title: "SHRINE CONVOY UNDER FALSE BLESSING",
-        body: "The faithful have mistaken recitation for protection. Their water rites, reliquary chains, and corpse-handling customs offer generous infection vectors."
-      },
-      {
-        title: "ASTARTES OUTPOST",
-        body: "Transhuman pride delays panic but worsens confusion. Their discipline will hold until the first impossible symptom appears inside a sealed helm."
-      },
-      {
-        title: "XENOS MINING HOLD",
-        body: "Industrial certainty and sealed breathways. Excellent. Trust in machinery is merely faith wearing metal."
-      },
-      {
-        title: "RIVAL HERETIC HOST",
-        body: "They seek noise, speed, and spectacle. Let them exhaust revelation. Rust will answer when their gods are done shouting."
-      }
-    ];
-
-    const designations = [
-      "Tally-Marked Intruder",
-      "Mercy-Adjacent Witness",
-      "Soft-Flesh Intelligence Unit",
-      "Breach-Borne Supplicant",
-      "Unclean Observer of Useful Decline",
-      "Pending Corpse with Archive Access"
-    ];
-
-    const symptoms = [
-      "Pulse cadence already lagging behind denial.",
-      "Clean habits weakening under sustained exposure.",
-      "Moral architecture dampening at the edges.",
-      "Language beginning to accommodate rot more easily than hope.",
-      "Soul-seal thinning in a manner consistent with useful corruption.",
-      "Defensive certainty compromised by fascination."
-    ];
-
-    const verdicts = [
-      "Not yet claimed. Mark for observation.",
-      "Mercy deferred. Contamination probable.",
-      "Resistance remains, but no longer impressively.",
-      "Retain under watch. Collapse pattern promising.",
-      "Classification complete. Cleansing not recommended.",
-      "Return to the tally after further decline."
-    ];
-
-    function randomFrom(array) {
-      return array[Math.floor(Math.random() * array.length)];
-    }
-
-    function runBootSequence() {
-      let index = 0;
-
-      const interval = setInterval(() => {
-        if (index >= bootSequence.length) {
-          clearInterval(interval);
-          return;
-        }
-
-        const p = document.createElement("p");
-        p.textContent = `// ${bootSequence[index]}`;
-        bootLines.appendChild(p);
-        index += 1;
-      }, 260);
-    }
-
-    function createSpores() {
-      const sporeCount = 88;
-
-      for (let i = 0; i < sporeCount; i++) {
-        const spore = document.createElement("span");
-        spore.classList.add("spore");
-        spore.style.left = `${Math.random() * 100}%`;
-        spore.style.animationDuration = `${10 + Math.random() * 22}s`;
-        spore.style.animationDelay = `${Math.random() * 16}s`;
-        spore.style.opacity = `${0.15 + Math.random() * 0.65}`;
-        spore.style.transform = `scale(${0.6 + Math.random() * 1.8})`;
-        sporeField.appendChild(spore);
-      }
-    }
-
-    function updateContainment() {
-      integrityFill.style.width = `${containment.integrity}%`;
-      bloomFill.style.width = `${containment.bloom}%`;
-      integrityValue.textContent = `${containment.integrity}%`;
-      bloomValue.textContent = `${containment.bloom}%`;
-    }
-
-    function failContainment(finalLine) {
-      containment.failed = true;
-      containment.bloom = 100;
-      containment.integrity = Math.min(containment.integrity, 13);
-      updateContainment();
-      containmentStatus.textContent =
-        `${finalLine} Containment has failed. It was always going to fail. The rot accepted the attempt as tribute.`;
-      resetContainment.style.display = "inline-flex";
-    }
-
-    function handleContainment(action) {
-      if (containment.failed) return;
-
-      containment.turns += 1;
-      containment.integrity = Math.min(100, containment.integrity + Math.floor(Math.random() * 11) + 5);
-      containment.bloom = Math.min(100, containment.bloom + Math.floor(Math.random() * 14) + 12);
-
-      const line = randomFrom(containmentLines[action]);
-      containmentStatus.textContent = line;
-
-      if (containment.turns >= 5 || containment.bloom >= 88) {
-        failContainment(line);
-        return;
-      }
-
-      if (containment.integrity >= 82) {
-        containment.bloom = Math.min(100, containment.bloom + 10);
-        containmentStatus.textContent =
-          `${line} Brief stability observed. The contagion adapted immediately.`;
-      }
-
-      updateContainment();
-    }
-
-    function resetGame() {
-      containment = {
-        integrity: 29,
-        bloom: 17,
-        turns: 0,
-        failed: false
-      };
-      containmentStatus.textContent =
-        "Initial rot-signature detected beneath devotional plating. The system awaits a doomed command.";
-      resetContainment.style.display = "none";
-      updateContainment();
-    }
-
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-
+    function finishBoot(){
+      document.body.classList.add("booted");
       setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2600);
+        if (bootOverlay) bootOverlay.remove();
+      }, 820);
     }
 
-    function invokeEngine() {
-      const item = randomFrom(prognosis);
-      terminalOutput.innerHTML = `
-        <h3>${item.title}</h3>
-        <p>${item.body}</p>
-      `;
-    }
+    function runBootSequence(){
+      let lineIndex = 0;
+      let progress = 0;
 
-    function runAdjudication() {
-      designationText.textContent = randomFrom(designations);
-      symptomText.textContent = randomFrom(symptoms);
-      verdictText.textContent = randomFrom(verdicts);
-    }
+      const lineTimer = setInterval(() => {
+        if (lineIndex < bootLines.length){
+          const row = document.createElement("div");
+          row.className = "boot-line";
+          row.innerHTML = `<div class="sig">LOG</div><div>${bootLines[lineIndex]}</div>`;
+          bootLog.appendChild(row);
+          bootLog.scrollTop = bootLog.scrollHeight;
+          lineIndex++;
+        } else {
+          clearInterval(lineTimer);
+        }
+      }, 430);
 
-    function positionHoverLiturgy(event) {
-      const offset = 18;
-      const width = hoverLiturgy.offsetWidth || 340;
-      const height = hoverLiturgy.offsetHeight || 120;
+      const progressTimer = setInterval(() => {
+        progress += 4;
+        progressBar.style.width = Math.min(progress, 100) + "%";
+        if (progress >= 100){
+          clearInterval(progressTimer);
+          setTimeout(finishBoot, 500);
+        }
+      }, 140);
 
-      let x = event.clientX + offset;
-      let y = event.clientY + offset;
-
-      if (x + width > window.innerWidth - 12) {
-        x = event.clientX - width - offset;
-      }
-
-      if (y + height > window.innerHeight - 12) {
-        y = event.clientY - height - offset;
-      }
-
-      hoverLiturgy.style.left = `${x}px`;
-      hoverLiturgy.style.top = `${y}px`;
-    }
-
-    function initializeHoverLore() {
-      document.querySelectorAll("[data-lore]").forEach((target) => {
-        target.addEventListener("mouseenter", (event) => {
-          hoverLiturgy.textContent = target.dataset.lore;
-          hoverLiturgy.classList.add("show");
-          positionHoverLiturgy(event);
-        });
-
-        target.addEventListener("mousemove", positionHoverLiturgy);
-
-        target.addEventListener("mouseleave", () => {
-          hoverLiturgy.classList.remove("show");
-        });
+      skipBoot.addEventListener("click", () => {
+        clearInterval(lineTimer);
+        clearInterval(progressTimer);
+        progressBar.style.width = "100%";
+        finishBoot();
       });
     }
-
-    document.querySelectorAll("[data-action]").forEach((button) => {
-      button.addEventListener("click", () => {
-        handleContainment(button.dataset.action);
-      });
-    });
-
-    document.querySelectorAll(".sealed-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        showToast("ACCESS DENIED. DATAVAULT REMAINS SEALED BY SACRED ROT.");
-      });
-    });
-
-    enterButton.addEventListener("click", () => {
-      bootScreen.classList.add("hidden");
-    });
-
-    resetContainment.addEventListener("click", resetGame);
-    invokePrognosis.addEventListener("click", invokeEngine);
-    adjudicate.addEventListener("click", runAdjudication);
 
     runBootSequence();
-    createSpores();
-    updateContainment();
-    initializeHoverLore();
+
+    const cards = document.querySelectorAll(".module-card");
+    const readout = document.getElementById("cogitator");
+    const readoutTitle = document.getElementById("readoutTitle");
+    const readoutSubtitle = document.getElementById("readoutSubtitle");
+    const readoutCopy = document.getElementById("readoutCopy");
+    const readoutStatus = document.getElementById("readoutStatus");
+    const readoutPurpose = document.getElementById("readoutPurpose");
+    const readoutWeight = document.getElementById("readoutWeight");
+    const readoutEntry = document.getElementById("readoutEntry");
+    const readoutAction = document.getElementById("readoutAction");
+    const readoutState = document.getElementById("readoutState");
+
+    function setReadout(key){
+      const data = moduleData[key];
+      if (!data) return;
+
+      cards.forEach(card => card.classList.toggle("active", card.dataset.module === key));
+      readout.style.setProperty("--readout-img", `url('${data.image}')`);
+      readoutTitle.textContent = data.title;
+      readoutSubtitle.textContent = data.subtitle;
+      readoutCopy.textContent = data.copy;
+      readoutStatus.textContent = data.state;
+      readoutPurpose.textContent = data.purpose;
+      readoutWeight.textContent = data.weight;
+      readoutEntry.textContent = data.entry;
+      readoutState.textContent = data.state;
+
+      readoutAction.textContent = data.actionLabel;
+      readoutAction.href = data.available ? data.actionHref : "#";
+      readoutAction.onclick = (e) => {
+        if (!data.available){
+          e.preventDefault();
+          openModal(
+            data.title,
+            "This cryptex remains sealed. The archive acknowledges the chamber, but its public recital has not yet been opened. Continue your approach elsewhere until the tally judges the vault ripe for unveiling."
+          );
+        }
+      };
+    }
+
+    cards.forEach(card => {
+      const key = card.dataset.module;
+      card.addEventListener("mouseenter", () => setReadout(key));
+      card.addEventListener("focusin", () => setReadout(key));
+      card.addEventListener("click", (e) => {
+        if (e.target.closest(".mini-link")) return;
+        setReadout(key);
+      });
+    });
+
+    document.querySelectorAll(".open-module").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const key = e.currentTarget.dataset.target;
+        const data = moduleData[key];
+        if (!data) return;
+        openModal(
+          data.title,
+          "This chamber is recognized but not yet granted for full public traversal. The Septicarium retains the right to hold a record shut until the proper witness, war, or contamination ripens it into usefulness."
+        );
+      });
+    });
+
+    setReadout("dossier");
+
+    const transmissionText = document.getElementById("transmissionText");
+    let transmissionIndex = 0;
+    setInterval(() => {
+      transmissionIndex = (transmissionIndex + 1) % transmissionPool.length;
+      transmissionText.style.opacity = "0";
+      transmissionText.style.transform = "translateY(6px)";
+      setTimeout(() => {
+        transmissionText.textContent = transmissionPool[transmissionIndex];
+        transmissionText.style.opacity = "1";
+        transmissionText.style.transform = "translateY(0)";
+      }, 220);
+    }, 5200);
+
+    const modal = document.getElementById("archiveModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalCopy = document.getElementById("modalCopy");
+    const closeModal = document.getElementById("closeModal");
+    const sealInvocation = document.getElementById("sealInvocation");
+    const sealInvocationSecondary = document.getElementById("sealInvocationSecondary");
+
+    function openModal(title, copy){
+      modalTitle.textContent = title;
+      modalCopy.textContent = copy;
+      modal.classList.add("show");
+    }
+
+    function closeArchiveModal(){
+      modal.classList.remove("show");
+    }
+
+    closeModal.addEventListener("click", closeArchiveModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeArchiveModal();
+    });
+
+    sealInvocation.addEventListener("click", () => {
+      openModal(
+        "Seal Invocation Accepted",
+        "The sigil answers in low corrosion. Your presence has been folded deeper into the archive’s memory. No additional authority has been granted. The sensation of having been measured, however, is authentic."
+      );
+    });
+
+    sealInvocationSecondary.addEventListener("click", () => {
+      openModal(
+        "Archive Response",
+        "Request acknowledged. The Septicarium advises that curiosity is often the first symptom of susceptibility. Continue anyway if you wish. Many have."
+      );
+    });
+
+    const liveTime = document.getElementById("liveTime");
+    function updateLiveTime(){
+      const d = new Date();
+      const time = d.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit"});
+      liveTime.textContent = time;
+    }
+    updateLiveTime();
+    setInterval(updateLiveTime, 1000);
+
+    const hero = document.querySelector(".hero");
+    document.addEventListener("mousemove", (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 10;
+      const y = (e.clientY / window.innerHeight - 0.5) * 8;
+      hero.style.transform = `translate(${x * -0.12}px, ${y * -0.12}px)`;
+    });
+
+    // Canvas spores / ash / rot motes
+    const canvas = document.getElementById("sporeCanvas");
+    const ctx = canvas.getContext("2d");
+    let width = 0;
+    let height = 0;
+    let particles = [];
+    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+    function resizeCanvas(){
+      width = canvas.width = window.innerWidth * devicePixelRatio;
+      height = canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+      createParticles();
+    }
+
+    function createParticles(){
+      const count = Math.max(70, Math.floor(window.innerWidth / 18));
+      particles = [];
+      for(let i = 0; i < count; i++){
+        particles.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: Math.random() * 2.8 + 0.8,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35 - 0.15,
+          alpha: Math.random() * 0.55 + 0.18,
+          pulse: Math.random() * Math.PI * 2,
+          type: Math.random() > 0.86 ? "sigil" : "spore"
+        });
+      }
+    }
+
+    function drawSigil(x, y, size, alpha){
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(Date.now() * 0.00015);
+      ctx.strokeStyle = `rgba(194, 215, 104, ${alpha})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, size, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-size, 0);
+      ctx.lineTo(size, 0);
+      ctx.moveTo(0, -size);
+      ctx.lineTo(0, size);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function animateCanvas(){
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      for(const p of particles){
+        p.pulse += 0.012;
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 130){
+          p.x -= dx * 0.0024;
+          p.y -= dy * 0.0024;
+        }
+
+        p.x += p.vx + Math.sin(p.pulse) * 0.12;
+        p.y += p.vy + Math.cos(p.pulse * 0.7) * 0.10;
+
+        if (p.x < -20) p.x = window.innerWidth + 20;
+        if (p.x > window.innerWidth + 20) p.x = -20;
+        if (p.y < -20) p.y = window.innerHeight + 20;
+        if (p.y > window.innerHeight + 20) p.y = -20;
+
+        if (p.type === "spore"){
+          const glow = 0.35 + Math.sin(p.pulse) * 0.08;
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(191, 218, 103, ${p.alpha * glow})`;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "rgba(188,220,96,0.22)";
+          ctx.arc(p.x, p.y, p.r + Math.sin(p.pulse) * 0.4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          drawSigil(p.x, p.y, p.r * 2.5, p.alpha * 0.42);
+        }
+      }
+
+      requestAnimationFrame(animateCanvas);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("mousemove", (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    resizeCanvas();
+    animateCanvas();
   </script>
 </body>
 </html>
