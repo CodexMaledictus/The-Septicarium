@@ -4,27 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>The Mercy He Gave // The Septicarium</title>
+  <title>The Mercy He Gave // Recovered Kin Blackbox</title>
 
   <style>
     :root{
-      --bg:#070806;
-      --bg2:#0c0f0b;
-      --kin:#d89b45;
-      --kin2:#f0c16c;
-      --rot:#b7d65d;
-      --rot2:#6fa03c;
-      --red:#9a3326;
-      --text:#e5dcc0;
-      --muted:#a89f82;
-      --dim:#766f5c;
-      --panel:rgba(12, 15, 11, .88);
-      --panel2:rgba(19, 23, 16, .88);
-      --line:rgba(216, 155, 69, .24);
-      --line2:rgba(183, 214, 93, .30);
-      --lineStrong:rgba(240, 193, 108, .55);
-      --shadow:0 26px 90px rgba(0,0,0,.48);
-      --radius:24px;
+      --bg:#050605;
+      --bg2:#0a0c09;
+      --amber:#f0b45d;
+      --amber2:#ffd58b;
+      --amberDim:#8f6c39;
+      --rot:#b8d766;
+      --rot2:#6e9d38;
+      --red:#a23b2b;
+      --steel:#9f9b86;
+      --text:#e9dcc0;
+      --muted:#b5a888;
+      --dim:#756d59;
+      --panel:rgba(11,13,10,.88);
+      --panel2:rgba(19,21,14,.88);
+      --line:rgba(240,180,93,.28);
+      --line2:rgba(184,215,102,.26);
+      --strong:rgba(255,213,139,.62);
+      --shadow:0 28px 90px rgba(0,0,0,.52);
       --mono:"Courier New", ui-monospace, monospace;
       --sans:"Trebuchet MS", Arial, sans-serif;
       --serif:Georgia, "Times New Roman", serif;
@@ -32,17 +33,15 @@
 
     *{box-sizing:border-box}
 
-    html{
-      scroll-behavior:smooth;
-    }
+    html{scroll-behavior:smooth}
 
     body{
       margin:0;
       color:var(--text);
       background:
-        radial-gradient(circle at 20% 0%, rgba(216,155,69,.11), transparent 30%),
-        radial-gradient(circle at 86% 12%, rgba(117,158,57,.14), transparent 27%),
-        linear-gradient(180deg, #060806 0%, #0a0c09 45%, #050605 100%);
+        radial-gradient(circle at 18% 0%, rgba(240,180,93,.10), transparent 26%),
+        radial-gradient(circle at 84% 8%, rgba(184,215,102,.08), transparent 28%),
+        linear-gradient(180deg, #050605 0%, #0a0c09 42%, #050605 100%);
       font-family:var(--serif);
       overflow-x:hidden;
     }
@@ -51,61 +50,61 @@
       content:"";
       position:fixed;
       inset:0;
-      z-index:0;
       pointer-events:none;
+      z-index:0;
       background:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-      background-size:86px 86px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.06));
+        linear-gradient(rgba(240,180,93,.032) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(240,180,93,.024) 1px, transparent 1px);
+      background-size:72px 72px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.04));
     }
 
     body::after{
       content:"";
       position:fixed;
       inset:0;
-      z-index:1;
       pointer-events:none;
+      z-index:1;
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,255,255,.025) 0px,
-          rgba(255,255,255,.025) 1px,
+          rgba(255,213,139,.03) 0,
+          rgba(255,213,139,.03) 1px,
           transparent 2px,
-          transparent 5px
+          transparent 6px
         );
+      opacity:.15;
       mix-blend-mode:screen;
-      opacity:.13;
     }
 
-    #blackboxCanvas{
+    #kinCanvas{
       position:fixed;
       inset:0;
       width:100%;
       height:100%;
-      z-index:0;
       pointer-events:none;
-      opacity:.65;
+      z-index:0;
+      opacity:.75;
     }
 
     .page{
-      width:min(1500px, calc(100% - 36px));
-      margin:0 auto;
       position:relative;
       z-index:3;
-      padding-bottom:70px;
+      width:min(1540px, calc(100% - 36px));
+      margin:0 auto;
+      padding-bottom:72px;
     }
 
     .boot{
       position:fixed;
       inset:0;
       z-index:9999;
-      background:
-        radial-gradient(circle at center, rgba(216,155,69,.12), transparent 26%),
-        radial-gradient(circle at 70% 40%, rgba(117,158,57,.13), transparent 28%),
-        linear-gradient(180deg, #050604 0%, #090b08 100%);
       display:grid;
       place-items:center;
+      background:
+        radial-gradient(circle at center, rgba(240,180,93,.13), transparent 26%),
+        radial-gradient(circle at 72% 42%, rgba(184,215,102,.10), transparent 30%),
+        linear-gradient(180deg, #070805, #030403);
       transition:opacity .8s ease, visibility .8s ease;
     }
 
@@ -116,11 +115,11 @@
     }
 
     .boot-panel{
-      width:min(830px, calc(100% - 38px));
-      border:1px solid var(--lineStrong);
+      width:min(900px, calc(100% - 36px));
+      border:1px solid var(--strong);
       background:
-        linear-gradient(180deg, rgba(17,19,13,.96), rgba(7,10,7,.96));
-      box-shadow:0 0 0 1px rgba(183,214,93,.12) inset, 0 0 110px rgba(0,0,0,.62);
+        linear-gradient(180deg, rgba(19,21,14,.96), rgba(7,9,6,.97));
+      box-shadow:0 0 0 1px rgba(184,215,102,.12) inset, 0 0 120px rgba(0,0,0,.70);
       padding:28px;
       position:relative;
       overflow:hidden;
@@ -130,74 +129,84 @@
       content:"";
       position:absolute;
       inset:0;
-      background:
-        linear-gradient(90deg, transparent, rgba(240,193,108,.10), transparent);
-      transform:translateX(-100%);
-      animation:scan 2.6s linear infinite;
       pointer-events:none;
+      background:linear-gradient(90deg, transparent, rgba(255,213,139,.10), transparent);
+      transform:translateX(-110%);
+      animation:bootSweep 2.4s linear infinite;
     }
 
-    @keyframes scan{
-      0%{transform:translateX(-100%)}
+    @keyframes bootSweep{
+      0%{transform:translateX(-110%)}
       100%{transform:translateX(120%)}
     }
 
-    .boot-kicker,
+    .sys,
     .eyebrow,
-    .tag,
-    .mini,
+    .chip,
     .btn,
     .nav a,
     .stat-label,
     .terminal-label,
-    .chip,
-    .battle-mark,
-    .blackbox-button,
-    .small-link{
+    .ledger-label,
+    .timeline-time,
+    .diagnostic-key,
+    .mini{
       font-family:var(--sans);
       text-transform:uppercase;
       letter-spacing:.18em;
     }
 
-    .boot-kicker{
+    .sys{
+      color:var(--amber2);
       font-size:.76rem;
-      color:var(--kin2);
       margin-bottom:14px;
     }
 
     .boot-title{
-      font-size:clamp(2.4rem, 6vw, 5.2rem);
-      line-height:.9;
-      margin:0 0 16px;
-      color:#f0e5c5;
+      margin:0 0 14px;
+      color:#f3e5c4;
+      font-size:clamp(2.4rem, 6vw, 5.6rem);
+      line-height:.88;
     }
 
     .boot-status{
-      color:#c7bd9a;
-      font-size:1.04rem;
-      line-height:1.7;
+      font-family:var(--mono);
+      color:#d7c69f;
+      line-height:1.75;
+      font-size:1rem;
+      min-height:3.4em;
       margin-bottom:22px;
     }
 
     .boot-grid{
       display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:10px;
-      border-top:1px solid rgba(240,193,108,.22);
-      padding-top:16px;
+      position:relative;
+      z-index:2;
+    }
+
+    .boot-cell{
+      border:1px solid rgba(240,180,93,.22);
+      background:rgba(8,10,7,.65);
+      padding:12px;
       font-family:var(--mono);
-      font-size:.9rem;
-      color:#c8bd95;
+      font-size:.86rem;
+      color:#c7ba96;
     }
 
-    .boot-line{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      padding-bottom:8px;
-      border-bottom:1px dotted rgba(240,193,108,.17);
+    .boot-cell strong{
+      display:block;
+      color:var(--amber2);
+      margin-bottom:5px;
+      font-family:var(--sans);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.62rem;
     }
 
-    .boot-line span:last-child{
+    .boot-cell.rot strong,
+    .boot-cell.rot span{
       color:var(--rot);
     }
 
@@ -207,77 +216,73 @@
       z-index:80;
       padding:14px 0 9px;
       backdrop-filter:blur(12px);
-      background:linear-gradient(180deg, rgba(7,8,6,.94), rgba(7,8,6,.64) 70%, transparent);
+      background:linear-gradient(180deg, rgba(5,6,5,.95), rgba(5,6,5,.68) 72%, transparent);
     }
 
     .topbar-inner{
-      border:1px solid rgba(216,155,69,.18);
-      background:rgba(11,14,10,.64);
+      border:1px solid rgba(240,180,93,.20);
+      background:rgba(9,12,8,.72);
       box-shadow:var(--shadow);
       display:flex;
       justify-content:space-between;
-      gap:14px;
       align-items:center;
+      gap:14px;
       padding:12px 14px;
-      border-radius:999px;
       flex-wrap:wrap;
     }
 
     .crumbs{
       display:flex;
       align-items:center;
-      flex-wrap:wrap;
       gap:8px;
+      flex-wrap:wrap;
+      color:#aa9d7b;
       font-family:var(--sans);
       text-transform:uppercase;
       letter-spacing:.14em;
       font-size:.72rem;
-      color:#a79c7c;
     }
 
     .crumbs a{
-      color:#eed6a6;
+      color:#f2d6a3;
       text-decoration:none;
       border-bottom:1px solid transparent;
     }
 
-    .crumbs a:hover{
-      border-color:#eed6a6;
-    }
+    .crumbs a:hover{border-color:#f2d6a3}
 
     .nav{
       display:flex;
-      gap:8px;
       flex-wrap:wrap;
       justify-content:flex-end;
+      gap:8px;
     }
 
     .nav a{
+      color:#e7d5b0;
       text-decoration:none;
-      color:#dfd2ad;
-      border:1px solid rgba(216,155,69,.18);
-      background:rgba(16,20,14,.68);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:.64rem;
+      border:1px solid rgba(240,180,93,.22);
+      background:rgba(16,18,12,.72);
+      padding:10px 11px;
+      font-size:.62rem;
       transition:.2s ease;
     }
 
     .nav a:hover{
       transform:translateY(-2px);
-      border-color:var(--lineStrong);
-      background:rgba(35,31,17,.80);
+      border-color:var(--strong);
+      background:rgba(42,34,18,.78);
     }
 
     .hero{
       min-height:82vh;
       border:1px solid var(--line);
       box-shadow:var(--shadow);
-      background:
-        linear-gradient(90deg, rgba(5,7,5,.92) 0%, rgba(7,9,7,.82) 34%, rgba(7,9,7,.38) 65%, rgba(6,8,6,.78) 100%),
-        url("Assets/Mercy-He-Gave/mercy-he-gave-hero.jpeg") center/cover no-repeat;
       position:relative;
       overflow:hidden;
+      background:
+        linear-gradient(90deg, rgba(5,6,5,.92), rgba(7,8,6,.82) 38%, rgba(7,8,6,.38) 68%, rgba(5,6,5,.78)),
+        url("Mercy-He-Gave/mercy-he-gave-hero.jpeg") center/cover no-repeat;
       isolation:isolate;
     }
 
@@ -286,11 +291,11 @@
       position:absolute;
       inset:0;
       z-index:0;
-      background:
-        radial-gradient(circle at 17% 36%, rgba(216,155,69,.17), transparent 22%),
-        radial-gradient(circle at 74% 38%, rgba(183,214,93,.14), transparent 28%),
-        linear-gradient(180deg, transparent 20%, rgba(0,0,0,.68) 100%);
       pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 42%, rgba(240,180,93,.18), transparent 23%),
+        radial-gradient(circle at 78% 38%, rgba(184,215,102,.13), transparent 30%),
+        linear-gradient(180deg, transparent 15%, rgba(0,0,0,.72));
     }
 
     .hero-grid{
@@ -298,65 +303,62 @@
       z-index:2;
       min-height:82vh;
       display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:28px;
+      grid-template-columns:1.03fr .97fr;
+      gap:26px;
       align-items:end;
       padding:clamp(24px, 4vw, 54px);
     }
 
     .eyebrow{
-      color:var(--kin2);
-      font-size:.78rem;
+      color:var(--amber2);
+      font-size:.76rem;
       margin-bottom:16px;
     }
 
     .hero-title{
-      margin:0 0 18px;
-      color:#f1e4c2;
-      font-size:clamp(3.5rem, 9vw, 7.6rem);
+      margin:0 0 16px;
+      color:#f4e7c7;
+      font-size:clamp(3.4rem, 9vw, 7.6rem);
       line-height:.86;
       max-width:9ch;
-      text-shadow:0 10px 32px rgba(0,0,0,.55);
+      text-shadow:0 12px 34px rgba(0,0,0,.62);
     }
 
     .hero-sub{
-      margin:0 0 18px;
       color:var(--rot);
       font-style:italic;
       font-size:clamp(1.25rem, 2.4vw, 2.05rem);
       line-height:1.12;
-      max-width:23ch;
+      margin:0 0 18px;
+      max-width:28ch;
     }
 
     .hero-copy{
-      max-width:74ch;
-      color:#d2c5a2;
+      max-width:78ch;
+      color:#d7c8a5;
       font-size:1.08rem;
-      line-height:1.86;
+      line-height:1.88;
       margin:0 0 18px;
-      text-shadow:0 2px 12px rgba(0,0,0,.45);
+      text-shadow:0 3px 16px rgba(0,0,0,.48);
     }
 
-    .hero-copy strong{
-      color:#efe0bd;
-    }
+    .hero-copy strong{color:#f1dfba}
 
     .hero-actions{
       display:flex;
       flex-wrap:wrap;
       gap:12px;
-      margin-top:25px;
+      margin-top:24px;
     }
 
-    .btn,
-    .small-link{
+    .btn{
       appearance:none;
+      border:1px solid rgba(240,180,93,.42);
+      background:linear-gradient(180deg, rgba(240,180,93,.14), rgba(13,16,10,.86));
+      color:#f4e3bd;
       text-decoration:none;
-      border:1px solid rgba(240,193,108,.36);
-      background:linear-gradient(180deg, rgba(216,155,69,.12), rgba(15,20,12,.82));
-      color:#f2e3c0;
       padding:13px 16px;
-      font-size:.72rem;
+      font-size:.70rem;
       cursor:pointer;
       transition:.2s ease;
       display:inline-flex;
@@ -365,17 +367,16 @@
       gap:8px;
     }
 
-    .btn:hover,
-    .small-link:hover{
+    .btn:hover{
       transform:translateY(-2px);
-      border-color:rgba(240,193,108,.72);
-      background:linear-gradient(180deg, rgba(216,155,69,.20), rgba(28,35,19,.92));
-      box-shadow:0 16px 32px rgba(0,0,0,.30);
+      border-color:rgba(255,213,139,.76);
+      background:linear-gradient(180deg, rgba(240,180,93,.22), rgba(30,35,18,.90));
+      box-shadow:0 16px 36px rgba(0,0,0,.34);
     }
 
     .btn.rot{
-      border-color:rgba(183,214,93,.42);
-      background:linear-gradient(180deg, rgba(183,214,93,.14), rgba(16,26,12,.84));
+      border-color:rgba(184,215,102,.45);
+      background:linear-gradient(180deg, rgba(184,215,102,.14), rgba(13,24,8,.84));
     }
 
     .hero-side{
@@ -384,30 +385,29 @@
       align-self:end;
     }
 
-    .side-card,
     .panel,
-    .feature-card,
+    .card,
     .terminal,
-    .record-card,
-    .quote-box{
+    .ledger,
+    .quote,
+    .diagnostic{
       border:1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(14,18,13,.88), rgba(8,11,8,.88));
+      background:linear-gradient(180deg, rgba(14,17,12,.88), rgba(8,10,7,.90));
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
     }
 
-    .side-card::before,
     .panel::before,
-    .feature-card::before,
+    .card::before,
     .terminal::before,
-    .record-card::before,
-    .quote-box::before{
+    .ledger::before,
+    .quote::before,
+    .diagnostic::before{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(90deg, transparent, rgba(240,193,108,.065), transparent);
+      background:linear-gradient(90deg, transparent, rgba(255,213,139,.065), transparent);
       transform:translateX(-105%);
       animation:sweep 9s linear infinite;
       pointer-events:none;
@@ -419,115 +419,121 @@
       100%{transform:translateX(105%)}
     }
 
-    .side-card{
+    .card{
       padding:18px;
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(8px);
     }
 
     .mini{
+      color:var(--amber2);
       font-size:.62rem;
-      color:var(--kin2);
       margin-bottom:8px;
     }
 
-    .side-card h3,
+    .card h3,
     .panel h2,
-    .feature-card h3,
-    .record-card h3,
-    .terminal h3{
-      margin:0 0 11px;
-      color:#f0e1bd;
+    .terminal h3,
+    .ledger h3,
+    .diagnostic h3{
+      margin:0 0 10px;
+      color:#f3e3bf;
     }
 
-    .side-card p,
+    .card p,
     .panel p,
-    .feature-card p,
-    .record-card p,
     .terminal p,
-    .quote-box p{
+    .ledger p,
+    .diagnostic p,
+    .quote p{
       margin:0;
-      color:#c7bc98;
+      color:#cbbd99;
       line-height:1.76;
     }
 
     .stat-grid{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
+      grid-template-columns:repeat(2, minmax(0,1fr));
       gap:10px;
     }
 
     .stat{
-      border:1px solid rgba(216,155,69,.22);
-      background:rgba(9,12,8,.62);
-      min-height:104px;
+      border:1px solid rgba(240,180,93,.20);
+      background:rgba(8,11,7,.62);
       padding:13px;
+      min-height:108px;
     }
 
     .stat-label{
-      color:var(--kin2);
+      color:var(--amber2);
       font-size:.58rem;
-      margin-bottom:7px;
+      margin-bottom:8px;
     }
 
     .stat-value{
-      color:#efe0bd;
-      font-size:1.18rem;
+      color:#f3e3bf;
+      font-size:1.17rem;
       line-height:1.18;
       margin-bottom:7px;
     }
 
     .stat-note{
-      color:#a99e80;
+      color:#a99d7c;
       font-size:.88rem;
       line-height:1.45;
     }
 
     .section{
-      padding-top:34px;
+      padding-top:36px;
     }
 
     .section-header{
       display:flex;
       justify-content:space-between;
-      align-items:end;
+      align-items:flex-end;
       gap:18px;
       flex-wrap:wrap;
       margin-bottom:18px;
     }
 
     .section-title{
-      color:#f0e3c0;
+      color:#f4e5c3;
       margin:0;
-      font-size:clamp(2.15rem, 5vw, 4.1rem);
-      line-height:.96;
+      font-size:clamp(2.2rem, 5vw, 4.15rem);
+      line-height:.95;
     }
 
     .section-desc{
-      max-width:76ch;
       margin:11px 0 0;
-      color:#beb290;
-      line-height:1.82;
+      max-width:82ch;
+      color:#beb18e;
+      line-height:1.84;
       font-size:1.03rem;
     }
 
-    .tag{
+    .chip{
       color:var(--rot);
-      border:1px solid rgba(183,214,93,.27);
-      background:rgba(15,25,11,.62);
+      border:1px solid rgba(184,215,102,.28);
+      background:rgba(13,24,8,.58);
       padding:10px 12px;
-      font-size:.62rem;
+      font-size:.60rem;
       white-space:nowrap;
     }
 
-    .image-split{
+    .blackbox-shell{
       display:grid;
-      grid-template-columns:.95fr 1.05fr;
+      grid-template-columns:.78fr 1.22fr;
       gap:18px;
       align-items:stretch;
     }
 
-    .image-panel{
-      min-height:520px;
+    .device-wrap{
+      display:grid;
+      grid-template-rows:1fr auto;
+      gap:14px;
+    }
+
+    .image-box{
+      min-height:560px;
       border:1px solid var(--line);
       box-shadow:var(--shadow);
       background-size:cover;
@@ -536,401 +542,463 @@
       overflow:hidden;
     }
 
-    .image-panel::after{
+    .image-box::after{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.50));
+      background:linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.54));
       pointer-events:none;
     }
 
-    .text-panel{
-      padding:28px;
-    }
-
-    .text-panel p{
-      font-size:1.05rem;
-      line-height:1.86;
-      margin:0 0 18px;
-    }
-
-    .text-panel p:last-child{
-      margin-bottom:0;
-    }
-
-    .kin-image{
+    .blackbox-img{
       background-image:
-        linear-gradient(180deg, rgba(8,10,7,.08), rgba(8,10,7,.48)),
-        url("Assets/Mercy-He-Gave/kin-claim-force.jpeg");
+        linear-gradient(180deg, rgba(5,6,5,.05), rgba(5,6,5,.40)),
+        url("Mercy-He-Gave/votann-blackbox.jpeg");
     }
 
-    .blackbox-layout{
-      display:grid;
-      grid-template-columns:.82fr 1.18fr;
-      gap:18px;
-      align-items:stretch;
+    .claim-vault-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.08), rgba(5,6,5,.45)),
+        url("Mercy-He-Gave/claim-vault-aftermath.jpeg");
     }
 
-    .blackbox-art{
-      min-height:720px;
-      background:
-        linear-gradient(180deg, rgba(7,9,6,.05), rgba(7,9,6,.48)),
-        url("Assets/Mercy-He-Gave/votann-blackbox.jpeg") center/cover no-repeat;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-    }
-
-    .blackbox-panel{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(14,17,12,.92), rgba(7,10,7,.94));
-      box-shadow:var(--shadow);
+    .terminal{
       padding:20px;
       display:grid;
       grid-template-rows:auto auto 1fr;
       gap:14px;
-      min-height:720px;
+      min-height:760px;
     }
 
     .terminal-top{
       display:flex;
       justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:start;
-      border-bottom:1px solid rgba(240,193,108,.16);
+      gap:16px;
+      align-items:flex-start;
+      border-bottom:1px solid rgba(240,180,93,.18);
       padding-bottom:16px;
     }
 
     .terminal-title{
-      color:#f0e1bd;
-      font-size:2.1rem;
-      margin:0 0 8px;
+      color:#f3e3bf;
+      font-size:2.15rem;
       line-height:1;
+      margin:0 0 8px;
     }
 
     .terminal-sub{
-      color:#a99e80;
-      line-height:1.7;
-      max-width:68ch;
+      color:#b9ab87;
+      line-height:1.72;
+      max-width:72ch;
+      font-size:.98rem;
     }
 
-    .signal-state{
-      color:var(--rot);
+    .signal{
       font-family:var(--mono);
-      border:1px solid rgba(183,214,93,.28);
-      padding:9px 11px;
-      background:rgba(11,22,8,.58);
-      font-size:.82rem;
+      color:var(--rot);
+      border:1px solid rgba(184,215,102,.30);
+      background:rgba(12,24,8,.60);
+      padding:10px 11px;
+      white-space:nowrap;
+      font-size:.84rem;
     }
 
-    .blackbox-controls{
+    .timeline{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
+      grid-template-columns:repeat(3, minmax(0,1fr));
       gap:10px;
     }
 
-    .blackbox-button{
-      border:1px solid rgba(216,155,69,.26);
-      background:rgba(12,16,10,.72);
-      color:#e7d9b6;
-      padding:13px 11px;
+    .timeline button{
+      border:1px solid rgba(240,180,93,.24);
+      background:rgba(10,12,8,.74);
+      color:#e9d9b5;
       cursor:pointer;
-      font-size:.60rem;
-      min-height:62px;
+      padding:12px;
+      min-height:78px;
       text-align:left;
       transition:.2s ease;
     }
 
-    .blackbox-button:hover,
-    .blackbox-button.active{
+    .timeline button:hover,
+    .timeline button.active{
       transform:translateY(-2px);
-      border-color:rgba(240,193,108,.68);
-      background:linear-gradient(180deg, rgba(216,155,69,.15), rgba(20,27,14,.86));
+      border-color:rgba(255,213,139,.68);
+      background:linear-gradient(180deg, rgba(240,180,93,.14), rgba(20,25,14,.90));
     }
 
-    .blackbox-output{
-      border:1px solid rgba(240,193,108,.20);
+    .timeline-time{
+      color:var(--amber2);
+      font-size:.56rem;
+      margin-bottom:7px;
+      display:block;
+    }
+
+    .timeline-title{
+      font-family:var(--serif);
+      font-size:1.03rem;
+      line-height:1.14;
+      color:#f0dfb9;
+    }
+
+    .playback{
+      border:1px solid rgba(240,180,93,.20);
       background:
-        radial-gradient(circle at 80% 0%, rgba(183,214,93,.09), transparent 34%),
-        rgba(7,10,7,.66);
+        radial-gradient(circle at 90% 0%, rgba(184,215,102,.10), transparent 36%),
+        rgba(6,8,6,.72);
       padding:20px;
-      display:grid;
-      align-content:start;
-      gap:15px;
-      min-height:360px;
       position:relative;
       overflow:hidden;
+      display:grid;
+      align-content:start;
+      gap:14px;
+      min-height:390px;
     }
 
-    .blackbox-output::before{
+    .playback::before{
       content:"";
       position:absolute;
       inset:0;
+      pointer-events:none;
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(240,193,108,.03) 0px,
-          rgba(240,193,108,.03) 1px,
+          rgba(255,213,139,.03) 0,
+          rgba(255,213,139,.03) 1px,
           transparent 2px,
-          transparent 6px
+          transparent 7px
         );
-      pointer-events:none;
-      opacity:.35;
+      opacity:.45;
     }
 
     .terminal-label{
-      color:var(--kin2);
-      font-size:.62rem;
+      color:var(--amber2);
+      font-size:.60rem;
       position:relative;
       z-index:2;
     }
 
-    .output-title{
+    .playback h3{
+      position:relative;
+      z-index:2;
       margin:0;
-      color:#f0e1bd;
+      color:#f3e3bf;
       font-size:2rem;
       line-height:1.04;
-      position:relative;
-      z-index:2;
     }
 
-    .output-body{
+    .playback p{
       position:relative;
       z-index:2;
-      color:#d4c6a3;
-      line-height:1.82;
-      font-size:1.02rem;
+      color:#d6c7a2;
+      line-height:1.85;
+      font-size:1.03rem;
+      margin:0;
     }
 
-    .corruption-meter{
+    .meter-wrap{
       position:relative;
       z-index:2;
-      margin-top:6px;
+      margin-top:4px;
     }
 
     .meter-row{
       display:flex;
       justify-content:space-between;
-      gap:14px;
-      color:var(--kin2);
+      gap:12px;
+      color:var(--amber2);
       font-family:var(--sans);
       text-transform:uppercase;
       letter-spacing:.15em;
-      font-size:.65rem;
+      font-size:.62rem;
       margin-bottom:8px;
     }
 
     .meter{
-      height:14px;
-      border:1px solid rgba(240,193,108,.18);
-      background:rgba(216,155,69,.08);
+      height:15px;
+      border:1px solid rgba(255,213,139,.20);
+      background:rgba(240,180,93,.08);
       overflow:hidden;
     }
 
     .meter span{
       display:block;
       height:100%;
-      width:34%;
-      background:linear-gradient(90deg, var(--kin), var(--rot), #d8ff6b);
-      box-shadow:0 0 24px rgba(183,214,93,.35);
+      width:25%;
+      background:linear-gradient(90deg, var(--amber), var(--rot), #d8ff73);
+      box-shadow:0 0 28px rgba(184,215,102,.38);
       transition:width .35s ease;
     }
 
-    .features{
+    .split{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:16px;
-    }
-
-    .feature-card{
-      min-height:420px;
-      display:grid;
-      grid-template-rows:210px auto;
-    }
-
-    .feature-img{
-      background-size:cover;
-      background-position:center;
-      border-bottom:1px solid var(--line);
-    }
-
-    .feature-body{
-      padding:18px;
-    }
-
-    .feature-card h3{
-      font-size:1.65rem;
-      line-height:1.04;
-    }
-
-    .breach-img{background-image:linear-gradient(180deg, rgba(8,10,7,.02), rgba(8,10,7,.24)), url("Assets/Mercy-He-Gave/death-guard-breach.jpeg")}
-    .elite-img{background-image:linear-gradient(180deg, rgba(8,10,7,.02), rgba(8,10,7,.24)), url("Assets/Mercy-He-Gave/elite-votann-unit.jpeg")}
-    .core-img{background-image:linear-gradient(180deg, rgba(8,10,7,.02), rgba(8,10,7,.24)), url("Assets/Mercy-He-Gave/ancestor-core-corruption.jpeg")}
-
-    .battle-section{
-      display:grid;
+      grid-template-columns:.95fr 1.05fr;
       gap:18px;
+      align-items:stretch;
     }
 
-    .battle-grid{
-      display:grid;
-      grid-template-columns:.85fr 1.15fr;
-      gap:18px;
-    }
-
-    .battle-image{
-      min-height:650px;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      background:
-        linear-gradient(180deg, rgba(6,8,6,.08), rgba(6,8,6,.52)),
-        url("Assets/Mercy-He-Gave/death-guard-breach.jpeg") center/cover no-repeat;
-    }
-
-    .battle-copy{
+    .copy{
       padding:28px;
     }
 
-    .battle-mark{
-      color:var(--rot);
-      font-size:.64rem;
-      margin-bottom:10px;
-    }
-
-    .battle-copy h3{
-      margin:0 0 14px;
-      color:#f0e1bd;
-      font-size:2.4rem;
-      line-height:1;
-    }
-
-    .battle-copy p{
-      color:#d0c3a0;
+    .copy p{
+      color:#d0c19c;
+      font-size:1.05rem;
       line-height:1.88;
-      font-size:1.04rem;
       margin:0 0 18px;
     }
 
-    .battle-copy p:last-child{
-      margin-bottom:0;
+    .copy p:last-child{margin-bottom:0}
+
+    .muster-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
+        url("Mercy-He-Gave/kin-muster-hall.jpeg");
+    }
+
+    .claim-force-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
+        url("Mercy-He-Gave/kin-claim-force.jpeg");
+    }
+
+    .elite-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
+        url("Mercy-He-Gave/elite-votann-unit.jpeg");
+    }
+
+    .breach-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.48)),
+        url("Mercy-He-Gave/death-guard-breach.jpeg");
+    }
+
+    .core-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
+        url("Mercy-He-Gave/ancestor-core-corruption.jpeg");
+    }
+
+    .mercy-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
+        url("Mercy-He-Gave/mortivus-mercy-scene.png");
+    }
+
+    .aftermath-img{
+      background-image:
+        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.48)),
+        url("Mercy-He-Gave/mercy-aftermath.jpeg");
+    }
+
+    .triad{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .tri-card{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(14,17,12,.86), rgba(8,10,7,.90));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .tri-card .image-box{
+      min-height:285px;
+      border:0;
+      border-bottom:1px solid var(--line);
+      box-shadow:none;
+    }
+
+    .tri-body{
+      padding:18px;
+    }
+
+    .tri-body h3{
+      color:#f3e3bf;
+      font-size:1.7rem;
+      line-height:1.04;
+      margin:0 0 10px;
+    }
+
+    .tri-body p{
+      color:#c4b693;
+      line-height:1.74;
+      margin:0;
+    }
+
+    .ledger-wrap{
+      display:grid;
+      grid-template-columns:.88fr 1.12fr;
+      gap:18px;
+    }
+
+    .ledger{
+      padding:22px;
+    }
+
+    .ledger h3{
+      font-size:2.25rem;
+      line-height:1;
+    }
+
+    .ledger-controls{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .ledger-choice{
+      border:1px solid rgba(240,180,93,.25);
+      background:rgba(10,12,8,.74);
+      color:#e7d6b0;
+      text-align:left;
+      padding:14px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .ledger-choice:hover,
+    .ledger-choice.active{
+      transform:translateY(-2px);
+      border-color:rgba(255,213,139,.66);
+      background:linear-gradient(180deg, rgba(240,180,93,.14), rgba(20,25,14,.90));
+    }
+
+    .ledger-label{
+      color:var(--amber2);
+      font-size:.58rem;
+      margin-bottom:6px;
+      display:block;
+    }
+
+    .ledger-output{
+      border:1px solid rgba(184,215,102,.24);
+      background:
+        radial-gradient(circle at 100% 0%, rgba(184,215,102,.10), transparent 32%),
+        rgba(8,11,7,.72);
+      padding:22px;
+      min-height:430px;
+      display:grid;
+      align-content:start;
+      gap:14px;
+    }
+
+    .ledger-output h3{
+      color:var(--rot);
+      font-size:2.3rem;
+      margin:0;
+      line-height:1;
+    }
+
+    .ledger-output p{
+      color:#d3c5a2;
+      line-height:1.86;
+      margin:0;
+    }
+
+    .ledger-line{
+      display:grid;
+      grid-template-columns:190px 1fr;
+      gap:14px;
+      border-bottom:1px dotted rgba(240,180,93,.18);
+      padding-bottom:9px;
+      color:#d0c19c;
+      font-family:var(--mono);
+      font-size:.92rem;
+    }
+
+    .ledger-line strong{
+      color:var(--amber2);
+      font-family:var(--sans);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.62rem;
     }
 
     .battle-phases{
       display:grid;
       grid-template-columns:repeat(4, minmax(0,1fr));
       gap:12px;
+      margin-top:18px;
     }
 
     .phase{
       border:1px solid var(--line);
-      background:rgba(12,15,10,.78);
+      background:rgba(10,12,8,.72);
       padding:15px;
     }
 
     .phase h4{
+      color:#f1dfba;
       margin:0 0 9px;
-      color:#f0e1bd;
-      font-size:1.18rem;
+      font-size:1.16rem;
     }
 
     .phase p{
+      color:#bdb08e;
+      line-height:1.66;
       margin:0;
-      color:#bfb391;
-      line-height:1.68;
       font-size:.94rem;
     }
 
-    .core-layout{
-      display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:18px;
+    .quote{
+      padding:22px;
     }
 
-    .core-art{
-      min-height:650px;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      background:
-        linear-gradient(180deg, rgba(6,8,6,.04), rgba(6,8,6,.42)),
-        url("Assets/Mercy-He-Gave/ancestor-core-corruption.jpeg") center/cover no-repeat;
-    }
-
-    .mercy-layout{
-      display:grid;
-      grid-template-columns:.96fr 1.04fr;
-      gap:18px;
-      align-items:stretch;
-    }
-
-    .mercy-scene{
-      min-height:680px;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      background:
-        linear-gradient(180deg, rgba(6,8,6,.04), rgba(6,8,6,.40)),
-        url("Assets/Mercy-He-Gave/mortivus-mercy-scene.png") center/cover no-repeat;
-    }
-
-    .aftermath-img{
-      background-image:
-        linear-gradient(180deg, rgba(6,8,6,.04), rgba(6,8,6,.46)),
-        url("Assets/Mercy-He-Gave/mercy-aftermath.jpeg");
-    }
-
-    .claim-alt-img{
-      background-image:
-        linear-gradient(180deg, rgba(6,8,6,.04), rgba(6,8,6,.46)),
-        url("Assets/Mercy-He-Gave/claim-vault-aftermath.jpeg");
+    .quote p{
+      color:#decda8;
+      font-style:italic;
+      font-size:1.14rem;
+      line-height:1.8;
     }
 
     .record-grid{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:16px;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:14px;
     }
 
-    .record-card{
-      padding:20px;
-      min-height:270px;
+    .diagnostic{
+      padding:18px;
+      min-height:250px;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:10px;
     }
 
-    .record-card h3{
-      font-size:1.75rem;
-      line-height:1.03;
+    .diagnostic-key{
+      color:var(--amber2);
+      font-size:.58rem;
     }
 
-    .record-card p{
+    .diagnostic h3{
+      font-size:1.5rem;
+      line-height:1.06;
+    }
+
+    .diagnostic p{
       flex:1;
     }
 
-    .quote-box{
-      padding:22px;
-    }
-
-    .quote-box p{
-      font-size:1.15rem;
-      font-style:italic;
-      color:#d9caa4;
-    }
-
     .footer{
-      padding:26px;
+      padding:28px;
       display:grid;
       gap:16px;
     }
 
     .footer h2{
       margin:0;
-      color:#f0e1bd;
-      font-size:clamp(2.2rem, 5vw, 4rem);
+      color:#f3e3bf;
+      font-size:clamp(2.3rem, 5vw, 4.25rem);
       line-height:.95;
     }
 
     .footer p{
-      color:#cbbf9c;
+      color:#c9bb98;
       line-height:1.86;
       font-size:1.05rem;
       margin:0;
@@ -940,62 +1008,59 @@
       display:flex;
       flex-wrap:wrap;
       gap:12px;
-      margin-top:4px;
     }
 
-    .floating-vox{
+    .floating{
       position:fixed;
       right:18px;
       bottom:18px;
       z-index:90;
-      width:min(390px, calc(100% - 36px));
-      border:1px solid rgba(183,214,93,.30);
-      background:rgba(8,12,7,.86);
+      width:min(410px, calc(100% - 36px));
+      border:1px solid rgba(184,215,102,.30);
+      background:rgba(7,10,6,.86);
       backdrop-filter:blur(12px);
       box-shadow:var(--shadow);
       overflow:hidden;
     }
 
-    .floating-vox-header{
+    .floating-head{
       display:flex;
       justify-content:space-between;
       align-items:center;
       gap:12px;
+      border-bottom:1px solid rgba(184,215,102,.18);
       padding:12px 14px;
-      border-bottom:1px solid rgba(183,214,93,.18);
       color:var(--rot);
       font-family:var(--sans);
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.66rem;
+      font-size:.65rem;
     }
 
-    .vox-close{
+    .floating button{
       border:0;
       background:transparent;
-      color:#e8dcb8;
+      color:#e6d6b2;
       cursor:pointer;
       font-size:1rem;
     }
 
-    .floating-vox-body{
+    .floating-body{
       padding:14px;
-      color:#d6caa7;
+      color:#d5c6a3;
       line-height:1.72;
-      font-size:.96rem;
+      font-size:.95rem;
     }
 
     @media (max-width:1180px){
       .hero-grid,
-      .image-split,
-      .blackbox-layout,
-      .battle-grid,
-      .core-layout,
-      .mercy-layout{
+      .blackbox-shell,
+      .split,
+      .ledger-wrap{
         grid-template-columns:1fr;
       }
 
-      .features,
+      .triad,
       .record-grid{
         grid-template-columns:1fr;
       }
@@ -1004,31 +1069,19 @@
         grid-template-columns:repeat(2, minmax(0,1fr));
       }
 
-      .blackbox-art,
-      .battle-image,
-      .core-art,
-      .mercy-scene,
-      .image-panel{
-        min-height:430px;
+      .terminal{
+        min-height:auto;
       }
 
-      .blackbox-panel{
-        min-height:auto;
+      .image-box{
+        min-height:430px;
       }
     }
 
     @media (max-width:760px){
-      .page{
-        width:min(100% - 18px, 1500px);
-      }
+      .page{width:min(100% - 18px, 1540px)}
 
-      .topbar-inner{
-        border-radius:22px;
-      }
-
-      .nav{
-        justify-content:flex-start;
-      }
+      .topbar-inner{border-radius:0}
 
       .hero-grid{
         padding:22px;
@@ -1039,12 +1092,18 @@
       }
 
       .stat-grid,
-      .blackbox-controls,
+      .timeline,
+      .boot-grid,
       .battle-phases{
         grid-template-columns:1fr;
       }
 
-      .floating-vox{
+      .ledger-line{
+        grid-template-columns:1fr;
+        gap:6px;
+      }
+
+      .floating{
         left:10px;
         right:10px;
         width:auto;
@@ -1054,20 +1113,33 @@
 </head>
 
 <body>
-  <canvas id="blackboxCanvas"></canvas>
+  <canvas id="kinCanvas"></canvas>
 
   <div class="boot" id="boot">
     <div class="boot-panel">
-      <div class="boot-kicker">Recovered Kin Blackbox // Septicarium Quarantine Playback</div>
+      <div class="sys">Kin Blackbox Recovery Sequence // Claim-Hold Thrain’s Lock</div>
       <h1 class="boot-title">The Mercy He Gave</h1>
       <div class="boot-status" id="bootStatus">
-        Blackbox casing opened. Amber memory lattice responding. Contamination bloom detected beneath oath-layer.
+        ANCESTOR HANDSHAKE: searching... oath-chain fragments present... grudge-ledger damaged but not silent...
       </div>
+
       <div class="boot-grid">
-        <div class="boot-line"><span>Origin</span><span>Ruined Votann claim-hold</span></div>
-        <div class="boot-line"><span>Recovery State</span><span>Partially corrupted</span></div>
-        <div class="boot-line"><span>Hostile Signature</span><span>The Rotfather’s Vanguard</span></div>
-        <div class="boot-line"><span>Subject Shadow</span><span>Mortivus Classarion</span></div>
+        <div class="boot-cell">
+          <strong>Memory Integrity</strong>
+          <span>Partial / amber lattice unstable</span>
+        </div>
+        <div class="boot-cell">
+          <strong>Kin Record Layer</strong>
+          <span>Claim-force archive detected</span>
+        </div>
+        <div class="boot-cell">
+          <strong>Oath-Ledger</strong>
+          <span>Compromised after breach</span>
+        </div>
+        <div class="boot-cell rot">
+          <strong>Foreign Bloom</strong>
+          <span>Death Guard contamination active</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1087,11 +1159,12 @@
 
         <nav class="nav">
           <a href="#blackbox">Blackbox</a>
-          <a href="#kin">The Kin</a>
-          <a href="#battle">Battle Record</a>
+          <a href="#kin-record">Kin Record</a>
+          <a href="#ledger">Grudge-Ledger</a>
+          <a href="#breach">Breach</a>
           <a href="#core">Ancestor-Core</a>
-          <a href="#mercy">The Mercy</a>
-          <a href="#aftermath">Aftermath</a>
+          <a href="#mercy">Mercy Event</a>
+          <a href="#after">Aftermath</a>
         </nav>
       </div>
     </header>
@@ -1099,116 +1172,145 @@
     <section class="hero">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow">Censured Votann Atrocity Record // Recovered Kin Archive // Septicarium Copy</div>
+          <div class="eyebrow">Recovered Kin Archive // Blackbox Translation // Septicarium Copy Under Contamination</div>
           <h1 class="hero-title">The Mercy He Gave</h1>
-          <p class="hero-sub">A battle where memory was left alive so it could rot.</p>
+          <p class="hero-sub">A Kin memory-record forced to continue after trust was removed.</p>
 
           <p class="hero-copy">
-            This page preserves the recovered blackbox archive of a ruined <strong>Leagues of Votann</strong> claim-force whose hold was breached by <strong>The Rotfather’s Vanguard</strong> under the command-shadow of <strong>Mortivus Classarion</strong>. The Kin did not meet him as weaklings. They met him as oath-bound industrial warriors, armored by discipline, ancestry, and the terrible stubbornness of a people who treat memory as survival.
+            We were not built to forget. We were not trained to abandon. We were Kin of the claim-hold, oath-bound to stone, machine, ledger, and Ancestor. The hold had names before the breach. The corridors had routes. The dead had places waiting for them inside memory.
           </p>
 
           <p class="hero-copy">
-            Mortivus did not grant mercy by sparing them. He granted mercy by leaving enough of their record intact to understand what had happened. The surviving data does not show a simple massacre. It shows an attack on inheritance, oath, grudge, machine-memory, and the sacred duty of preservation.
+            Then the green door opened. The enemy did not come as raiders come. They came as weather that had learned hatred. Their master did not rush the kill. He waited until we understood what he had chosen to leave alive.
           </p>
 
           <div class="hero-actions">
-            <a class="btn rot" href="#blackbox">Open Blackbox Playback</a>
-            <a class="btn" href="#battle">Read Battle Record</a>
-            <a class="btn" href="mortivus-classarion.html">Return to Mortivus</a>
+            <a class="btn rot" href="#blackbox">Begin Blackbox Playback</a>
+            <a class="btn" href="#ledger">Open Grudge-Ledger</a>
+            <a class="btn" href="#mercy">Read Mercy Event</a>
           </div>
         </div>
 
-        <div class="hero-side">
-          <div class="side-card">
-            <div class="mini">Recovered Record</div>
-            <h3>Kin Archive Origin</h3>
+        <aside class="hero-side">
+          <div class="card">
+            <div class="mini">Recovered Unit Identity</div>
+            <h3>Claim-Hold Thrain’s Lock</h3>
             <p>
-              The source device was discovered in a containment tray aboard The Septicarium, still repeating fragments in amber-lit data cadence beneath a spreading plague signal.
+              Industrial Kin hold. Oath-ledger active. Ancestor-memory housed within inner sanctum. Final status: held long enough to be violated.
             </p>
           </div>
 
           <div class="stat-grid">
             <div class="stat">
-              <div class="stat-label">Defending Force</div>
-              <div class="stat-value">Votann Claim-Force</div>
-              <div class="stat-note">Industrial oath-host, heavily armed and disciplined.</div>
+              <div class="stat-label">Primary Voice</div>
+              <div class="stat-value">Kin Blackbox</div>
+              <div class="stat-note">This record speaks first in Votann discipline, not Septicarium liturgy.</div>
             </div>
 
             <div class="stat">
-              <div class="stat-label">Assault Host</div>
-              <div class="stat-value">The Rotfather’s Vanguard</div>
-              <div class="stat-note">Death Guard warband operating under Mortivus’ doctrine.</div>
+              <div class="stat-label">Enemy Contact</div>
+              <div class="stat-value">Rotfather’s Vanguard</div>
+              <div class="stat-note">Death Guard breach host under Mortivus Classarion.</div>
             </div>
 
             <div class="stat">
-              <div class="stat-label">Critical Target</div>
-              <div class="stat-value">Ancestor Memory</div>
-              <div class="stat-note">The deepest wound was not physical destruction.</div>
+              <div class="stat-label">Critical Wound</div>
+              <div class="stat-value">Memory Corruption</div>
+              <div class="stat-note">The Ancestor-Core was not simply destroyed. It was made unsafe.</div>
             </div>
 
             <div class="stat">
-              <div class="stat-label">Archive Judgement</div>
-              <div class="stat-value">Mercy as Sentence</div>
-              <div class="stat-note">Enough was left alive to understand the lesson.</div>
+              <div class="stat-label">Ledger Status</div>
+              <div class="stat-value">Debt Unclosed</div>
+              <div class="stat-note">The grudge remains recorded, but the record itself is infected.</div>
             </div>
           </div>
 
-          <div class="side-card">
-            <div class="mini">Septicarium Warning</div>
+          <div class="card">
+            <div class="mini">Translation Warning</div>
             <p>
-              Kin testimony grows less reliable as corruption increases, but less reliable does not mean less truthful. The rot often tells the truth by changing what a survivor is able to bear hearing.
+              The amber layer is Kin. The green intrusion is not. When both speak at once, preserve the contradiction. It may be the only honest part left.
             </p>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
 
     <section class="section" id="blackbox">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Interactive Recovered Archive</div>
-          <h2 class="section-title">Kin Blackbox Playback Engine</h2>
+          <div class="eyebrow">Recovered Device Interface</div>
+          <h2 class="section-title">Blackbox Playback Console</h2>
           <p class="section-desc">
-            The blackbox stores several overlapping channels: command logs, Hearthguard voice traces, Ironkin diagnostics, Grimnyr fragments, Ancestor-Core echoes, and the last corrupted transmission. Select a record to hear what the Kin understood before The Septicarium took custody of the device.
+            The device was recovered sealed, hot, and still cycling loss-records. It does not narrate like a story. It returns fragments by function: breach, order, defense, grief, contamination, mercy. Select a timestamp to reconstruct the event through Kin machine-memory.
           </p>
         </div>
-        <div class="tag">Playback Partially Corrupted</div>
+        <div class="chip">Amber Layer Active // Green Intrusion Rising</div>
       </div>
 
-      <div class="blackbox-layout">
-        <div class="blackbox-art"></div>
+      <div class="blackbox-shell">
+        <div class="device-wrap">
+          <div class="image-box blackbox-img"></div>
+          <div class="quote">
+            <div class="mini">Device Note</div>
+            <p>“If the blackbox remains, the claim remains. If the claim remains, the debt remains.”</p>
+          </div>
+        </div>
 
-        <div class="blackbox-panel">
+        <div class="terminal">
           <div class="terminal-top">
             <div>
-              <h3 class="terminal-title">Blackbox Unit // Oath-Layer Damaged</h3>
+              <h3 class="terminal-title">Unit Recovery // Oath-Layer Damaged</h3>
               <div class="terminal-sub">
-                Amber signal remains coherent. Green intrusion blooms beneath the final three channels. Septicarium translation is faithful where possible and useful where faithfulness has become impossible.
+                Kin data cadence remains present beneath corruption. Playback has been organized by timestamp, not by narrative comfort. Final channel contains foreign theological residue associated with Mortivus Classarion.
               </div>
             </div>
-            <div class="signal-state" id="signalState">CORRUPTION: 34%</div>
+            <div class="signal" id="signal">CORRUPTION 24%</div>
           </div>
 
-          <div class="blackbox-controls">
-            <button class="blackbox-button active" data-log="claim">Claim-Log One<br>First Contact</button>
-            <button class="blackbox-button" data-log="hearth">Hearthguard Channel<br>Hold the Line</button>
-            <button class="blackbox-button" data-log="ironkin">Ironkin Diagnostic<br>Machine Grief</button>
-            <button class="blackbox-button" data-log="grimnyr">Grimnyr Fragment<br>Ancestors Listening</button>
-            <button class="blackbox-button" data-log="ancestor">Ancestor-Core Echo<br>Memory Contaminated</button>
-            <button class="blackbox-button" data-log="final">Final Transmission<br>The Mercy He Gave</button>
+          <div class="timeline">
+            <button class="active" data-log="secure">
+              <span class="timeline-time">00:00 // Secure</span>
+              <span class="timeline-title">Claim-Hold Standing</span>
+            </button>
+
+            <button data-log="failure">
+              <span class="timeline-time">00:17 // Failure</span>
+              <span class="timeline-title">Atmospheric Breach</span>
+            </button>
+
+            <button data-log="door">
+              <span class="timeline-time">00:31 // Contact</span>
+              <span class="timeline-title">The Green Door</span>
+            </button>
+
+            <button data-log="anvil">
+              <span class="timeline-time">00:44 // Counterlock</span>
+              <span class="timeline-title">Anvil-Kin Deploy</span>
+            </button>
+
+            <button data-log="core">
+              <span class="timeline-time">01:12 // Core</span>
+              <span class="timeline-title">Ancestor Memory Turns</span>
+            </button>
+
+            <button data-log="mercy">
+              <span class="timeline-time">01:19 // Final</span>
+              <span class="timeline-title">The Mercy Event</span>
+            </button>
           </div>
 
-          <div class="blackbox-output">
-            <div class="terminal-label" id="outputLabel">Claim-Log One // First Contact</div>
-            <h3 class="output-title" id="outputTitle">The Fog Entered Before the Enemy</h3>
-            <div class="output-body" id="outputBody">
-              Initial breach reports did not describe warriors. They described pressure change, air decay, auspex bloom, and a smell like machine oil left too long in a sealed ancestor vault. The Kin still believed the breach could be contained. Their confidence was not foolish. Their doors were strong. Their guns were ready. Their oath-cycles were intact. The problem was that Mortivus had not begun by attacking their walls. He had begun by teaching the air to disagree with them.
-            </div>
+          <div class="playback">
+            <div class="terminal-label" id="logLabel">00:00 // CLAIM-HOLD SECURE</div>
+            <h3 id="logTitle">All Doors Answered Amber</h3>
+            <p id="logBody">
+              The hold reported pressure stable, furnace cycle within tolerance, oath-ledger intact, ancestor-memory responsive. No Kin abandoned station. No evacuation was authorized. No grief was yet entered into the ledger. The claim-force believed the coming assault could be measured, priced, and repaid.
+            </p>
 
-            <div class="corruption-meter">
+            <div class="meter-wrap">
               <div class="meter-row">
-                <span>Blackbox Corruption</span>
-                <span id="meterPct">34%</span>
+                <span>Memory Corruption</span>
+                <span id="meterText">24%</span>
               </div>
               <div class="meter"><span id="meterFill"></span></div>
             </div>
@@ -1217,155 +1319,164 @@
       </div>
     </section>
 
-    <section class="section" id="kin">
+    <section class="section" id="kin-record">
       <div class="section-header">
         <div>
-          <div class="eyebrow">The Defenders</div>
-          <h2 class="section-title">Who the Kin Were Before the Breach</h2>
+          <div class="eyebrow">Kin Record Layer</div>
+          <h2 class="section-title">Before the Rot Entered, the Hold Was Not Weak</h2>
           <p class="section-desc">
-            The Votann claim-force preserved here should not be read as helpless victims. Their tragedy matters because they were disciplined, prepared, materially formidable, and spiritually anchored in memory. Mortivus’ victory was not impressive because the Kin were weak. It was terrible because they were not.
+            This record honors the Kin first. The claim-force was prepared, disciplined, heavily armed, and loyal to its Ancestor-Core. Mortivus’ victory matters because he did not break a helpless people. He corrupted a people whose strength was built around endurance, memory, and duty.
           </p>
         </div>
-        <div class="tag">Honor the Enemy</div>
+        <div class="chip">No Kin Abandoned // No Debt Forgotten</div>
       </div>
 
-      <div class="panel image-split">
-        <div class="image-panel kin-image"></div>
-        <div class="text-panel">
-          <p>
-            The Kin held their claim-hold as an industrial organism: corridors mapped for overlapping fire, blast doors layered by practical redundancy, heavy weapons nested into mining infrastructure, and every major passage engineered to slow larger invaders. Their strength was not decorative heroism. It was procedure, craft, and a culture of stubborn survival.
-          </p>
-
-          <p>
-            Their war record speaks in clipped certainties. Ammunition. Pressure. Heat. Door integrity. Casualty count. Breach angle. Oath adherence. The Kin did not panic in the opening hour. They recorded, adjusted, and countered. Their commanders understood that fear wastes oxygen and that grief can wait until the machine stills.
-          </p>
-
-          <p>
-            This made the later corruption more obscene. Mortivus did not merely break a defensive position. He turned their virtues into channels: discipline became predictable rotation, memory became vulnerable archive, oath became emotional leverage, and endurance became the mechanism through which suffering remained conscious long enough to learn.
-          </p>
-
-          <div class="quote-box">
-            <div class="mini">Recovered Kin Maxim</div>
-            <p>“What is remembered is not lost. What is lost without record has died twice.”</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Key Battle Assets</div>
-          <h2 class="section-title">The Three Wounds of the Hold</h2>
-          <p class="section-desc">
-            The blackbox organizes the catastrophe around three visual centers: the breach, the elite Kin defense, and the corruption of the ancestor-memory system.
-          </p>
-        </div>
-        <div class="tag">Battle Intelligence Markers</div>
-      </div>
-
-      <div class="features">
-        <article class="feature-card">
-          <div class="feature-img breach-img"></div>
-          <div class="feature-body">
-            <div class="mini">Breach Marker</div>
-            <h3>The Green Door</h3>
+      <div class="triad">
+        <article class="tri-card">
+          <div class="image-box muster-img"></div>
+          <div class="tri-body">
+            <div class="mini">Muster Hall Record</div>
+            <h3>The Hold Assembled</h3>
             <p>
-              The Death Guard entered through broken industrial metal under a rolling pressure of plague fog. The Kin fired into it with disciplined fury, but the smoke made every range estimate feel like a negotiation with sickness.
+              The Kin moved with industrial certainty. Armor sealed. Weapons checked. Routes assigned. Names entered. The claim-hold did not ask who would survive. It asked what each Kin would hold until survival became irrelevant.
             </p>
           </div>
         </article>
 
-        <article class="feature-card">
-          <div class="feature-img elite-img"></div>
-          <div class="feature-body">
-            <div class="mini">Elite Unit</div>
+        <article class="tri-card">
+          <div class="image-box claim-force-img"></div>
+          <div class="tri-body">
+            <div class="mini">Claim-Force Record</div>
+            <h3>The Line Had Weight</h3>
+            <p>
+              Their defense was not theatrical courage. It was geometry, fire discipline, door logic, tunnel knowledge, and the stubborn inheritance of a people who trust stone, machine, and oath more than fear.
+            </p>
+          </div>
+        </article>
+
+        <article class="tri-card">
+          <div class="image-box elite-img"></div>
+          <div class="tri-body">
+            <div class="mini">Elite Unit Record</div>
             <h3>The Anvil-Kin of Thrain’s Lock</h3>
             <p>
-              The elite Kin unit held the inner door longer than the Septicarium expected. Their void-hardened armor, shielded discipline, and heavy industrial weapons forced Mortivus to commit personally to the lesson.
-            </p>
-          </div>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-img core-img"></div>
-          <div class="feature-body">
-            <div class="mini">Sacred Wound</div>
-            <h3>The Ancestor-Core Violation</h3>
-            <p>
-              The deepest damage was not counted in bodies. It was counted in memory. The preserved ancestral systems became infected enough to answer in familiar cadence with unfamiliar mercy.
+              The elite defenders forced the breach to become expensive. They held the inner route long enough that Mortivus himself entered the lesson. That fact is recorded with honor.
             </p>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="section" id="battle">
+    <section class="section" id="ledger">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Battle Reconstruction</div>
-          <h2 class="section-title">The Battle of Thrain’s Lock</h2>
+          <div class="eyebrow">Unique Kin Module</div>
+          <h2 class="section-title">Grudge-Ledger Corruption Engine</h2>
           <p class="section-desc">
-            This reconstructed battle record is drawn from Kin blackbox fragments, Septicarium extrapolation, and post-conflict plague residue. It preserves the Kin as worthy defenders and Mortivus as something worse than a conqueror: a teacher of ruin.
+            The Kin ledger attempted to classify the atrocity. It could record debt, death, breach, and loss. It could not easily classify mercy as a hostile act. Select a ledger classification and watch the record fail around the word.
           </p>
         </div>
-        <div class="tag">Censured Combat Record</div>
+        <div class="chip">Debt Recorded // Payment Unresolved</div>
       </div>
 
-      <div class="battle-section">
-        <div class="panel battle-grid">
-          <div class="battle-image"></div>
-          <div class="battle-copy">
-            <div class="battle-mark">Phase One // The Hold Refuses</div>
-            <h3>The Kin Made the Door Expensive</h3>
-            <p>
-              The first breach did not succeed cleanly. Votann heavy guns spoke through amber haze in short, disciplined intervals. The Kin did not waste fire. Their shots crossed in overlapping lanes, cutting through the plague fog with blue-white industrial precision. The first plague marines through the ruptured blast door were slowed by massed fire, their corroded plates hammering backward beneath impacts that would have folded lesser troops into wreckage.
-            </p>
+      <div class="ledger-wrap">
+        <div class="ledger">
+          <div class="mini">Ledger Choices</div>
+          <h3>Classify the Atrocity</h3>
+          <p>
+            The first amber entries are practical. Later entries become devotional, then damaged. By the final record, the ledger no longer asks what was lost. It asks why the memory was allowed to continue.
+          </p>
 
-            <p>
-              Mortivus watched the exchange before entering it. That detail recurs in the recovered logs. The Kin expected a berserk charge and received patience instead. The Vanguard pressed forward by inches, not because they lacked ferocity, but because each inch became a test of the defenders’ rhythm. The Death Guard learned the timing of the guns. The fog thickened between volleys. The breach widened not by speed, but by refusal to stop.
-            </p>
+          <div class="ledger-controls">
+            <button class="ledger-choice active" data-ledger="debt">
+              <span class="ledger-label">Classification I</span>
+              Grudge: Recorded
+            </button>
 
-            <p>
-              Then the Anvil-Kin moved. Thrain’s Lock deployed its elite hearth-armored veterans into the inner corridor, sealing their formation around the failing door. Their discipline was perfect enough to anger the plague. Heavy industrial weapons burned lanes through corrupted air. One Death Guard advance stalled entirely beneath concentrated fire, armor splitting, bodies refusing death but not momentum. For nineteen minutes, the Kin made inevitability bleed.
-            </p>
+            <button class="ledger-choice" data-ledger="breach">
+              <span class="ledger-label">Classification II</span>
+              Hold: Breached
+            </button>
+
+            <button class="ledger-choice" data-ledger="core">
+              <span class="ledger-label">Classification III</span>
+              Ancestor Status: Compromised
+            </button>
+
+            <button class="ledger-choice" data-ledger="mercy">
+              <span class="ledger-label">Classification IV</span>
+              Mercy: Hostile Word
+            </button>
           </div>
         </div>
 
-        <div class="battle-phases">
-          <div class="phase">
-            <h4>I. Air Compromise</h4>
-            <p>Plague entered through ducts, seals, and damaged pressure lungs before the main assault became visible.</p>
+        <div class="ledger-output">
+          <div class="terminal-label" id="ledgerLabel">GRUDGE ENTRY // ACTIVE</div>
+          <h3 id="ledgerTitle">Debt Unclosed</h3>
+          <p id="ledgerBody">
+            The ledger accepts a debt. It does not yet accept the scale. The Death Guard are entered as enemy. Mortivus Classarion is entered separately, not as commander alone, but as origin of the wound’s meaning.
+          </p>
+
+          <div class="ledger-line">
+            <strong>Debt</strong>
+            <span id="ledgerDebt">Unpaid, expanding, spiritually irregular.</span>
           </div>
-          <div class="phase">
-            <h4>II. Door War</h4>
-            <p>The Kin forced the Vanguard into close attrition around the primary vault threshold.</p>
+          <div class="ledger-line">
+            <strong>Vengeance Route</strong>
+            <span id="ledgerRoute">Unresolved. Surviving memory unreliable.</span>
           </div>
-          <div class="phase">
-            <h4>III. Oath Inversion</h4>
-            <p>Mortivus exploited their duty to preserve the ancestor systems, turning retreat into moral impossibility.</p>
-          </div>
-          <div class="phase">
-            <h4>IV. Mercy Declared</h4>
-            <p>The final survivor was left alive long enough to carry the meaning of the loss back into memory.</p>
+          <div class="ledger-line">
+            <strong>Kin Note</strong>
+            <span id="ledgerNote">No death without entry. No loss without weight.</span>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="panel">
-          <div class="battle-copy">
-            <div class="battle-mark">Phase Two // Mortivus Enters</div>
-            <h3>The Moment the Battle Became Instruction</h3>
-            <p>
-              Mortivus entered when the defenders had proven themselves. The blackbox does not frame this as theatrical. It frames it as procedural, almost respectful. He crossed the breach after his vanguard had absorbed enough punishment to map the defenders’ souls: who held position because of order, who because of pride, who because the ancestor-core behind them made withdrawal feel like betrayal.
-            </p>
+    <section class="section" id="breach">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Combat Reconstruction</div>
+          <h2 class="section-title">The Green Door Opened</h2>
+          <p class="section-desc">
+            The first breach did not read as a clean assault. It read as an environmental wrongness given armor. Fog entered first, then corrupted pressure, then sound, then the plague marines themselves.
+          </p>
+        </div>
+        <div class="chip">Battle Record // Full-Scale Breach</div>
+      </div>
 
-            <p>
-              The Mercy-Sickle was not raised immediately. He advanced under fire with the patience of a shrine being carried through bad weather. The Anvil-Kin struck him with disciplined fury. Their shots cut sparks from his plate. Their shields met corrupted blades. One elite Kin drove a mining hammer into his pauldron hard enough to stagger a lesser champion. Mortivus answered not with rage, but with appraisal.
-            </p>
+      <div class="panel split">
+        <div class="image-box breach-img"></div>
+        <div class="copy">
+          <p>
+            The Kin met the breach with fire discipline. Heavy industrial weapons hammered the door-frame until molten fragments rained from the ceiling. The first plague marines through the green fog did not fall cleanly, but they slowed. That mattered. The claim-force priced the enemy in seconds, ammunition, and corridor length.
+          </p>
 
-            <p>
-              The battle turned when he stopped trying to break their bodies first. He broke their duty. Plague vents opened into the memory sanctum. Data-cables darkened. Ancestor-plates began to glow green beneath amber light. The Kin heard familiar system chimes return wrong. The hold was still defensible. The ancestor-core was not. Every oath that had kept them in place became a hook through the heart.
-            </p>
+          <p>
+            Then the Death Guard made the corridor sick. Range markers failed as fog thickened between volleys. Heat readings climbed where no fire burned. Filters coughed warning tones into helmets. The defenders adjusted because Kin adjust. They closed gaps. They overlapped fields. They made the door expensive.
+          </p>
+
+          <p>
+            Mortivus waited beyond the first violence. The blackbox marks his entrance not by voice, but by behavioral shift. The enemy stopped testing the guns and began testing the reasons behind the guns. The breach became a question: how long will oath remain strength once the thing it protects begins to speak incorrectly?
+          </p>
+
+          <div class="battle-phases">
+            <div class="phase">
+              <h4>I. Air</h4>
+              <p>Contamination entered through pressure systems before visible contact.</p>
+            </div>
+            <div class="phase">
+              <h4>II. Door</h4>
+              <p>Kin heavy fire slowed the assault and forced Death Guard commitment.</p>
+            </div>
+            <div class="phase">
+              <h4>III. Oath</h4>
+              <p>The ancestor chamber behind the line made withdrawal morally impossible.</p>
+            </div>
+            <div class="phase">
+              <h4>IV. Witness</h4>
+              <p>Mortivus preserved one survivor long enough to understand the violation.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1374,165 +1485,195 @@
     <section class="section" id="core">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Sacred System Breach</div>
-          <h2 class="section-title">The Ancestor-Core Was Not Destroyed</h2>
+          <div class="eyebrow">Ancestor-Core Memory Layer</div>
+          <h2 class="section-title">The Ancestors Answered Wrong</h2>
           <p class="section-desc">
-            The cruelest element of the battle was restraint. Mortivus did not simply shatter the Kin memory system. He allowed enough of it to continue speaking that the survivors could hear its voice changed.
+            This was the true wound. The enemy did not merely destroy the sacred memory structure. He allowed it to continue. The continuation was the contamination.
           </p>
         </div>
-        <div class="tag">Memory Contamination Event</div>
+        <div class="chip">Memory Integrity Failure</div>
       </div>
 
-      <div class="panel core-layout">
-        <div class="core-art"></div>
-        <div class="text-panel">
+      <div class="panel split">
+        <div class="copy">
           <p>
-            For the Kin, memory is not sentiment. It is continuity, guidance, obligation, inheritance, and proof that those who came before still exert gravity upon the living. The ancestor-core chamber therefore mattered more than command infrastructure. Losing a corridor was military. Losing the memory-sanctum was spiritual injury.
+            For the Kin, memory is not ornament. Memory is continuity, guidance, proof, debt, and inheritance. The Ancestor-Core was not a machine in the ordinary sense. It was a weight-bearing part of the people. It made the dead useful to the living and the living responsible to the dead.
           </p>
 
           <p>
-            Death Guard corruption entered the system slowly enough to be witnessed. Amber plates flickered green. Oath tables returned partial errors. Old voices repeated fragments in familiar cadence, but the pauses were wrong. The blackbox records one Kin survivor asking whether the Ancestors were still listening. The machine answered with a maintenance tone and then began listing names of the recently dead before their deaths had been formally recorded.
+            When the green signal reached the memory plates, the system did not fall silent. Amber glyphs dimmed, then returned with altered intervals. Names of the newly dead appeared before their deaths had been entered. The order was wrong. The honors were wrong. The cadence was familiar enough to hurt.
           </p>
 
           <p>
-            This was the mercy. Not silence. Not oblivion. Continuation. The memory system lived just long enough to make the Kin understand that preservation itself had become compromised. Mortivus did not take their past away. He left it present, damaged, and capable of speaking in a voice they could no longer trust.
+            One surviving fragment records a Grimnyr voice ordering the Kin to stop listening. The order came too late. Several defenders had already heard the Ancestors answer in a voice that sounded almost correct.
           </p>
 
-          <div class="quote-box">
-            <div class="mini">Ancestor-Core Echo // Corrupted Translation</div>
-            <p>“You are remembered. You are not preserved. You are remembered. You are not preserved. You are remembered in the manner permitted by rot.”</p>
+          <div class="quote">
+            <div class="mini">Corrupted Ancestor Echo</div>
+            <p>“You are remembered. You are not preserved. You are remembered in the manner permitted by rot.”</p>
           </div>
         </div>
+
+        <div class="image-box core-img"></div>
       </div>
     </section>
 
     <section class="section" id="mercy">
       <div class="section-header">
         <div>
-          <div class="eyebrow">The Sentence</div>
-          <h2 class="section-title">What Mortivus Called Mercy</h2>
+          <div class="eyebrow">Final Playback Layer</div>
+          <h2 class="section-title">The Mercy Event</h2>
           <p class="section-desc">
-            The central image of the event is not the breach. It is the survivor left before Mortivus after the memory-sanctum failed.
+            The blackbox does not record this moment as execution. It records it as preservation weaponized. Mortivus left a survivor alive not out of softness, but because a living witness could carry a wound that a corpse could not.
           </p>
         </div>
-        <div class="tag">Mercy as Doctrine</div>
+        <div class="chip">Mercy Classification: Hostile</div>
       </div>
 
-      <div class="panel mercy-layout">
-        <div class="mercy-scene"></div>
-        <div class="text-panel">
+      <div class="panel split">
+        <div class="image-box mercy-img"></div>
+
+        <div class="copy">
           <p>
-            The final coherent Kin channel shows one survivor before Mortivus. The blackbox cannot agree whether the survivor was an officer, hearthguard, or oath-keeper. The distinction may not matter. By then the survivor had become witness, and witness was the function Mortivus required.
+            The survivor kneels because the floor no longer belongs to him. The hold is taken. The ancestor-memory is speaking wrong. The dead have been entered incorrectly. Behind him, systems built for preservation continue functioning without safety.
           </p>
 
           <p>
-            Mortivus did not cut him down immediately. He let the survivor hear the ancestor-core continue its broken recital. He let him understand that the hold’s dead had not vanished into silence. They had entered a memory now carrying plague. This was not mercy as relief. It was mercy as comprehension.
+            Mortivus stands close enough for the Mercy-Sickle to offer a clean ending. That is the cruelty. The blade is visible. The ending is available. He does not grant it.
           </p>
 
           <p>
-            The Mercy-Sickle remained visible. That too was deliberate. The blade represented the clean ending Mortivus refused to grant. A swift death would have been simpler, and therefore less useful. The survivor was left with enough life to know what had been done, enough memory to carry it, and enough horror to ensure the record would not close cleanly.
+            He lets the survivor hear the corrupted memory continue. He lets him understand that the hold’s dead have not disappeared into silence. They remain. They are remembered. And what remembers them has been touched by rot.
           </p>
 
-          <div class="quote-box">
-            <div class="mini">Septicarium Interpretation</div>
-            <p>“He gave mercy by denying oblivion. He allowed the wound to remember itself.”</p>
+          <p>
+            This is why the blackbox names the event as mercy. Not because mercy was kind. Because mercy was the form of harm selected. Oblivion would have been simpler. Mortivus gave continuation.
+          </p>
+
+          <div class="quote">
+            <div class="mini">Kin Translation Fragment</div>
+            <p>“He did not spare me. He made me the container.”</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="aftermath">
+    <section class="section" id="after">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Recovered Aftermath</div>
-          <h2 class="section-title">What the Septicarium Kept</h2>
+          <div class="eyebrow">Aftermath Records</div>
+          <h2 class="section-title">What Remained After Mercy</h2>
           <p class="section-desc">
-            The battle ended in Death Guard victory, but the preserved record is more valuable than the victory itself. It reveals how Mortivus converts enemy virtue into theological vulnerability.
+            The aftermath is preserved through two image layers: the personal sentence of the survivor and the broader claim-vault ruin where memory continued to function after trust was lost.
           </p>
         </div>
-        <div class="tag">Archive Retention Approved</div>
+        <div class="chip">Recovered Assets // Do Not Answer the Voices</div>
       </div>
 
-      <div class="panel image-split">
-        <div class="image-panel aftermath-img"></div>
-        <div class="text-panel">
-          <p>
-            The recovered aftermath was catalogued in three layers: the physical dead, the corrupted machine memory, and the survivor-carrying record. The bodies mattered. The ruined hold mattered. But the Septicarium marked the deepest value elsewhere: in the proof that Mortivus had forced the enemy’s own sacred structure to become the instrument of their despair.
-          </p>
-
-          <p>
-            The Kin had built their strength around preservation. Their dead were not meant to vanish into meaningless loss. Their systems were not mere machines. Their records were not clerical debris. Mortivus understood that and struck accordingly. The battle’s brutality was not random excess. It was precise desecration.
-          </p>
-
-          <p>
-            This is why the chamber remains attached to Mortivus’ file instead of being filed only under battle intercepts. The event shows his mature doctrine in miniature: identify what the enemy considers sacred, keep it alive, infect it, and then make the survivor watch it continue.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn rot" href="mortivus-classarion.html">Return to Mortivus</a>
-            <a class="btn" href="the-mercy-sickle.html">Open The Mercy-Sickle</a>
-            <a class="btn" href="plaguebound-dossier.html">Return to Dossier</a>
+      <div class="triad">
+        <article class="tri-card">
+          <div class="image-box aftermath-img"></div>
+          <div class="tri-body">
+            <div class="mini">Aftermath Image</div>
+            <h3>The Survivor and the Sentence</h3>
+            <p>
+              The surviving Kin was not left whole. He was left carrying meaning. His continued life became the record’s cruelest storage device.
+            </p>
           </div>
-        </div>
-      </div>
+        </article>
 
-      <div style="height:18px;"></div>
+        <article class="tri-card">
+          <div class="image-box claim-vault-img"></div>
+          <div class="tri-body">
+            <div class="mini">Claim-Vault Image</div>
+            <h3>The Hold After Breach</h3>
+            <p>
+              Tables, ledgers, bodies, and machines remained. Nothing looked fully abandoned. That was the horror. Too much still worked.
+            </p>
+          </div>
+        </article>
+
+        <article class="tri-card">
+          <div class="image-box blackbox-img"></div>
+          <div class="tri-body">
+            <div class="mini">Recovered Device</div>
+            <h3>The Blackbox Continued</h3>
+            <p>
+              Amber memory cycled beneath green interference. The device kept naming the dead until the Septicarium removed it from the hold.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="eyebrow">Recovered Evidence Index</div>
+          <h2 class="section-title">Assets Retained by The Septicarium</h2>
+          <p class="section-desc">
+            The archive kept more than images. It kept functions: proof of breach, proof of resistance, proof of memory violation, and proof that Mortivus understands mercy as a strategic instrument.
+          </p>
+        </div>
+        <div class="chip">Retention Approved</div>
+      </div>
 
       <div class="record-grid">
-        <article class="record-card">
-          <div class="mini">Recovered Asset</div>
+        <article class="diagnostic">
+          <div class="diagnostic-key">Asset I</div>
           <h3>Blackbox Unit</h3>
-          <p>
-            Partially corrupted. Still capable of playback. Emits amber light until final transmission, where plague-green signal overtakes Kin cadence.
-          </p>
+          <p>Recovered hot. Amber display cracked. Playback reliable until final mercy channel, where rot-signal overrides several Kin markers.</p>
         </article>
 
-        <article class="record-card">
-          <div class="mini">Recovered Asset</div>
+        <article class="diagnostic">
+          <div class="diagnostic-key">Asset II</div>
           <h3>Oath Tablets</h3>
-          <p>
-            Several tablets were preserved with partial corrosion along the engraved surfaces. Their text is unreliable, but their emotional weight remains high.
-          </p>
+          <p>Recovered with corrosion along engraved surfaces. Several lines appear altered after death entry, suggesting post-breach memory tampering.</p>
         </article>
 
-        <article class="record-card">
-          <div class="mini">Recovered Asset</div>
-          <h3>Memory Residue</h3>
-          <p>
-            The Ancestor-Core did not die cleanly. Fragments continue to repeat names under plague pressure. Septicarium scribes have been instructed not to answer them.
-          </p>
+        <article class="diagnostic">
+          <div class="diagnostic-key">Asset III</div>
+          <h3>Ancestor Echoes</h3>
+          <p>Repeating fragments continue to name the fallen. Scribes are instructed to record, not answer.</p>
+        </article>
+
+        <article class="diagnostic">
+          <div class="diagnostic-key">Asset IV</div>
+          <h3>Mercy Classification</h3>
+          <p>Kin ledger fails to resolve the word. Septicarium classification accepts the failure as doctrinally useful.</p>
         </article>
       </div>
     </section>
 
     <section class="section">
       <div class="panel footer">
-        <div class="eyebrow">Final Septicarium Statement</div>
-        <h2>The Mercy Was Not Kindness. It Was Preservation Without Safety.</h2>
+        <div class="eyebrow">Final Kin-Record // Septicarium Seal Added After Recovery</div>
+        <h2>The Dead Were Remembered. That Was the Wound.</h2>
         <p>
-          The Kin know the value of memory. That is why this record wounds. Mortivus did not merely defeat a claim-force. He demonstrated that a people’s noblest instinct can become a plague route if understood deeply enough. He left memory alive. He let it speak. He let it carry rot without allowing it the dignity of silence.
+          The Kin did not lose because they lacked courage. They lost because Mortivus understood what courage was protecting. He did not simply kill defenders, breach doors, or ruin machines. He reached the place where memory became duty and made that duty unsafe.
         </p>
+
         <p>
-          The Septicarium therefore preserves this page as a warning and an instruction. Not every atrocity is loudest at the moment of killing. Some achieve their full shape afterward, when the living realize what has been permitted to continue.
+          This page remains primarily a Kin record because the wound belongs first to them. The Septicarium keeps it because it reveals Mortivus more clearly than praise ever could. His mercy is not kindness. It is the preservation of pain in a form that can continue teaching.
         </p>
 
         <div class="footer-actions">
-          <a class="btn rot" href="mortivus-classarion.html">Mortivus Classarion</a>
-          <a class="btn" href="the-mercy-sickle.html">The Mercy-Sickle</a>
-          <a class="btn" href="the-pallid-reversal.html">The Pallid Reversal</a>
+          <a class="btn rot" href="mortivus-classarion.html">Return to Mortivus Classarion</a>
+          <a class="btn" href="the-mercy-sickle.html">Open The Mercy-Sickle</a>
+          <a class="btn" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
           <a class="btn" href="index.html">Command Deck</a>
         </div>
       </div>
     </section>
   </main>
 
-  <aside class="floating-vox" id="floatingVox">
-    <div class="floating-vox-header">
-      <span>Blackbox Whisper</span>
-      <button class="vox-close" id="voxClose">✕</button>
+  <aside class="floating" id="floating">
+    <div class="floating-head">
+      <span>Kin Blackbox Whisper</span>
+      <button id="closeFloat">✕</button>
     </div>
-    <div class="floating-vox-body" id="voxBody">
-      Amber memory remains. Green signal beneath. The dead are listed in an order the Kin did not authorize.
+    <div class="floating-body" id="floatText">
+      Oath-chain damaged. Memory present. Trust absent.
     </div>
   </aside>
 
@@ -1541,116 +1682,177 @@
     const bootStatus = document.getElementById("bootStatus");
 
     const bootLines = [
-      "Blackbox casing opened. Amber memory lattice responding. Contamination bloom detected beneath oath-layer.",
-      "Kin archive voice recognized. Septicarium translation matrix applying pressure.",
-      "Ancestor-memory channel unstable. Do not trust familiar cadence.",
-      "Playback authorized. Mercy record opening."
+      "ANCESTOR HANDSHAKE: searching... oath-chain fragments present... grudge-ledger damaged but not silent...",
+      "CLAIM-HOLD THRAIN'S LOCK: final pressure record recovered... breach geometry reassembled...",
+      "KIN MEMORY LAYER: amber cadence present... foreign green signal detected beneath dead-name registry...",
+      "WARNING: familiar voices may no longer indicate safe memory...",
+      "BLACKBOX PLAYBACK AUTHORIZED."
     ];
 
     let bootIndex = 0;
-
     const bootTimer = setInterval(() => {
       bootIndex++;
       if(bootIndex < bootLines.length){
         bootStatus.textContent = bootLines[bootIndex];
       } else {
         clearInterval(bootTimer);
-        setTimeout(() => boot.classList.add("hidden"), 620);
+        setTimeout(() => boot.classList.add("hidden"), 600);
       }
-    }, 780);
+    }, 700);
 
     window.addEventListener("load", () => {
-      setTimeout(() => boot.classList.add("hidden"), 3600);
+      setTimeout(() => boot.classList.add("hidden"), 3900);
     });
 
     const logs = {
-      claim:{
-        label:"Claim-Log One // First Contact",
-        title:"The Fog Entered Before the Enemy",
-        body:"Initial breach reports did not describe warriors. They described pressure change, air decay, auspex bloom, and a smell like machine oil left too long in a sealed ancestor vault. The Kin still believed the breach could be contained. Their confidence was not foolish. Their doors were strong. Their guns were ready. Their oath-cycles were intact. The problem was that Mortivus had not begun by attacking their walls. He had begun by teaching the air to disagree with them.",
-        pct:34
+      secure:{
+        label:"00:00 // CLAIM-HOLD SECURE",
+        title:"All Doors Answered Amber",
+        body:"The hold reported pressure stable, furnace cycle within tolerance, oath-ledger intact, ancestor-memory responsive. No Kin abandoned station. No evacuation was authorized. No grief was yet entered into the ledger. The claim-force believed the coming assault could be measured, priced, and repaid.",
+        pct:24
       },
-      hearth:{
-        label:"Hearthguard Channel // Hold the Line",
-        title:"The Anvil-Kin Refused the Door",
-        body:"The Hearthguard channel is mostly impact noise, breath-control, and firing discipline. No panic is recorded in the first nineteen minutes. The elite defenders call range, heat, pressure, and armor failure with hard precision. One voice repeats that the ancestor chamber remains behind them and therefore the door must remain shut. This is courage. This is also the hook Mortivus found. The Kin could not abandon the memory behind them without becoming something less than themselves.",
-        pct:47
+      failure:{
+        label:"00:17 // ATMOSPHERIC FAILURE",
+        title:"The Air Was the First Traitor",
+        body:"Filters began returning impossible values. The corridor air reported mass, then fever, then burial-sweetness. Kin engineers rerouted pressure through secondary lungs. The secondary lungs coughed green. No enemy had crossed the threshold yet, but the hold was already learning the shape of rot.",
+        pct:38
       },
-      ironkin:{
-        label:"Ironkin Diagnostic // Machine Grief",
-        title:"The Systems Began Mourning Before the Kin Did",
-        body:"The Ironkin trace registers impossible maintenance contradictions: filters reporting infection, doors reporting prayer, cooling systems describing grief in symbolic notation. This is the first point at which the blackbox stops sounding purely Kin. A machine does not weep in the ordinary sense. Yet the diagnostic uses grief-equivalent logic nine times before the core breach. Septicarium analysis concludes the machine understood violation before several living defenders did.",
-        pct:59
+      door:{
+        label:"00:31 // THE GREEN DOOR",
+        title:"Contact Through the Breach",
+        body:"The first plague marines entered under fog so thick the firing lanes became arguments. The Kin did not panic. They cut the breach with disciplined heavy fire and made the door expensive. Several Death Guard bodies slowed, broke, and continued. The enemy paid the price without appearing to resent the cost.",
+        pct:52
       },
-      grimnyr:{
-        label:"Grimnyr Fragment // The Ancestors Are Listening",
-        title:"A Sacred Voice Returned Wrong",
-        body:"The Grimnyr fragment is damaged almost beyond recovery. What remains is a warning against trusting any answer that arrives too easily. The speaker asks for the Ancestors to witness the hold. The system answers. The answer uses familiar tonal structure, but its pauses are diseased. The fragment ends with the speaker ordering all Kin to stop listening, then begging them to remember that he had said so.",
-        pct:71
+      anvil:{
+        label:"00:44 // ANVIL-KIN COUNTERLOCK",
+        title:"The Inner Door Held",
+        body:"The Anvil-Kin deployed around the inner route. Their armor locked. Their weapons spoke in timed industrial bursts. The breach stalled. For nineteen minutes, the claim-force proved that the hold had teeth. The blackbox records Mortivus entering only after the Kin had demonstrated what they loved enough to die for.",
+        pct:64
       },
-      ancestor:{
-        label:"Ancestor-Core Echo // Memory Contaminated",
-        title:"The Dead Were Preserved Incorrectly",
-        body:"The Ancestor-Core did not fall silent. That was the atrocity. It continued to enumerate the dead in amber cadence while green signal spread through its plates. Names were preserved, but the order was wrong. The honors were wrong. The machine added a phrase no Kin had entered: remembered in the manner permitted by rot. At this point the surviving defenders began firing at their own memory-sanctum, not to destroy it, but to stop it from speaking.",
+      core:{
+        label:"01:12 // ANCESTOR-CORE CONTAMINATION",
+        title:"The Ancestors Answered Incorrectly",
+        body:"Amber plates dimmed, then returned green at the edges. The Ancestor-Core began naming the dead before the living had entered them. Honor-order corrupted. Oath markers inverted. One Grimnyr fragment orders all Kin to stop listening. The command arrives after the first familiar voice has already spoken wrong.",
         pct:86
       },
-      final:{
-        label:"Final Kin Transmission // The Mercy He Gave",
-        title:"He Let One Witness Understand",
-        body:"The final channel preserves a survivor before Mortivus. The warrior asks if the dead are gone. Mortivus does not answer in any recoverable speech. The blackbox records the Mercy-Sickle moving, then stopping. The survivor remains alive. Behind him the ancestor system continues naming the fallen in its corrupted voice. The mercy was comprehension. The survivor was allowed to live long enough to know that memory had survived and that survival had been made unclean.",
+      mercy:{
+        label:"01:19 // FINAL MERCY EVENT",
+        title:"He Made One Witness Continue",
+        body:"The Mercy-Sickle was present. The clean ending was present. Mortivus did not grant it. The survivor remained alive while the corrupted memory continued to name the fallen. This is why the blackbox calls the event mercy. Not kindness. Continuation. The wound was preserved in a living container.",
         pct:97
       }
     };
 
-    const buttons = document.querySelectorAll(".blackbox-button");
-    const outputLabel = document.getElementById("outputLabel");
-    const outputTitle = document.getElementById("outputTitle");
-    const outputBody = document.getElementById("outputBody");
+    const timelineButtons = document.querySelectorAll(".timeline button");
+    const logLabel = document.getElementById("logLabel");
+    const logTitle = document.getElementById("logTitle");
+    const logBody = document.getElementById("logBody");
     const meterFill = document.getElementById("meterFill");
-    const meterPct = document.getElementById("meterPct");
-    const signalState = document.getElementById("signalState");
+    const meterText = document.getElementById("meterText");
+    const signal = document.getElementById("signal");
 
     function setLog(key){
-      const log = logs[key];
-      outputLabel.textContent = log.label;
-      outputTitle.textContent = log.title;
-      outputBody.textContent = log.body;
-      meterFill.style.width = log.pct + "%";
-      meterPct.textContent = log.pct + "%";
-      signalState.textContent = "CORRUPTION: " + log.pct + "%";
-      buttons.forEach(btn => btn.classList.toggle("active", btn.dataset.log === key));
+      const item = logs[key];
+      logLabel.textContent = item.label;
+      logTitle.textContent = item.title;
+      logBody.textContent = item.body;
+      meterFill.style.width = item.pct + "%";
+      meterText.textContent = item.pct + "%";
+      signal.textContent = "CORRUPTION " + item.pct + "%";
+      timelineButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.log === key));
     }
 
-    buttons.forEach(btn => {
+    timelineButtons.forEach(btn => {
       btn.addEventListener("click", () => setLog(btn.dataset.log));
     });
 
-    setLog("claim");
+    setLog("secure");
 
-    const voxLines = [
-      "Amber memory remains. Green signal beneath. The dead are listed in an order the Kin did not authorize.",
-      "Recovered marginal note: the Kin made the door expensive. Mortivus made the memory unaffordable.",
-      "Blackbox tremor detected: one survivor still asks if preservation and mercy can be made enemies.",
-      "Septicarium annotation: the cruelest archive is the one that continues to function after trust has been removed.",
-      "Vox residue: Not gone. Not safe. Not gone. Not safe. Not gone."
-    ];
+    const ledgerData = {
+      debt:{
+        label:"GRUDGE ENTRY // ACTIVE",
+        title:"Debt Unclosed",
+        body:"The ledger accepts a debt. It does not yet accept the scale. The Death Guard are entered as enemy. Mortivus Classarion is entered separately, not as commander alone, but as origin of the wound’s meaning.",
+        debt:"Unpaid, expanding, spiritually irregular.",
+        route:"Unresolved. Surviving memory unreliable.",
+        note:"No death without entry. No loss without weight."
+      },
+      breach:{
+        label:"HOLD STATUS // BREACHED",
+        title:"Stone Failed, Duty Did Not",
+        body:"The hold was breached by force, pressure, and contamination. The ledger records structural failure without dishonor. The Kin held the route beyond normal expectation. The enemy earned entry in blood, rust, and time.",
+        debt:"Material and ancestral damages exceed ordinary repayment.",
+        route:"Enemy route marked through green-door vector.",
+        note:"The door failed. The oath did not."
+      },
+      core:{
+        label:"ANCESTOR STATUS // COMPROMISED",
+        title:"Memory Made Unsafe",
+        body:"The ledger resists this classification. It can record a destroyed core. It can record a silent core. It cannot easily record a memory that remains active but untrustworthy. The machine continues. That continuation is part of the crime.",
+        debt:"Unpayable by material recovery alone.",
+        route:"Requires purification, vengeance, and impossible verification.",
+        note:"A voice may be familiar and still no longer safe."
+      },
+      mercy:{
+        label:"MERCY CLASSIFICATION // HOSTILE WORD",
+        title:"Mercy Rejected",
+        body:"The ledger cannot classify mercy as mercy. It marks the word as hostile. The survivor was not spared in the Kin sense. He was used as a container for a contaminated memory-event. The page accepts this contradiction as the central wound.",
+        debt:"Personal, ancestral, doctrinal, unresolved.",
+        route:"Mortivus Classarion named as primary bearer.",
+        note:"He did not spare. He preserved the pain."
+      }
+    };
 
-    const voxBody = document.getElementById("voxBody");
-    const voxClose = document.getElementById("voxClose");
-    const floatingVox = document.getElementById("floatingVox");
-    let voxIndex = 0;
+    const ledgerChoices = document.querySelectorAll(".ledger-choice");
+    const ledgerLabel = document.getElementById("ledgerLabel");
+    const ledgerTitle = document.getElementById("ledgerTitle");
+    const ledgerBody = document.getElementById("ledgerBody");
+    const ledgerDebt = document.getElementById("ledgerDebt");
+    const ledgerRoute = document.getElementById("ledgerRoute");
+    const ledgerNote = document.getElementById("ledgerNote");
 
-    const voxTimer = setInterval(() => {
-      voxIndex = (voxIndex + 1) % voxLines.length;
-      voxBody.textContent = voxLines[voxIndex];
-    }, 5200);
+    function setLedger(key){
+      const item = ledgerData[key];
+      ledgerLabel.textContent = item.label;
+      ledgerTitle.textContent = item.title;
+      ledgerBody.textContent = item.body;
+      ledgerDebt.textContent = item.debt;
+      ledgerRoute.textContent = item.route;
+      ledgerNote.textContent = item.note;
+      ledgerChoices.forEach(btn => btn.classList.toggle("active", btn.dataset.ledger === key));
+    }
 
-    voxClose.addEventListener("click", () => {
-      floatingVox.style.display = "none";
-      clearInterval(voxTimer);
+    ledgerChoices.forEach(btn => {
+      btn.addEventListener("click", () => setLedger(btn.dataset.ledger));
     });
 
-    const canvas = document.getElementById("blackboxCanvas");
+    setLedger("debt");
+
+    const whispers = [
+      "Oath-chain damaged. Memory present. Trust absent.",
+      "The door was lost after the Kin proved it was worth defending.",
+      "Ancestor cadence detected. Pause structure wrong. Do not answer.",
+      "Debt entered. Payment route unavailable.",
+      "Mercy classification rejected. Hostile word retained for evidence.",
+      "The survivor was not spared. He was made useful to the wound."
+    ];
+
+    const floatText = document.getElementById("floatText");
+    const floating = document.getElementById("floating");
+    const closeFloat = document.getElementById("closeFloat");
+    let whisperIndex = 0;
+
+    const whisperTimer = setInterval(() => {
+      whisperIndex = (whisperIndex + 1) % whispers.length;
+      floatText.textContent = whispers[whisperIndex];
+    }, 5200);
+
+    closeFloat.addEventListener("click", () => {
+      floating.style.display = "none";
+      clearInterval(whisperTimer);
+    });
+
+    const canvas = document.getElementById("kinCanvas");
     const ctx = canvas.getContext("2d");
     let w = 0;
     let h = 0;
@@ -1663,14 +1865,14 @@
       canvas.style.height = window.innerHeight + "px";
       ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
 
-      particles = Array.from({length: Math.min(120, Math.floor(window.innerWidth / 14))}, () => ({
+      particles = Array.from({length: Math.min(120, Math.floor(window.innerWidth / 13))}, () => ({
         x:Math.random() * window.innerWidth,
         y:Math.random() * window.innerHeight,
-        r:Math.random() * 2.6 + .7,
-        vx:(Math.random() - .5) * .18,
-        vy:-(Math.random() * .24 + .04),
-        a:Math.random() * .38 + .08,
-        type:Math.random() > .62 ? "rot" : "amber"
+        r:Math.random() * 2.5 + .55,
+        vx:(Math.random() - .5) * .16,
+        vy:-(Math.random() * .24 + .035),
+        a:Math.random() * .34 + .06,
+        type:Math.random() > .72 ? "rot" : "amber"
       }));
     }
 
@@ -1681,15 +1883,15 @@
         p.x += p.vx;
         p.y += p.vy;
 
-        if(p.y < -10){
-          p.y = window.innerHeight + 10;
+        if(p.y < -12){
+          p.y = window.innerHeight + 12;
           p.x = Math.random() * window.innerWidth;
         }
 
-        if(p.x < -12) p.x = window.innerWidth + 12;
-        if(p.x > window.innerWidth + 12) p.x = -12;
+        if(p.x < -15) p.x = window.innerWidth + 15;
+        if(p.x > window.innerWidth + 15) p.x = -15;
 
-        const color = p.type === "rot" ? "183,214,93" : "240,193,108";
+        const color = p.type === "rot" ? "184,215,102" : "240,180,93";
         const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r * 7);
         g.addColorStop(0, `rgba(${color},${p.a})`);
         g.addColorStop(.45, `rgba(${color},${p.a * .22})`);
@@ -1697,7 +1899,7 @@
 
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r * 5.4,0,Math.PI * 2);
+        ctx.arc(p.x,p.y,p.r * 5.2,0,Math.PI * 2);
         ctx.fill();
       }
 
