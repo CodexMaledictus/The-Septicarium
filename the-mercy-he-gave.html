@@ -4,45 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>The Mercy He Gave // Recovered Kin Blackbox</title>
+  <title>The Mercy He Gave // Kin Blackbox Archive</title>
 
   <style>
     :root{
-      --bg:#050605;
-      --bg2:#0a0c09;
-      --amber:#f0b45d;
-      --amber2:#ffd58b;
-      --amberDim:#8f6c39;
-      --rot:#b8d766;
-      --rot2:#6e9d38;
-      --red:#a23b2b;
-      --steel:#9f9b86;
-      --text:#e9dcc0;
-      --muted:#b5a888;
-      --dim:#756d59;
-      --panel:rgba(11,13,10,.88);
-      --panel2:rgba(19,21,14,.88);
-      --line:rgba(240,180,93,.28);
-      --line2:rgba(184,215,102,.26);
-      --strong:rgba(255,213,139,.62);
-      --shadow:0 28px 90px rgba(0,0,0,.52);
+      --void:#030403;
+      --black:#060806;
+      --deep:#0b0d09;
+      --panel:#10130d;
+      --panel2:#171a10;
+      --kin:#e7a64d;
+      --kinBright:#ffd789;
+      --kinDim:#8a6534;
+      --rot:#b6da61;
+      --rotDeep:#526f2e;
+      --red:#9f3b2d;
+      --text:#eadfc4;
+      --muted:#b6a989;
+      --dim:#706855;
+      --line:rgba(231,166,77,.32);
+      --lineStrong:rgba(255,215,137,.62);
+      --rotLine:rgba(182,218,97,.34);
+      --shadow:0 32px 90px rgba(0,0,0,.58);
       --mono:"Courier New", ui-monospace, monospace;
       --sans:"Trebuchet MS", Arial, sans-serif;
       --serif:Georgia, "Times New Roman", serif;
     }
 
-    *{box-sizing:border-box}
+    *{
+      box-sizing:border-box;
+    }
 
-    html{scroll-behavior:smooth}
+    html{
+      scroll-behavior:smooth;
+    }
 
     body{
       margin:0;
       color:var(--text);
       background:
-        radial-gradient(circle at 18% 0%, rgba(240,180,93,.10), transparent 26%),
-        radial-gradient(circle at 84% 8%, rgba(184,215,102,.08), transparent 28%),
-        linear-gradient(180deg, #050605 0%, #0a0c09 42%, #050605 100%);
-      font-family:var(--serif);
+        radial-gradient(circle at 18% 0%, rgba(231,166,77,.13), transparent 26%),
+        radial-gradient(circle at 82% 8%, rgba(182,218,97,.09), transparent 28%),
+        linear-gradient(180deg, #040504 0%, #090b08 48%, #030403 100%);
+      font-family:var(--mono);
       overflow-x:hidden;
     }
 
@@ -50,89 +54,83 @@
       content:"";
       position:fixed;
       inset:0;
-      pointer-events:none;
       z-index:0;
+      pointer-events:none;
       background:
-        linear-gradient(rgba(240,180,93,.032) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(240,180,93,.024) 1px, transparent 1px);
-      background-size:72px 72px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.04));
+        linear-gradient(rgba(231,166,77,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(231,166,77,.025) 1px, transparent 1px);
+      background-size:64px 64px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.05));
     }
 
     body::after{
       content:"";
       position:fixed;
       inset:0;
+      z-index:2;
       pointer-events:none;
-      z-index:1;
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,213,139,.03) 0,
-          rgba(255,213,139,.03) 1px,
+          rgba(255,215,137,.032) 0px,
+          rgba(255,215,137,.032) 1px,
           transparent 2px,
           transparent 6px
         );
-      opacity:.15;
+      opacity:.18;
       mix-blend-mode:screen;
     }
 
-    #kinCanvas{
+    #kin-particles{
       position:fixed;
       inset:0;
       width:100%;
       height:100%;
+      z-index:1;
       pointer-events:none;
-      z-index:0;
-      opacity:.75;
-    }
-
-    .page{
-      position:relative;
-      z-index:3;
-      width:min(1540px, calc(100% - 36px));
-      margin:0 auto;
-      padding-bottom:72px;
+      opacity:.7;
     }
 
     .boot{
       position:fixed;
       inset:0;
       z-index:9999;
+      background:
+        radial-gradient(circle at center, rgba(231,166,77,.15), transparent 24%),
+        radial-gradient(circle at 70% 44%, rgba(182,218,97,.10), transparent 28%),
+        linear-gradient(180deg, #050604, #020302);
       display:grid;
       place-items:center;
-      background:
-        radial-gradient(circle at center, rgba(240,180,93,.13), transparent 26%),
-        radial-gradient(circle at 72% 42%, rgba(184,215,102,.10), transparent 30%),
-        linear-gradient(180deg, #070805, #030403);
-      transition:opacity .8s ease, visibility .8s ease;
+      transition:opacity .85s ease, visibility .85s ease;
     }
 
-    .boot.hidden{
+    .boot.hide{
       opacity:0;
       visibility:hidden;
       pointer-events:none;
     }
 
-    .boot-panel{
-      width:min(900px, calc(100% - 36px));
-      border:1px solid var(--strong);
+    .boot-frame{
+      width:min(940px, calc(100% - 34px));
+      border:1px solid var(--lineStrong);
       background:
-        linear-gradient(180deg, rgba(19,21,14,.96), rgba(7,9,6,.97));
-      box-shadow:0 0 0 1px rgba(184,215,102,.12) inset, 0 0 120px rgba(0,0,0,.70);
-      padding:28px;
+        linear-gradient(180deg, rgba(18,20,12,.96), rgba(6,8,5,.98));
+      box-shadow:
+        0 0 0 1px rgba(182,218,97,.10) inset,
+        0 0 110px rgba(0,0,0,.72);
+      padding:24px;
       position:relative;
       overflow:hidden;
     }
 
-    .boot-panel::before{
+    .boot-frame::before{
       content:"";
       position:absolute;
       inset:0;
-      pointer-events:none;
-      background:linear-gradient(90deg, transparent, rgba(255,213,139,.10), transparent);
+      background:linear-gradient(90deg, transparent, rgba(255,215,137,.11), transparent);
       transform:translateX(-110%);
-      animation:bootSweep 2.4s linear infinite;
+      animation:bootSweep 2.2s linear infinite;
+      pointer-events:none;
     }
 
     @keyframes bootSweep{
@@ -140,225 +138,308 @@
       100%{transform:translateX(120%)}
     }
 
-    .sys,
-    .eyebrow,
-    .chip,
-    .btn,
-    .nav a,
-    .stat-label,
-    .terminal-label,
-    .ledger-label,
-    .timeline-time,
-    .diagnostic-key,
-    .mini{
+    .boot-code{
       font-family:var(--sans);
       text-transform:uppercase;
-      letter-spacing:.18em;
-    }
-
-    .sys{
-      color:var(--amber2);
-      font-size:.76rem;
+      letter-spacing:.22em;
+      color:var(--kinBright);
+      font-size:.74rem;
       margin-bottom:14px;
+      position:relative;
+      z-index:2;
     }
 
     .boot-title{
-      margin:0 0 14px;
-      color:#f3e5c4;
-      font-size:clamp(2.4rem, 6vw, 5.6rem);
+      font-family:var(--serif);
+      font-size:clamp(2.4rem, 7vw, 5.7rem);
       line-height:.88;
+      color:#f2e3c2;
+      margin:0 0 14px;
+      position:relative;
+      z-index:2;
     }
 
     .boot-status{
-      font-family:var(--mono);
-      color:#d7c69f;
-      line-height:1.75;
-      font-size:1rem;
+      color:#dac8a0;
+      font-size:.98rem;
+      line-height:1.72;
       min-height:3.4em;
-      margin-bottom:22px;
+      position:relative;
+      z-index:2;
+      margin:0 0 20px;
     }
 
     .boot-grid{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
+      grid-template-columns:repeat(4, minmax(0,1fr));
       gap:10px;
       position:relative;
       z-index:2;
     }
 
     .boot-cell{
-      border:1px solid rgba(240,180,93,.22);
-      background:rgba(8,10,7,.65);
+      border:1px solid rgba(231,166,77,.26);
+      background:rgba(7,9,6,.66);
       padding:12px;
-      font-family:var(--mono);
-      font-size:.86rem;
-      color:#c7ba96;
+      min-height:90px;
+    }
+
+    .boot-cell span{
+      display:block;
+      font-family:var(--sans);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.58rem;
+      color:var(--kinBright);
+      margin-bottom:7px;
     }
 
     .boot-cell strong{
-      display:block;
-      color:var(--amber2);
-      margin-bottom:5px;
-      font-family:var(--sans);
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      font-size:.62rem;
+      color:#d6c49d;
+      font-weight:400;
+      font-size:.9rem;
+      line-height:1.4;
     }
 
-    .boot-cell.rot strong,
-    .boot-cell.rot span{
+    .boot-cell.rot span,
+    .boot-cell.rot strong{
       color:var(--rot);
     }
 
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:80;
-      padding:14px 0 9px;
-      backdrop-filter:blur(12px);
-      background:linear-gradient(180deg, rgba(5,6,5,.95), rgba(5,6,5,.68) 72%, transparent);
+    .page{
+      width:min(1540px, calc(100% - 34px));
+      margin:0 auto;
+      position:relative;
+      z-index:3;
+      padding-bottom:70px;
     }
 
-    .topbar-inner{
-      border:1px solid rgba(240,180,93,.20);
-      background:rgba(9,12,8,.72);
+    .top-shell{
+      position:sticky;
+      top:0;
+      z-index:60;
+      padding:12px 0 8px;
+      background:linear-gradient(180deg, rgba(3,4,3,.96), rgba(3,4,3,.68) 72%, transparent);
+      backdrop-filter:blur(10px);
+    }
+
+    .topbar{
+      border:1px solid rgba(231,166,77,.25);
+      background:rgba(8,11,7,.78);
       box-shadow:var(--shadow);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+      display:grid;
+      grid-template-columns:1fr auto;
       gap:14px;
-      padding:12px 14px;
-      flex-wrap:wrap;
+      align-items:center;
+      padding:12px;
     }
 
     .crumbs{
       display:flex;
-      align-items:center;
-      gap:8px;
       flex-wrap:wrap;
-      color:#aa9d7b;
+      gap:8px;
+      align-items:center;
+      color:#9f9478;
       font-family:var(--sans);
       text-transform:uppercase;
-      letter-spacing:.14em;
-      font-size:.72rem;
+      letter-spacing:.16em;
+      font-size:.68rem;
     }
 
     .crumbs a{
-      color:#f2d6a3;
+      color:#f0d39f;
       text-decoration:none;
       border-bottom:1px solid transparent;
     }
 
-    .crumbs a:hover{border-color:#f2d6a3}
+    .crumbs a:hover{
+      border-color:#f0d39f;
+    }
 
     .nav{
       display:flex;
+      gap:7px;
       flex-wrap:wrap;
       justify-content:flex-end;
-      gap:8px;
     }
 
     .nav a{
-      color:#e7d5b0;
+      font-family:var(--sans);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.60rem;
+      color:#ead9b4;
       text-decoration:none;
-      border:1px solid rgba(240,180,93,.22);
-      background:rgba(16,18,12,.72);
-      padding:10px 11px;
-      font-size:.62rem;
+      border:1px solid rgba(231,166,77,.25);
+      background:rgba(14,17,10,.72);
+      padding:9px 10px;
       transition:.2s ease;
     }
 
     .nav a:hover{
       transform:translateY(-2px);
-      border-color:var(--strong);
-      background:rgba(42,34,18,.78);
+      border-color:var(--lineStrong);
+      background:rgba(42,33,16,.82);
+    }
+
+    .interface-status{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns:repeat(6, minmax(0,1fr));
+      gap:8px;
+    }
+
+    .mini-stat{
+      border:1px solid rgba(231,166,77,.16);
+      background:rgba(8,11,7,.54);
+      padding:9px 10px;
+      min-height:64px;
+    }
+
+    .mini-stat span{
+      display:block;
+      font-family:var(--sans);
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      font-size:.52rem;
+      color:var(--kinBright);
+      margin-bottom:6px;
+    }
+
+    .mini-stat strong{
+      font-weight:400;
+      color:#d7c7a1;
+      font-size:.82rem;
+      line-height:1.35;
+    }
+
+    .mini-stat.rot span,
+    .mini-stat.rot strong{
+      color:var(--rot);
     }
 
     .hero{
-      min-height:82vh;
+      margin-top:12px;
       border:1px solid var(--line);
+      min-height:82vh;
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
-      background:
-        linear-gradient(90deg, rgba(5,6,5,.92), rgba(7,8,6,.82) 38%, rgba(7,8,6,.38) 68%, rgba(5,6,5,.78)),
-        url("Mercy-He-Gave/mercy-he-gave-hero.jpeg") center/cover no-repeat;
+      background:#070907;
+      display:grid;
+      grid-template-columns:1.06fr .94fr;
       isolation:isolate;
     }
 
-    .hero::before{
-      content:"";
+    .hero-media{
       position:absolute;
       inset:0;
       z-index:0;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at 20% 42%, rgba(240,180,93,.18), transparent 23%),
-        radial-gradient(circle at 78% 38%, rgba(184,215,102,.13), transparent 30%),
-        linear-gradient(180deg, transparent 15%, rgba(0,0,0,.72));
     }
 
-    .hero-grid{
+    .hero-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      opacity:.74;
+      filter:contrast(1.06) saturate(.94);
+    }
+
+    .hero-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(3,4,3,.96) 0%, rgba(4,5,4,.82) 36%, rgba(4,5,4,.38) 68%, rgba(3,4,3,.84) 100%),
+        radial-gradient(circle at 21% 48%, rgba(231,166,77,.20), transparent 24%),
+        radial-gradient(circle at 82% 40%, rgba(182,218,97,.14), transparent 30%),
+        linear-gradient(180deg, transparent 25%, rgba(0,0,0,.74));
+      pointer-events:none;
+    }
+
+    .hero-left,
+    .hero-right{
       position:relative;
       z-index:2;
       min-height:82vh;
-      display:grid;
-      grid-template-columns:1.03fr .97fr;
-      gap:26px;
-      align-items:end;
-      padding:clamp(24px, 4vw, 54px);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:clamp(22px,4vw,54px);
+    }
+
+    .eyebrow,
+    .label,
+    .btn,
+    .chip,
+    .timeline-time,
+    .ledger-key,
+    .section-code,
+    .terminal-head,
+    .diag-key{
+      font-family:var(--sans);
+      text-transform:uppercase;
+      letter-spacing:.18em;
     }
 
     .eyebrow{
-      color:var(--amber2);
+      color:var(--kinBright);
       font-size:.76rem;
       margin-bottom:16px;
+      max-width:70ch;
+    }
+
+    h1,h2,h3,h4{
+      font-family:var(--serif);
     }
 
     .hero-title{
       margin:0 0 16px;
-      color:#f4e7c7;
-      font-size:clamp(3.4rem, 9vw, 7.6rem);
-      line-height:.86;
+      color:#f2e4c4;
+      font-size:clamp(3.7rem, 9vw, 7.8rem);
+      line-height:.84;
       max-width:9ch;
-      text-shadow:0 12px 34px rgba(0,0,0,.62);
+      text-shadow:0 12px 38px rgba(0,0,0,.68);
     }
 
     .hero-sub{
       color:var(--rot);
+      font-family:var(--serif);
       font-style:italic;
-      font-size:clamp(1.25rem, 2.4vw, 2.05rem);
+      font-size:clamp(1.35rem, 2.6vw, 2.2rem);
       line-height:1.12;
-      margin:0 0 18px;
       max-width:28ch;
+      margin:0 0 18px;
     }
 
     .hero-copy{
-      max-width:78ch;
-      color:#d7c8a5;
+      max-width:76ch;
+      color:#d8c9a4;
+      font-family:var(--serif);
       font-size:1.08rem;
-      line-height:1.88;
+      line-height:1.86;
       margin:0 0 18px;
-      text-shadow:0 3px 16px rgba(0,0,0,.48);
     }
 
-    .hero-copy strong{color:#f1dfba}
+    .hero-copy strong{
+      color:#f4e3be;
+    }
 
     .hero-actions{
       display:flex;
       flex-wrap:wrap;
-      gap:12px;
-      margin-top:24px;
+      gap:11px;
+      margin-top:22px;
     }
 
     .btn{
-      appearance:none;
-      border:1px solid rgba(240,180,93,.42);
-      background:linear-gradient(180deg, rgba(240,180,93,.14), rgba(13,16,10,.86));
-      color:#f4e3bd;
+      border:1px solid rgba(231,166,77,.38);
+      color:#f3dfba;
+      background:linear-gradient(180deg, rgba(231,166,77,.13), rgba(9,12,8,.86));
       text-decoration:none;
-      padding:13px 16px;
-      font-size:.70rem;
+      padding:13px 15px;
+      font-size:.67rem;
       cursor:pointer;
       transition:.2s ease;
       display:inline-flex;
@@ -369,49 +450,46 @@
 
     .btn:hover{
       transform:translateY(-2px);
-      border-color:rgba(255,213,139,.76);
-      background:linear-gradient(180deg, rgba(240,180,93,.22), rgba(30,35,18,.90));
-      box-shadow:0 16px 36px rgba(0,0,0,.34);
+      border-color:var(--lineStrong);
+      background:linear-gradient(180deg, rgba(231,166,77,.22), rgba(27,31,16,.92));
+      box-shadow:0 18px 40px rgba(0,0,0,.34);
     }
 
     .btn.rot{
-      border-color:rgba(184,215,102,.45);
-      background:linear-gradient(180deg, rgba(184,215,102,.14), rgba(13,24,8,.84));
+      border-color:rgba(182,218,97,.44);
+      background:linear-gradient(180deg, rgba(182,218,97,.14), rgba(9,20,7,.86));
     }
 
-    .hero-side{
-      display:grid;
-      gap:14px;
-      align-self:end;
-    }
-
+    .id-card,
     .panel,
-    .card,
-    .terminal,
+    .console,
     .ledger,
+    .image-card,
+    .data-card,
     .quote,
-    .diagnostic{
+    .diag-card{
       border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(14,17,12,.88), rgba(8,10,7,.90));
+      background:linear-gradient(180deg, rgba(14,17,11,.88), rgba(6,9,6,.90));
       box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
     }
 
+    .id-card::before,
     .panel::before,
-    .card::before,
-    .terminal::before,
+    .console::before,
     .ledger::before,
+    .data-card::before,
     .quote::before,
-    .diagnostic::before{
+    .diag-card::before{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(90deg, transparent, rgba(255,213,139,.065), transparent);
+      pointer-events:none;
+      background:linear-gradient(90deg, transparent, rgba(255,215,137,.06), transparent);
       transform:translateX(-105%);
       animation:sweep 9s linear infinite;
-      pointer-events:none;
-      opacity:.5;
+      opacity:.48;
     }
 
     @keyframes sweep{
@@ -419,67 +497,71 @@
       100%{transform:translateX(105%)}
     }
 
-    .card{
+    .id-card{
       padding:18px;
       backdrop-filter:blur(8px);
     }
 
-    .mini{
-      color:var(--amber2);
-      font-size:.62rem;
+    .label{
+      color:var(--kinBright);
+      font-size:.58rem;
       margin-bottom:8px;
     }
 
-    .card h3,
-    .panel h2,
-    .terminal h3,
+    .id-card h3,
+    .panel h3,
+    .console h3,
     .ledger h3,
-    .diagnostic h3{
+    .data-card h3{
       margin:0 0 10px;
-      color:#f3e3bf;
+      color:#f1dfba;
+      font-size:1.55rem;
+      line-height:1.08;
     }
 
-    .card p,
+    .id-card p,
     .panel p,
-    .terminal p,
+    .console p,
     .ledger p,
-    .diagnostic p,
-    .quote p{
+    .data-card p,
+    .quote p,
+    .diag-card p{
       margin:0;
-      color:#cbbd99;
-      line-height:1.76;
+      color:#cbbd98;
+      font-family:var(--serif);
+      line-height:1.75;
     }
 
-    .stat-grid{
+    .identity-grid{
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
       gap:10px;
     }
 
-    .stat{
-      border:1px solid rgba(240,180,93,.20);
-      background:rgba(8,11,7,.62);
+    .identity-cell{
+      border:1px solid rgba(231,166,77,.22);
+      background:rgba(8,10,6,.64);
       padding:13px;
-      min-height:108px;
+      min-height:112px;
     }
 
-    .stat-label{
-      color:var(--amber2);
-      font-size:.58rem;
+    .identity-cell .label{
       margin-bottom:8px;
     }
 
-    .stat-value{
-      color:#f3e3bf;
-      font-size:1.17rem;
+    .identity-cell strong{
+      display:block;
+      color:#f2dfb7;
+      font-family:var(--serif);
+      font-size:1.16rem;
       line-height:1.18;
       margin-bottom:7px;
     }
 
-    .stat-note{
-      color:#a99d7c;
-      font-size:.88rem;
+    .identity-cell small{
+      color:#a99d7d;
       line-height:1.45;
+      font-size:.85rem;
     }
 
     .section{
@@ -495,74 +577,68 @@
       margin-bottom:18px;
     }
 
+    .section-code{
+      color:var(--kinBright);
+      font-size:.70rem;
+      margin-bottom:10px;
+    }
+
     .section-title{
-      color:#f4e5c3;
       margin:0;
-      font-size:clamp(2.2rem, 5vw, 4.15rem);
-      line-height:.95;
+      color:#f3e3bf;
+      font-size:clamp(2.15rem, 5vw, 4.2rem);
+      line-height:.94;
     }
 
     .section-desc{
       margin:11px 0 0;
       max-width:82ch;
-      color:#beb18e;
+      color:#bdb08d;
+      font-family:var(--serif);
       line-height:1.84;
       font-size:1.03rem;
     }
 
     .chip{
       color:var(--rot);
-      border:1px solid rgba(184,215,102,.28);
-      background:rgba(13,24,8,.58);
+      border:1px solid rgba(182,218,97,.32);
+      background:rgba(10,22,7,.60);
       padding:10px 12px;
-      font-size:.60rem;
+      font-size:.58rem;
       white-space:nowrap;
     }
 
-    .blackbox-shell{
+    .blackbox-grid{
       display:grid;
       grid-template-columns:.78fr 1.22fr;
       gap:18px;
-      align-items:stretch;
     }
 
-    .device-wrap{
+    .stack{
       display:grid;
-      grid-template-rows:1fr auto;
       gap:14px;
     }
 
-    .image-box{
-      min-height:560px;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      background-size:cover;
-      background-position:center;
-      position:relative;
-      overflow:hidden;
+    .image-card{
+      min-height:540px;
+      background:#060806;
     }
 
-    .image-box::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.54));
-      pointer-events:none;
+    .image-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter:contrast(1.05) saturate(.96);
     }
 
-    .blackbox-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.05), rgba(5,6,5,.40)),
-        url("Mercy-He-Gave/votann-blackbox.jpeg");
+    .image-caption{
+      padding:16px;
+      border-top:1px solid var(--line);
+      background:rgba(7,9,6,.82);
     }
 
-    .claim-vault-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.08), rgba(5,6,5,.45)),
-        url("Mercy-He-Gave/claim-vault-aftermath.jpeg");
-    }
-
-    .terminal{
+    .console{
       padding:20px;
       display:grid;
       grid-template-rows:auto auto 1fr;
@@ -575,29 +651,28 @@
       justify-content:space-between;
       gap:16px;
       align-items:flex-start;
-      border-bottom:1px solid rgba(240,180,93,.18);
+      border-bottom:1px solid rgba(231,166,77,.18);
       padding-bottom:16px;
     }
 
     .terminal-title{
-      color:#f3e3bf;
+      margin:0 0 8px;
+      color:#f2dfb7;
       font-size:2.15rem;
       line-height:1;
-      margin:0 0 8px;
     }
 
     .terminal-sub{
       color:#b9ab87;
+      font-family:var(--serif);
       line-height:1.72;
-      max-width:72ch;
-      font-size:.98rem;
+      max-width:70ch;
     }
 
     .signal{
-      font-family:var(--mono);
       color:var(--rot);
-      border:1px solid rgba(184,215,102,.30);
-      background:rgba(12,24,8,.60);
+      border:1px solid rgba(182,218,97,.32);
+      background:rgba(10,22,7,.62);
       padding:10px 11px;
       white-space:nowrap;
       font-size:.84rem;
@@ -610,12 +685,12 @@
     }
 
     .timeline button{
-      border:1px solid rgba(240,180,93,.24);
-      background:rgba(10,12,8,.74);
-      color:#e9d9b5;
+      border:1px solid rgba(231,166,77,.24);
+      background:rgba(8,11,7,.75);
+      color:#ecd9b3;
       cursor:pointer;
       padding:12px;
-      min-height:78px;
+      min-height:84px;
       text-align:left;
       transition:.2s ease;
     }
@@ -623,64 +698,65 @@
     .timeline button:hover,
     .timeline button.active{
       transform:translateY(-2px);
-      border-color:rgba(255,213,139,.68);
-      background:linear-gradient(180deg, rgba(240,180,93,.14), rgba(20,25,14,.90));
+      border-color:var(--lineStrong);
+      background:linear-gradient(180deg, rgba(231,166,77,.14), rgba(18,23,12,.92));
     }
 
     .timeline-time{
-      color:var(--amber2);
-      font-size:.56rem;
-      margin-bottom:7px;
+      color:var(--kinBright);
+      font-size:.54rem;
       display:block;
+      margin-bottom:7px;
     }
 
     .timeline-title{
+      color:#f0dfb8;
       font-family:var(--serif);
-      font-size:1.03rem;
-      line-height:1.14;
-      color:#f0dfb9;
+      font-size:1.08rem;
+      line-height:1.1;
     }
 
     .playback{
-      border:1px solid rgba(240,180,93,.20);
+      border:1px solid rgba(231,166,77,.20);
       background:
-        radial-gradient(circle at 90% 0%, rgba(184,215,102,.10), transparent 36%),
-        rgba(6,8,6,.72);
+        radial-gradient(circle at 90% 0%, rgba(182,218,97,.10), transparent 35%),
+        rgba(5,8,5,.76);
       padding:20px;
-      position:relative;
-      overflow:hidden;
       display:grid;
       align-content:start;
       gap:14px;
       min-height:390px;
+      position:relative;
+      overflow:hidden;
     }
 
     .playback::before{
       content:"";
       position:absolute;
       inset:0;
-      pointer-events:none;
       background:
         repeating-linear-gradient(
           to bottom,
-          rgba(255,213,139,.03) 0,
-          rgba(255,213,139,.03) 1px,
+          rgba(255,215,137,.034) 0px,
+          rgba(255,215,137,.034) 1px,
           transparent 2px,
           transparent 7px
         );
-      opacity:.45;
+      opacity:.48;
+      pointer-events:none;
     }
 
-    .terminal-label{
-      color:var(--amber2);
-      font-size:.60rem;
+    .playback > *{
       position:relative;
       z-index:2;
+    }
+
+    .terminal-head{
+      color:var(--kinBright);
+      font-size:.60rem;
     }
 
     .playback h3{
-      position:relative;
-      z-index:2;
       margin:0;
       color:#f3e3bf;
       font-size:2rem;
@@ -688,108 +764,90 @@
     }
 
     .playback p{
-      position:relative;
-      z-index:2;
-      color:#d6c7a2;
-      line-height:1.85;
+      color:#d7c8a4;
+      font-family:var(--serif);
+      line-height:1.84;
       font-size:1.03rem;
-      margin:0;
     }
 
     .meter-wrap{
-      position:relative;
-      z-index:2;
-      margin-top:4px;
+      margin-top:2px;
     }
 
     .meter-row{
       display:flex;
       justify-content:space-between;
       gap:12px;
-      color:var(--amber2);
+      color:var(--kinBright);
       font-family:var(--sans);
       text-transform:uppercase;
       letter-spacing:.15em;
-      font-size:.62rem;
+      font-size:.60rem;
       margin-bottom:8px;
     }
 
     .meter{
       height:15px;
-      border:1px solid rgba(255,213,139,.20);
-      background:rgba(240,180,93,.08);
+      border:1px solid rgba(255,215,137,.22);
+      background:rgba(231,166,77,.08);
       overflow:hidden;
     }
 
     .meter span{
       display:block;
       height:100%;
-      width:25%;
-      background:linear-gradient(90deg, var(--amber), var(--rot), #d8ff73);
-      box-shadow:0 0 28px rgba(184,215,102,.38);
+      width:24%;
+      background:linear-gradient(90deg, var(--kin), var(--rot), #d9ff74);
+      box-shadow:0 0 28px rgba(182,218,97,.40);
       transition:width .35s ease;
     }
 
     .split{
       display:grid;
-      grid-template-columns:.95fr 1.05fr;
+      grid-template-columns:.96fr 1.04fr;
       gap:18px;
       align-items:stretch;
     }
 
-    .copy{
+    .copy-panel{
       padding:28px;
     }
 
-    .copy p{
-      color:#d0c19c;
-      font-size:1.05rem;
-      line-height:1.88;
+    .copy-panel p{
       margin:0 0 18px;
+      color:#d1c29e;
+      font-family:var(--serif);
+      line-height:1.86;
+      font-size:1.05rem;
     }
 
-    .copy p:last-child{margin-bottom:0}
-
-    .muster-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
-        url("Mercy-He-Gave/kin-muster-hall.jpeg");
+    .copy-panel p:last-child{
+      margin-bottom:0;
     }
 
-    .claim-force-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
-        url("Mercy-He-Gave/kin-claim-force.jpeg");
+    .image-full{
+      min-height:600px;
+      border:1px solid var(--line);
+      background:#060806;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
 
-    .elite-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
-        url("Mercy-He-Gave/elite-votann-unit.jpeg");
+    .image-full img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter:contrast(1.05) saturate(.96);
     }
 
-    .breach-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.48)),
-        url("Mercy-He-Gave/death-guard-breach.jpeg");
-    }
-
-    .core-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
-        url("Mercy-He-Gave/ancestor-core-corruption.jpeg");
-    }
-
-    .mercy-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.46)),
-        url("Mercy-He-Gave/mortivus-mercy-scene.png");
-    }
-
-    .aftermath-img{
-      background-image:
-        linear-gradient(180deg, rgba(5,6,5,.04), rgba(5,6,5,.48)),
-        url("Mercy-He-Gave/mercy-aftermath.jpeg");
+    .image-full::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.46));
+      pointer-events:none;
     }
 
     .triad{
@@ -798,42 +856,36 @@
       gap:16px;
     }
 
-    .tri-card{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(14,17,12,.86), rgba(8,10,7,.90));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
+    .data-card{
+      display:grid;
+      grid-template-rows:285px auto;
     }
 
-    .tri-card .image-box{
-      min-height:285px;
-      border:0;
+    .data-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
       border-bottom:1px solid var(--line);
-      box-shadow:none;
+      filter:contrast(1.05) saturate(.96);
     }
 
-    .tri-body{
+    .data-body{
       padding:18px;
     }
 
-    .tri-body h3{
-      color:#f3e3bf;
-      font-size:1.7rem;
+    .data-body h3{
+      color:#f2dfb7;
+      font-size:1.72rem;
       line-height:1.04;
       margin:0 0 10px;
     }
 
-    .tri-body p{
-      color:#c4b693;
-      line-height:1.74;
-      margin:0;
-    }
-
-    .ledger-wrap{
+    .ledger-grid{
       display:grid;
       grid-template-columns:.88fr 1.12fr;
       gap:18px;
+      align-items:stretch;
     }
 
     .ledger{
@@ -852,8 +904,8 @@
     }
 
     .ledger-choice{
-      border:1px solid rgba(240,180,93,.25);
-      background:rgba(10,12,8,.74);
+      border:1px solid rgba(231,166,77,.25);
+      background:rgba(8,11,7,.75);
       color:#e7d6b0;
       text-align:left;
       padding:14px;
@@ -864,62 +916,62 @@
     .ledger-choice:hover,
     .ledger-choice.active{
       transform:translateY(-2px);
-      border-color:rgba(255,213,139,.66);
-      background:linear-gradient(180deg, rgba(240,180,93,.14), rgba(20,25,14,.90));
+      border-color:var(--lineStrong);
+      background:linear-gradient(180deg, rgba(231,166,77,.14), rgba(18,23,12,.92));
     }
 
-    .ledger-label{
-      color:var(--amber2);
-      font-size:.58rem;
-      margin-bottom:6px;
+    .ledger-key{
+      color:var(--kinBright);
+      font-size:.56rem;
+      margin-bottom:7px;
       display:block;
     }
 
     .ledger-output{
-      border:1px solid rgba(184,215,102,.24);
+      border:1px solid rgba(182,218,97,.26);
       background:
-        radial-gradient(circle at 100% 0%, rgba(184,215,102,.10), transparent 32%),
-        rgba(8,11,7,.72);
+        radial-gradient(circle at 100% 0%, rgba(182,218,97,.10), transparent 32%),
+        rgba(7,10,6,.76);
       padding:22px;
-      min-height:430px;
       display:grid;
       align-content:start;
       gap:14px;
+      min-height:470px;
     }
 
     .ledger-output h3{
-      color:var(--rot);
-      font-size:2.3rem;
       margin:0;
+      color:var(--rot);
+      font-size:2.35rem;
       line-height:1;
     }
 
     .ledger-output p{
-      color:#d3c5a2;
-      line-height:1.86;
       margin:0;
+      color:#d3c5a2;
+      font-family:var(--serif);
+      line-height:1.84;
     }
 
     .ledger-line{
       display:grid;
       grid-template-columns:190px 1fr;
       gap:14px;
-      border-bottom:1px dotted rgba(240,180,93,.18);
+      border-bottom:1px dotted rgba(231,166,77,.20);
       padding-bottom:9px;
-      color:#d0c19c;
-      font-family:var(--mono);
+      color:#d2c39f;
       font-size:.92rem;
     }
 
     .ledger-line strong{
-      color:var(--amber2);
+      color:var(--kinBright);
       font-family:var(--sans);
       text-transform:uppercase;
-      letter-spacing:.12em;
-      font-size:.62rem;
+      letter-spacing:.13em;
+      font-size:.58rem;
     }
 
-    .battle-phases{
+    .phase-grid{
       display:grid;
       grid-template-columns:repeat(4, minmax(0,1fr));
       gap:12px;
@@ -928,20 +980,22 @@
 
     .phase{
       border:1px solid var(--line);
-      background:rgba(10,12,8,.72);
+      background:rgba(8,11,7,.74);
       padding:15px;
     }
 
     .phase h4{
-      color:#f1dfba;
       margin:0 0 9px;
+      color:#f1dfba;
       font-size:1.16rem;
+      line-height:1.08;
     }
 
     .phase p{
-      color:#bdb08e;
-      line-height:1.66;
       margin:0;
+      color:#bdb08d;
+      font-family:var(--serif);
+      line-height:1.65;
       font-size:.94rem;
     }
 
@@ -952,62 +1006,64 @@
     .quote p{
       color:#decda8;
       font-style:italic;
-      font-size:1.14rem;
+      font-size:1.12rem;
       line-height:1.8;
     }
 
-    .record-grid{
+    .diag-grid{
       display:grid;
       grid-template-columns:repeat(4, minmax(0,1fr));
       gap:14px;
     }
 
-    .diagnostic{
+    .diag-card{
       padding:18px;
-      min-height:250px;
+      min-height:255px;
       display:flex;
       flex-direction:column;
       gap:10px;
     }
 
-    .diagnostic-key{
-      color:var(--amber2);
-      font-size:.58rem;
+    .diag-key{
+      color:var(--kinBright);
+      font-size:.56rem;
     }
 
-    .diagnostic h3{
-      font-size:1.5rem;
+    .diag-card h3{
+      color:#f2dfb7;
+      font-size:1.48rem;
       line-height:1.06;
+      margin:0;
     }
 
-    .diagnostic p{
+    .diag-card p{
       flex:1;
     }
 
     .footer{
       padding:28px;
-      display:grid;
-      gap:16px;
     }
 
     .footer h2{
-      margin:0;
+      margin:0 0 14px;
       color:#f3e3bf;
-      font-size:clamp(2.3rem, 5vw, 4.25rem);
+      font-size:clamp(2.3rem,5vw,4.3rem);
       line-height:.95;
     }
 
     .footer p{
       color:#c9bb98;
+      font-family:var(--serif);
       line-height:1.86;
       font-size:1.05rem;
-      margin:0;
+      margin:0 0 16px;
     }
 
     .footer-actions{
       display:flex;
       flex-wrap:wrap;
       gap:12px;
+      margin-top:16px;
     }
 
     .floating{
@@ -1015,9 +1071,9 @@
       right:18px;
       bottom:18px;
       z-index:90;
-      width:min(410px, calc(100% - 36px));
-      border:1px solid rgba(184,215,102,.30);
-      background:rgba(7,10,6,.86);
+      width:min(420px, calc(100% - 36px));
+      border:1px solid rgba(182,218,97,.32);
+      background:rgba(6,10,5,.88);
       backdrop-filter:blur(12px);
       box-shadow:var(--shadow);
       overflow:hidden;
@@ -1028,13 +1084,13 @@
       justify-content:space-between;
       align-items:center;
       gap:12px;
-      border-bottom:1px solid rgba(184,215,102,.18);
+      border-bottom:1px solid rgba(182,218,97,.18);
       padding:12px 14px;
       color:var(--rot);
       font-family:var(--sans);
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.65rem;
+      font-size:.62rem;
     }
 
     .floating button{
@@ -1048,54 +1104,75 @@
     .floating-body{
       padding:14px;
       color:#d5c6a3;
+      font-family:var(--serif);
       line-height:1.72;
-      font-size:.95rem;
+      font-size:.96rem;
     }
 
     @media (max-width:1180px){
-      .hero-grid,
-      .blackbox-shell,
+      .topbar{
+        grid-template-columns:1fr;
+      }
+
+      .interface-status{
+        grid-template-columns:repeat(3, minmax(0,1fr));
+      }
+
+      .hero,
+      .blackbox-grid,
       .split,
-      .ledger-wrap{
+      .ledger-grid{
         grid-template-columns:1fr;
       }
 
-      .triad,
-      .record-grid{
-        grid-template-columns:1fr;
-      }
-
-      .battle-phases{
-        grid-template-columns:repeat(2, minmax(0,1fr));
-      }
-
-      .terminal{
+      .hero-left,
+      .hero-right{
         min-height:auto;
       }
 
-      .image-box{
-        min-height:430px;
+      .hero-right{
+        padding-top:0;
+      }
+
+      .triad,
+      .diag-grid{
+        grid-template-columns:1fr;
+      }
+
+      .phase-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+
+      .console{
+        min-height:auto;
+      }
+
+      .image-card,
+      .image-full{
+        min-height:440px;
       }
     }
 
     @media (max-width:760px){
-      .page{width:min(100% - 18px, 1540px)}
+      .page{
+        width:min(100% - 18px, 1540px);
+      }
 
-      .topbar-inner{border-radius:0}
-
-      .hero-grid{
-        padding:22px;
+      .boot-grid,
+      .timeline,
+      .identity-grid,
+      .interface-status,
+      .phase-grid{
+        grid-template-columns:1fr;
       }
 
       .hero-title{
-        font-size:clamp(3rem, 15vw, 4.8rem);
+        font-size:clamp(3rem,15vw,4.8rem);
       }
 
-      .stat-grid,
-      .timeline,
-      .boot-grid,
-      .battle-phases{
-        grid-template-columns:1fr;
+      .hero-left,
+      .hero-right{
+        padding:22px;
       }
 
       .ledger-line{
@@ -1113,40 +1190,43 @@
 </head>
 
 <body>
-  <canvas id="kinCanvas"></canvas>
+  <canvas id="kin-particles"></canvas>
 
   <div class="boot" id="boot">
-    <div class="boot-panel">
-      <div class="sys">Kin Blackbox Recovery Sequence // Claim-Hold Thrain’s Lock</div>
+    <div class="boot-frame">
+      <div class="boot-code">KIN BLACKBOX RECOVERY SEQUENCE // CLAIM-HOLD THRAIN’S LOCK</div>
       <h1 class="boot-title">The Mercy He Gave</h1>
-      <div class="boot-status" id="bootStatus">
+      <p class="boot-status" id="bootStatus">
         ANCESTOR HANDSHAKE: searching... oath-chain fragments present... grudge-ledger damaged but not silent...
-      </div>
+      </p>
 
       <div class="boot-grid">
         <div class="boot-cell">
-          <strong>Memory Integrity</strong>
-          <span>Partial / amber lattice unstable</span>
+          <span>Memory Integrity</span>
+          <strong>Partial amber lattice. Damage survivable. Trust not confirmed.</strong>
         </div>
+
         <div class="boot-cell">
-          <strong>Kin Record Layer</strong>
-          <span>Claim-force archive detected</span>
+          <span>Oath-Ledger</span>
+          <strong>Recovered. Debt unresolved. Kin dead awaiting correct entry.</strong>
         </div>
+
         <div class="boot-cell">
-          <strong>Oath-Ledger</strong>
-          <span>Compromised after breach</span>
+          <span>Claim Status</span>
+          <strong>Hold breached. Inner sanctum reached. Ancestor layer compromised.</strong>
         </div>
+
         <div class="boot-cell rot">
-          <strong>Foreign Bloom</strong>
-          <span>Death Guard contamination active</span>
+          <span>Foreign Bloom</span>
+          <strong>Death Guard rot-pattern detected beneath familiar voice.</strong>
         </div>
       </div>
     </div>
   </div>
 
   <main class="page">
-    <header class="topbar">
-      <div class="topbar-inner">
+    <header class="top-shell">
+      <div class="topbar">
         <div class="crumbs">
           <a href="index.html">The Septicarium</a>
           <span>/</span>
@@ -1167,79 +1247,112 @@
           <a href="#after">Aftermath</a>
         </nav>
       </div>
+
+      <div class="interface-status">
+        <div class="mini-stat">
+          <span>Primary Voice</span>
+          <strong>Kin blackbox</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Location</span>
+          <strong>Thrain’s Lock</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Defenders</span>
+          <strong>Votann claim-force</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Enemy Contact</span>
+          <strong>Rotfather’s Vanguard</strong>
+        </div>
+        <div class="mini-stat rot">
+          <span>Contamination</span>
+          <strong>Active in memory layer</strong>
+        </div>
+        <div class="mini-stat rot">
+          <span>Mercy Status</span>
+          <strong>Hostile word retained</strong>
+        </div>
+      </div>
     </header>
 
     <section class="hero">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">Recovered Kin Archive // Blackbox Translation // Septicarium Copy Under Contamination</div>
-          <h1 class="hero-title">The Mercy He Gave</h1>
-          <p class="hero-sub">A Kin memory-record forced to continue after trust was removed.</p>
+      <div class="hero-media">
+        <img src="Assets/Mercy-He-Gave/mercy-he-gave-hero.jpeg" alt="Recovered Votann claim-hold after Death Guard contamination">
+      </div>
 
-          <p class="hero-copy">
-            We were not built to forget. We were not trained to abandon. We were Kin of the claim-hold, oath-bound to stone, machine, ledger, and Ancestor. The hold had names before the breach. The corridors had routes. The dead had places waiting for them inside memory.
+      <div class="hero-left">
+        <div class="eyebrow">Recovered Kin Archive // Blackbox Translation // Septicarium Copy Under Contamination</div>
+        <h1 class="hero-title">The Mercy He Gave</h1>
+        <p class="hero-sub">A Kin memory-record forced to continue after trust was removed.</p>
+
+        <p class="hero-copy">
+          We were not built to forget. We were not trained to abandon. We were Kin of the claim-hold, oath-bound to stone, machine, ledger, and Ancestor. The hold had names before the breach. The corridors had routes. The dead had places waiting for them inside memory.
+        </p>
+
+        <p class="hero-copy">
+          Then the green door opened. The enemy did not come as raiders come. They came as weather that had learned hatred. Their master did not rush the kill. He waited until we understood what he had chosen to leave alive.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn rot" href="#blackbox">Begin Blackbox Playback</a>
+          <a class="btn" href="#ledger">Open Grudge-Ledger</a>
+          <a class="btn" href="#mercy">Read Mercy Event</a>
+        </div>
+      </div>
+
+      <aside class="hero-right">
+        <div class="id-card">
+          <div class="label">Recovered Unit Identity</div>
+          <h3>Claim-Hold Thrain’s Lock</h3>
+          <p>
+            Industrial Kin hold. Oath-ledger active. Ancestor-memory housed within inner sanctum. Final status: held long enough to be violated.
           </p>
+        </div>
 
-          <p class="hero-copy">
-            Then the green door opened. The enemy did not come as raiders come. They came as weather that had learned hatred. Their master did not rush the kill. He waited until we understood what he had chosen to leave alive.
-          </p>
+        <div style="height:12px;"></div>
 
-          <div class="hero-actions">
-            <a class="btn rot" href="#blackbox">Begin Blackbox Playback</a>
-            <a class="btn" href="#ledger">Open Grudge-Ledger</a>
-            <a class="btn" href="#mercy">Read Mercy Event</a>
+        <div class="identity-grid">
+          <div class="identity-cell">
+            <div class="label">Kin Record</div>
+            <strong>Amber Layer</strong>
+            <small>Practical, disciplined, stubborn, and built around continuity.</small>
+          </div>
+
+          <div class="identity-cell">
+            <div class="label">Intrusion</div>
+            <strong>Green Layer</strong>
+            <small>Foreign rot-pattern corrupting memory without fully silencing it.</small>
+          </div>
+
+          <div class="identity-cell">
+            <div class="label">Critical Wound</div>
+            <strong>Ancestor-Core</strong>
+            <small>The deepest injury was not tactical defeat. It was unsafe preservation.</small>
+          </div>
+
+          <div class="identity-cell">
+            <div class="label">Classification</div>
+            <strong>Mercy as Sentence</strong>
+            <small>The survivor was not spared. He was made useful to the wound.</small>
           </div>
         </div>
 
-        <aside class="hero-side">
-          <div class="card">
-            <div class="mini">Recovered Unit Identity</div>
-            <h3>Claim-Hold Thrain’s Lock</h3>
-            <p>
-              Industrial Kin hold. Oath-ledger active. Ancestor-memory housed within inner sanctum. Final status: held long enough to be violated.
-            </p>
-          </div>
+        <div style="height:12px;"></div>
 
-          <div class="stat-grid">
-            <div class="stat">
-              <div class="stat-label">Primary Voice</div>
-              <div class="stat-value">Kin Blackbox</div>
-              <div class="stat-note">This record speaks first in Votann discipline, not Septicarium liturgy.</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-label">Enemy Contact</div>
-              <div class="stat-value">Rotfather’s Vanguard</div>
-              <div class="stat-note">Death Guard breach host under Mortivus Classarion.</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-label">Critical Wound</div>
-              <div class="stat-value">Memory Corruption</div>
-              <div class="stat-note">The Ancestor-Core was not simply destroyed. It was made unsafe.</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-label">Ledger Status</div>
-              <div class="stat-value">Debt Unclosed</div>
-              <div class="stat-note">The grudge remains recorded, but the record itself is infected.</div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="mini">Translation Warning</div>
-            <p>
-              The amber layer is Kin. The green intrusion is not. When both speak at once, preserve the contradiction. It may be the only honest part left.
-            </p>
-          </div>
-        </aside>
-      </div>
+        <div class="id-card">
+          <div class="label">Translation Warning</div>
+          <p>
+            The amber layer is Kin. The green intrusion is not. When both speak at once, preserve the contradiction. It may be the only honest part left.
+          </p>
+        </div>
+      </aside>
     </section>
 
     <section class="section" id="blackbox">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Recovered Device Interface</div>
+          <div class="section-code">Recovered Device Interface</div>
           <h2 class="section-title">Blackbox Playback Console</h2>
           <p class="section-desc">
             The device was recovered sealed, hot, and still cycling loss-records. It does not narrate like a story. It returns fragments by function: breach, order, defense, grief, contamination, mercy. Select a timestamp to reconstruct the event through Kin machine-memory.
@@ -1248,16 +1361,19 @@
         <div class="chip">Amber Layer Active // Green Intrusion Rising</div>
       </div>
 
-      <div class="blackbox-shell">
-        <div class="device-wrap">
-          <div class="image-box blackbox-img"></div>
+      <div class="blackbox-grid">
+        <div class="stack">
+          <div class="image-card">
+            <img src="Assets/Mercy-He-Gave/votann-blackbox.jpeg" alt="Recovered Votann blackbox device">
+          </div>
+
           <div class="quote">
-            <div class="mini">Device Note</div>
+            <div class="label">Device Note</div>
             <p>“If the blackbox remains, the claim remains. If the claim remains, the debt remains.”</p>
           </div>
         </div>
 
-        <div class="terminal">
+        <div class="console">
           <div class="terminal-top">
             <div>
               <h3 class="terminal-title">Unit Recovery // Oath-Layer Damaged</h3>
@@ -1265,43 +1381,44 @@
                 Kin data cadence remains present beneath corruption. Playback has been organized by timestamp, not by narrative comfort. Final channel contains foreign theological residue associated with Mortivus Classarion.
               </div>
             </div>
+
             <div class="signal" id="signal">CORRUPTION 24%</div>
           </div>
 
           <div class="timeline">
             <button class="active" data-log="secure">
-              <span class="timeline-time">00:00 // Secure</span>
+              <span class="timeline-time">00:00 // SECURE</span>
               <span class="timeline-title">Claim-Hold Standing</span>
             </button>
 
             <button data-log="failure">
-              <span class="timeline-time">00:17 // Failure</span>
+              <span class="timeline-time">00:17 // FAILURE</span>
               <span class="timeline-title">Atmospheric Breach</span>
             </button>
 
             <button data-log="door">
-              <span class="timeline-time">00:31 // Contact</span>
+              <span class="timeline-time">00:31 // CONTACT</span>
               <span class="timeline-title">The Green Door</span>
             </button>
 
             <button data-log="anvil">
-              <span class="timeline-time">00:44 // Counterlock</span>
+              <span class="timeline-time">00:44 // COUNTERLOCK</span>
               <span class="timeline-title">Anvil-Kin Deploy</span>
             </button>
 
             <button data-log="core">
-              <span class="timeline-time">01:12 // Core</span>
+              <span class="timeline-time">01:12 // CORE</span>
               <span class="timeline-title">Ancestor Memory Turns</span>
             </button>
 
             <button data-log="mercy">
-              <span class="timeline-time">01:19 // Final</span>
+              <span class="timeline-time">01:19 // FINAL</span>
               <span class="timeline-title">The Mercy Event</span>
             </button>
           </div>
 
           <div class="playback">
-            <div class="terminal-label" id="logLabel">00:00 // CLAIM-HOLD SECURE</div>
+            <div class="terminal-head" id="logLabel">00:00 // CLAIM-HOLD SECURE</div>
             <h3 id="logTitle">All Doors Answered Amber</h3>
             <p id="logBody">
               The hold reported pressure stable, furnace cycle within tolerance, oath-ledger intact, ancestor-memory responsive. No Kin abandoned station. No evacuation was authorized. No grief was yet entered into the ledger. The claim-force believed the coming assault could be measured, priced, and repaid.
@@ -1322,7 +1439,7 @@
     <section class="section" id="kin-record">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Kin Record Layer</div>
+          <div class="section-code">Kin Record Layer</div>
           <h2 class="section-title">Before the Rot Entered, the Hold Was Not Weak</h2>
           <p class="section-desc">
             This record honors the Kin first. The claim-force was prepared, disciplined, heavily armed, and loyal to its Ancestor-Core. Mortivus’ victory matters because he did not break a helpless people. He corrupted a people whose strength was built around endurance, memory, and duty.
@@ -1332,10 +1449,10 @@
       </div>
 
       <div class="triad">
-        <article class="tri-card">
-          <div class="image-box muster-img"></div>
-          <div class="tri-body">
-            <div class="mini">Muster Hall Record</div>
+        <article class="data-card">
+          <img src="Assets/Mercy-He-Gave/kin-muster-hall.jpeg" alt="Kin muster hall before battle">
+          <div class="data-body">
+            <div class="label">Muster Hall Record</div>
             <h3>The Hold Assembled</h3>
             <p>
               The Kin moved with industrial certainty. Armor sealed. Weapons checked. Routes assigned. Names entered. The claim-hold did not ask who would survive. It asked what each Kin would hold until survival became irrelevant.
@@ -1343,10 +1460,10 @@
           </div>
         </article>
 
-        <article class="tri-card">
-          <div class="image-box claim-force-img"></div>
-          <div class="tri-body">
-            <div class="mini">Claim-Force Record</div>
+        <article class="data-card">
+          <img src="Assets/Mercy-He-Gave/kin-claim-force.jpeg" alt="Leagues of Votann claim-force">
+          <div class="data-body">
+            <div class="label">Claim-Force Record</div>
             <h3>The Line Had Weight</h3>
             <p>
               Their defense was not theatrical courage. It was geometry, fire discipline, door logic, tunnel knowledge, and the stubborn inheritance of a people who trust stone, machine, and oath more than fear.
@@ -1354,10 +1471,10 @@
           </div>
         </article>
 
-        <article class="tri-card">
-          <div class="image-box elite-img"></div>
-          <div class="tri-body">
-            <div class="mini">Elite Unit Record</div>
+        <article class="data-card">
+          <img src="Assets/Mercy-He-Gave/elite-votann-unit.jpeg" alt="Elite Votann unit defending the hold">
+          <div class="data-body">
+            <div class="label">Elite Unit Record</div>
             <h3>The Anvil-Kin of Thrain’s Lock</h3>
             <p>
               The elite defenders forced the breach to become expensive. They held the inner route long enough that Mortivus himself entered the lesson. That fact is recorded with honor.
@@ -1370,7 +1487,7 @@
     <section class="section" id="ledger">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Unique Kin Module</div>
+          <div class="section-code">Unique Kin Module</div>
           <h2 class="section-title">Grudge-Ledger Corruption Engine</h2>
           <p class="section-desc">
             The Kin ledger attempted to classify the atrocity. It could record debt, death, breach, and loss. It could not easily classify mercy as a hostile act. Select a ledger classification and watch the record fail around the word.
@@ -1379,9 +1496,9 @@
         <div class="chip">Debt Recorded // Payment Unresolved</div>
       </div>
 
-      <div class="ledger-wrap">
+      <div class="ledger-grid">
         <div class="ledger">
-          <div class="mini">Ledger Choices</div>
+          <div class="label">Ledger Choices</div>
           <h3>Classify the Atrocity</h3>
           <p>
             The first amber entries are practical. Later entries become devotional, then damaged. By the final record, the ledger no longer asks what was lost. It asks why the memory was allowed to continue.
@@ -1389,29 +1506,29 @@
 
           <div class="ledger-controls">
             <button class="ledger-choice active" data-ledger="debt">
-              <span class="ledger-label">Classification I</span>
+              <span class="ledger-key">Classification I</span>
               Grudge: Recorded
             </button>
 
             <button class="ledger-choice" data-ledger="breach">
-              <span class="ledger-label">Classification II</span>
+              <span class="ledger-key">Classification II</span>
               Hold: Breached
             </button>
 
             <button class="ledger-choice" data-ledger="core">
-              <span class="ledger-label">Classification III</span>
+              <span class="ledger-key">Classification III</span>
               Ancestor Status: Compromised
             </button>
 
             <button class="ledger-choice" data-ledger="mercy">
-              <span class="ledger-label">Classification IV</span>
+              <span class="ledger-key">Classification IV</span>
               Mercy: Hostile Word
             </button>
           </div>
         </div>
 
         <div class="ledger-output">
-          <div class="terminal-label" id="ledgerLabel">GRUDGE ENTRY // ACTIVE</div>
+          <div class="terminal-head" id="ledgerLabel">GRUDGE ENTRY // ACTIVE</div>
           <h3 id="ledgerTitle">Debt Unclosed</h3>
           <p id="ledgerBody">
             The ledger accepts a debt. It does not yet accept the scale. The Death Guard are entered as enemy. Mortivus Classarion is entered separately, not as commander alone, but as origin of the wound’s meaning.
@@ -1436,7 +1553,7 @@
     <section class="section" id="breach">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Combat Reconstruction</div>
+          <div class="section-code">Combat Reconstruction</div>
           <h2 class="section-title">The Green Door Opened</h2>
           <p class="section-desc">
             The first breach did not read as a clean assault. It read as an environmental wrongness given armor. Fog entered first, then corrupted pressure, then sound, then the plague marines themselves.
@@ -1446,8 +1563,11 @@
       </div>
 
       <div class="panel split">
-        <div class="image-box breach-img"></div>
-        <div class="copy">
+        <div class="image-full">
+          <img src="Assets/Mercy-He-Gave/death-guard-breach.jpeg" alt="Death Guard breaching the Votann claim-hold">
+        </div>
+
+        <div class="copy-panel">
           <p>
             The Kin met the breach with fire discipline. Heavy industrial weapons hammered the door-frame until molten fragments rained from the ceiling. The first plague marines through the green fog did not fall cleanly, but they slowed. That mattered. The claim-force priced the enemy in seconds, ammunition, and corridor length.
           </p>
@@ -1460,7 +1580,7 @@
             Mortivus waited beyond the first violence. The blackbox marks his entrance not by voice, but by behavioral shift. The enemy stopped testing the guns and began testing the reasons behind the guns. The breach became a question: how long will oath remain strength once the thing it protects begins to speak incorrectly?
           </p>
 
-          <div class="battle-phases">
+          <div class="phase-grid">
             <div class="phase">
               <h4>I. Air</h4>
               <p>Contamination entered through pressure systems before visible contact.</p>
@@ -1485,7 +1605,7 @@
     <section class="section" id="core">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Ancestor-Core Memory Layer</div>
+          <div class="section-code">Ancestor-Core Memory Layer</div>
           <h2 class="section-title">The Ancestors Answered Wrong</h2>
           <p class="section-desc">
             This was the true wound. The enemy did not merely destroy the sacred memory structure. He allowed it to continue. The continuation was the contamination.
@@ -1495,7 +1615,7 @@
       </div>
 
       <div class="panel split">
-        <div class="copy">
+        <div class="copy-panel">
           <p>
             For the Kin, memory is not ornament. Memory is continuity, guidance, proof, debt, and inheritance. The Ancestor-Core was not a machine in the ordinary sense. It was a weight-bearing part of the people. It made the dead useful to the living and the living responsible to the dead.
           </p>
@@ -1509,19 +1629,21 @@
           </p>
 
           <div class="quote">
-            <div class="mini">Corrupted Ancestor Echo</div>
+            <div class="label">Corrupted Ancestor Echo</div>
             <p>“You are remembered. You are not preserved. You are remembered in the manner permitted by rot.”</p>
           </div>
         </div>
 
-        <div class="image-box core-img"></div>
+        <div class="image-full">
+          <img src="Assets/Mercy-He-Gave/ancestor-core-corruption.jpeg" alt="Corrupted Votann Ancestor-Core interface">
+        </div>
       </div>
     </section>
 
     <section class="section" id="mercy">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Final Playback Layer</div>
+          <div class="section-code">Final Playback Layer</div>
           <h2 class="section-title">The Mercy Event</h2>
           <p class="section-desc">
             The blackbox does not record this moment as execution. It records it as preservation weaponized. Mortivus left a survivor alive not out of softness, but because a living witness could carry a wound that a corpse could not.
@@ -1531,9 +1653,11 @@
       </div>
 
       <div class="panel split">
-        <div class="image-box mercy-img"></div>
+        <div class="image-full">
+          <img src="Assets/Mercy-He-Gave/mortivus-mercy-scene.png" alt="Mortivus Classarion before a surviving Kin warrior">
+        </div>
 
-        <div class="copy">
+        <div class="copy-panel">
           <p>
             The survivor kneels because the floor no longer belongs to him. The hold is taken. The ancestor-memory is speaking wrong. The dead have been entered incorrectly. Behind him, systems built for preservation continue functioning without safety.
           </p>
@@ -1551,7 +1675,7 @@
           </p>
 
           <div class="quote">
-            <div class="mini">Kin Translation Fragment</div>
+            <div class="label">Kin Translation Fragment</div>
             <p>“He did not spare me. He made me the container.”</p>
           </div>
         </div>
@@ -1561,7 +1685,7 @@
     <section class="section" id="after">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Aftermath Records</div>
+          <div class="section-code">Aftermath Records</div>
           <h2 class="section-title">What Remained After Mercy</h2>
           <p class="section-desc">
             The aftermath is preserved through two image layers: the personal sentence of the survivor and the broader claim-vault ruin where memory continued to function after trust was lost.
@@ -1571,10 +1695,10 @@
       </div>
 
       <div class="triad">
-        <article class="tri-card">
-          <div class="image-box aftermath-img"></div>
-          <div class="tri-body">
-            <div class="mini">Aftermath Image</div>
+        <article class="data-card">
+          <img src="Assets/Mercy-He-Gave/mercy-aftermath.jpeg" alt="Aftermath of Mortivus' mercy event">
+          <div class="data-body">
+            <div class="label">Aftermath Image</div>
             <h3>The Survivor and the Sentence</h3>
             <p>
               The surviving Kin was not left whole. He was left carrying meaning. His continued life became the record’s cruelest storage device.
@@ -1582,10 +1706,10 @@
           </div>
         </article>
 
-        <article class="tri-card">
-          <div class="image-box claim-vault-img"></div>
-          <div class="tri-body">
-            <div class="mini">Claim-Vault Image</div>
+        <article class="data-card">
+          <img src="Assets/Mercy-He-Gave/claim-vault-aftermath.jpeg" alt="Ruined Votann claim-vault aftermath">
+          <div class="data-body">
+            <div class="label">Claim-Vault Image</div>
             <h3>The Hold After Breach</h3>
             <p>
               Tables, ledgers, bodies, and machines remained. Nothing looked fully abandoned. That was the horror. Too much still worked.
@@ -1593,10 +1717,10 @@
           </div>
         </article>
 
-        <article class="tri-card">
-          <div class="image-box blackbox-img"></div>
-          <div class="tri-body">
-            <div class="mini">Recovered Device</div>
+        <article class="data-card">
+          <img src="Assets/Mercy-He-Gave/votann-blackbox.jpeg" alt="Recovered Votann blackbox">
+          <div class="data-body">
+            <div class="label">Recovered Device</div>
             <h3>The Blackbox Continued</h3>
             <p>
               Amber memory cycled beneath green interference. The device kept naming the dead until the Septicarium removed it from the hold.
@@ -1609,7 +1733,7 @@
     <section class="section">
       <div class="section-header">
         <div>
-          <div class="eyebrow">Recovered Evidence Index</div>
+          <div class="section-code">Recovered Evidence Index</div>
           <h2 class="section-title">Assets Retained by The Septicarium</h2>
           <p class="section-desc">
             The archive kept more than images. It kept functions: proof of breach, proof of resistance, proof of memory violation, and proof that Mortivus understands mercy as a strategic instrument.
@@ -1618,27 +1742,27 @@
         <div class="chip">Retention Approved</div>
       </div>
 
-      <div class="record-grid">
-        <article class="diagnostic">
-          <div class="diagnostic-key">Asset I</div>
+      <div class="diag-grid">
+        <article class="diag-card">
+          <div class="diag-key">Asset I</div>
           <h3>Blackbox Unit</h3>
           <p>Recovered hot. Amber display cracked. Playback reliable until final mercy channel, where rot-signal overrides several Kin markers.</p>
         </article>
 
-        <article class="diagnostic">
-          <div class="diagnostic-key">Asset II</div>
+        <article class="diag-card">
+          <div class="diag-key">Asset II</div>
           <h3>Oath Tablets</h3>
           <p>Recovered with corrosion along engraved surfaces. Several lines appear altered after death entry, suggesting post-breach memory tampering.</p>
         </article>
 
-        <article class="diagnostic">
-          <div class="diagnostic-key">Asset III</div>
+        <article class="diag-card">
+          <div class="diag-key">Asset III</div>
           <h3>Ancestor Echoes</h3>
           <p>Repeating fragments continue to name the fallen. Scribes are instructed to record, not answer.</p>
         </article>
 
-        <article class="diagnostic">
-          <div class="diagnostic-key">Asset IV</div>
+        <article class="diag-card">
+          <div class="diag-key">Asset IV</div>
           <h3>Mercy Classification</h3>
           <p>Kin ledger fails to resolve the word. Septicarium classification accepts the failure as doctrinally useful.</p>
         </article>
@@ -1647,8 +1771,9 @@
 
     <section class="section">
       <div class="panel footer">
-        <div class="eyebrow">Final Kin-Record // Septicarium Seal Added After Recovery</div>
+        <div class="section-code">Final Kin-Record // Septicarium Seal Added After Recovery</div>
         <h2>The Dead Were Remembered. That Was the Wound.</h2>
+
         <p>
           The Kin did not lose because they lacked courage. They lost because Mortivus understood what courage was protecting. He did not simply kill defenders, breach doors, or ruin machines. He reached the place where memory became duty and made that duty unsafe.
         </p>
@@ -1690,18 +1815,19 @@
     ];
 
     let bootIndex = 0;
+
     const bootTimer = setInterval(() => {
       bootIndex++;
       if(bootIndex < bootLines.length){
         bootStatus.textContent = bootLines[bootIndex];
       } else {
         clearInterval(bootTimer);
-        setTimeout(() => boot.classList.add("hidden"), 600);
+        setTimeout(() => boot.classList.add("hide"), 600);
       }
     }, 700);
 
     window.addEventListener("load", () => {
-      setTimeout(() => boot.classList.add("hidden"), 3900);
+      setTimeout(() => boot.classList.add("hide"), 3900);
     });
 
     const logs = {
@@ -1852,7 +1978,7 @@
       clearInterval(whisperTimer);
     });
 
-    const canvas = document.getElementById("kinCanvas");
+    const canvas = document.getElementById("kin-particles");
     const ctx = canvas.getContext("2d");
     let w = 0;
     let h = 0;
@@ -1865,14 +1991,14 @@
       canvas.style.height = window.innerHeight + "px";
       ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
 
-      particles = Array.from({length: Math.min(120, Math.floor(window.innerWidth / 13))}, () => ({
+      particles = Array.from({length: Math.min(130, Math.floor(window.innerWidth / 12))}, () => ({
         x:Math.random() * window.innerWidth,
         y:Math.random() * window.innerHeight,
-        r:Math.random() * 2.5 + .55,
+        r:Math.random() * 2.4 + .55,
         vx:(Math.random() - .5) * .16,
-        vy:-(Math.random() * .24 + .035),
+        vy:-(Math.random() * .23 + .035),
         a:Math.random() * .34 + .06,
-        type:Math.random() > .72 ? "rot" : "amber"
+        type:Math.random() > .74 ? "rot" : "amber"
       }));
     }
 
@@ -1891,7 +2017,7 @@
         if(p.x < -15) p.x = window.innerWidth + 15;
         if(p.x > window.innerWidth + 15) p.x = -15;
 
-        const color = p.type === "rot" ? "184,215,102" : "240,180,93";
+        const color = p.type === "rot" ? "182,218,97" : "231,166,77";
         const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r * 7);
         g.addColorStop(0, `rgba(${color},${p.a})`);
         g.addColorStop(.45, `rgba(${color},${p.a * .22})`);
