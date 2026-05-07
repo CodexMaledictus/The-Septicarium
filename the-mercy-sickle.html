@@ -3,2373 +3,1799 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>The Mercy-Sickle // Sealed Relic Examination</title>
-
+  <title>The Mercy-Sickle | The Septicarium</title>
   <style>
     :root{
-      --void:#030403;
-      --black:#060706;
-      --deep:#0b0d09;
-      --panel:#11140d;
-      --panel2:#181b11;
-      --iron:#3d3b31;
-      --bone:#e6d7b5;
-      --bone2:#f4e7c9;
-      --brass:#c49649;
-      --brass2:#f0c16a;
-      --rot:#b8d95f;
-      --rot2:#6f9837;
-      --violet:#b78be8;
-      --slaanesh:#d69ae8;
-      --blood:#8b2d24;
-      --muted:#b8ab8a;
-      --dim:#756b55;
-      --line:rgba(196,150,73,.33);
-      --line2:rgba(184,217,95,.28);
-      --lineStrong:rgba(240,193,106,.68);
-      --rotLine:rgba(184,217,95,.38);
-      --violetLine:rgba(214,154,232,.33);
-      --shadow:0 34px 95px rgba(0,0,0,.62);
-      --mono:"Courier New", ui-monospace, monospace;
-      --sans:"Trebuchet MS", Arial, sans-serif;
-      --serif:Georgia, "Times New Roman", serif;
+      --bg:#060806;
+      --bg-2:#0a0f0b;
+      --panel:#0d120d;
+      --panel-2:#121712;
+      --line:rgba(178,151,72,.34);
+      --line-bright:rgba(196,168,86,.62);
+      --text:#e4dcc3;
+      --muted:#b5ab89;
+      --accent:#c7b06a;
+      --plague:#8fb86d;
+      --plague-2:#6d8e49;
+      --warning:#d4a056;
+      --blood:#7c2d22;
+      --shadow:0 18px 45px rgba(0,0,0,.42);
+      --radius:18px;
+      --radius-sm:12px;
+      --max:1500px;
     }
 
-    *{
-      box-sizing:border-box;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
-
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
       margin:0;
-      min-height:100vh;
-      color:var(--bone);
+      font-family: Georgia, "Times New Roman", serif;
       background:
-        radial-gradient(circle at 15% 0%, rgba(196,150,73,.14), transparent 26%),
-        radial-gradient(circle at 86% 14%, rgba(184,217,95,.10), transparent 28%),
-        radial-gradient(circle at 50% 105%, rgba(139,45,36,.12), transparent 34%),
-        linear-gradient(180deg, #040504 0%, #090b07 52%, #030403 100%);
-      font-family:var(--mono);
+        radial-gradient(circle at 20% 10%, rgba(117,144,69,.12), transparent 25%),
+        radial-gradient(circle at 80% 12%, rgba(210,157,65,.08), transparent 22%),
+        radial-gradient(circle at 50% 70%, rgba(105,141,76,.08), transparent 34%),
+        linear-gradient(180deg, #050705 0%, #090d09 42%, #060806 100%);
+      color:var(--text);
+      min-height:100vh;
       overflow-x:hidden;
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:0;
-      pointer-events:none;
-      background:
-        linear-gradient(rgba(196,150,73,.026) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(196,150,73,.020) 1px, transparent 1px);
-      background-size:70px 70px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.56), rgba(0,0,0,.04));
-    }
-
-    body::after{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:2;
-      pointer-events:none;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(244,231,201,.030) 0px,
-          rgba(244,231,201,.030) 1px,
-          transparent 2px,
-          transparent 7px
-        );
-      opacity:.18;
-      mix-blend-mode:screen;
-    }
-
-    #relicCanvas{
+    #sporeCanvas{
       position:fixed;
       inset:0;
       width:100%;
       height:100%;
-      z-index:1;
+      z-index:-2;
+      opacity:.85;
       pointer-events:none;
-      opacity:.82;
     }
 
-    .boot{
+    .noise{
       position:fixed;
       inset:0;
-      z-index:9999;
-      background:
-        radial-gradient(circle at center, rgba(196,150,73,.16), transparent 25%),
-        radial-gradient(circle at 69% 42%, rgba(184,217,95,.10), transparent 28%),
-        linear-gradient(180deg, #050604, #020302);
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-      transition:opacity .9s ease, visibility .9s ease;
+      z-index:-1;
+      pointer-events:none;
+      opacity:.07;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,.6) 0 1px, transparent 1px),
+        radial-gradient(circle at 70% 80%, rgba(255,255,255,.4) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,.5) 0 1px, transparent 1px),
+        radial-gradient(circle at 10% 90%, rgba(255,255,255,.3) 0 1px, transparent 1px);
+      background-size: 190px 190px, 230px 230px, 260px 260px, 300px 300px;
+      mix-blend-mode:screen;
     }
 
-    .boot.hide{
+    .boot-overlay{
+      position:fixed;
+      inset:0;
+      z-index:99;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at center, rgba(25,32,25,.7), rgba(3,5,3,.96)),
+        linear-gradient(180deg, rgba(92,113,57,.07), rgba(0,0,0,.8));
+      transition:opacity .7s ease, visibility .7s ease;
+    }
+
+    .boot-overlay.hidden{
       opacity:0;
       visibility:hidden;
       pointer-events:none;
     }
 
-    .boot::before,
-    .boot::after{
-      content:"";
-      position:absolute;
-      top:0;
-      bottom:0;
-      width:50%;
-      background:
-        linear-gradient(90deg, rgba(3,4,3,.98), rgba(15,18,10,.98)),
-        repeating-linear-gradient(90deg, rgba(196,150,73,.10) 0 1px, transparent 1px 34px);
-      border-color:rgba(196,150,73,.28);
-      transition:transform 1.15s cubic-bezier(.77,0,.18,1);
-      z-index:1;
-    }
-
-    .boot::before{
-      left:0;
-      border-right:1px solid var(--lineStrong);
-    }
-
-    .boot::after{
-      right:0;
-      border-left:1px solid var(--lineStrong);
-      transform:scaleX(-1);
-    }
-
-    .boot.unlock::before{
-      transform:translateX(-102%);
-    }
-
-    .boot.unlock::after{
-      transform:translateX(102%) scaleX(-1);
-    }
-
-    .boot-frame{
-      width:min(980px, calc(100% - 34px));
-      border:1px solid var(--lineStrong);
-      background:
-        linear-gradient(180deg, rgba(19,22,13,.96), rgba(6,8,5,.98));
-      box-shadow:
-        0 0 0 1px rgba(184,217,95,.10) inset,
-        0 0 120px rgba(0,0,0,.75);
-      padding:25px;
+    .boot-shell{
+      width:min(760px,100%);
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(11,16,11,.95), rgba(6,9,6,.97));
+      box-shadow:0 0 0 1px rgba(197,168,84,.12) inset, var(--shadow);
+      padding:28px;
       position:relative;
       overflow:hidden;
-      z-index:3;
     }
 
-    .boot-frame::before{
+    .boot-shell::before{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(90deg, transparent, rgba(240,193,106,.12), transparent);
-      transform:translateX(-120%);
-      animation:bootSweep 2.2s linear infinite;
+      background:
+        linear-gradient(90deg, transparent 0, rgba(194,173,90,.08) 50%, transparent 100%);
+      animation:scan 2.4s linear infinite;
       pointer-events:none;
     }
 
-    @keyframes bootSweep{
-      0%{transform:translateX(-120%)}
-      100%{transform:translateX(120%)}
+    @keyframes scan{
+      from{transform:translateX(-100%)}
+      to{transform:translateX(100%)}
     }
 
-    .sys,
-    .eyebrow,
-    .chip,
-    .nav a,
-    .btn,
-    .seal,
-    .status-key,
-    .hotspot-label,
-    .mode-btn,
-    .effect-btn,
-    .battle-tab span,
-    .fragment-key,
-    .mini,
-    .diag-key,
-    .tagline{
-      font-family:var(--sans);
+    .boot-kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.24em;
+      font-size:.78rem;
+      margin-bottom:18px;
+    }
+
+    .boot-title{
+      font-size:clamp(2rem, 4vw, 4rem);
+      line-height:.95;
+      margin:0 0 18px;
+      color:#efe7cf;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .boot-text{
+      color:var(--muted);
+      font-size:1rem;
+      max-width:58ch;
+      line-height:1.7;
+      margin-bottom:18px;
+    }
+
+    .boot-log{
+      border:1px solid var(--line);
+      background:rgba(8,11,8,.82);
+      padding:14px 16px;
+      min-height:104px;
+      display:grid;
+      gap:8px;
+      margin-bottom:16px;
+      font-size:.92rem;
+      color:#d9d0b3;
+    }
+
+    .boot-log-line{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+
+    .boot-log-line::before{
+      content:"⟐";
+      color:var(--plague);
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+
+    .boot-progress{
+      height:10px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+      margin-bottom:10px;
+    }
+
+    .boot-progress span{
+      display:block;
+      height:100%;
+      width:0%;
+      background:
+        linear-gradient(90deg, var(--plague-2), var(--accent), var(--plague));
+      box-shadow:0 0 18px rgba(183,171,93,.25);
+      transition:width .3s ease;
+    }
+
+    .boot-foot{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:.85rem;
       text-transform:uppercase;
       letter-spacing:.18em;
     }
 
-    .sys{
-      color:var(--brass2);
-      font-size:.74rem;
-      margin-bottom:14px;
-      position:relative;
-      z-index:2;
-    }
-
-    .boot-title{
-      font-family:var(--serif);
-      font-size:clamp(2.7rem, 7vw, 6rem);
-      line-height:.88;
-      margin:0 0 15px;
-      color:var(--bone2);
-      position:relative;
-      z-index:2;
-    }
-
-    .boot-status{
-      color:#dac8a0;
-      line-height:1.72;
-      font-size:.98rem;
-      min-height:3.4em;
-      margin:0 0 20px;
-      position:relative;
-      z-index:2;
-    }
-
-    .boot-grid{
-      display:grid;
-      grid-template-columns:repeat(4, minmax(0, 1fr));
-      gap:10px;
-      position:relative;
-      z-index:2;
-    }
-
-    .boot-cell{
-      border:1px solid rgba(196,150,73,.27);
-      background:rgba(8,10,6,.68);
-      padding:12px;
-      min-height:90px;
-    }
-
-    .boot-cell span{
-      display:block;
-      color:var(--brass2);
-      font-family:var(--sans);
-      text-transform:uppercase;
-      letter-spacing:.15em;
-      font-size:.56rem;
-      margin-bottom:8px;
-    }
-
-    .boot-cell strong{
-      font-weight:400;
-      color:#d7c6a0;
-      line-height:1.42;
-      font-size:.9rem;
-    }
-
-    .boot-cell.rot span,
-    .boot-cell.rot strong{
-      color:var(--rot);
-    }
-
-    .boot-button{
-      margin-top:16px;
-      position:relative;
-      z-index:2;
-      width:100%;
-      border:1px solid rgba(184,217,95,.38);
-      background:linear-gradient(180deg, rgba(184,217,95,.12), rgba(9,20,7,.82));
-      color:var(--rot);
-      padding:14px;
-      cursor:pointer;
-      font-family:var(--sans);
-      text-transform:uppercase;
-      letter-spacing:.20em;
-      transition:.2s ease;
-    }
-
-    .boot-button:hover{
-      border-color:rgba(184,217,95,.72);
-      box-shadow:0 0 26px rgba(184,217,95,.18);
-    }
-
-    .page{
-      position:relative;
-      z-index:3;
-      width:min(1560px, calc(100% - 34px));
+    .site-shell{
+      width:min(var(--max), calc(100% - 28px));
       margin:0 auto;
-      padding-bottom:72px;
-    }
-
-    .top-shell{
-      position:sticky;
-      top:0;
-      z-index:70;
-      padding:12px 0 8px;
-      background:linear-gradient(180deg, rgba(3,4,3,.96), rgba(3,4,3,.68) 72%, transparent);
-      backdrop-filter:blur(10px);
+      padding:24px 0 70px;
     }
 
     .topbar{
-      border:1px solid rgba(196,150,73,.25);
-      background:rgba(8,11,7,.76);
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:14px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(8,11,8,.88), rgba(8,10,8,.78));
+      display:flex;
       align-items:center;
-      padding:12px;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 18px;
+      margin-bottom:14px;
+      box-shadow:0 0 0 1px rgba(203,176,89,.07) inset;
     }
 
     .crumbs{
       display:flex;
-      align-items:center;
       flex-wrap:wrap;
-      gap:8px;
-      color:#9f9478;
-      font-family:var(--sans);
+      gap:10px;
+      align-items:center;
+      font-size:.88rem;
       text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:.68rem;
+      letter-spacing:.18em;
+      color:var(--muted);
     }
 
     .crumbs a{
-      color:#f0d39f;
+      color:#d7cca9;
       text-decoration:none;
-      border-bottom:1px solid transparent;
     }
 
-    .crumbs a:hover{
-      border-color:#f0d39f;
+    .crumbs span.sep{opacity:.45}
+
+    .page-tag{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-size:.78rem;
+      white-space:nowrap;
     }
 
-    .nav{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      gap:7px;
-    }
-
-    .nav a{
-      color:#ead9b4;
-      text-decoration:none;
-      border:1px solid rgba(196,150,73,.25);
-      background:rgba(14,17,10,.72);
-      padding:9px 10px;
-      font-size:.60rem;
-      transition:.2s ease;
-    }
-
-    .nav a:hover{
-      transform:translateY(-2px);
-      border-color:var(--lineStrong);
-      background:rgba(42,33,16,.82);
-    }
-
-    .chamber-strip{
-      margin-top:8px;
+    .section-nav{
       display:grid;
-      grid-template-columns:repeat(7, minmax(0,1fr));
-      gap:8px;
+      grid-template-columns:repeat(7, minmax(0, 1fr));
+      gap:10px;
+      margin-bottom:16px;
     }
 
-    .seal{
-      border:1px solid rgba(196,150,73,.18);
-      background:rgba(8,11,7,.55);
-      padding:9px 10px;
-      min-height:62px;
-      font-size:.52rem;
-      color:var(--brass2);
+    .section-nav a{
+      text-decoration:none;
+      color:#e9e0c6;
+      border:1px solid var(--line);
+      background:rgba(10,13,10,.82);
+      padding:14px 10px;
+      text-align:center;
+      font-size:.82rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      transition:.25s ease;
     }
 
-    .seal strong{
-      display:block;
-      color:#d7c7a1;
-      font-weight:400;
-      font-family:var(--mono);
-      text-transform:none;
-      letter-spacing:0;
-      font-size:.81rem;
-      line-height:1.35;
-      margin-top:6px;
-    }
-
-    .seal.rot,
-    .seal.rot strong{
-      color:var(--rot);
+    .section-nav a:hover{
+      background:rgba(20,24,17,.96);
+      border-color:var(--line-bright);
+      transform:translateY(-1px);
     }
 
     .hero{
-      margin-top:12px;
-      min-height:86vh;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      background:#060706;
-      isolation:isolate;
-    }
-
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      z-index:0;
-    }
-
-    .hero-bg img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      opacity:.80;
-      filter:contrast(1.08) saturate(.92);
-    }
-
-    .hero-bg::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(3,4,3,.96) 0%, rgba(3,4,3,.78) 35%, rgba(3,4,3,.34) 62%, rgba(3,4,3,.88) 100%),
-        radial-gradient(circle at 18% 50%, rgba(196,150,73,.18), transparent 24%),
-        radial-gradient(circle at 79% 44%, rgba(184,217,95,.15), transparent 28%),
-        linear-gradient(180deg, transparent 25%, rgba(0,0,0,.78));
-      pointer-events:none;
-    }
-
-    .hero-grid{
-      position:relative;
-      z-index:2;
-      min-height:86vh;
       display:grid;
-      grid-template-columns:.94fr 1.06fr;
-      gap:26px;
-      align-items:end;
-      padding:clamp(22px,4vw,54px);
+      grid-template-columns:1.2fr .88fr;
+      gap:20px;
+      padding:22px;
+      border:1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(9,13,9,.9), rgba(7,9,7,.95)),
+        radial-gradient(circle at 70% 30%, rgba(113,139,73,.13), transparent 28%);
+      box-shadow:0 0 0 1px rgba(201,173,86,.08) inset, var(--shadow);
+      margin-bottom:18px;
     }
 
-    .hero-title{
-      margin:0 0 16px;
-      font-family:var(--serif);
-      color:var(--bone2);
-      font-size:clamp(3.4rem, 9vw, 7.7rem);
-      line-height:.84;
-      max-width:10ch;
-      text-shadow:0 14px 38px rgba(0,0,0,.72);
+    .eyebrow{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.25em;
+      font-size:.8rem;
+      margin-bottom:12px;
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:clamp(3rem, 7vw, 6rem);
+      line-height:.9;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#f0e8d1;
     }
 
     .hero-sub{
-      margin:0 0 18px;
-      color:var(--rot);
-      font-family:var(--serif);
+      font-size:clamp(1.45rem,2.1vw,2.1rem);
+      color:#c8d59b;
       font-style:italic;
-      font-size:clamp(1.28rem, 2.4vw, 2.1rem);
-      line-height:1.12;
-      max-width:30ch;
+      line-height:1.15;
+      max-width:20ch;
+      margin:0 0 18px;
     }
 
     .hero-copy{
-      max-width:76ch;
-      color:#d7c7a1;
-      font-family:var(--serif);
-      font-size:1.08rem;
-      line-height:1.86;
-      margin:0 0 18px;
+      font-size:1.12rem;
+      line-height:1.82;
+      color:#ddd3b8;
+      max-width:62ch;
+      margin-bottom:22px;
     }
 
-    .hero-copy strong{
-      color:#f4e5c4;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:11px;
-      margin-top:22px;
-    }
-
-    .btn{
-      border:1px solid rgba(196,150,73,.38);
-      color:#f3dfba;
-      background:linear-gradient(180deg, rgba(196,150,73,.13), rgba(9,12,8,.86));
-      text-decoration:none;
-      padding:13px 15px;
-      font-size:.67rem;
-      cursor:pointer;
-      transition:.2s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-    }
-
-    .btn:hover{
-      transform:translateY(-2px);
-      border-color:var(--lineStrong);
-      background:linear-gradient(180deg, rgba(196,150,73,.22), rgba(27,31,16,.92));
-      box-shadow:0 18px 40px rgba(0,0,0,.34);
-    }
-
-    .btn.rot{
-      border-color:rgba(184,217,95,.44);
-      background:linear-gradient(180deg, rgba(184,217,95,.14), rgba(9,20,7,.86));
-    }
-
-    .hero-side{
-      display:grid;
-      gap:12px;
-      align-self:end;
-    }
-
-    .panel,
-    .card,
-    .relic-console,
-    .rumor-card,
-    .witness-card,
-    .effect-panel,
-    .battle-console,
-    .diag-card,
-    .quote{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(14,17,11,.89), rgba(6,9,6,.91));
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .panel::before,
-    .card::before,
-    .relic-console::before,
-    .rumor-card::before,
-    .witness-card::before,
-    .effect-panel::before,
-    .battle-console::before,
-    .diag-card::before,
-    .quote::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:linear-gradient(90deg, transparent, rgba(244,231,201,.055), transparent);
-      transform:translateX(-105%);
-      animation:sweep 9s linear infinite;
-      opacity:.50;
-    }
-
-    @keyframes sweep{
-      0%{transform:translateX(-105%)}
-      100%{transform:translateX(105%)}
-    }
-
-    .card{
-      padding:18px;
-      backdrop-filter:blur(8px);
-    }
-
-    .mini{
-      color:var(--brass2);
-      font-size:.58rem;
-      margin-bottom:8px;
-    }
-
-    .card h3,
-    .panel h3,
-    .rumor-card h3,
-    .witness-card h3,
-    .effect-panel h3,
-    .battle-console h3,
-    .diag-card h3{
-      font-family:var(--serif);
-      color:#f2dfb7;
-      font-size:1.55rem;
-      line-height:1.08;
-      margin:0 0 10px;
-    }
-
-    .card p,
-    .panel p,
-    .rumor-card p,
-    .witness-card p,
-    .effect-panel p,
-    .battle-console p,
-    .diag-card p,
-    .quote p{
-      color:#cbbd98;
-      font-family:var(--serif);
-      line-height:1.75;
-      margin:0;
-    }
-
-    .status-grid{
+    .hero-grid{
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
       gap:10px;
     }
 
-    .status{
-      border:1px solid rgba(196,150,73,.22);
-      background:rgba(8,10,6,.64);
-      padding:13px;
-      min-height:112px;
+    .info-card{
+      border:1px solid var(--line);
+      padding:14px;
+      background:rgba(13,17,13,.82);
+      min-height:110px;
     }
 
-    .status-key{
-      color:var(--brass2);
-      font-size:.55rem;
+    .info-card .label{
+      font-size:.74rem;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:var(--accent);
+      margin-bottom:10px;
+      display:block;
+    }
+
+    .info-card strong{
+      display:block;
+      font-size:1.05rem;
+      color:#efe6ce;
       margin-bottom:8px;
     }
 
-    .status strong{
-      display:block;
-      color:#f2dfb7;
-      font-family:var(--serif);
-      font-size:1.16rem;
-      line-height:1.18;
-      margin-bottom:7px;
-    }
-
-    .status small{
-      color:#a99d7d;
-      line-height:1.45;
-      font-size:.85rem;
-    }
-
-    .section{
-      padding-top:36px;
-    }
-
-    .section-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:18px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-
-    .eyebrow{
-      color:var(--brass2);
-      font-size:.70rem;
-      margin-bottom:10px;
-    }
-
-    .section-title{
+    .info-card p{
       margin:0;
-      color:#f3e3bf;
-      font-family:var(--serif);
-      font-size:clamp(2.15rem,5vw,4.2rem);
-      line-height:.94;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.96rem;
     }
 
-    .section-desc{
-      max-width:86ch;
-      color:#bdb08d;
-      font-family:var(--serif);
-      line-height:1.84;
-      font-size:1.03rem;
-      margin:11px 0 0;
-    }
-
-    .chip{
-      color:var(--rot);
-      border:1px solid rgba(184,217,95,.32);
-      background:rgba(10,22,7,.60);
-      padding:10px 12px;
-      font-size:.58rem;
-      white-space:nowrap;
-    }
-
-    .split{
+    .hero-media{
       display:grid;
-      grid-template-columns:.96fr 1.04fr;
-      gap:18px;
-      align-items:stretch;
+      gap:14px;
+      align-content:start;
     }
 
-    .image-full{
-      min-height:600px;
-      border:1px solid var(--line);
-      background:#060806;
-      box-shadow:var(--shadow);
+    .image-frame{
       position:relative;
-      overflow:hidden;
-    }
-
-    .image-full img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      filter:contrast(1.06) saturate(.94);
-    }
-
-    .image-full::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.48));
-      pointer-events:none;
-    }
-
-    .copy-panel{
-      padding:28px;
-    }
-
-    .copy-panel p{
-      color:#d1c29e;
-      font-family:var(--serif);
-      line-height:1.86;
-      font-size:1.05rem;
-      margin:0 0 18px;
-    }
-
-    .copy-panel p:last-child{
-      margin-bottom:0;
-    }
-
-    .relic-exam{
-      display:grid;
-      grid-template-columns:1.08fr .92fr;
-      gap:18px;
-      align-items:stretch;
-    }
-
-    .relic-stage{
-      min-height:760px;
       border:1px solid var(--line);
-      background:#060806;
-      box-shadow:var(--shadow);
-      position:relative;
+      background:#050605;
       overflow:hidden;
+      box-shadow:var(--shadow);
     }
 
-    .relic-stage img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      filter:contrast(1.08) saturate(.95);
-    }
-
-    .relic-stage::after{
+    .image-frame::before{
       content:"";
       position:absolute;
       inset:0;
       background:
-        radial-gradient(circle at 54% 42%, transparent 0 22%, rgba(0,0,0,.10) 34%, rgba(0,0,0,.48) 100%),
-        linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48));
+        linear-gradient(180deg, transparent 60%, rgba(3,3,3,.5) 100%);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .image-frame img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .frame-caption{
+      position:absolute;
+      left:12px;
+      bottom:10px;
+      z-index:2;
+      background:rgba(4,6,4,.82);
+      border:1px solid rgba(190,163,80,.35);
+      padding:8px 10px;
+      color:#eadfc0;
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      max-width:80%;
+    }
+
+    .mini-strip{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .mini-strip .image-frame{height:180px}
+
+    section.module{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(9,12,9,.88), rgba(7,9,7,.94));
+      padding:22px;
+      margin-top:18px;
+      box-shadow:0 0 0 1px rgba(201,173,86,.07) inset;
+    }
+
+    .module-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .module-head h2{
+      margin:0;
+      font-size:2rem;
+      color:#efe6ce;
+      text-transform:uppercase;
+      letter-spacing:.07em;
+    }
+
+    .module-note{
+      color:var(--muted);
+      font-size:.95rem;
+      max-width:50ch;
+      line-height:1.65;
+    }
+
+    .two-col{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .lore-block{
+      border:1px solid var(--line);
+      background:rgba(11,15,11,.8);
+      padding:18px;
+    }
+
+    .lore-block h3{
+      margin:0 0 10px;
+      font-size:1.24rem;
+      color:#efe4c8;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .lore-block p{
+      margin:0 0 12px;
+      color:#d8ceb1;
+      line-height:1.78;
+      font-size:1rem;
+    }
+
+    .lore-block p:last-child{margin-bottom:0}
+
+    .list-stack{
+      display:grid;
+      gap:12px;
+    }
+
+    .ritual-line{
+      border-left:2px solid rgba(191,166,83,.42);
+      padding:0 0 0 14px;
+      color:#d7ccb0;
+      line-height:1.72;
+    }
+
+    .ritual-line strong{
+      color:#efe4c8;
+      display:block;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      font-size:.82rem;
+      letter-spacing:.16em;
+    }
+
+    .exam-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .relic-stage{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#050705;
+      min-height:560px;
+    }
+
+    .relic-stage img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .relic-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 45%, transparent 0 26%, rgba(7,10,7,.1) 55%, rgba(2,4,2,.55) 100%);
       pointer-events:none;
     }
 
     .hotspot{
       position:absolute;
-      z-index:5;
-      width:24px;
-      height:24px;
-      border-radius:999px;
-      border:1px solid rgba(184,217,95,.78);
-      background:rgba(184,217,95,.18);
-      box-shadow:0 0 0 8px rgba(184,217,95,.06), 0 0 24px rgba(184,217,95,.36);
+      width:22px;
+      height:22px;
+      border-radius:50%;
+      border:2px solid #d5cf8a;
+      background:rgba(200,214,110,.28);
+      box-shadow:0 0 0 7px rgba(191,194,88,.10), 0 0 18px rgba(219,215,126,.35);
       cursor:pointer;
-      transform:translate(-50%,-50%);
       transition:.2s ease;
     }
 
-    .hotspot::before{
+    .hotspot::after{
       content:"";
       position:absolute;
-      inset:6px;
-      border-radius:inherit;
-      background:var(--rot);
-      box-shadow:0 0 18px rgba(184,217,95,.72);
+      inset:-9px;
+      border-radius:50%;
+      border:1px solid rgba(221,215,117,.25);
+      animation:pulse 2.4s ease infinite;
     }
 
-    .hotspot:hover,
-    .hotspot.active{
-      transform:translate(-50%,-50%) scale(1.16);
-      border-color:var(--brass2);
-      box-shadow:0 0 0 11px rgba(240,193,106,.08), 0 0 30px rgba(240,193,106,.38);
+    .hotspot:hover, .hotspot.active{
+      transform:scale(1.12);
+      background:rgba(218,226,126,.42);
+      border-color:#f0e2a4;
     }
 
-    .hotspot.hook{left:29%; top:38%;}
-    .hotspot.edge{left:39%; top:47%;}
-    .hotspot.spine{left:49%; top:42%;}
-    .hotspot.grip{left:64%; top:57%;}
-    .hotspot.ring{left:72%; top:63%;}
-    .hotspot.seal-point{left:56%; top:62%;}
-    .hotspot.corrosion{left:43%; top:35%;}
+    @keyframes pulse{
+      0%{transform:scale(.7); opacity:.85}
+      70%{transform:scale(1.3); opacity:0}
+      100%{opacity:0}
+    }
 
-    .relic-console{
-      padding:22px;
+    .hotspot.blade-head{left:29%; top:33%;}
+    .hotspot.inner-bite{left:34%; top:43%;}
+    .hotspot.collar{left:43%; top:40%;}
+    .hotspot.spear-haft{left:57%; top:52%;}
+    .hotspot.haft-wrap{left:68%; top:56%;}
+    .hotspot.chain-ring{left:79%; top:60%;}
+    .hotspot.relic-tags{left:57%; top:36%;}
+
+    .exam-panel{
       display:grid;
-      align-content:start;
-      gap:16px;
-      min-height:760px;
-    }
-
-    .relic-console h3{
-      font-size:2.15rem;
-      line-height:1;
-      margin:0;
-    }
-
-    .mode-row{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-    }
-
-    .mode-btn,
-    .effect-btn{
-      border:1px solid rgba(196,150,73,.26);
-      background:rgba(8,11,7,.76);
-      color:#e8d8b2;
-      padding:13px;
-      cursor:pointer;
-      font-size:.58rem;
-      transition:.2s ease;
-    }
-
-    .mode-btn:hover,
-    .mode-btn.active,
-    .effect-btn:hover,
-    .effect-btn.active{
-      transform:translateY(-2px);
-      border-color:var(--lineStrong);
-      color:var(--brass2);
-      background:linear-gradient(180deg, rgba(196,150,73,.14), rgba(18,23,12,.92));
-    }
-
-    .exam-output{
-      border:1px solid rgba(184,217,95,.22);
-      background:
-        radial-gradient(circle at 100% 0%, rgba(184,217,95,.10), transparent 35%),
-        rgba(6,9,6,.74);
-      padding:18px;
-      min-height:430px;
-      display:grid;
-      align-content:start;
       gap:14px;
     }
 
-    .hotspot-label{
-      color:var(--rot);
-      font-size:.58rem;
-    }
-
-    .exam-output h4{
-      color:#f3e3bf;
-      font-family:var(--serif);
-      font-size:2rem;
-      margin:0;
-      line-height:1;
-    }
-
-    .exam-output p{
-      color:#d2c39f;
-      font-family:var(--serif);
-      line-height:1.82;
-      margin:0;
-    }
-
-    .threat-line{
-      display:grid;
-      grid-template-columns:155px 1fr;
-      gap:12px;
-      border-bottom:1px dotted rgba(196,150,73,.20);
-      padding-bottom:8px;
-      color:#d2c39f;
-      font-size:.92rem;
-    }
-
-    .threat-line strong{
-      color:var(--brass2);
-      font-family:var(--sans);
-      text-transform:uppercase;
-      letter-spacing:.13em;
-      font-size:.56rem;
-    }
-
-    .rumor-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:14px;
-    }
-
-    .rumor-card{
-      padding:18px;
-      min-height:310px;
-    }
-
-    .rumor-card h3{
-      font-size:1.48rem;
-    }
-
-    .rumor-card:nth-child(2),
-    .rumor-card:nth-child(4){
-      transform:translateY(18px);
-    }
-
-    .triad{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:16px;
-    }
-
-    .data-card{
+    .part-card{
       border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(14,17,11,.89), rgba(6,9,6,.91));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .data-card img{
-      width:100%;
-      height:310px;
-      object-fit:cover;
-      display:block;
-      filter:contrast(1.06) saturate(.94);
-      border-bottom:1px solid var(--line);
-    }
-
-    .data-body{
+      background:rgba(11,14,11,.84);
       padding:18px;
+      min-height:240px;
     }
 
-    .data-body h3{
-      color:#f2dfb7;
-      font-family:var(--serif);
-      font-size:1.64rem;
-      line-height:1.05;
+    .part-kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-size:.76rem;
+      margin-bottom:8px;
+    }
+
+    .part-card h3{
       margin:0 0 10px;
+      font-size:1.45rem;
+      color:#efe6ce;
     }
 
-    .data-body p{
-      color:#cbbd98;
-      font-family:var(--serif);
-      line-height:1.75;
-      margin:0;
+    .part-lead{
+      margin:0 0 14px;
+      color:#d8cfb2;
+      line-height:1.72;
+      font-size:1rem;
     }
 
-    .effects-grid{
-      display:grid;
-      grid-template-columns:.86fr 1.14fr;
-      gap:18px;
+    .tab-pills{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
     }
 
-    .effects-controls{
+    .tab-pills button{
+      background:#0f140f;
+      color:#e5dcbc;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      cursor:pointer;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.74rem;
+    }
+
+    .tab-pills button.active{
+      background:#182016;
+      border-color:var(--line-bright);
+      color:#f0e7cc;
+    }
+
+    .mode-pane{
+      border:1px solid rgba(188,165,87,.28);
+      background:rgba(15,18,15,.76);
+      padding:14px;
+    }
+
+    .mode-pane strong{
+      display:block;
+      color:#efe5ca;
+      font-size:1.08rem;
+      margin-bottom:10px;
+    }
+
+    .mode-pane p{
+      margin:0 0 10px;
+      color:#d2c7aa;
+      line-height:1.72;
+    }
+
+    .mode-meta{
       display:grid;
       gap:10px;
-      padding:20px;
+      margin-top:14px;
     }
 
-    .effect-output{
-      padding:26px;
-      min-height:520px;
+    .mode-meta div{
+      border-top:1px solid rgba(188,165,87,.18);
+      padding-top:10px;
+      color:#d3c8ac;
+      line-height:1.65;
+      font-size:.95rem;
+    }
+
+    .mode-meta span{
+      display:block;
+      color:var(--accent);
+      text-transform:uppercase;
+      font-size:.72rem;
+      letter-spacing:.18em;
+      margin-bottom:4px;
+    }
+
+    .tri-grid{
       display:grid;
-      align-content:center;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
     }
 
-    .effect-output h3{
-      color:#f3e3bf;
-      font-size:2.5rem;
-      line-height:1;
-      margin:0 0 14px;
+    .effect-card{
+      border:1px solid var(--line);
+      padding:16px;
+      background:rgba(12,15,12,.82);
     }
 
-    .effect-output p{
-      color:#d1c29e;
-      font-family:var(--serif);
+    .effect-card h3{
+      margin:0 0 10px;
+      color:#efe6ce;
+      text-transform:uppercase;
+      letter-spacing:.08em;
       font-size:1.08rem;
-      line-height:1.86;
-      margin:0 0 18px;
     }
 
-    .effect-output ul{
+    .effect-card ul{
       margin:0;
-      padding-left:20px;
-      color:#cbbd98;
-      font-family:var(--serif);
-      line-height:1.8;
+      padding-left:18px;
+      color:#d6ccb0;
+      line-height:1.75;
     }
 
-    .witness-layout{
+    .effect-card li+li{margin-top:6px}
+
+    .witness-grid{
       display:grid;
       grid-template-columns:.95fr 1.05fr;
       gap:18px;
     }
 
-    .witness-card{
-      padding:24px;
-      min-height:520px;
+    .quote-stack{
       display:grid;
-      align-content:center;
-      gap:16px;
+      gap:12px;
     }
 
-    .witness-card h3{
-      font-size:2.2rem;
-      line-height:1;
+    blockquote.fragment{
+      margin:0;
+      border:1px solid var(--line);
+      background:rgba(10,13,10,.84);
+      padding:18px;
+      color:#e0d6ba;
+      line-height:1.78;
+      font-size:1rem;
+      position:relative;
     }
 
-    .fragment-key{
-      color:var(--brass2);
-      font-size:.58rem;
+    blockquote.fragment::before{
+      content:"Recovered Fragment";
+      display:block;
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.74rem;
+      margin-bottom:10px;
     }
 
-    .witness-nav{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .battle-shell{
+    .battle-layout{
       display:grid;
-      grid-template-columns:.92fr 1.08fr;
+      grid-template-columns:1.03fr .97fr;
       gap:18px;
-      align-items:stretch;
+      align-items:start;
     }
 
-    .battle-image{
-      min-height:720px;
+    .battle-stage{
       border:1px solid var(--line);
       background:#060806;
-      box-shadow:var(--shadow);
-      position:relative;
       overflow:hidden;
+      position:relative;
     }
 
-    .battle-image img{
+    .battle-stage img{
       width:100%;
-      height:100%;
+      height:560px;
       object-fit:cover;
       display:block;
-      filter:contrast(1.06) saturate(.98);
-      transition:opacity .25s ease;
     }
 
-    .battle-image::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 70% 40%, rgba(214,154,232,.11), transparent 28%),
-        linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.50));
-      pointer-events:none;
+    .battle-caption{
+      padding:16px;
+      border-top:1px solid var(--line);
+      background:rgba(8,11,8,.95);
     }
 
-    .battle-console{
-      min-height:720px;
-      display:grid;
-      grid-template-rows:auto auto 1fr;
-      gap:14px;
-      padding:22px;
+    .battle-caption .phase{
+      display:block;
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.74rem;
+      margin-bottom:8px;
     }
 
-    .battle-console h3{
-      font-size:2.45rem;
-      line-height:.98;
+    .battle-caption h3{
+      margin:0 0 10px;
+      font-size:1.35rem;
+      color:#efe5c9;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .battle-caption p{
       margin:0;
+      color:#d6ccb0;
+      line-height:1.72;
     }
 
-    .battle-tabs{
+    .battle-thumbs{
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:10px;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
     }
 
-    .battle-tab{
-      border:1px solid rgba(196,150,73,.25);
-      background:rgba(8,11,7,.76);
-      color:#e8d8b2;
-      padding:12px;
-      min-height:70px;
+    .thumb-btn{
+      border:1px solid var(--line);
+      background:#0b0e0b;
+      color:#e6ddc0;
+      padding:0;
       cursor:pointer;
+      overflow:hidden;
       text-align:left;
       transition:.2s ease;
     }
 
-    .battle-tab span{
+    .thumb-btn img{
+      width:100%;
+      height:145px;
+      object-fit:cover;
       display:block;
-      color:var(--slaanesh);
-      font-size:.52rem;
-      margin-bottom:7px;
     }
 
-    .battle-tab strong{
-      font-family:var(--serif);
-      font-size:1.05rem;
-      font-weight:400;
-      color:#f0dfb8;
+    .thumb-body{
+      padding:12px;
     }
 
-    .battle-tab:hover,
-    .battle-tab.active{
-      transform:translateY(-2px);
-      border-color:var(--violetLine);
-      background:linear-gradient(180deg, rgba(214,154,232,.12), rgba(18,12,23,.80));
-    }
-
-    .battle-output{
-      border:1px solid var(--violetLine);
-      background:
-        radial-gradient(circle at 96% 0%, rgba(214,154,232,.13), transparent 34%),
-        radial-gradient(circle at 0% 100%, rgba(184,217,95,.10), transparent 32%),
-        rgba(7,9,6,.76);
-      padding:20px;
-      display:grid;
-      align-content:start;
-      gap:14px;
-    }
-
-    .battle-output p{
-      color:#d7c8a4;
-      font-family:var(--serif);
-      line-height:1.85;
-      font-size:1.02rem;
-      margin:0;
-    }
-
-    .battle-output .mini{
-      color:var(--slaanesh);
-    }
-
-    .battle-output h4{
-      margin:0;
-      color:#f3e3bf;
-      font-family:var(--serif);
-      font-size:2rem;
-      line-height:1;
-    }
-
-    .diag-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:14px;
-    }
-
-    .diag-card{
-      padding:18px;
-      min-height:250px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .diag-key{
-      color:var(--brass2);
-      font-size:.56rem;
-    }
-
-    .diag-card h3{
-      margin:0;
-      font-size:1.46rem;
-      line-height:1.06;
-    }
-
-    .diag-card p{
-      flex:1;
-    }
-
-    .footer{
-      padding:28px;
-    }
-
-    .footer h2{
-      margin:0 0 14px;
-      color:#f3e3bf;
-      font-family:var(--serif);
-      font-size:clamp(2.3rem,5vw,4.3rem);
-      line-height:.95;
-    }
-
-    .footer p{
-      color:#c9bb98;
-      font-family:var(--serif);
-      line-height:1.86;
-      font-size:1.05rem;
-      margin:0 0 16px;
-    }
-
-    .footer-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .floating{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      z-index:90;
-      width:min(430px, calc(100% - 36px));
-      border:1px solid rgba(184,217,95,.32);
-      background:rgba(6,10,5,.88);
-      backdrop-filter:blur(12px);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .floating-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      border-bottom:1px solid rgba(184,217,95,.18);
-      padding:12px 14px;
-      color:var(--rot);
-      font-family:var(--sans);
+    .thumb-body span{
+      display:block;
+      color:var(--accent);
       text-transform:uppercase;
       letter-spacing:.16em;
-      font-size:.62rem;
+      font-size:.7rem;
+      margin-bottom:6px;
     }
 
-    .floating button{
-      border:0;
-      background:transparent;
-      color:#e6d6b2;
-      cursor:pointer;
+    .thumb-body strong{
+      display:block;
+      color:#efe5ca;
+      font-size:1rem;
+      margin-bottom:6px;
+    }
+
+    .thumb-body p{
+      margin:0;
+      color:#bfb495;
+      font-size:.9rem;
+      line-height:1.55;
+    }
+
+    .thumb-btn.active,
+    .thumb-btn:hover{
+      transform:translateY(-2px);
+      border-color:var(--line-bright);
+      box-shadow:0 12px 25px rgba(0,0,0,.3);
+    }
+
+    .footer-seal{
+      margin-top:20px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(9,12,9,.9), rgba(7,9,7,.95));
+      padding:22px;
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:18px;
+      align-items:center;
+    }
+
+    .seal-copy h2{
+      margin:0 0 12px;
+      font-size:1.85rem;
+      color:#efe5ca;
+      text-transform:uppercase;
+      letter-spacing:.07em;
+    }
+
+    .seal-copy p{
+      margin:0 0 12px;
+      color:#d8ceb2;
+      line-height:1.78;
       font-size:1rem;
     }
 
-    .floating-body{
+    .seal-copy p:last-child{margin-bottom:0}
+
+    .seal-status{
+      display:grid;
+      gap:12px;
+    }
+
+    .status-row{
+      border:1px solid var(--line);
       padding:14px;
-      color:#d5c6a3;
-      font-family:var(--serif);
-      line-height:1.72;
-      font-size:.96rem;
+      background:rgba(12,16,12,.85);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
     }
 
-    @media (max-width:1200px){
-      .topbar,
-      .hero-grid,
-      .relic-exam,
-      .split,
-      .effects-grid,
-      .witness-layout,
-      .battle-shell{
-        grid-template-columns:1fr;
-      }
-
-      .chamber-strip{
-        grid-template-columns:repeat(3,minmax(0,1fr));
-      }
-
-      .rumor-grid,
-      .diag-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
-
-      .triad{
-        grid-template-columns:1fr;
-      }
-
-      .relic-stage,
-      .relic-console,
-      .battle-image,
-      .battle-console{
-        min-height:auto;
-      }
-
-      .relic-stage,
-      .battle-image,
-      .image-full{
-        min-height:460px;
-      }
-
-      .hero-grid{
-        min-height:auto;
-      }
-
-      .hero{
-        min-height:auto;
-      }
+    .status-row span{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.75rem;
     }
 
-    @media (max-width:760px){
-      .page{
-        width:min(100% - 18px, 1560px);
-      }
+    .status-row strong{
+      color:#eee5ca;
+      font-size:1rem;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
 
-      .boot-grid,
-      .chamber-strip,
-      .status-grid,
-      .mode-row,
-      .battle-tabs,
-      .rumor-grid,
-      .diag-grid{
-        grid-template-columns:1fr;
-      }
+    .whisper-box{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      width:min(360px, calc(100% - 24px));
+      border:1px solid var(--line);
+      background:rgba(5,8,5,.95);
+      box-shadow:var(--shadow);
+      z-index:20;
+    }
 
-      .hero-grid{
-        padding:22px;
-      }
+    .whisper-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.78rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
 
-      .hero-title{
-        font-size:clamp(3rem,15vw,4.9rem);
-      }
+    .whisper-head button{
+      background:none;
+      border:none;
+      color:#dbcfae;
+      font-size:1.25rem;
+      cursor:pointer;
+    }
 
-      .hotspot{
-        width:20px;
-        height:20px;
-      }
+    .whisper-body{
+      padding:16px;
+      color:#e3d9bc;
+      line-height:1.7;
+      font-size:1rem;
+    }
 
-      .floating{
-        left:10px;
-        right:10px;
-        width:auto;
-      }
+    @media (max-width: 1200px){
+      .section-nav{grid-template-columns:repeat(4, minmax(0, 1fr))}
+      .hero,.two-col,.exam-grid,.witness-grid,.battle-layout,.footer-seal{grid-template-columns:1fr}
+      .tri-grid{grid-template-columns:1fr}
+      .battle-stage img{height:460px}
+    }
 
-      .rumor-card:nth-child(2),
-      .rumor-card:nth-child(4){
-        transform:none;
-      }
+    @media (max-width: 780px){
+      .site-shell{width:min(var(--max), calc(100% - 16px)); padding-top:14px}
+      .topbar{padding:12px}
+      .hero, section.module, .footer-seal{padding:16px}
+      h1{font-size:2.55rem}
+      .hero-sub{font-size:1.3rem}
+      .hero-grid,.mini-strip,.battle-thumbs,.section-nav{grid-template-columns:1fr}
+      .relic-stage{min-height:420px}
+      .battle-stage img{height:320px}
+      .whisper-box{right:8px; bottom:8px}
     }
   </style>
 </head>
-
 <body>
-  <canvas id="relicCanvas"></canvas>
+  <canvas id="sporeCanvas"></canvas>
+  <div class="noise"></div>
 
-  <div class="boot" id="boot">
-    <div class="boot-frame">
-      <div class="sys">RELIQUARY CHAMBER // SEALED RELIC ACCESS // THE MERCY-SICKLE</div>
-      <h1 class="boot-title">Unlatch Reliquary</h1>
-      <p class="boot-status" id="bootStatus">
-        CHAMBER LOCKS: engaged... censers active... chain tension detected... blade presence confirmed...
+  <div class="boot-overlay" id="bootOverlay">
+    <div class="boot-shell">
+      <div class="boot-kicker">Restricted Reliquary Chamber // Mercy-Sickle</div>
+      <h2 class="boot-title">Reliquary<br>Unsealing</h2>
+      <p class="boot-text">
+        Chamber-nine is being opened under witness. Execution polearm profile detected.
+        Thick curved mercy blade, long spear-haft, devotional residue, bone charm carrypoints,
+        refusal-memory particulate. Please stand behind the line and do not interpret the ring as permission.
       </p>
-
-      <div class="boot-grid">
-        <div class="boot-cell">
-          <span>Relic Status</span>
-          <strong>Active. Edge behavior responsive to proximity.</strong>
-        </div>
-        <div class="boot-cell">
-          <span>Bearer</span>
-          <strong>Mortivus Classarion. Last verified wielder.</strong>
-        </div>
-        <div class="boot-cell rot">
-          <span>Contamination</span>
-          <strong>Physical, psychological, spiritual, ideational.</strong>
-        </div>
-        <div class="boot-cell rot">
-          <span>Warning</span>
-          <strong>Do not regard the inward hook for extended intervals.</strong>
-        </div>
+      <div class="boot-log" id="bootLog"></div>
+      <div class="boot-progress"><span id="bootBar"></span></div>
+      <div class="boot-foot">
+        <span>Edge-memory purge engaged</span>
+        <span>Sentence mass verified</span>
+        <span>Archive copying live</span>
       </div>
-
-      <button class="boot-button" id="unlockBtn">UNLATCH RELIQUARY</button>
     </div>
   </div>
 
-  <main class="page">
-    <header class="top-shell">
-      <div class="topbar">
-        <div class="crumbs">
-          <a href="index.html">The Septicarium</a>
-          <span>/</span>
-          <a href="plaguebound-dossier.html">Plaguebound Dossier</a>
-          <span>/</span>
-          <a href="mortivus-classarion.html">Mortivus Classarion</a>
-          <span>/</span>
-          <span>The Mercy-Sickle</span>
-        </div>
-
-        <nav class="nav">
-          <a href="#examination">Examination</a>
-          <a href="#provenance">Provenance</a>
-          <a href="#doctrine">Doctrine</a>
-          <a href="#effects">Effects</a>
-          <a href="#witness">Witnesses</a>
-          <a href="#battle">Battle Fragment</a>
-          <a href="#seal">Seal</a>
-        </nav>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="crumbs">
+        <a href="index.html">The Septicarium</a>
+        <span class="sep">/</span>
+        <a href="plaguebound-dossier.html">Plaguebound Dossier</a>
+        <span class="sep">/</span>
+        <a href="mortivus-classarion.html">Mortivus Classarion</a>
+        <span class="sep">/</span>
+        <span>The Mercy-Sickle</span>
       </div>
-
-      <div class="chamber-strip">
-        <div class="seal">Relic Class<strong>Execution Instrument</strong></div>
-        <div class="seal">Primary Form<strong>Hooked plague-sickle</strong></div>
-        <div class="seal">Bearer<strong>Mortivus Classarion</strong></div>
-        <div class="seal rot">Edge Behavior<strong>Refusal harvesting</strong></div>
-        <div class="seal rot">Threat Vector<strong>Body, belief, identity</strong></div>
-        <div class="seal">Access Level<strong>Reliquary restricted</strong></div>
-        <div class="seal rot">Chamber Note<strong>The blade listens last</strong></div>
-      </div>
+      <div class="page-tag">Sealed Relic Fragment</div>
     </header>
 
-    <section class="hero">
-      <div class="hero-bg">
-        <img src="Assets/Mercy-Sickle/mercy-sickle-hero.jpeg" alt="The Mercy-Sickle mounted inside a Death Guard reliquary chamber">
+    <nav class="section-nav">
+      <a href="#hero">Relic Summary</a>
+      <a href="#anatomy">Examination</a>
+      <a href="#provenance">Provenance</a>
+      <a href="#doctrine">Use & Mercy</a>
+      <a href="#effects">Observed Effects</a>
+      <a href="#witness">Witness Fragments</a>
+      <a href="#battle">Perfumed Refusal</a>
+    </nav>
+
+    <section class="hero" id="hero">
+      <div>
+        <div class="eyebrow">Septicarium Copy // Blade Chamber // Under Watch</div>
+        <h1>The Mercy-Sickle</h1>
+        <p class="hero-sub">A spear-hafted plague sickle carried like a final argument.</p>
+        <p class="hero-copy">
+          The Mercy-Sickle is not a farming crescent, nor a berserker’s sweeping scythe. It is a long,
+          execution-polearm: a spear-like haft bearing a shorter, thicker curved blade near the head,
+          built to catch, wrench, expose, and finish. Mortivus does not flourish with it. He advances,
+          arrests resistance, and turns the chosen target into instruction for those still watching.
+        </p>
+
+        <div class="hero-grid">
+          <article class="info-card">
+            <span class="label">Primary Form</span>
+            <strong>Spear-Hafted Plague Sickle</strong>
+            <p>Long haft. Reinforced collar mount. Short heavy mercy blade. Inner catching bite. Chain-ring retention point. Devotional tags and refusal residue.</p>
+          </article>
+          <article class="info-card">
+            <span class="label">Tactical Purpose</span>
+            <strong>Selection Before Slaughter</strong>
+            <p>The weapon controls distance, tears a target out of coherence, and makes the wound public enough to destabilize everyone who survives it.</p>
+          </article>
+          <article class="info-card">
+            <span class="label">Naming Logic</span>
+            <strong>Mercy as Final Clarity</strong>
+            <p>It is called mercy because Mortivus reserves it for the moment when denial must stop pretending it is endurance.</p>
+          </article>
+          <article class="info-card">
+            <span class="label">Chamber Warning</span>
+            <strong>Do Not Misdescribe the Blade</strong>
+            <p>The curved cutting head is short, thick, and mounted to a polearm. Do not catalogue it as a simple hook or light sickle.</p>
+          </article>
+        </div>
       </div>
 
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">Sealed Relic Fragment // Weapon-Chamber Access // The Septicarium</div>
-          <h1 class="hero-title">The Mercy-Sickle</h1>
-          <p class="hero-sub">The blade does not end resistance. It teaches resistance what it was worth.</p>
+      <div class="hero-media">
+        <figure class="image-frame" style="height:520px;">
+          <img src="Assets/Mercy-Sickle/mercy-sickle-hero.jpeg" alt="The Mercy-Sickle in reliquary display" />
+          <figcaption class="frame-caption">Primary Reliquary View // Mercy Pattern Polearm</figcaption>
+        </figure>
 
-          <p class="hero-copy">
-            The Mercy-Sickle is not recorded as a common weapon. It is catalogued as a <strong>behavioral relic</strong>: a hooked plague-sickle used by Mortivus Classarion to pull commanders from formation, peel meaning from oath-holders, and grant the condemned one final recognition before the end closes around them.
-          </p>
-
-          <p class="hero-copy">
-            Its name is not compassionate. Its name is a doctrine. Mercy, in this chamber, means the removal of illusion before death. It means the victim understands the exact shape of defeat before the blade makes that understanding permanent.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn rot" href="#examination">Begin Relic Examination</a>
-            <a class="btn" href="#battle">Open The Perfumed Refusal</a>
-            <a class="btn" href="mortivus-classarion.html">Return to Mortivus</a>
-          </div>
+        <div class="mini-strip">
+          <figure class="image-frame">
+            <img src="Assets/Mercy-Sickle/reliquary-unsealing.jpeg" alt="Reliquary chamber being unsealed" />
+            <figcaption class="frame-caption">Chamber Unsealing</figcaption>
+          </figure>
+          <figure class="image-frame">
+            <img src="Assets/Mercy-Sickle/mercy-sickle-provenance.jpeg" alt="Archive evidence and origin traces of the Mercy-Sickle" />
+            <figcaption class="frame-caption">Origin Rumor Cluster</figcaption>
+          </figure>
         </div>
-
-        <aside class="hero-side">
-          <div class="card">
-            <div class="mini">Reliquary Designation</div>
-            <h3>Hooked Plague-Sickle // Mercy Pattern</h3>
-            <p>
-              Short heavy haft. Wrapped grip. Rusted chain-ring. Crescent hooked blade. Jagged inner cutting edge. Pitted spine. Green corrosion pockets. Devotional tags. Bone charms. Refusal residue.
-            </p>
-          </div>
-
-          <div class="status-grid">
-            <div class="status">
-              <div class="status-key">Observed Use</div>
-              <strong>Extraction</strong>
-              <small>Hooks targets from certainty, cover, formation, or faith.</small>
-            </div>
-            <div class="status">
-              <div class="status-key">Primary Lesson</div>
-              <strong>Recognition</strong>
-              <small>The target understands before the wound completes.</small>
-            </div>
-            <div class="status">
-              <div class="status-key">Physical Effect</div>
-              <strong>Seam Opening</strong>
-              <small>Armor, skin, and symbolic protection are peeled apart.</small>
-            </div>
-            <div class="status">
-              <div class="status-key">Spiritual Effect</div>
-              <strong>Oath Collapse</strong>
-              <small>Conviction becomes conscious of its own exhaustion.</small>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="mini">Chamber Warning</div>
-            <p>
-              The blade should not be studied as a cutting edge alone. The hook is the argument. The edge is only the conclusion.
-            </p>
-          </div>
-        </aside>
       </div>
     </section>
 
-    <section class="section" id="examination">
-      <div class="section-header">
+    <section class="module" id="anatomy">
+      <div class="module-head">
         <div>
           <div class="eyebrow">Interactive Relic Examination</div>
-          <h2 class="section-title">The Weapon Is Examined in Pieces Because No One Agrees What Part Wounds First</h2>
-          <p class="section-desc">
-            Select a marked part of the Mercy-Sickle. The chamber can render each component in surgical language or liturgical language. Neither mode is complete. The weapon was not made to be understood cleanly.
-          </p>
+          <h2>Weapon Anatomy</h2>
         </div>
-        <div class="chip">Hotspot Relic Study // Proximity Response Active</div>
+        <div class="module-note">
+          Select a point on the weapon. The mapping below follows the actual form shown in the reliquary image:
+          a long spear-haft with a short, thick, curved mercy blade mounted near the head.
+        </div>
       </div>
 
-      <div class="relic-exam">
+      <div class="exam-grid">
         <div class="relic-stage" id="relicStage">
-          <img src="Assets/Mercy-Sickle/mercy-sickle-examination.jpeg" alt="Forensic examination of the Mercy-Sickle on a reliquary slab">
+          <img src="Assets/Mercy-Sickle/mercy-sickle-examination.jpeg" alt="Examination plate for the Mercy-Sickle" />
+          <div class="relic-overlay"></div>
 
-          <button class="hotspot hook active" data-part="hook" aria-label="Inspect hook"></button>
-          <button class="hotspot edge" data-part="edge" aria-label="Inspect inner edge"></button>
-          <button class="hotspot spine" data-part="spine" aria-label="Inspect spine"></button>
-          <button class="hotspot grip" data-part="grip" aria-label="Inspect grip"></button>
-          <button class="hotspot ring" data-part="ring" aria-label="Inspect chain ring"></button>
-          <button class="hotspot seal-point" data-part="seals" aria-label="Inspect devotional seals"></button>
-          <button class="hotspot corrosion" data-part="corrosion" aria-label="Inspect corrosion pockets"></button>
+          <button class="hotspot blade-head active" data-part="bladeHead" aria-label="Inspect thick curved mercy blade"></button>
+          <button class="hotspot inner-bite" data-part="innerBite" aria-label="Inspect inner cutting bite"></button>
+          <button class="hotspot collar" data-part="collar" aria-label="Inspect blade collar mount"></button>
+          <button class="hotspot spear-haft" data-part="spearHaft" aria-label="Inspect spear-like haft"></button>
+          <button class="hotspot haft-wrap" data-part="haftWrap" aria-label="Inspect wrapped handling section"></button>
+          <button class="hotspot chain-ring" data-part="chainRing" aria-label="Inspect chain ring"></button>
+          <button class="hotspot relic-tags" data-part="relicTags" aria-label="Inspect relic tags and seals"></button>
         </div>
 
-        <div class="relic-console">
-          <div>
-            <div class="mini">Relic Console</div>
-            <h3 id="examTitle">The Inward Hook</h3>
-            <p id="examLead">
-              The hook is not decorative. It is the Mercy-Sickle’s central grammar.
-            </p>
-          </div>
-
-          <div class="mode-row">
-            <button class="mode-btn active" data-mode="surgical">Surgical View</button>
-            <button class="mode-btn" data-mode="liturgical">Liturgical View</button>
-          </div>
-
-          <div class="exam-output">
-            <div class="hotspot-label" id="examLabel">EXAMINATION NODE // HOOK</div>
-            <h4 id="examSubtitle">Extraction Before Execution</h4>
-            <p id="examBody">
-              The inward hook catches armor lips, exposed joints, ceremonial chains, weapon straps, prayer cords, and the small places where a warrior believes themselves still arranged. Mortivus uses it to remove the target from position before removing them from life.
+        <div class="exam-panel">
+          <article class="part-card">
+            <div class="part-kicker" id="partLabel">Examination Node // Curved Blade Head</div>
+            <h3 id="partTitle">The Thick Curved Mercy Blade</h3>
+            <p class="part-lead" id="partLead">
+              This is the part that gives the weapon its name: not a thin farming sickle, but a short, heavy curved execution blade mounted to a spear-like haft.
             </p>
 
-            <div class="threat-line">
-              <strong>Battle Use</strong>
-              <span id="examUse">Pulls commanders, priests, champions, and oath-holders from the structure that made them brave.</span>
+            <div class="tab-pills">
+              <button class="mode-btn active" data-mode="surgical">Surgical Reading</button>
+              <button class="mode-btn" data-mode="liturgical">Liturgical Reading</button>
             </div>
-            <div class="threat-line">
-              <strong>Effect</strong>
-              <span id="examEffect">The victim experiences the wound before the cut arrives.</span>
-            </div>
-            <div class="threat-line">
-              <strong>Warning</strong>
-              <span id="examWarning">Do not confuse the hook with restraint. It is a verdict taking hold.</span>
-            </div>
-          </div>
 
-          <div class="card">
-            <div class="mini">Proximity Response</div>
-            <p id="proximityText">
-              Chamber stable. Edge pattern has not yet noticed prolonged attention.
-            </p>
+            <div class="mode-pane">
+              <strong id="modeSubtitle">Short Blade, Heavy Sentence</strong>
+              <p id="modeBody">
+                The Mercy-Sickle’s blade is shorter and thicker than a common scythe or crescent weapon. It is a dense curved killing head fixed near the end of a long haft, built to bite, catch, and lever armored targets rather than sweep elegantly through open air.
+              </p>
+              <div class="mode-meta">
+                <div><span>Use</span><div id="modeUse">Used at close-to-mid reach to catch armor, punish forward movement, and drag selected enemies out of formation.</div></div>
+                <div><span>Effect</span><div id="modeEffect">The target feels the weapon’s mass before the edge completes the wound.</div></div>
+                <div><span>Warning</span><div id="modeWarning">Do not describe the blade as elegant. It is compact, brutal, and deliberately heavy.</div></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="list-stack">
+            <article class="lore-block">
+              <h3>Supplementary Plate // Close Edge Memory</h3>
+              <figure class="image-frame" style="height:260px; margin:0 0 12px;">
+                <img src="Assets/Mercy-Sickle/edge-memory-closeup.jpeg" alt="Close view of the blade edge and memory residue" />
+                <figcaption class="frame-caption">Edge Residue // Refusal Memory Carryover</figcaption>
+              </figure>
+              <p>
+                The blade edge retains witness pressure more readily than the rest of the weapon. Chamber adepts report that survivors remember
+                the inner curve first, then the pause before the cut, then the realization that the weapon was never drawn for chaos, only for proof.
+              </p>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="provenance">
-      <div class="section-header">
+    <section class="module" id="provenance">
+      <div class="module-head">
         <div>
-          <div class="eyebrow">Contradictory Origin Records</div>
-          <h2 class="section-title">Provenance Rumors Preserved Without Resolution</h2>
-          <p class="section-desc">
-            The Septicarium does not resolve every contradiction. Some relics become more truthful when their origin remains multiple. The Mercy-Sickle has at least four preserved histories, and each one may be a symptom of the blade remembering itself differently.
-          </p>
+          <div class="eyebrow">Origin Cluster // Unstable</div>
+          <h2>Provenance Rumors</h2>
         </div>
-        <div class="chip">Archive Tags // Origin Unsettled</div>
+        <div class="module-note">
+          No single origin has survived chamber review. The weapon is documented through contradiction, surviving only as rumors strong enough to injure certainty.
+        </div>
       </div>
 
-      <div class="split">
-        <div class="image-full">
-          <img src="Assets/Mercy-Sickle/mercy-sickle-provenance.jpeg" alt="Relic archive wall preserving origin rumors of the Mercy-Sickle">
+      <div class="two-col">
+        <div class="list-stack">
+          <article class="lore-block">
+            <h3>Rumor I // The Refusal Harvest</h3>
+            <p>
+              Some records claim the blade head was recast from siege-hooks and execution irons recovered after a devotional purge,
+              then mounted to a plague polearm so that resistance could be caught before it was cut. This would explain the collar’s strain
+              pattern and the oddly functional brutality of the mercy blade.
+            </p>
+          </article>
+          <article class="lore-block">
+            <h3>Rumor II // The Chapel Conversion</h3>
+            <p>
+              Another cluster insists that the weapon was once a ceremonial processional spear used in plague liturgy aboard a rotting
+              warship chapel. The curved blade was added later, thickened and shortened after too many “merciful” executions took too long.
+            </p>
+          </article>
+          <article class="lore-block">
+            <h3>Rumor III // The Weapon That Earned Its Own Name</h3>
+            <p>
+              A minority reading denies formal construction altogether. In that view, the Mercy-Sickle is simply the latest stable shape
+              assumed by a field-tool of recurring meaning, a weapon rebuilt so many times by ritual need that its identity now survives the metal.
+            </p>
+          </article>
         </div>
 
-        <div class="rumor-grid">
-          <article class="rumor-card">
-            <div class="mini">Rumor I</div>
-            <h3>The Execution Tool</h3>
-            <p>
-              One chain-tag claims the sickle began as a prison-yard hook used to drag oath-breakers from the crowd. Mortivus did not forge its cruelty. He gave it theology.
-            </p>
-          </article>
-
-          <article class="rumor-card">
-            <div class="mini">Rumor II</div>
-            <h3>The Defeat Memory</h3>
-            <p>
-              A sealed plate links the blade to Mortivus’ greatest wound. It claims the sickle was remade after retreat taught him that survival without meaning is only delayed humiliation.
-            </p>
-          </article>
-
-          <article class="rumor-card">
-            <div class="mini">Rumor III</div>
-            <h3>The Refusal Shrine</h3>
-            <p>
-              Another record says the blade was recovered from a shrine where supplicants prayed not to die, but to understand why they had been selected.
-            </p>
-          </article>
-
-          <article class="rumor-card">
-            <div class="mini">Rumor IV</div>
-            <h3>The Living Corrosion</h3>
-            <p>
-              A forbidden tag insists the sickle was never forged. It grew around a hook, like infection growing around a thought that refused to stop being useful.
-            </p>
-          </article>
+        <div class="list-stack">
+          <figure class="image-frame" style="height:290px;">
+            <img src="Assets/Mercy-Sickle/mercy-sickle-provenance.jpeg" alt="Provenance board for the Mercy-Sickle" />
+            <figcaption class="frame-caption">Provenance Ledger // Contradictions Preserved</figcaption>
+          </figure>
+          <figure class="image-frame" style="height:290px;">
+            <img src="Assets/Mercy-Sickle/reliquary-unsealing.jpeg" alt="Ritual unsealing of the Mercy-Sickle reliquary" />
+            <figcaption class="frame-caption">Reliquary Unsealing // Chamber-Nine</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
-    <section class="section" id="doctrine">
-      <div class="section-header">
+    <section class="module" id="doctrine">
+      <div class="module-head">
         <div>
           <div class="eyebrow">Execution Doctrine</div>
-          <h2 class="section-title">How Mortivus Uses It</h2>
-          <p class="section-desc">
-            Mortivus does not swing the Mercy-Sickle like a berserker. He uses it like a final argument. The weapon appears when resistance has already been spiritually softened, when a commander realizes orders no longer mean what they meant, or when an elite enemy must be taught the difference between endurance and meaning.
-          </p>
+          <h2>How Mortivus Uses It // Why It Is Called Mercy</h2>
         </div>
-        <div class="chip">Battlefield Grammar // Final Argument</div>
-      </div>
-
-      <div class="split">
-        <div class="copy-panel">
-          <p>
-            The blade is rarely the first weapon seen in a battle. Mortivus does not waste it on disorder that has not yet learned what it is. The Mercy-Sickle appears after the field has been prepared by attrition, dread, silence, failed prayer, and the long awareness that help is not arriving.
-          </p>
-
-          <p>
-            Against commanders, he uses the hook to remove the person holding the formation’s story together. Against priests and oath-holders, he cuts late enough that followers must watch and early enough that despair can finish what the wound begins. Against elite survivors, he does not always crush them immediately. He lets them recognize that persistence alone is not victory.
-          </p>
-
-          <p>
-            The weapon’s genius is interruption. It interrupts charge, prayer, command, seduction, heroic posture, and the small inner lie that says the victim is still choosing the terms of the end.
-          </p>
-
-          <div class="quote">
-            <div class="mini">Reliquary Annotation</div>
-            <p>“The edge concludes. The hook persuades.”</p>
-          </div>
-        </div>
-
-        <div class="image-full">
-          <img src="Assets/Mercy-Sickle/mortivus-weapon-use.jpeg" alt="Mortivus Classarion using the Mercy-Sickle on a battlefield">
+        <div class="module-note">
+          Mortivus does not swing the Mercy-Sickle like a frenzied reaper. He uses it as a controlled battlefield grammar: selection, arrest, exposure, conclusion.
         </div>
       </div>
-    </section>
 
-    <section class="section" id="effects">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Observed Effects</div>
-          <h2 class="section-title">The Blade Does Not Wound in One Category</h2>
-          <p class="section-desc">
-            The Mercy-Sickle is catalogued under physical, psychological, and spiritual injury. The categories are useful for scribes, but inaccurate for victims. Contact with the blade often causes all three effects to arrive as one event.
-          </p>
-        </div>
-        <div class="chip">Effects Toggle // Three Wound Classes</div>
-      </div>
-
-      <div class="effects-grid">
-        <div class="stack">
-          <div class="image-full">
-            <img src="Assets/Mercy-Sickle/mercy-sickle-effects.jpeg" alt="Symbolic aftermath of Mercy-Sickle effects">
-          </div>
-
-          <div class="effects-controls">
-            <button class="effect-btn active" data-effect="physical">Physical Damage</button>
-            <button class="effect-btn" data-effect="psychological">Psychological Damage</button>
-            <button class="effect-btn" data-effect="spiritual">Spiritual Damage</button>
-          </div>
-        </div>
-
-        <div class="effect-panel effect-output">
-          <div class="mini" id="effectLabel">Observed Effect I</div>
-          <h3 id="effectTitle">Physical // Seam Opening</h3>
-          <p id="effectBody">
-            The hooked edge specializes in opening protected places. Armor plates split at seams. Straps shear. Rib cavities and joint locks become access points. The wound often looks less like a slash and more like something important has been pulled out of alignment.
-          </p>
-
-          <ul id="effectList">
-            <li>Hook tearing around armor lips and joints.</li>
-            <li>Jagged inner edge creating infected cavities.</li>
-            <li>Green residue lingering around opened seams.</li>
-            <li>Victims reporting the pull before they report pain.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="witness">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Survivor Fragments</div>
-          <h2 class="section-title">Those Who Survive the Blade Remember the Pause</h2>
-          <p class="section-desc">
-            Survivors rarely agree on the cut itself. They agree on the pause before it. Each fragment below records a different enemy of Mortivus describing the weapon as if it had arrived before his hand moved.
-          </p>
-        </div>
-        <div class="chip">Witness Stack // Rot-Authenticated</div>
-      </div>
-
-      <div class="witness-layout">
-        <div class="image-full">
-          <img src="Assets/Mercy-Sickle/survivor-fragment.jpeg" alt="Evidence table of survivor fragments related to the Mercy-Sickle">
-        </div>
-
-        <div class="witness-card">
-          <div class="fragment-key" id="witnessKey">Witness Fragment I</div>
-          <h3 id="witnessTitle">The Guardsman</h3>
-          <p id="witnessBody">
-            “I thought he missed. That is what I remember most. The hook passed close enough that I heard metal breathe, but nothing opened yet. Then I looked down and understood my armor had already decided to leave me.”
-          </p>
-
-          <div class="witness-nav">
-            <button class="btn" id="prevWitness">Previous Fragment</button>
-            <button class="btn rot" id="nextWitness">Next Fragment</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="battle">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Sealed Battle Fragment</div>
-          <h2 class="section-title">The Perfumed Refusal</h2>
-          <p class="section-desc">
-            The Mercy-Sickle’s most useful record against daemonic excess is not a clean triumph. It is a costly engagement against a Slaaneshi champion whose speed, beauty, and cruelty broke standard Death Guard units before Mortivus entered the chamber. The wound he receives in this record matters. It proves the enemy was worthy of being refused.
-          </p>
-        </div>
-        <div class="chip">Slaanesh Contact // Excess Denied</div>
-      </div>
-
-      <div class="battle-shell">
-        <div class="battle-image">
-          <img id="battleImage" src="Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg" alt="Slaaneshi daemons overwhelming Death Guard plague marines">
-        </div>
-
-        <div class="battle-console">
-          <div>
-            <div class="mini">Battle Playback</div>
-            <h3>The Choir That Learned Silence</h3>
+      <div class="two-col">
+        <div class="list-stack">
+          <figure class="image-frame" style="height:360px;">
+            <img src="Assets/Mercy-Sickle/mortivus-weapon-use.jpeg" alt="Mortivus using the Mercy-Sickle in battle" />
+            <figcaption class="frame-caption">Battlefield Grammar // Mortivus in Use</figcaption>
+          </figure>
+          <article class="lore-block">
+            <h3>Against Commanders</h3>
             <p>
-              Select each phase to progress the sealed fragment. Violet distortion marks daemonic excess. Green signal marks the blade’s refusal.
+              The Mercy-Sickle is often reserved for leaders who keep their lines coherent longer than expected. The long haft closes distance
+              without giving away commitment. Once the inner bite catches a target at the shoulder seam, gorget, or weapon harness, the commander’s
+              body becomes the collapse point for everyone watching.
+            </p>
+          </article>
+        </div>
+
+        <div class="list-stack">
+          <article class="lore-block">
+            <h3>Why “Mercy”</h3>
+            <p>
+              The name is not kindness. It is clarification. Mortivus brings out the Mercy-Sickle when a battlefield has reached the stage where
+              pretense must stop: the chosen target can no longer believe courage, speed, prayer, or authority will repair the collapse around them.
+              The weapon ends debate. That, in Mortivus’ doctrine, is mercy.
+            </p>
+            <div class="ritual-line">
+              <strong>Observed Pattern I</strong>
+              The haft controls distance so the victim understands they were selected before they are touched.
+            </div>
+            <div class="ritual-line">
+              <strong>Observed Pattern II</strong>
+              The curved blade catches and turns resistance into cooperation with the wound.
+            </div>
+            <div class="ritual-line">
+              <strong>Observed Pattern III</strong>
+              Mortivus pauses just long enough for witnesses to comprehend that the target has not been chosen for death alone, but for demonstration.
+            </div>
+          </article>
+
+          <figure class="image-frame" style="height:300px;">
+            <img src="Assets/Mercy-Sickle/edge-memory-closeup.jpeg" alt="Close detail of the blade edge" />
+            <figcaption class="frame-caption">Inner Bite // Where Escape Becomes Deeper Wounding</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="module" id="effects">
+      <div class="module-head">
+        <div>
+          <div class="eyebrow">Observed Consequence Spectrum</div>
+          <h2>What It Does</h2>
+        </div>
+        <div class="module-note">
+          The Mercy-Sickle does not wound in one category. Survivors consistently describe physical injury, psychological breakage, and spiritual dislocation as one event.
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <figure class="image-frame" style="height:410px;">
+          <img src="Assets/Mercy-Sickle/mercy-sickle-effects.jpeg" alt="The effects of the Mercy-Sickle documented in archive format" />
+          <figcaption class="frame-caption">Integrated Effects // Flesh, Memory, Meaning</figcaption>
+        </figure>
+
+        <article class="lore-block">
+          <h3>Chamber Reading</h3>
+          <p>
+            The Mercy-Sickle combines weight, reach, leverage, shame, and ritual timing. The victim’s body is caught, their motion betrays them,
+            their audience is forced to witness the transition, and the blade’s compact brutality makes the event feel neither heroic nor chaotic.
+            It feels procedural. That is why the fear lingers.
+          </p>
+          <p>
+            Those who survive contact often describe the same sequence: first the ring, then the recognition of reach, then the pull, then the sudden intimacy
+            of the curve, and finally the intolerable understanding that the wound was made to be seen.
+          </p>
+        </article>
+      </div>
+
+      <div class="tri-grid">
+        <article class="effect-card">
+          <h3>Physical</h3>
+          <ul>
+            <li>Catches armor rims, strap work, joints, exposed cabling, or weakened flesh seams.</li>
+            <li>Uses the long haft for leverage, dragging, unbalancing, and controlled tearing.</li>
+            <li>Produces wounds that feel “hooked open” rather than merely cut.</li>
+            <li>Frequently leaves the target upright long enough to be witnessed.</li>
+          </ul>
+        </article>
+
+        <article class="effect-card">
+          <h3>Psychological</h3>
+          <ul>
+            <li>The ring and pause before impact are remembered more vividly than the strike itself.</li>
+            <li>Witnesses interpret the selection as personal, even if they were not the chosen target.</li>
+            <li>Command structures collapse faster after a Mercy-Sickle demonstration.</li>
+            <li>Survivors report a sense that retreat only deepened the event.</li>
+          </ul>
+        </article>
+
+        <article class="effect-card">
+          <h3>Spiritual</h3>
+          <ul>
+            <li>The weapon creates the sensation that one’s final certainty was caught before flesh was.</li>
+            <li>Faith-sustained targets often lose symbolic authority before they lose blood.</li>
+            <li>Ritual objects near the impact zone are frequently reinterpreted as failed promises.</li>
+            <li>Some adepts claim the blade “harvests refusal” and stores the residue in chamber air.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="module" id="witness">
+      <div class="module-head">
+        <div>
+          <div class="eyebrow">Enemy Fragments // Survived Contact</div>
+          <h2>Witness Accounts</h2>
+        </div>
+        <div class="module-note">
+          The following fragments come from personnel who survived seeing or feeling the Mercy-Sickle. Their testimonies differ in detail and agree in dread.
+        </div>
+      </div>
+
+      <div class="witness-grid">
+        <figure class="image-frame" style="height:520px;">
+          <img src="Assets/Mercy-Sickle/survivor-fragment.jpeg" alt="Recovered survivor fragment from a battle involving the Mercy-Sickle" />
+          <figcaption class="frame-caption">Recovered Survivor Fragment</figcaption>
+        </figure>
+
+        <div class="quote-stack">
+          <blockquote class="fragment">
+            I thought it was a polearm until he turned it. Then I understood the curve was not there for reach. It was there so the wound could keep me after the hit.
+          </blockquote>
+          <blockquote class="fragment">
+            The worst part was not the blade. It was the moment he let us see it clearly. We knew he had chosen one of us as proof and the rest of us as audience.
+          </blockquote>
+          <blockquote class="fragment">
+            He caught Captain Hel’s harness and pulled him half a step forward. That was all. After that, the room behaved as though the captain had already died, even before he understood he was opened.
+          </blockquote>
+          <blockquote class="fragment">
+            The chain-ring made a sound when he drew it back. I have forgotten the order of the firefight, forgotten the names of my dead, but not that ring.
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="module" id="battle">
+      <div class="module-head">
+        <div>
+          <div class="eyebrow">Battle Fragment // Open Under Clearance</div>
+          <h2>The Perfumed Refusal</h2>
+        </div>
+        <div class="module-note">
+          A sealed battle record showing the Mercy-Sickle employed against Slaaneshi daemons and their mortal attendants. The fragment confirms standard units broken, a champion encounter, Mortivus wounded, and the final mercy event.
+        </div>
+      </div>
+
+      <div class="battle-layout">
+        <div class="battle-stage">
+          <img id="battleStageImage" src="Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg" alt="Perfumed Refusal battle scene" />
+          <div class="battle-caption">
+            <span class="phase" id="battlePhase">Phase I</span>
+            <h3 id="battleTitle">The Perfumed Refusal // Breach</h3>
+            <p id="battleText">
+              The first contact occurs in corridors already sweet with ritual corruption. Standard plague-marines are cut down in the early exchange as the enemy’s pace, glamour, and shock assault outstrip expectation.
             </p>
           </div>
+        </div>
 
-          <div class="battle-tabs">
-            <button class="battle-tab active" data-battle="breach">
+        <div class="battle-thumbs" id="battleThumbs">
+          <button class="thumb-btn active" data-scene="breach">
+            <img src="Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg" alt="Perfumed Refusal breach" />
+            <div class="thumb-body">
               <span>Phase I</span>
-              <strong>Standard Units Broken</strong>
-            </button>
-            <button class="battle-tab" data-battle="champion">
+              <strong>Breach</strong>
+              <p>Standard units meet the first wave and fail to hold the corridor.</p>
+            </div>
+          </button>
+
+          <button class="thumb-btn" data-scene="champion">
+            <img src="Assets/Mercy-Sickle/perfumed-refusal-champion.jpeg" alt="Perfumed Refusal champion encounter" />
+            <div class="thumb-body">
               <span>Phase II</span>
-              <strong>The Perfumed Herald</strong>
-            </button>
-            <button class="battle-tab" data-battle="duel">
+              <strong>Champion Emergence</strong>
+              <p>The enemy’s elite appears: perfumed, radiant, and ruinously fast.</p>
+            </div>
+          </button>
+
+          <button class="thumb-btn" data-scene="duel">
+            <img src="Assets/Mercy-Sickle/perfumed-refusal-duel.jpeg" alt="Perfumed Refusal duel" />
+            <div class="thumb-body">
               <span>Phase III</span>
-              <strong>Mortivus Enters</strong>
-            </button>
-            <button class="battle-tab" data-battle="wound">
+              <strong>Duel Formation</strong>
+              <p>Mortivus enters the killing lane and commits the Mercy-Sickle.</p>
+            </div>
+          </button>
+
+          <button class="thumb-btn" data-scene="wound">
+            <img src="Assets/Mercy-Sickle/perfumed-refusal-wound.jpeg" alt="Perfumed Refusal wound dealt to Mortivus" />
+            <div class="thumb-body">
               <span>Phase IV</span>
-              <strong>Mortivus Wounded</strong>
-            </button>
-            <button class="battle-tab" data-battle="mercy">
+              <strong>The Wound</strong>
+              <p>The enemy lands the deepest recorded injury in this archive cluster.</p>
+            </div>
+          </button>
+
+          <button class="thumb-btn" data-scene="mercy">
+            <img src="Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg" alt="Perfumed Refusal mercy stroke" />
+            <div class="thumb-body">
               <span>Phase V</span>
-              <strong>Grace Interrupted</strong>
-            </button>
-            <button class="battle-tab" data-battle="aftermath">
+              <strong>Mercy Event</strong>
+              <p>The thick curved blade catches the champion’s refusal and answers it.</p>
+            </div>
+          </button>
+
+          <button class="thumb-btn" data-scene="aftermath">
+            <img src="Assets/Mercy-Sickle/perfumed-refusal-aftermath.jpeg" alt="Perfumed Refusal aftermath" />
+            <div class="thumb-body">
               <span>Phase VI</span>
               <strong>Aftermath</strong>
-            </button>
-          </div>
-
-          <div class="battle-output">
-            <div class="mini" id="battleLabel">Phase I // Standard Units Broken</div>
-            <h4 id="battleTitle">The Daemons Had Already Won the Room</h4>
-            <p id="battleBody1">
-              The first Plague Marines entered the shrine-corridor in ordered rot, bolters raised, armor coughing incense and chemical breath. They found the air already perfumed. The perfume did not soothe. It sharpened everything. Pain became a bell. Color became pressure. The cracked marble floor seemed to curve toward music no mortal throat had made.
-            </p>
-            <p id="battleBody2">
-              Then the daemonettes came through the violet mist like knives remembering dance. They did not overpower the Death Guard by strength. They dismantled rhythm. One marine fired at a target that had already become laughter behind him. Another turned to answer a voice from a childhood that had never belonged to him. A third was opened along the collar seal so precisely that his armor kept standing after he fell inside it.
-            </p>
-          </div>
+              <p>Silence returns unequal. Mortivus remains standing, but altered.</p>
+            </div>
+          </button>
         </div>
       </div>
-    </section>
 
-    <section class="section" id="seal">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Edge Memory Closeup</div>
-          <h2 class="section-title">The Edge Remembers What the Hook Promised</h2>
-          <p class="section-desc">
-            The final close study of the blade is not recommended for long viewing. The inner edge does not appear sharp in the conventional sense. It appears patient.
-          </p>
-        </div>
-        <div class="chip">Close Study // Viewing Interval Limited</div>
-      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <figure class="image-frame" style="height:340px;">
+          <img src="Assets/Mercy-Sickle/perfumed-refusal-wound.jpeg" alt="Mortivus wounded during the Perfumed Refusal" />
+          <figcaption class="frame-caption">Recorded Wound // Greatest Known Hurt in This Fragment Cluster</figcaption>
+        </figure>
 
-      <div class="split">
-        <div class="image-full">
-          <img src="Assets/Mercy-Sickle/edge-memory-closeup.jpeg" alt="Closeup of the Mercy-Sickle blade edge">
-        </div>
-
-        <div class="copy-panel">
+        <article class="lore-block">
+          <h3>Short Lore Record</h3>
           <p>
-            The edge contains rust, pitting, votive residue, and dried matter caught inside its micro-fractures. None of these details explain its behavior. They only prove the weapon has been used enough times for matter to begin treating it like an archive.
+            The enemy came lacquered in perfume, silk-light blasphemy, and impossible speed. They shattered the first containment line, tore standard
+            units apart, and moved through the corridor as though pain were choreography. One champion, bright with obscene confidence, reached Mortivus
+            himself and opened a wound deep enough to survive the battle in memory.
           </p>
-
           <p>
-            The Reliquary does not claim the Mercy-Sickle thinks. That would be imprecise. The chamber claims only that the weapon behaves differently around refusal, oath, beauty, command, and prayer. It becomes most active when the target believes their meaning has not yet been defeated.
+            What followed gave the weapon one of its strongest names. Mortivus gave ground without yielding shape. He let the champion enter certainty,
+            turned the long haft, fixed the inner bite behind the enemy’s forward motion, and drew the Mercy-Sickle in close. The thick curved blade did
+            not kill the champion quickly. It removed the performance from them first. By the end of the exchange, the corridor no longer smelled like perfume.
+            It smelled like instruction.
           </p>
-
-          <p>
-            Mortivus does not call this hatred. He calls it instruction. The Septicarium does not correct him.
-          </p>
-
-          <div class="quote">
-            <div class="mini">Closing Reliquary Note</div>
-            <p>“Mercy is not the absence of pain. Mercy is the removal of falsehood before pain becomes final.”</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Relic Retention Index</div>
-          <h2 class="section-title">What the Chamber Preserves</h2>
-          <p class="section-desc">
-            The Septicarium preserves the Mercy-Sickle not because the blade is rare, but because its behavior clarifies Mortivus Classarion more precisely than any title.
-          </p>
-        </div>
-        <div class="chip">Reliquary Seal Maintained</div>
-      </div>
-
-      <div class="diag-grid">
-        <article class="diag-card">
-          <div class="diag-key">Retained Asset I</div>
-          <h3>Relic Chamber</h3>
-          <p>The mounted weapon remains the page’s primary subject: not a prop, but an altar-object that organizes every record around itself.</p>
-        </article>
-
-        <article class="diag-card">
-          <div class="diag-key">Retained Asset II</div>
-          <h3>Battle Demonstration</h3>
-          <p>The Perfumed Refusal proves the blade is not only useful against mortal courage, but against daemonic excess and impossible grace.</p>
-        </article>
-
-        <article class="diag-card">
-          <div class="diag-key">Retained Asset III</div>
-          <h3>Witness Stack</h3>
-          <p>Survivor fragments preserve the recurring symptom: all remember the pause before the wound.</p>
-        </article>
-
-        <article class="diag-card">
-          <div class="diag-key">Retained Asset IV</div>
-          <h3>Edge Memory</h3>
-          <p>The close study is archived under warning. The edge is not merely sharp. It is patient around false certainty.</p>
         </article>
       </div>
     </section>
 
-    <section class="section">
-      <div class="panel footer">
-        <div class="eyebrow">Final Reliquary Litany</div>
-        <h2>The Hook Takes Hold Before the Wound Is Allowed to Happen.</h2>
-
+    <section class="footer-seal">
+      <div class="seal-copy">
+        <div class="eyebrow">Archive Judgment // Blade Chamber Closed</div>
+        <h2>Closing Assessment</h2>
         <p>
-          The Mercy-Sickle is called mercy because Mortivus refuses the mercy of ignorance. The victim is not permitted to die inside their preferred story. They are pulled from formation, from beauty, from command, from prayer, from whatever shelter convinced them their end still belonged to them.
+          The Mercy-Sickle remains under watch because it is more than a weapon and less than a relic in the comfortable sense. It is a disciplined execution-polearm
+          whose shape makes doctrine visible. The long haft extends selection. The short curved blade makes the end feel personal. The ring remembers. The tags apologize.
         </p>
-
         <p>
-          Only after that recognition does the blade complete its work. The Septicarium keeps the chamber sealed because the weapon is not dangerous only when swung. It is dangerous when understood too well.
+          Any future chamber work should preserve the weapon’s true form: a spear-hafted plague sickle with a compact heavy mercy blade. Do not reduce it to a generic hook.
+          Do not prettify it into a scythe. It is narrower in gesture, uglier in purpose, and far more intimate in use.
         </p>
+      </div>
 
-        <div class="footer-actions">
-          <a class="btn rot" href="mortivus-classarion.html">Return to Mortivus Classarion</a>
-          <a class="btn" href="the-mercy-he-gave.html">Open The Mercy He Gave</a>
-          <a class="btn" href="the-pallid-reversal.html">Open The Pallid Reversal</a>
-          <a class="btn" href="index.html">Command Deck</a>
+      <div class="seal-status">
+        <div class="status-row">
+          <span>Relic Status</span>
+          <strong>Chambered // Active Meaning Hazard</strong>
+        </div>
+        <div class="status-row">
+          <span>Usage Pattern</span>
+          <strong>Selective Execution // Witness-Oriented</strong>
+        </div>
+        <div class="status-row">
+          <span>Battle Record</span>
+          <strong>Perfumed Refusal // Fragment Preserved</strong>
+        </div>
+        <div class="status-row">
+          <span>Handling Note</span>
+          <strong>Do Not Mislabel As Hand Sickle</strong>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 
-  <aside class="floating" id="floating">
-    <div class="floating-head">
+  <aside class="whisper-box" id="whisperBox">
+    <div class="whisper-head">
       <span>Reliquary Whisper</span>
-      <button id="closeFloat">✕</button>
+      <button id="whisperClose" aria-label="Close whisper box">×</button>
     </div>
-    <div class="floating-body" id="floatText">
-      Chain tension stable. The hook has not yet selected a witness.
+    <div class="whisper-body" id="whisperText">
+      The haft brings mercy close. The curved blade makes it personal.
     </div>
   </aside>
 
   <script>
-    const boot = document.getElementById("boot");
-    const unlockBtn = document.getElementById("unlockBtn");
-    const bootStatus = document.getElementById("bootStatus");
-
-    const bootLines = [
-      "CHAMBER LOCKS: engaged... censers active... chain tension detected... blade presence confirmed...",
-      "RELIQUARY SEALS: reading residue... old battlefield matter responsive... devotional tags warm...",
-      "EDGE MEMORY: active... inward hook pattern detected... proximity warnings enabled...",
-      "FINAL CAUTION: do not confuse mercy with kindness...",
-      "AUTHORIZATION ACCEPTED. UNLATCHING RELIQUARY."
+    const bootMessages = [
+      "Breaking wax seals on chamber-nine.",
+      "Polearm silhouette confirmed under residue shroud.",
+      "Sentence mass within acceptable corruption tolerance.",
+      "Edge-memory particulates vented into archive capture.",
+      "Chain-ring resonance translated as non-hostile.",
+      "Reliquary open. Stand behind the line."
     ];
+
+    const bootLog = document.getElementById('bootLog');
+    const bootBar = document.getElementById('bootBar');
+    const bootOverlay = document.getElementById('bootOverlay');
 
     let bootIndex = 0;
     const bootTimer = setInterval(() => {
-      bootIndex++;
-      if(bootIndex < bootLines.length){
-        bootStatus.textContent = bootLines[bootIndex];
+      if (bootIndex < bootMessages.length) {
+        const line = document.createElement('div');
+        line.className = 'boot-log-line';
+        line.textContent = bootMessages[bootIndex];
+        bootLog.appendChild(line);
+        bootBar.style.width = `${((bootIndex + 1) / bootMessages.length) * 100}%`;
+        bootIndex++;
       } else {
         clearInterval(bootTimer);
+        setTimeout(() => bootOverlay.classList.add('hidden'), 600);
       }
-    }, 720);
-
-    function openReliquary(){
-      boot.classList.add("unlock");
-      setTimeout(() => boot.classList.add("hide"), 1050);
-    }
-
-    unlockBtn.addEventListener("click", openReliquary);
-
-    window.addEventListener("load", () => {
-      setTimeout(openReliquary, 4500);
-    });
+    }, 320);
 
     const relicParts = {
-      hook:{
-        title:"The Inward Hook",
-        lead:"The hook is not decorative. It is the Mercy-Sickle’s central grammar.",
+      bladeHead:{
+        label:"Examination Node // Curved Blade Head",
+        title:"The Thick Curved Mercy Blade",
+        lead:"This is the part that gives the weapon its name: not a thin farming sickle, but a short, heavy curved execution blade mounted to a spear-like haft.",
         surgical:{
-          label:"EXAMINATION NODE // HOOK",
-          subtitle:"Extraction Before Execution",
-          body:"The inward hook catches armor lips, exposed joints, ceremonial chains, weapon straps, prayer cords, and the small places where a warrior believes themselves still arranged. Mortivus uses it to remove the target from position before removing them from life.",
-          use:"Pulls commanders, priests, champions, and oath-holders from the structure that made them brave.",
-          effect:"The victim experiences the wound before the cut arrives.",
-          warning:"Do not confuse the hook with restraint. It is a verdict taking hold."
+          subtitle:"Short Blade, Heavy Sentence",
+          body:"The Mercy-Sickle’s blade is shorter and thicker than a common scythe or crescent weapon. It is a dense curved killing head fixed near the end of a long haft, built to bite, catch, and lever armored targets rather than sweep elegantly through open air.",
+          use:"Used at close-to-mid reach to catch armor, punish forward movement, and drag selected enemies out of formation.",
+          effect:"The target feels the weapon’s mass before the edge completes the wound.",
+          warning:"Do not describe the blade as elegant. It is compact, brutal, and deliberately heavy."
         },
         liturgical:{
-          label:"LITURGICAL NODE // HOOK",
-          subtitle:"The Hand That Finds Refusal",
-          body:"The hook is the blade’s mercy before the edge. It reaches into the target’s remaining certainty and proves that certainty has a handle. Once held, the victim is no longer a warrior. They are testimony being dragged into place.",
-          use:"Selects the one whose fall will teach the rest.",
-          effect:"Turns courage into something visible enough to remove.",
-          warning:"The hook does not pull flesh first. It pulls meaning."
+          subtitle:"The Weight of the Word Mercy",
+          body:"The curved blade is mercy made material: shortened, thickened, and denied grace. It does not promise release through beauty. It promises recognition through weight. It is the visible answer to anyone who mistakes survival for meaning.",
+          use:"Turns the chosen target into instruction.",
+          effect:"The victim understands that the end has been brought close enough to be personal.",
+          warning:"The blade is not a crescent. It is a verdict bent into metal."
         }
       },
-      edge:{
-        title:"The Jagged Inner Edge",
-        lead:"The edge is less clean than a blade and more intimate than a saw.",
+
+      innerBite:{
+        label:"Examination Node // Inner Bite",
+        title:"The Inner Bite",
+        lead:"The inside of the curved blade is where the weapon becomes intimate.",
         surgical:{
-          label:"EXAMINATION NODE // INNER EDGE",
-          subtitle:"Ragged Finalization",
-          body:"The inner edge opens what the hook has already positioned. It cuts from bad angles, inside the victim’s guard, along seals and folds where armor expects no argument. The wound is rarely symmetrical.",
-          use:"Finishes targets after extraction, especially through exposed seams.",
-          effect:"Creates infected, irregular cavities that resist clean treatment.",
-          warning:"Field surgeons report that wounds made by this edge seem older than the battle."
+          subtitle:"The Catching Edge",
+          body:"The inner curve is designed to catch rather than simply cut. It can hook behind armor rims, limb joints, weapon straps, cables, prayer cords, and exposed biological seams. Once the bite lands, the target’s motion works against them.",
+          use:"Locks onto targets who are moving, resisting, or trying to withdraw.",
+          effect:"A retreat becomes a deeper wound.",
+          warning:"The inner bite makes escape feel like cooperation."
         },
         liturgical:{
-          label:"LITURGICAL NODE // INNER EDGE",
-          subtitle:"The Conclusion No Prayer Interrupts",
-          body:"The edge is the end of persuasion. Once it enters, pleading, rage, seduction, discipline, and faith become the same sound. The blade does not silence them. It makes them irrelevant.",
-          use:"Completes the sentence begun by the hook.",
-          effect:"Victims realize the verdict was already written.",
-          warning:"Do not listen for screams. Listen for recognition."
+          subtitle:"Where Refusal Is Held Still",
+          body:"The inner bite is where the weapon catches the victim’s last argument. It does not merely hold flesh. It holds the idea that the target was still free to choose how the end would arrive.",
+          use:"Arrests refusal long enough for Mortivus to answer it.",
+          effect:"Turns motion into confession.",
+          warning:"Once the inner bite has meaning, the wound is already underway."
         }
       },
-      spine:{
-        title:"The Reinforced Spine",
-        lead:"The sickle’s spine is thick, ugly, and overbuilt like a relic meant to survive bad centuries.",
+
+      collar:{
+        label:"Examination Node // Collar Mount",
+        title:"The Blade Collar Mount",
+        lead:"The collar is the joint where spear and sickle become one weapon.",
         surgical:{
-          label:"EXAMINATION NODE // SPINE",
-          subtitle:"Weight of Argument",
-          body:"The spine adds brutal mass behind every pull. It lets Mortivus use the weapon as lever, hook, bludgeon, and dragging tool. Impact marks suggest the blade has been used to pin armored enemies against stone and hold them there.",
-          use:"Provides leverage against elite enemies and heavy armor.",
-          effect:"Transforms the weapon from blade to battlefield instrument.",
-          warning:"The spine carries old impacts that do not match known battles."
+          subtitle:"The Load-Bearing Throat",
+          body:"The collar binds the thick curved blade to the spear-like haft. It shows reinforcement, clamps, rivets, corrosion, and battlefield repair. This is the stress point that lets Mortivus pull with the haft while the blade head catches and tears.",
+          use:"Transfers leverage from the long haft into the hooked blade head.",
+          effect:"Allows the weapon to wrench armored targets without snapping under force.",
+          warning:"The collar carries old strain marks from enemies large enough to matter."
         },
         liturgical:{
-          label:"LITURGICAL NODE // SPINE",
-          subtitle:"The Burden Behind Mercy",
-          body:"Mercy is not light. The spine carries the weight of the word. It is the part of the relic that reminds the condemned that revelation must be heavy enough to crush denial.",
-          use:"Supports the hook’s lesson with mass and inevitability.",
-          effect:"Makes the weapon feel slower than death and more difficult to avoid.",
-          warning:"The spine remembers pressure better than blood."
+          subtitle:"Where Reach Becomes Mercy",
+          body:"The collar is the covenant between distance and judgment. It lets the mercy arrive from farther away than the victim expects, then become close enough to feel personal.",
+          use:"Joins battlefield reach to ritual selection.",
+          effect:"Makes the weapon feel inevitable from outside normal dueling distance.",
+          warning:"The collar is where the spear stops being a spear and becomes sentence."
         }
       },
-      grip:{
-        title:"The Wrapped Grip",
-        lead:"The grip appears repaired many times, but never cleaned.",
+
+      spearHaft:{
+        label:"Examination Node // Spear Haft",
+        title:"The Spear-Like Haft",
+        lead:"The Mercy-Sickle is not a small hand weapon. Its reach comes from the long haft beneath the blade head.",
         surgical:{
-          label:"EXAMINATION NODE // GRIP",
-          subtitle:"Hand-Doctrine Interface",
-          body:"The grip is bound in filthy leather, cloth, and devotional wrapping. Embedded grit and oil suggest long battlefield use. The hand placement favors control over speed, confirming Mortivus uses the weapon deliberately, not frantically.",
-          use:"Allows slow, controlled repositioning of hooked targets.",
-          effect:"Enables precision cruelty rather than berserk motion.",
-          warning:"Several wraps show pressure patterns consistent with non-human resistance."
+          subtitle:"Reach, Leverage, Control",
+          body:"The long haft gives Mortivus control before contact and leverage after contact. It lets him keep faster enemies at an ugly distance, pin them, redirect them, or drag them into the blade’s arc. The weapon behaves more like a plague polearm than a handheld sickle.",
+          use:"Controls space, checks charges, drags targets, and converts small openings into decisive wounds.",
+          effect:"The enemy is forced to fight the weapon’s reach before reaching Mortivus himself.",
+          warning:"The haft is not secondary. Without it, the Mercy-Sickle loses its doctrine of distance."
         },
         liturgical:{
-          label:"LITURGICAL NODE // GRIP",
-          subtitle:"Where Wielder Becomes Meaning",
-          body:"The grip is the covenant between Mortivus and the blade. It is not where he holds the weapon. It is where the weapon permits him to translate mercy into motion.",
-          use:"Joins doctrine to violence.",
-          effect:"Makes each swing feel chosen rather than reactive.",
-          warning:"The grip is warmer after confession fragments are read aloud."
+          subtitle:"The Distance Before Understanding",
+          body:"The haft is the long approach of mercy. It lets judgment arrive before intimacy. The condemned first meets distance, then control, then the curve, then recognition.",
+          use:"Extends Mortivus’ will across the battlefield.",
+          effect:"Makes the target feel selected before they are touched.",
+          warning:"The haft is the silence before the hook speaks."
         }
       },
-      ring:{
+
+      haftWrap:{
+        label:"Examination Node // Wrapped Haft",
+        title:"The Wrapped Handling Section",
+        lead:"The grip area is built for control, not flourish.",
+        surgical:{
+          subtitle:"Controlled Violence",
+          body:"The wrapped section gives Mortivus leverage for short pulls, sudden arrests, and downward pressure. Wear patterns suggest repeated bracing rather than wide swinging. This supports the record that he uses the weapon deliberately, almost procedurally.",
+          use:"Used for bracing, dragging, pinning, and rotating the blade head into weak points.",
+          effect:"Turns the wielder’s strength into slow, controlled inevitability.",
+          warning:"The wrapping is stained with old residues that do not match one battlefield."
+        },
+        liturgical:{
+          subtitle:"Where Doctrine Takes Hold",
+          body:"The wrap is where Mortivus’ hand becomes the weapon’s grammar. He does not merely hold the Mercy-Sickle. He translates its patience into motion.",
+          use:"Binds intent to execution.",
+          effect:"Every movement feels chosen, not reactive.",
+          warning:"The grip is warmer after witness fragments are read aloud."
+        }
+      },
+
+      chainRing:{
+        label:"Examination Node // Chain-Ring",
         title:"The Chain-Ring",
-        lead:"The rusted ring near the haft behaves like an attachment point and a ritual marker.",
+        lead:"The ring is both practical fixture and ritual sound-marker.",
         surgical:{
-          label:"EXAMINATION NODE // CHAIN-RING",
-          subtitle:"Drag and Retention Point",
-          body:"The ring allows chain attachment, weapon securing, and ceremonial suspension. Scratch wear indicates repeated dragging, not simply display. This supports witness claims that Mortivus sometimes pulls selected targets behind him before ending them.",
-          use:"Secures the weapon or extends the pull through chain-assisted control.",
-          effect:"Creates auditory dread through scraping, ringing, and drag rhythm.",
-          warning:"Survivors often remember the ring sound more clearly than the cut."
+          subtitle:"Retention and Drag Point",
+          body:"The chain-ring allows the weapon to be secured, suspended, dragged, or chained during reliquary storage. Wear marks suggest repeated battlefield use, especially in moments where the weapon was pulled back after catching a target.",
+          use:"Supports retention, retrieval, ritual suspension, and chain-assisted dragging.",
+          effect:"Produces the scrape-ring sound survivors repeatedly remember.",
+          warning:"Witnesses often recall the ring before they recall the blade."
         },
         liturgical:{
-          label:"LITURGICAL NODE // CHAIN-RING",
-          subtitle:"The Bell Without Mercy",
-          body:"The chain-ring is how the weapon announces patience. It sings before selection, after extraction, and during the pause where victims learn that the final moment has already begun.",
-          use:"Marks the condemned with sound before contact.",
-          effect:"Turns approaching violence into a ritual countdown.",
-          warning:"If you hear the ring twice, the first sound was for someone else."
+          subtitle:"The Bell Without Pity",
+          body:"The ring announces that mercy is approaching with patience. It does not ring like celebration. It rings like something being brought back into position for another lesson.",
+          use:"Marks selection through sound.",
+          effect:"Turns battlefield noise into a countdown.",
+          warning:"If the ring sounds behind you, the hook has already passed someone else."
         }
       },
-      seals:{
-        title:"Devotional Tags and Wax",
-        lead:"The weapon is layered with tags whose texts are deliberately unreadable in public record.",
+
+      relicTags:{
+        label:"Examination Node // Tags & Seals",
+        title:"Relic Tags, Seals, and Bone Marks",
+        lead:"The hanging tags are not decoration. They are attempts to keep the weapon inside language.",
         surgical:{
-          label:"EXAMINATION NODE // TAGS",
-          subtitle:"Field Annotation Layer",
-          body:"The tags appear replaced after major battles. Some mark kills, some mark failures, and some may be warnings from attendants who studied the blade too closely. Wax residue contains ash, dried bile, and trace battlefield spores.",
-          use:"Records campaigns, restrictions, and possibly names of those selected.",
-          effect:"The weapon carries its own archive in fragments.",
-          warning:"Removing tags has caused chamber temperature drops and witness nausea."
+          subtitle:"Archive Layer",
+          body:"The tags, seals, bone charms, and votive scraps appear replaced after major engagements. Some mark battlefield use. Some warn attendants. Some may be kill-records, though no complete taxonomy has survived chamber review.",
+          use:"Records campaigns, restrictions, witness notes, and possible target categories.",
+          effect:"Makes the weapon carry its own archive in fragments.",
+          warning:"Removing tags has caused chamber pressure drops and nausea in attendants."
         },
         liturgical:{
-          label:"LITURGICAL NODE // TAGS",
-          subtitle:"Prayers Tied to a Thing That Does Not Pray",
-          body:"The tags are attempts to bind meaning to the blade before the blade binds meaning to others. They are less documentation than apology.",
-          use:"Keeps the relic inside a language the chamber can survive.",
+          subtitle:"Prayers Tied to a Weapon That Does Not Pray",
+          body:"The tags are apologies tied to an instrument that has never asked forgiveness. They do not sanctify the Mercy-Sickle. They help the chamber survive knowing what it is.",
+          use:"Attempts to bind the relic to ritual meaning.",
           effect:"Transforms battlefield use into litany.",
-          warning:"Some tags appear after use without being placed there."
-        }
-      },
-      corrosion:{
-        title:"Green Corrosion Pockets",
-        lead:"The corrosion is not uniform. It gathers where the weapon has been resisted.",
-        surgical:{
-          label:"EXAMINATION NODE // CORROSION",
-          subtitle:"Residue of Refusal",
-          body:"The green pockets cluster around stress points, especially near the hook and inner edge. Chemical analysis is inconsistent. The corrosion behaves like dried infection, oxidized metal, and something closer to memory residue.",
-          use:"Marks places where targets struggled against extraction.",
-          effect:"Contact often spreads necrotic inflammation and fixation dreams.",
-          warning:"Do not scrape the pockets. The chamber has lost two attendants to that curiosity."
-        },
-        liturgical:{
-          label:"LITURGICAL NODE // CORROSION",
-          subtitle:"Where Denial Became Matter",
-          body:"The corrosion is refusal made visible. The blade keeps what resisted it, not as trophy, but as proof that resistance can be preserved without being honored.",
-          use:"Stores the echo of failed opposition.",
-          effect:"Makes the blade heavier after meaningful kills.",
-          warning:"The green is not growth. It is remembrance without kindness."
+          warning:"Some tags appear after battle without being placed there."
         }
       }
     };
 
-    let activePart = "hook";
-    let activeMode = "surgical";
+    const partLabel = document.getElementById('partLabel');
+    const partTitle = document.getElementById('partTitle');
+    const partLead = document.getElementById('partLead');
+    const modeSubtitle = document.getElementById('modeSubtitle');
+    const modeBody = document.getElementById('modeBody');
+    const modeUse = document.getElementById('modeUse');
+    const modeEffect = document.getElementById('modeEffect');
+    const modeWarning = document.getElementById('modeWarning');
+    const hotspotButtons = document.querySelectorAll('.hotspot');
+    const modeButtons = document.querySelectorAll('.mode-btn');
 
-    const hotspots = document.querySelectorAll(".hotspot");
-    const modeButtons = document.querySelectorAll(".mode-btn");
-    const examTitle = document.getElementById("examTitle");
-    const examLead = document.getElementById("examLead");
-    const examLabel = document.getElementById("examLabel");
-    const examSubtitle = document.getElementById("examSubtitle");
-    const examBody = document.getElementById("examBody");
-    const examUse = document.getElementById("examUse");
-    const examEffect = document.getElementById("examEffect");
-    const examWarning = document.getElementById("examWarning");
-    const proximityText = document.getElementById("proximityText");
-    const relicStage = document.getElementById("relicStage");
+    let activePart = 'bladeHead';
+    let activeMode = 'surgical';
 
-    function updateExam(){
-      const part = relicParts[activePart];
-      const data = part[activeMode];
-
-      examTitle.textContent = part.title;
-      examLead.textContent = part.lead;
-      examLabel.textContent = data.label;
-      examSubtitle.textContent = data.subtitle;
-      examBody.textContent = data.body;
-      examUse.textContent = data.use;
-      examEffect.textContent = data.effect;
-      examWarning.textContent = data.warning;
-
-      hotspots.forEach(h => h.classList.toggle("active", h.dataset.part === activePart));
-      modeButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.mode === activeMode));
+    function renderPart(){
+      const entry = relicParts[activePart];
+      const mode = entry[activeMode];
+      partLabel.textContent = entry.label;
+      partTitle.textContent = entry.title;
+      partLead.textContent = entry.lead;
+      modeSubtitle.textContent = mode.subtitle;
+      modeBody.textContent = mode.body;
+      modeUse.textContent = mode.use;
+      modeEffect.textContent = mode.effect;
+      modeWarning.textContent = mode.warning;
     }
 
-    hotspots.forEach(h => {
-      h.addEventListener("click", () => {
-        activePart = h.dataset.part;
-        updateExam();
+    hotspotButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        hotspotButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activePart = btn.dataset.part;
+        renderPart();
       });
     });
 
     modeButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener('click', () => {
+        modeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         activeMode = btn.dataset.mode;
-        updateExam();
+        renderPart();
       });
     });
 
-    let hoverTimer;
-    relicStage.addEventListener("mouseenter", () => {
-      hoverTimer = setTimeout(() => {
-        proximityText.textContent = "Proximity warning: attention interval exceeded. The hook pattern has begun returning gaze behavior.";
-      }, 2400);
-    });
+    renderPart();
 
-    relicStage.addEventListener("mouseleave", () => {
-      clearTimeout(hoverTimer);
-      proximityText.textContent = "Chamber stable. Edge pattern has not yet noticed prolonged attention.";
-    });
-
-    updateExam();
-
-    const effectData = {
-      physical:{
-        label:"Observed Effect I",
-        title:"Physical // Seam Opening",
-        body:"The hooked edge specializes in opening protected places. Armor plates split at seams. Straps shear. Rib cavities and joint locks become access points. The wound often looks less like a slash and more like something important has been pulled out of alignment.",
-        list:[
-          "Hook tearing around armor lips and joints.",
-          "Jagged inner edge creating infected cavities.",
-          "Green residue lingering around opened seams.",
-          "Victims reporting the pull before they report pain."
-        ]
-      },
-      psychological:{
-        label:"Observed Effect II",
-        title:"Psychological // The Pause",
-        body:"Most survivors remember the pause before impact more clearly than the wound. They describe an impossible certainty that the blade had already selected them. Some continue hearing a chain-ring in sleep cycles long after leaving the battlefield.",
-        list:[
-          "Anticipatory dread before visible contact.",
-          "Collapse of heroic self-image.",
-          "Fixation on the hook’s approach.",
-          "Recurring memory of breath, drag, and metal."
-        ]
-      },
-      spiritual:{
-        label:"Observed Effect III",
-        title:"Spiritual // Oath Softening",
-        body:"The Mercy-Sickle wounds conviction by making conviction feel observed. Prayer becomes unfamiliar. Oaths feel rehearsed. Targets report the sudden awareness that their beliefs have weight, shape, and weak points.",
-        list:[
-          "Prayer disruption before physical wound.",
-          "Loss of oath-coherence under selection pressure.",
-          "Conviction becoming visible as vulnerability.",
-          "Death experienced as already decided."
-        ]
-      }
-    };
-
-    const effectButtons = document.querySelectorAll(".effect-btn");
-    const effectLabel = document.getElementById("effectLabel");
-    const effectTitle = document.getElementById("effectTitle");
-    const effectBody = document.getElementById("effectBody");
-    const effectList = document.getElementById("effectList");
-
-    function setEffect(key){
-      const data = effectData[key];
-      effectLabel.textContent = data.label;
-      effectTitle.textContent = data.title;
-      effectBody.textContent = data.body;
-      effectList.innerHTML = data.list.map(item => `<li>${item}</li>`).join("");
-      effectButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.effect === key));
-    }
-
-    effectButtons.forEach(btn => {
-      btn.addEventListener("click", () => setEffect(btn.dataset.effect));
-    });
-
-    setEffect("physical");
-
-    const witnesses = [
-      {
-        key:"Witness Fragment I",
-        title:"The Guardsman",
-        body:"“I thought he missed. That is what I remember most. The hook passed close enough that I heard metal breathe, but nothing opened yet. Then I looked down and understood my armor had already decided to leave me.”"
-      },
-      {
-        key:"Witness Fragment II",
-        title:"The Fallen Priest",
-        body:"“I raised the words. They had always come when I called them. This time they arrived tired. He hooked the chain of my censer and pulled my prayer out of rhythm before he touched my flesh.”"
-      },
-      {
-        key:"Witness Fragment III",
-        title:"The Broken Champion",
-        body:"“I was not afraid of death. I had rehearsed death. The blade gave me something worse. It showed me the difference between being ready to die and being ready to be understood.”"
-      },
-      {
-        key:"Witness Fragment IV",
-        title:"The Vox Scrap",
-        body:"“Do not let him pull the commander. Repeat, do not let him pull the commander. Formation integrity dependent on visible command presence. Chain sound detected. Command presence no longer visible.”"
-      }
-    ];
-
-    let witnessIndex = 0;
-    const witnessKey = document.getElementById("witnessKey");
-    const witnessTitle = document.getElementById("witnessTitle");
-    const witnessBody = document.getElementById("witnessBody");
-    const prevWitness = document.getElementById("prevWitness");
-    const nextWitness = document.getElementById("nextWitness");
-
-    function setWitness(){
-      const data = witnesses[witnessIndex];
-      witnessKey.textContent = data.key;
-      witnessTitle.textContent = data.title;
-      witnessBody.textContent = data.body;
-    }
-
-    prevWitness.addEventListener("click", () => {
-      witnessIndex = (witnessIndex - 1 + witnesses.length) % witnesses.length;
-      setWitness();
-    });
-
-    nextWitness.addEventListener("click", () => {
-      witnessIndex = (witnessIndex + 1) % witnesses.length;
-      setWitness();
-    });
-
-    setWitness();
-
-    const battleData = {
+    const battleScenes = {
       breach:{
-        image:"Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg",
-        label:"Phase I // Standard Units Broken",
-        title:"The Daemons Had Already Won the Room",
-        p1:"The first Plague Marines entered the shrine-corridor in ordered rot, bolters raised, armor coughing incense and chemical breath. They found the air already perfumed. The perfume did not soothe. It sharpened everything. Pain became a bell. Color became pressure. The cracked marble floor seemed to curve toward music no mortal throat had made.",
-        p2:"Then the daemonettes came through the violet mist like knives remembering dance. They did not overpower the Death Guard by strength. They dismantled rhythm. One marine fired at a target that had already become laughter behind him. Another turned to answer a voice from a childhood that had never belonged to him. A third was opened along the collar seal so precisely that his armor kept standing after he fell inside it."
+        phase:"Phase I",
+        title:"The Perfumed Refusal // Breach",
+        text:"The first contact occurs in corridors already sweet with ritual corruption. Standard plague-marines are cut down in the early exchange as the enemy’s pace, glamour, and shock assault outstrip expectation.",
+        image:"Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg"
       },
       champion:{
-        image:"Assets/Mercy-Sickle/perfumed-refusal-champion.jpeg",
-        label:"Phase II // The Perfumed Herald",
-        title:"The Enemy Was Beautiful Enough to Be Tactical",
-        p1:"The Herald stood where the corridor widened into a broken devotional hall. It wore beauty the way a blade wears polish: not as softness, but as threat. Its claws were delicate enough to make dismemberment feel like calligraphy. Its smile contained no hunger. Hunger would have been too honest.",
-        p2:"Around it, standard units failed in ways that looked like choice. A plague marine lowered his weapon to listen. Another laughed until his helm filters flooded. The Herald spoke of rot as an old dullness, of endurance as a poverty of sensation, of Mortivus as a thing too slow to notice it had already been mocked."
+        phase:"Phase II",
+        title:"The Perfumed Refusal // Champion",
+        text:"An elite Slaaneshi champion enters the corridor like a promise of beautiful failure. The surviving line recoils not from size alone, but from the insulting ease with which the enemy occupies the space.",
+        image:"Assets/Mercy-Sickle/perfumed-refusal-champion.jpeg"
       },
       duel:{
-        image:"Assets/Mercy-Sickle/perfumed-refusal-duel.jpeg",
-        label:"Phase III // Mortivus Enters",
-        title:"Rot Walked Into Excess Without Hurrying",
-        p1:"Mortivus entered after the chamber had been made decadent with dead certainty. He did not roar. He did not answer the Herald’s beauty with disgust. He crossed the broken floor as if approaching an altar whose false god had not yet realized it was being inspected.",
-        p2:"The Mercy-Sickle hung low in his grip. Its chain-ring made one small sound. That sound changed the room more than his arrival. The daemon’s dancers paused for half a breath, as if some ugly part of consequence had entered the music."
+        phase:"Phase III",
+        title:"The Perfumed Refusal // Duel",
+        text:"Mortivus commits. He does not rush. He lets the long haft speak first, measuring pace and angle while the enemy mistakes patience for injury.",
+        image:"Assets/Mercy-Sickle/perfumed-refusal-duel.jpeg"
       },
       wound:{
-        image:"Assets/Mercy-Sickle/perfumed-refusal-wound.jpeg",
-        label:"Phase IV // Mortivus Wounded",
-        title:"The Herald Opened Him",
-        p1:"The Herald was faster than the first swing and crueler than the second. It passed beneath the hook with a movement too graceful to be called evasion, then drove a claw through the seam beneath Mortivus’ pauldron. Armor split. Green vapor and dark fluids broke outward. The wound was real.",
-        p2:"For a moment the room belonged to Slaanesh again. The Herald leaned close to the breach it had made and whispered something shaped like praise. Several surviving plague marines faltered. Mortivus looked down at the opened plate, then back at the daemon, and did not grant the wound the dignity of surprise."
+        phase:"Phase IV",
+        title:"The Perfumed Refusal // The Wound",
+        text:"The champion lands the deepest recorded wound in Mortivus’ preserved battle history. The fragment confirms blood, armor failure, and a brief stagger severe enough to be remembered as omen.",
+        image:"Assets/Mercy-Sickle/perfumed-refusal-wound.jpeg"
       },
       mercy:{
-        image:"Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg",
-        label:"Phase V // Grace Interrupted",
-        title:"The Hook Refused the Dance",
-        p1:"The next movement was not fast. That was why it worked. Mortivus let the Herald begin another impossible turn, let it believe motion still belonged to it, then set the hook where grace had to pass. The Mercy-Sickle caught not flesh first, but rhythm.",
-        p2:"The daemon’s posture broke. Its elegance became angle. Its laughter became recognition. The hook dragged the champion out of the story it had been performing, and for the first time in the chamber, excess looked ugly to itself. That was the mercy. The blade allowed the Herald to understand the collapse before it completed it."
+        phase:"Phase V",
+        title:"The Perfumed Refusal // Mercy Event",
+        text:"Mortivus recovers by narrowing the exchange. He turns the collar, fixes the inner bite behind the champion’s motion, and uses the heavy curved blade to strip performance from the body wearing it.",
+        image:"Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg"
       },
       aftermath:{
-        image:"Assets/Mercy-Sickle/perfumed-refusal-aftermath.jpeg",
-        label:"Phase VI // Aftermath",
-        title:"The Perfume Left Before the Rot Did",
-        p1:"When the Herald dissolved, the violet sweetness thinned like a lie losing witnesses. Mortivus remained standing, armor split, fumes leaking, sickle lowered. This was not triumph. Too many of his own lay broken around him. The daemons had proved their danger. The wound in his plate remained open.",
-        p2:"But the room had learned silence. The surviving daemons did not flee because they feared death. They recoiled because the Mercy-Sickle had shown them a form of ending that did not flatter sensation. The blade had denied excess its performance, and what remained was only consequence."
+        phase:"Phase VI",
+        title:"The Perfumed Refusal // Aftermath",
+        text:"Silence returns unequal. Standard units are gone. The champion is no longer a champion. Mortivus remains standing, hardened by the wound and corrected forever against mistaking retreat for collapse.",
+        image:"Assets/Mercy-Sickle/perfumed-refusal-aftermath.jpeg"
       }
     };
 
-    const battleTabs = document.querySelectorAll(".battle-tab");
-    const battleImage = document.getElementById("battleImage");
-    const battleLabel = document.getElementById("battleLabel");
-    const battleTitle = document.getElementById("battleTitle");
-    const battleBody1 = document.getElementById("battleBody1");
-    const battleBody2 = document.getElementById("battleBody2");
+    const battleStageImage = document.getElementById('battleStageImage');
+    const battlePhase = document.getElementById('battlePhase');
+    const battleTitle = document.getElementById('battleTitle');
+    const battleText = document.getElementById('battleText');
+    const thumbBtns = document.querySelectorAll('.thumb-btn');
 
-    function setBattle(key){
-      const data = battleData[key];
-      battleImage.style.opacity = ".25";
-      setTimeout(() => {
-        battleImage.src = data.image;
-        battleImage.alt = data.title;
-        battleImage.style.opacity = "1";
-      }, 150);
-
-      battleLabel.textContent = data.label;
-      battleTitle.textContent = data.title;
-      battleBody1.textContent = data.p1;
-      battleBody2.textContent = data.p2;
-
-      battleTabs.forEach(tab => tab.classList.toggle("active", tab.dataset.battle === key));
-    }
-
-    battleTabs.forEach(tab => {
-      tab.addEventListener("click", () => setBattle(tab.dataset.battle));
+    thumbBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const scene = battleScenes[btn.dataset.scene];
+        thumbBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        battleStageImage.src = scene.image;
+        battlePhase.textContent = scene.phase;
+        battleTitle.textContent = scene.title;
+        battleText.textContent = scene.text;
+      });
     });
 
-    setBattle("breach");
-
-    const whispers = [
-      "Chain tension stable. The hook has not yet selected a witness.",
-      "Reliquary warning: the edge is not the first wound.",
-      "Devotional tag updated without attendant contact.",
-      "Observed symptom: survivors remember the pause.",
-      "Mercy classification remains hostile.",
-      "Do not scrape green residue from the inward hook."
+    const whisperMessages = [
+      "The haft brings mercy close. The curved blade makes it personal.",
+      "Do not wait for the cut. The selection is the first wound.",
+      "Witnesses remember the ring more faithfully than the blade.",
+      "A short blade on a long haft is how distance learns intimacy."
     ];
 
-    const floating = document.getElementById("floating");
-    const closeFloat = document.getElementById("closeFloat");
-    const floatText = document.getElementById("floatText");
+    const whisperText = document.getElementById('whisperText');
     let whisperIndex = 0;
+    setInterval(() => {
+      whisperIndex = (whisperIndex + 1) % whisperMessages.length;
+      whisperText.textContent = whisperMessages[whisperIndex];
+    }, 4800);
 
-    const whisperTimer = setInterval(() => {
-      whisperIndex = (whisperIndex + 1) % whispers.length;
-      floatText.textContent = whispers[whisperIndex];
-    }, 5200);
-
-    closeFloat.addEventListener("click", () => {
-      floating.style.display = "none";
-      clearInterval(whisperTimer);
+    document.getElementById('whisperClose').addEventListener('click', () => {
+      document.getElementById('whisperBox').style.display = 'none';
     });
 
-    const canvas = document.getElementById("relicCanvas");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
+    const canvas = document.getElementById('sporeCanvas');
+    const ctx = canvas.getContext('2d');
+    let spores = [];
 
     function resizeCanvas(){
-      canvas.width = window.innerWidth * devicePixelRatio;
-      canvas.height = window.innerHeight * devicePixelRatio;
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-
-      particles = Array.from({length: Math.min(135, Math.floor(window.innerWidth / 12))}, () => ({
-        x:Math.random() * window.innerWidth,
-        y:Math.random() * window.innerHeight,
-        r:Math.random() * 2.3 + .55,
-        vx:(Math.random() - .5) * .15,
-        vy:-(Math.random() * .22 + .035),
-        a:Math.random() * .32 + .06,
-        type:Math.random() > .78 ? "rot" : "amber"
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      spores = Array.from({length: 42}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.1 + .7,
+        s: Math.random() * .35 + .12,
+        a: Math.random() * Math.PI * 2,
+        drift: Math.random() * .3 + .08
       }));
     }
 
-    function drawCanvas(){
-      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    function drawSpores(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(const spore of spores){
+        spore.y -= spore.s;
+        spore.x += Math.sin(spore.a) * spore.drift;
+        spore.a += .01;
 
-      for(const p of particles){
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if(p.y < -12){
-          p.y = window.innerHeight + 12;
-          p.x = Math.random() * window.innerWidth;
+        if(spore.y < -10){
+          spore.y = canvas.height + 10;
+          spore.x = Math.random() * canvas.width;
         }
 
-        if(p.x < -15) p.x = window.innerWidth + 15;
-        if(p.x > window.innerWidth + 15) p.x = -15;
-
-        const color = p.type === "rot" ? "184,217,95" : "196,150,73";
-        const glow = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r * 7);
-        glow.addColorStop(0, `rgba(${color},${p.a})`);
-        glow.addColorStop(.45, `rgba(${color},${p.a * .22})`);
-        glow.addColorStop(1, `rgba(${color},0)`);
-
-        ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r * 5.2,0,Math.PI * 2);
+        ctx.fillStyle = `rgba(190, 205, 126, ${0.08 + spore.r / 22})`;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = 'rgba(170, 190, 110, .18)';
+        ctx.arc(spore.x, spore.y, spore.r, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      requestAnimationFrame(drawCanvas);
+      ctx.shadowBlur = 0;
+      requestAnimationFrame(drawSpores);
     }
 
     resizeCanvas();
-    drawCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    drawSpores();
+    window.addEventListener('resize', resizeCanvas);
   </script>
 </body>
 </html>
