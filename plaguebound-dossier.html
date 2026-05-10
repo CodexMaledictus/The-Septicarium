@@ -3,724 +3,1015 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Plaguebound Dossier of The Septicarium - warband registry, subject index, relic traces, and plaguebound command records." />
   <title>The Septicarium // Plaguebound Dossier</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#070b07;
-      --bg-2:#0d120d;
-      --panel:#111711;
-      --panel-2:#161f16;
-      --line:rgba(181, 195, 109, 0.22);
-      --line-strong:rgba(196, 216, 115, 0.52);
-      --text:#d9d0b2;
-      --muted:#9d977c;
-      --acid:#c7da74;
-      --rot:#7ca54b;
-      --rust:#70472d;
-      --warn:#b8773b;
-      --shadow:0 0 0 1px rgba(183,200,110,.10), 0 20px 60px rgba(0,0,0,.45);
+      --bg:#040604;
+      --bg-2:#080c07;
+      --panel:#0b110a;
+      --panel-2:#11180f;
+      --panel-3:#151f12;
+      --text:#eee5c7;
+      --text-strong:#fff3d3;
+      --muted:#aaa283;
+      --muted-2:#7f8667;
+      --acid:#c8dc62;
+      --acid-hot:#e5f780;
+      --rot:#7fa64d;
+      --rust:#9b6339;
+      --blood:#7d3b31;
+      --line:rgba(198,216,112,.18);
+      --line-strong:rgba(218,235,128,.42);
+      --shadow:0 28px 90px rgba(0,0,0,.58);
+      --radius:30px;
+      --radius-sm:20px;
+      --ease:cubic-bezier(.2,.8,.2,1);
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      background:
-        radial-gradient(circle at top left, rgba(78,110,47,.13), transparent 28%),
-        radial-gradient(circle at top right, rgba(147,94,39,.10), transparent 22%),
-        linear-gradient(180deg, #060906 0%, #0b100b 45%, #070a07 100%);
+      min-height:100vh;
       color:var(--text);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(159,190,72,.12), transparent 28%),
+        radial-gradient(circle at 88% 10%, rgba(151,91,43,.11), transparent 30%),
+        radial-gradient(circle at 52% 100%, rgba(89,125,52,.10), transparent 38%),
+        linear-gradient(180deg,#030503 0%,#070b06 44%,#030503 100%);
       overflow-x:hidden;
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        linear-gradient(rgba(190,210,115,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(190,210,115,0.028) 1px, transparent 1px);
-      background-size: 72px 72px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.34), rgba(0,0,0,.08));
-      z-index:0;
+    body.locked{overflow:hidden}
+
+    a{color:inherit}
+    button{font:inherit}
+
+    ::selection{
+      background:rgba(200,220,98,.28);
+      color:var(--text-strong);
     }
 
-    #spore-canvas{
+    #sporeCanvas{
       position:fixed;
       inset:0;
       width:100%;
       height:100%;
       z-index:0;
       pointer-events:none;
-      opacity:.45;
+      opacity:.82;
     }
 
-    .shell{
-      position:relative;
-      z-index:2;
-      width:min(1480px, calc(100% - 40px));
-      margin:0 auto;
+    .grain,
+    .scanline{
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
     }
+
+    .grain{
+      opacity:.075;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.18) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 4px);
+      mix-blend-mode:soft-light;
+    }
+
+    .scanline{
+      top:-18%;
+      height:14%;
+      opacity:.10;
+      background:linear-gradient(180deg, transparent, rgba(218,235,128,.18), transparent);
+      animation:scan 8.5s linear infinite;
+    }
+
+    @keyframes scan{to{top:115%}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes rise{to{opacity:1; transform:none}}
+    @keyframes pulse{0%,100%{opacity:.72}50%{opacity:1}}
+    @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+
+    .skip-link{
+      position:absolute;
+      top:-80px;
+      left:16px;
+      z-index:300;
+      padding:12px 16px;
+      border-radius:999px;
+      background:var(--acid);
+      color:#111607;
+      font-weight:900;
+      transition:.2s ease;
+    }
+
+    .skip-link:focus{top:16px}
 
     .boot{
       position:fixed;
       inset:0;
-      z-index:9999;
+      z-index:200;
+      display:grid;
+      place-items:center;
+      padding:18px;
       background:
-        radial-gradient(circle at center, rgba(129,153,74,.08), transparent 36%),
-        linear-gradient(180deg, #070a07 0%, #040604 100%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition: opacity .85s ease, visibility .85s ease;
+        radial-gradient(circle at 50% 44%, rgba(171,200,84,.14), transparent 32%),
+        linear-gradient(180deg, rgba(3,5,3,.98), rgba(1,2,1,.995));
+      transition:opacity .75s var(--ease), visibility .75s var(--ease);
     }
 
-    .boot.hidden{
+    .boot.hide{
       opacity:0;
       visibility:hidden;
+      pointer-events:none;
     }
 
-    .boot-panel{
-      width:min(760px, calc(100% - 40px));
-      border:1px solid var(--line-strong);
-      background:linear-gradient(180deg, rgba(17,23,17,.96), rgba(8,12,8,.96));
-      box-shadow:0 0 100px rgba(113,143,50,.12);
-      padding:28px 28px 30px;
-      position:relative;
+    .boot-card{
+      width:min(850px,100%);
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:linear-gradient(180deg, rgba(12,18,11,.95), rgba(5,8,5,.98));
+      box-shadow:var(--shadow);
       overflow:hidden;
+      position:relative;
     }
 
-    .boot-panel::before{
+    .boot-card::before{
       content:"";
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg, transparent, rgba(214,229,121,.08), transparent);
-      animation:scan 2.4s linear infinite;
-      opacity:.55;
+        radial-gradient(circle at 82% 8%, rgba(218,235,128,.12), transparent 22%),
+        radial-gradient(circle at 10% 92%, rgba(151,91,43,.12), transparent 28%);
       pointer-events:none;
     }
 
-    .boot-kicker,
-    .eyebrow,
-    .mini-label,
-    .card-kicker,
+    .boot-inner{position:relative;z-index:2;padding:28px}
+
+    .boot-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:22px;
+      margin-bottom:20px;
+    }
+
+    .boot-seal{
+      width:98px;
+      height:98px;
+      border-radius:24px;
+      object-fit:cover;
+      border:1px solid var(--line-strong);
+      box-shadow:0 0 42px rgba(218,235,128,.16);
+      background:#080c07;
+    }
+
+    .kicker,
+    .tag,
     .chip,
-    .signal-label{
-      font-family:"Trebuchet MS", Arial, sans-serif;
+    .label,
+    .small-note{
+      color:var(--acid);
       text-transform:uppercase;
       letter-spacing:.20em;
-      color:var(--acid);
+      font-size:.72rem;
+      font-weight:900;
     }
 
-    .boot-kicker{
-      font-size:.74rem;
-      margin-bottom:16px;
-      opacity:.95;
+    h1,h2,h3,h4,.value,.file-title{font-family:"Cinzel", serif}
+
+    .boot h1{
+      margin:8px 0 0;
+      font-size:clamp(2.3rem,4.4vw,3.6rem);
+      line-height:.9;
+      letter-spacing:.03em;
     }
 
-    .boot-title{
-      font-size:clamp(2.2rem, 6vw, 4.4rem);
-      line-height:.95;
-      margin:0 0 16px;
-      color:#e6ddbc;
-    }
-
-    .boot-text{
+    .boot p{
+      margin:10px 0 0;
       color:var(--muted);
-      line-height:1.7;
-      font-size:1rem;
-      max-width:58ch;
-      margin:0 0 18px;
+      max-width:620px;
+      line-height:1.72;
     }
 
     .boot-log{
-      margin-top:22px;
-      border-top:1px solid var(--line);
-      padding-top:18px;
-      display:grid;
-      gap:10px;
-      font-size:.92rem;
-      color:#bfb58e;
+      min-height:194px;
+      border:1px solid rgba(198,216,112,.13);
+      border-radius:22px;
+      background:rgba(4,7,4,.72);
+      padding:16px;
+      overflow:hidden;
     }
 
-    .boot-log div{
+    .boot-line{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:7px 0;
+      color:#d9d2b7;
+      line-height:1.45;
+      opacity:0;
+      transform:translateY(8px);
+      animation:rise .32s var(--ease) forwards;
+    }
+
+    .boot-line span{
+      flex:0 0 auto;
+      color:var(--acid);
+      font-size:.70rem;
+      letter-spacing:.18em;
+      font-weight:900;
+      margin-top:3px;
+    }
+
+    .boot-bar-shell{
+      height:10px;
+      margin-top:16px;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.05);
+    }
+
+    .boot-bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--rust),var(--rot),var(--acid-hot));
+      box-shadow:0 0 22px rgba(218,235,128,.32);
+      transition:width .2s linear;
+    }
+
+    .boot-actions{
       display:flex;
       justify-content:space-between;
-      gap:20px;
-      border-bottom:1px dotted rgba(199,218,116,.15);
-      padding-bottom:8px;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .boot-note{color:var(--muted-2);font-size:.92rem}
+
+    .page{
+      position:relative;
+      z-index:5;
+      width:min(1460px, calc(100vw - 28px));
+      margin:0 auto;
+      padding:16px 0 54px;
     }
 
     .topbar{
+      position:sticky;
+      top:12px;
+      z-index:60;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:16px;
-      padding:16px 0 8px;
-      color:#bdb58f;
-      position:sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(10px);
-      background:linear-gradient(180deg, rgba(7,10,7,.92), rgba(7,10,7,.55) 82%, transparent);
+      gap:18px;
+      padding:12px 14px;
+      margin-bottom:18px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(6,10,6,.72);
+      backdrop-filter:blur(16px);
+      box-shadow:0 12px 34px rgba(0,0,0,.28);
     }
 
-    .crumbs{
+    .brand{
       display:flex;
-      flex-wrap:wrap;
       align-items:center;
-      gap:8px;
-      font-family:"Trebuchet MS", Arial, sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      font-size:.72rem;
-      color:#a8a07f;
-    }
-
-    .crumbs a{
-      color:#d6cb9c;
+      gap:12px;
+      min-width:0;
       text-decoration:none;
-      border-bottom:1px solid transparent;
     }
 
-    .crumbs a:hover{border-color:rgba(214,203,156,.55)}
-
-    .top-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .ghost-btn,
-    .solid-btn,
-    .tab-btn,
-    .choice-btn,
-    .sub-btn{
-      appearance:none;
+    .brand-mark{
+      width:46px;
+      height:46px;
+      flex:0 0 auto;
+      border-radius:50%;
       border:1px solid var(--line-strong);
-      background:rgba(18,25,18,.72);
-      color:#e5dab2;
-      text-decoration:none;
-      padding:12px 16px;
-      font-family:"Trebuchet MS", Arial, sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:.68rem;
-      cursor:pointer;
-      transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+      background:
+        linear-gradient(180deg, rgba(5,8,5,.18), rgba(5,8,5,.78)),
+        url("Assets/Plaguebound-Dossier/name-crypt.jpeg") center/cover no-repeat;
+      box-shadow:0 0 18px rgba(218,235,128,.12);
+    }
+
+    .brand strong{
+      display:block;
+      font-family:"Cinzel", serif;
+      letter-spacing:.05em;
+      line-height:1;
+    }
+
+    .brand span span{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:.86rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:58vw;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .btn,
+    .nav a,
+    .nav button,
+    .small-btn{
       display:inline-flex;
       align-items:center;
-      gap:8px;
+      justify-content:center;
+      gap:10px;
+      text-decoration:none;
+      border:1px solid rgba(198,216,112,.16);
+      border-radius:999px;
+      background:rgba(10,15,9,.62);
+      color:var(--text);
+      padding:11px 14px;
+      font-size:.74rem;
+      font-weight:900;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:transform .22s var(--ease), border-color .22s var(--ease), background .22s var(--ease), box-shadow .22s var(--ease);
     }
 
-    .ghost-btn:hover,
-    .solid-btn:hover,
-    .tab-btn:hover,
-    .choice-btn:hover,
-    .sub-btn:hover{
+    .btn{padding:14px 18px}
+
+    .btn:hover,
+    .nav a:hover,
+    .nav button:hover,
+    .small-btn:hover{
       transform:translateY(-2px);
-      background:rgba(32,45,24,.82);
-      border-color:rgba(210,227,132,.72);
-      box-shadow:0 12px 26px rgba(0,0,0,.26);
+      border-color:rgba(218,235,128,.36);
+      background:rgba(19,28,16,.88);
+      box-shadow:0 14px 26px rgba(0,0,0,.24);
     }
 
-    .solid-btn{
-      background:linear-gradient(180deg, rgba(114,140,60,.18), rgba(39,53,24,.68));
+    .btn.primary,
+    .small-btn.primary{
+      color:#111607;
+      background:linear-gradient(180deg,var(--acid-hot),var(--acid));
+      border-color:rgba(232,246,132,.72);
+      box-shadow:0 16px 30px rgba(200,220,98,.15);
     }
 
     .hero{
-      margin-top:10px;
-      min-height:78vh;
-      border:1px solid var(--line);
-      background:
-        linear-gradient(90deg, rgba(8,12,8,.92) 0%, rgba(8,12,8,.74) 36%, rgba(8,12,8,.42) 56%, rgba(8,12,8,.72) 100%),
-        url("Assets/Plaguebound-Dossier/dossier-hero.jpeg") center/cover no-repeat;
-      box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
+      min-height:690px;
+      border:1px solid var(--line);
+      border-radius:34px;
+      display:grid;
+      grid-template-columns:minmax(0,1.08fr) minmax(340px,.55fr);
+      gap:26px;
+      padding:30px;
+      box-shadow:var(--shadow);
+      isolation:isolate;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:
+        linear-gradient(100deg, rgba(3,6,3,.94) 0%, rgba(5,8,5,.76) 50%, rgba(5,8,5,.88) 100%),
+        linear-gradient(180deg, rgba(4,6,4,.08), rgba(2,3,2,.78)),
+        url("Assets/Plaguebound-Dossier/dossier-hero.jpeg") center/cover no-repeat;
+      transform:scale(1.025);
+      transition:transform .8s var(--ease), filter .8s var(--ease);
+    }
+
+    .hero:hover::before{
+      transform:scale(1.055);
+      filter:saturate(1.05) contrast(1.04);
     }
 
     .hero::after{
       content:"";
       position:absolute;
       inset:0;
+      z-index:-1;
       background:
-        radial-gradient(circle at 22% 35%, rgba(144,181,83,.14), transparent 22%),
-        linear-gradient(180deg, transparent 0%, rgba(0,0,0,.18) 60%, rgba(0,0,0,.55) 100%);
+        radial-gradient(circle at 76% 16%, rgba(218,235,128,.15), transparent 24%),
+        radial-gradient(circle at 12% 82%, rgba(151,91,43,.18), transparent 30%);
       pointer-events:none;
     }
 
-    .hero-grid{
-      position:relative;
-      z-index:2;
-      min-height:78vh;
+    .hero-copy{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:26px;
-      align-items:end;
-      padding:48px;
+      align-content:center;
+      min-height:620px;
+      max-width:880px;
     }
 
-    .eyebrow{
-      font-size:.76rem;
+    .tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
       margin-bottom:18px;
-      opacity:.96;
     }
 
-    .hero-title{
-      font-size:clamp(3.2rem, 8.7vw, 7rem);
-      line-height:.92;
-      margin:0 0 16px;
+    .tag{
+      border:1px solid rgba(198,216,112,.16);
+      border-radius:999px;
+      background:rgba(7,11,6,.62);
+      padding:9px 12px;
+    }
+
+    .hero h1{
+      margin:0;
       max-width:10ch;
-      color:#ece2c1;
-      text-shadow:0 3px 18px rgba(0,0,0,.35);
+      font-size:clamp(3.1rem,7vw,7rem);
+      line-height:.86;
+      letter-spacing:.018em;
+      text-shadow:0 12px 44px rgba(0,0,0,.64);
     }
 
-    .hero-sub{
+    .subtitle{
+      margin:16px 0 0;
+      font-family:"Cinzel", serif;
+      font-size:clamp(1.25rem,2vw,2rem);
+      color:var(--acid-hot);
       font-style:italic;
-      font-size:clamp(1.2rem, 2.5vw, 2rem);
-      margin:0 0 18px;
-      color:var(--acid);
     }
 
-    .hero-text{
-      max-width:64ch;
-      line-height:1.82;
-      color:#d1c7a3;
-      font-size:1.06rem;
-      margin:0 0 18px;
-      text-shadow:0 2px 10px rgba(0,0,0,.28);
+    .hook{
+      max-width:760px;
+      margin:24px 0 0;
+      color:#d8cfb4;
+      font-size:1.1rem;
+      line-height:1.86;
     }
 
-    .hero-text strong{color:#ece2c1}
+    .hook strong{color:var(--text-strong)}
 
     .hero-actions{
       display:flex;
       flex-wrap:wrap;
       gap:12px;
-      margin-top:24px;
+      margin-top:26px;
     }
 
-    .hero-side{
-      display:grid;
-      gap:14px;
-      align-self:end;
-      justify-self:end;
-      width:min(100%, 540px);
-    }
-
-    .hero-card{
-      background:linear-gradient(180deg, rgba(12,18,12,.86), rgba(9,13,9,.76));
+    .hero-panel{
+      align-self:center;
       border:1px solid var(--line);
-      padding:18px 18px 16px;
-      backdrop-filter: blur(8px);
+      border-radius:28px;
+      background:rgba(7,11,7,.66);
+      backdrop-filter:blur(14px);
+      box-shadow:0 22px 44px rgba(0,0,0,.34);
+      padding:18px;
+      display:grid;
+      gap:16px;
+    }
+
+    .hero-image{
+      min-height:312px;
+      border:1px solid rgba(198,216,112,.13);
+      border-radius:24px;
+      background:
+        linear-gradient(180deg, rgba(4,7,4,.05), rgba(4,7,4,.80)),
+        url("Assets/Plaguebound-Dossier/subject-index.jpeg") center/cover no-repeat;
       position:relative;
       overflow:hidden;
     }
 
-    .hero-card::before,
-    .panel::before,
-    .module::before,
-    .intercept-output::before,
-    .quote-box::before{
+    .hero-image::before,
+    .hero-image::after{
       content:"";
       position:absolute;
-      inset:0;
-      background:linear-gradient(90deg, transparent, rgba(201,215,114,.06), transparent);
-      transform:translateX(-100%);
-      animation: sweep 8.5s linear infinite;
-      pointer-events:none;
-      opacity:.4;
+      border-radius:50%;
+      border:1px dashed rgba(218,235,128,.16);
+      inset:12%;
+      animation:spin 40s linear infinite;
     }
 
-    .mini-label{
-      font-size:.62rem;
-      margin-bottom:8px;
-      opacity:.95;
+    .hero-image::after{
+      inset:23%;
+      border-style:solid;
+      border-color:rgba(218,235,128,.08);
+      animation-duration:58s;
+      animation-direction:reverse;
     }
 
-    .hero-card h3,
-    .panel h2,
-    .module h2,
-    .intercept-output h3,
-    .major-card h3,
-    .index-entry h3{
-      margin:0 0 10px;
-      color:#ece2c1;
-    }
-
-    .hero-card p,
-    .panel p,
-    .module p,
-    .major-card p,
-    .index-entry p{
-      margin:0;
-      color:#bfb58e;
-      line-height:1.7;
-    }
-
-    .hero-stats{
+    .quick-readouts{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
+      grid-template-columns:1fr 1fr;
       gap:10px;
     }
 
-    .stat{
-      border:1px solid var(--line);
-      padding:12px;
-      background:rgba(11,16,11,.52);
-      min-height:92px;
+    .readout{
+      border:1px solid rgba(198,216,112,.10);
+      border-radius:18px;
+      background:rgba(5,8,5,.62);
+      padding:13px;
     }
 
-    .stat-label{
-      font-family:"Trebuchet MS", Arial, sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:.62rem;
-      color:var(--acid);
-      margin-bottom:8px;
+    .label{
+      color:var(--muted-2);
+      font-size:.68rem;
+      margin-bottom:5px;
     }
 
-    .stat-value{
-      font-size:1.2rem;
-      color:#e7ddbd;
-      margin-bottom:6px;
-    }
-
-    .stat-note{
-      font-size:.9rem;
-      color:#a9a07f;
-      line-height:1.45;
+    .value{
+      line-height:1.18;
+      color:var(--text-strong);
+      font-size:1.03rem;
     }
 
     .section{
-      padding:32px 0 0;
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:linear-gradient(180deg, rgba(9,13,8,.75), rgba(4,7,4,.90));
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
-    .section-header{
+    .section-head{
       display:flex;
       justify-content:space-between;
-      align-items:end;
-      gap:20px;
-      margin:0 0 18px;
+      align-items:flex-start;
+      gap:18px;
+      padding:26px 26px 0;
+      flex-wrap:wrap;
     }
 
-    .section-title{
-      margin:0;
-      font-size:clamp(2rem, 5vw, 4rem);
-      line-height:.95;
-      color:#efe4c2;
+    .section h2{
+      margin:8px 0 0;
+      font-size:clamp(2rem,3.6vw,3.45rem);
+      line-height:.96;
     }
 
-    .section-desc{
-      max-width:70ch;
-      color:#beb48d;
-      line-height:1.8;
-      margin-top:10px;
+    .section-head p{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.75;
+      max-width:780px;
     }
 
-    .section-tag{
-      font-family:"Trebuchet MS", Arial, sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.16em;
+    .section-chip{
+      border:1px solid rgba(198,216,112,.16);
+      border-radius:999px;
+      background:rgba(7,11,7,.62);
       color:var(--acid);
-      font-size:.66rem;
+      padding:10px 14px;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
       white-space:nowrap;
-      border:1px solid var(--line);
-      padding:10px 12px;
-      background:rgba(12,18,12,.66);
     }
 
-    .panel,
-    .module{
-      position:relative;
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(16,22,16,.88), rgba(10,14,10,.86));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .mandate-grid{
+    .command-board{
+      padding:24px 26px 28px;
       display:grid;
-      grid-template-columns: 1.03fr .97fr;
-      gap:18px;
-    }
-
-    .mandate-image{
-      min-height:520px;
-      background:
-        linear-gradient(180deg, rgba(7,10,7,.12), rgba(7,10,7,.45)),
-        url("Assets/Plaguebound-Dossier/dossier-vault.jpeg") center/cover no-repeat;
-      border-right:1px solid var(--line);
-    }
-
-    .mandate-copy{
-      padding:28px;
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-    }
-
-    .lead{
-      font-size:1.12rem;
-      line-height:1.9;
-      color:#d7cdac;
-    }
-
-    .ritual-list{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px;
-      margin-top:4px;
-    }
-
-    .ritual-item{
-      border:1px solid var(--line);
-      padding:14px;
-      background:rgba(9,13,9,.58);
-    }
-
-    .ritual-item .mini-label{margin-bottom:7px}
-    .ritual-item p{font-size:.95rem}
-
-    .major-grid{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:16px;
-      margin-top:18px;
-    }
-
-    .major-card{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(13,18,13,.92), rgba(9,12,9,.88));
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-
-    .major-card img{
-      width:100%;
-      height:260px;
-      object-fit:cover;
-      display:block;
-      border-bottom:1px solid var(--line);
-      filter:saturate(.95) contrast(1.02);
-    }
-
-    .major-body{padding:18px}
-    .major-actions{padding:0 18px 18px}
-
-    .scriptorium{
-      display:grid;
-      grid-template-columns: .9fr 1.1fr;
+      grid-template-columns:1.05fr .95fr;
       gap:18px;
       align-items:stretch;
     }
 
-    .scriptorium-image{
-      min-height:480px;
+    .board-main{
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:28px;
+      overflow:hidden;
       background:
-        linear-gradient(180deg, rgba(8,12,8,.16), rgba(8,12,8,.42)),
-        url("Assets/Plaguebound-Dossier/dossier-scriptorium.jpeg") center/cover no-repeat;
-      border-right:1px solid var(--line);
+        linear-gradient(180deg, rgba(4,7,4,.18), rgba(4,7,4,.84)),
+        url("Assets/Plaguebound-Dossier/dossier-vault.jpeg") center/cover no-repeat;
+      min-height:530px;
+      display:grid;
+      align-content:end;
+      padding:22px;
+      position:relative;
     }
 
-    .scriptorium-copy{
-      padding:26px;
-      display:grid;
-      gap:18px;
-      align-content:start;
+    .board-main::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 80% 15%, rgba(218,235,128,.14), transparent 26%);
+      pointer-events:none;
     }
 
-    .scribe-steps{
+    .board-main > *{position:relative;z-index:1}
+
+    .board-main h3{
+      margin:8px 0 0;
+      font-size:clamp(2rem,3vw,3.1rem);
+      line-height:1;
+    }
+
+    .board-main p{
+      max-width:720px;
+      margin:14px 0 0;
+      color:#d7cfb3;
+      line-height:1.82;
+    }
+
+    .identity-grid{
       display:grid;
+      grid-template-columns:1fr 1fr;
       gap:12px;
+      margin-top:18px;
     }
 
-    .scribe-step{
-      display:grid;
-      grid-template-columns:auto 1fr;
-      gap:14px;
-      align-items:start;
-      border:1px solid var(--line);
-      padding:14px;
-      background:rgba(8,12,8,.44);
-    }
-
-    .scribe-num{
-      width:36px;
-      height:36px;
-      display:grid;
-      place-items:center;
-      border:1px solid var(--line-strong);
-      color:var(--acid);
-      font-family:"Trebuchet MS", Arial, sans-serif;
-      font-size:.78rem;
-      letter-spacing:.08em;
-      background:rgba(21,28,14,.52);
-    }
-
-    .index-board{
-      display:grid;
-      grid-template-columns: .95fr 1.05fr;
-      gap:18px;
-      align-items:start;
-    }
-
-    .index-image{
-      min-height:520px;
-      background:
-        linear-gradient(180deg, rgba(7,10,7,.15), rgba(7,10,7,.46)),
-        url("Assets/Plaguebound-Dossier/subject-index.jpeg") center/cover no-repeat;
-      border-right:1px solid var(--line);
-    }
-
-    .index-side{
-      padding:24px;
-      display:grid;
-      gap:16px;
-    }
-
-    .index-list{
-      display:grid;
-      gap:12px;
-    }
-
-    .index-entry{
-      border:1px solid var(--line);
-      background:rgba(10,14,10,.54);
-      padding:14px;
-      transition:transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .index-entry:hover{
-      transform:translateY(-2px);
-      border-color:rgba(210,227,132,.46);
-      background:rgba(21,29,16,.65);
-    }
-
-    .index-entry.sealed{
-      opacity:.78;
-    }
-
-    .index-entry .chip{
-      display:inline-block;
-      font-size:.58rem;
-      margin-bottom:8px;
-    }
-
-    .chip{
-      padding:5px 7px;
-      border:1px solid var(--line);
-      background:rgba(18,24,18,.74);
-    }
-
-    .name-crypt-grid{
-      display:grid;
-      grid-template-columns: .88fr 1.12fr;
-      gap:18px;
-      align-items:start;
-    }
-
-    .name-crypt-image{
-      min-height:520px;
-      background:
-        linear-gradient(180deg, rgba(7,10,7,.16), rgba(7,10,7,.46)),
-        url("Assets/Plaguebound-Dossier/name-crypt.jpeg") center/cover no-repeat;
-      border-right:1px solid var(--line);
-    }
-
-    .crypt-side{
-      padding:24px;
-      display:grid;
-      gap:14px;
-    }
-
-    .crypt-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px;
-    }
-
-    .crypt-tile{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(13,18,13,.9), rgba(8,11,8,.88));
-      color:#e6dcbc;
-      text-align:left;
-      padding:15px;
-      cursor:pointer;
-      min-height:116px;
-      transition:transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-
-    .crypt-tile:hover{
-      transform:translateY(-2px);
-      border-color:rgba(209,224,128,.56);
-      background:linear-gradient(180deg, rgba(22,30,16,.96), rgba(11,15,11,.92));
-    }
-
-    .crypt-tile .mini-label{
-      display:block;
-      font-size:.56rem;
-      margin-bottom:8px;
-    }
-
+    .identity-item,
+    .mini-panel,
+    .engine-output,
     .crypt-output,
-    .intercept-output,
-    .quote-box{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(9,13,9,.86), rgba(7,10,7,.92));
+    .file-link,
+    .lore-card,
+    .hierarchy-card{
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:20px;
+      background:rgba(7,11,7,.64);
+    }
+
+    .identity-item{padding:14px}
+
+    .identity-item .value{font-size:1.14rem}
+
+    .board-side{
+      display:grid;
+      gap:12px;
+    }
+
+    .mini-panel{
       padding:18px;
-      min-height:160px;
       position:relative;
       overflow:hidden;
     }
 
-    .quote-box{
-      min-height:auto;
-      font-style:italic;
-      color:#d8cfaf;
-      line-height:1.8;
+    .mini-panel h3{
+      margin:8px 0 10px;
+      font-size:1.5rem;
+      line-height:1.05;
     }
 
-    .terminal-grid{
-      display:grid;
-      grid-template-columns: .8fr 1.2fr;
-      gap:18px;
+    .mini-panel p{
+      color:var(--muted);
+      line-height:1.72;
+      margin:0;
     }
 
-    .terminal-stack{
+    .status-stack{
       display:grid;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .status-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      padding-bottom:10px;
+      border-bottom:1px solid rgba(198,216,112,.10);
+    }
+
+    .status-row:last-child{border-bottom:0;padding-bottom:0}
+
+    .status-row span:first-child{font-weight:800;color:var(--text-strong)}
+    .status-row span:last-child{color:var(--acid);font-family:"Cinzel",serif;white-space:nowrap}
+
+    .cards{
+      padding:24px 26px 28px;
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
       gap:16px;
     }
 
-    .terminal-img,
-    .terminal-img-deep{
-      min-height:248px;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
+    .entry-card{
+      min-height:370px;
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:26px;
+      background:#090d08;
+      cursor:pointer;
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .6s var(--ease), transform .6s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
+    }
+
+    .entry-card.revealed{opacity:1;transform:none}
+
+    .entry-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:
+        linear-gradient(180deg, rgba(4,7,4,.05), rgba(5,8,5,.54) 46%, rgba(3,5,3,.96) 100%),
+        radial-gradient(circle at 82% 16%, rgba(218,235,128,.15), transparent 24%),
+        var(--img) center/cover no-repeat;
+      filter:saturate(.96) brightness(.78);
+      transform:scale(1.02);
+      transition:transform .55s var(--ease), filter .55s var(--ease);
+    }
+
+    .entry-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:linear-gradient(135deg, rgba(198,216,112,.08), transparent 46%, rgba(151,91,43,.10));
+    }
+
+    .entry-card:hover,
+    .entry-card.active{
+      transform:translateY(-7px);
+      border-color:rgba(218,235,128,.38);
+      box-shadow:0 24px 46px rgba(0,0,0,.40);
+    }
+
+    .entry-card:hover::before,
+    .entry-card.active::before{
+      transform:scale(1.08);
+      filter:saturate(1.08) brightness(.90);
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      padding:16px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(198,216,112,.16);
+      border-radius:999px;
+      background:rgba(4,7,4,.68);
+      padding:7px 10px;
+      font-size:.65rem;
+    }
+
+    .card-body{
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .entry-card h3{
+      margin:0;
+      font-size:1.58rem;
+      line-height:1.04;
+    }
+
+    .entry-card p{
+      margin:0;
+      color:#d2cbb0;
+      line-height:1.63;
+      font-size:.98rem;
+    }
+
+    .card-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .hierarchy-wrap{
+      padding:24px 26px 28px;
+      display:grid;
+      grid-template-columns:minmax(320px,.7fr) 1fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .hierarchy-image{
+      position:sticky;
+      top:100px;
+      min-height:560px;
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:28px;
+      background:
+        linear-gradient(180deg, rgba(4,7,4,.10), rgba(4,7,4,.80)),
+        url("Assets/Plaguebound-Dossier/dossier-scriptorium.jpeg") center/cover no-repeat;
       overflow:hidden;
     }
 
-    .terminal-img{
-      background:
-        linear-gradient(180deg, rgba(7,10,7,.18), rgba(7,10,7,.44)),
-        url("Assets/Plaguebound-Dossier/dossier-terminal.jpeg") center/cover no-repeat;
+    .hierarchy-image::after{
+      content:"COMMAND PRESSURE // NAME TO FORMATION // FORMATION TO DOCTRINE";
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:18px;
+      color:var(--acid);
+      font-size:.78rem;
+      font-weight:900;
+      letter-spacing:.22em;
+      line-height:1.6;
     }
 
-    .terminal-img-deep{
-      background:
-        linear-gradient(180deg, rgba(7,10,7,.14), rgba(7,10,7,.5)),
-        url("Assets/Plaguebound-Dossier/dossier-terminal-deep.jpeg") center/cover no-repeat;
+    .hierarchy-list{
+      display:grid;
+      gap:14px;
     }
 
-    .terminal-side{
-      padding:24px;
+    .hierarchy-card{
+      padding:18px;
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .6s var(--ease), transform .6s var(--ease), border-color .25s var(--ease);
+    }
+
+    .hierarchy-card.revealed{opacity:1;transform:none}
+
+    .hierarchy-card:hover{border-color:rgba(218,235,128,.28)}
+
+    .hierarchy-card h3{
+      margin:8px 0 8px;
+      font-size:1.48rem;
+      line-height:1.08;
+    }
+
+    .hierarchy-card p{margin:0;color:#d0c8ad;line-height:1.74}
+
+    .hierarchy-meta{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .hierarchy-meta div{
+      border:1px solid rgba(198,216,112,.10);
+      border-radius:16px;
+      padding:11px;
+      background:rgba(5,8,5,.56);
+    }
+
+    .split{
+      padding:24px 26px 28px;
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .crypt-image,
+    .engine-images,
+    .relic-image{
+      min-height:530px;
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:28px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .crypt-image{
+      background:
+        linear-gradient(180deg, rgba(4,7,4,.08), rgba(4,7,4,.78)),
+        url("Assets/Plaguebound-Dossier/name-crypt.jpeg") center/cover no-repeat;
+    }
+
+    .relic-image{
+      background:
+        linear-gradient(180deg, rgba(4,7,4,.08), rgba(4,7,4,.78)),
+        url("Assets/Plaguebound-Dossier/dossier-vault.jpeg") center/cover no-repeat;
+    }
+
+    .image-label{
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:18px;
+      color:var(--acid);
+      font-weight:900;
+      letter-spacing:.20em;
+      line-height:1.6;
+      text-transform:uppercase;
+      font-size:.78rem;
+    }
+
+    .crypt-side,
+    .engine-side,
+    .relic-side{
       display:grid;
       gap:14px;
       align-content:start;
+    }
+
+    .crypt-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .crypt-tile{
+      min-height:130px;
+      border:1px solid rgba(198,216,112,.13);
+      border-radius:20px;
+      background:rgba(7,11,7,.62);
+      color:var(--text);
+      text-align:left;
+      padding:16px;
+      cursor:pointer;
+      transition:.24s var(--ease);
+    }
+
+    .crypt-tile:hover,
+    .crypt-tile.active{
+      transform:translateY(-3px);
+      border-color:rgba(218,235,128,.34);
+      background:rgba(18,27,15,.86);
+    }
+
+    .crypt-tile strong{
+      display:block;
+      margin-top:8px;
+      color:var(--text-strong);
+      font-family:"Cinzel", serif;
+      font-size:1.14rem;
+      line-height:1.12;
+    }
+
+    .crypt-tile span:last-child{
+      display:block;
+      margin-top:9px;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:.92rem;
+    }
+
+    .crypt-output,
+    .engine-output{
+      padding:18px;
+      min-height:188px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .crypt-output h3,
+    .engine-output h3{
+      margin:8px 0 10px;
+      font-size:1.65rem;
+      line-height:1.08;
+    }
+
+    .crypt-output p,
+    .engine-output p{
+      margin:0;
+      color:#d2c9ae;
+      line-height:1.78;
+    }
+
+    .engine-images{
+      display:grid;
+      grid-template-rows:1fr 1fr;
+      gap:12px;
+      padding:0;
+      border:none;
+      background:transparent;
+    }
+
+    .engine-img-a,
+    .engine-img-b{
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:28px;
+      min-height:260px;
+      background-size:cover;
+      background-position:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .engine-img-a{
+      background-image:
+        linear-gradient(180deg, rgba(4,7,4,.08), rgba(4,7,4,.72)),
+        url("Assets/Plaguebound-Dossier/dossier-terminal.jpeg");
+    }
+
+    .engine-img-b{
+      background-image:
+        linear-gradient(180deg, rgba(4,7,4,.08), rgba(4,7,4,.72)),
+        url("Assets/Plaguebound-Dossier/dossier-terminal-deep");
     }
 
     .tab-row{
@@ -729,15 +1020,25 @@
       gap:10px;
     }
 
-    .tab-btn.active,
-    .choice-btn.active{
-      background:linear-gradient(180deg, rgba(106,137,53,.28), rgba(32,42,18,.86));
-      border-color:rgba(213,230,132,.78);
+    .tab-btn{
+      border:1px solid rgba(198,216,112,.16);
+      border-radius:999px;
+      background:rgba(10,15,9,.62);
+      color:var(--text);
+      padding:11px 14px;
+      font-size:.70rem;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:.22s var(--ease);
     }
 
-    .intercept-output h3{
-      font-size:1.55rem;
-      margin-bottom:10px;
+    .tab-btn:hover,
+    .tab-btn.active{
+      transform:translateY(-2px);
+      border-color:rgba(218,235,128,.38);
+      background:rgba(20,30,16,.88);
     }
 
     .data-list{
@@ -748,893 +1049,795 @@
 
     .data-line{
       display:grid;
-      grid-template-columns: 190px 1fr;
-      gap:16px;
-      border-bottom:1px dotted rgba(199,218,116,.15);
-      padding-bottom:8px;
-      font-size:.96rem;
+      grid-template-columns:180px 1fr;
+      gap:14px;
+      border-bottom:1px dotted rgba(198,216,112,.16);
+      padding-bottom:9px;
+      color:#d8cfb4;
+      line-height:1.55;
     }
 
-    .signal-label{
-      font-size:.60rem;
-      opacity:.92;
+    .data-line:last-child{border-bottom:0;padding-bottom:0}
+
+    .data-key{
+      color:var(--acid);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.62rem;
+      font-weight:900;
     }
 
-    .cta-grid{
+    .quote-box{
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:20px;
+      background:rgba(5,8,5,.64);
+      padding:16px;
+      color:#d8cfb4;
+      line-height:1.75;
+      font-style:italic;
+    }
+
+    .files-grid{
+      padding:24px 26px 28px;
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:18px;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
     }
 
-    .footer-nav{
-      margin:30px 0 60px;
+    .file-link{
       display:flex;
-      flex-wrap:wrap;
-      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      padding:16px;
+      text-decoration:none;
+      transition:.25s var(--ease);
     }
 
-    .divider{
-      height:1px;
-      background:linear-gradient(90deg, transparent, rgba(196,216,115,.34), transparent);
-      margin:24px 0;
+    .file-link:hover{
+      transform:translateY(-3px);
+      border-color:rgba(218,235,128,.32);
+      background:rgba(14,21,12,.82);
+      box-shadow:0 16px 34px rgba(0,0,0,.28);
     }
 
-    .tooltip{
-      position:fixed;
-      z-index:100;
-      pointer-events:none;
-      padding:10px 12px;
-      max-width:280px;
-      border:1px solid var(--line-strong);
-      background:rgba(9,12,9,.96);
-      color:#e6dcbb;
-      font-size:.88rem;
-      line-height:1.45;
-      opacity:0;
-      transform:translateY(6px);
-      transition:opacity .15s ease, transform .15s ease;
-      box-shadow:0 15px 35px rgba(0,0,0,.35);
-    }
+    .file-main{display:grid;gap:5px}
+    .file-title{font-size:1.22rem;color:var(--text-strong);line-height:1.08}
+    .file-sub{color:var(--muted);line-height:1.5;font-size:.94rem}
+    .file-tag{flex:0 0 auto}
 
-    .tooltip.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    .floating-quote{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      width:min(320px, calc(100% - 36px));
-      z-index:40;
+    .footer{
+      margin-top:22px;
       border:1px solid var(--line);
-      background:rgba(10,14,10,.86);
-      backdrop-filter: blur(10px);
-      padding:14px 16px;
+      border-radius:26px;
+      background:rgba(7,11,7,.72);
+      padding:18px 20px;
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .footer strong{color:var(--text-strong)}
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:120;
+      display:grid;
+      place-items:center;
+      padding:18px;
+      background:rgba(2,4,2,.74);
+      backdrop-filter:blur(10px);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:.25s ease;
+    }
+
+    .modal.show{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+
+    .modal-card{
+      width:min(760px,100%);
+      border:1px solid var(--line);
+      border-radius:30px;
+      background:linear-gradient(180deg,rgba(12,18,11,.98),rgba(5,8,5,.99));
       box-shadow:var(--shadow);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      gap:14px;
     }
 
-    .floating-quote .mini-label{margin-bottom:8px}
-    .floating-quote p{
+    .modal-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 82% 12%, rgba(218,235,128,.10), transparent 25%);
+      pointer-events:none;
+    }
+
+    .modal-card > *{position:relative;z-index:1}
+
+    .modal-card h3{
       margin:0;
-      color:#d6ccab;
-      line-height:1.7;
-      font-size:.95rem;
+      font-size:2rem;
+      line-height:1.04;
     }
 
-    @keyframes sweep{
-      0%{transform:translateX(-105%)}
-      100%{transform:translateX(105%)}
+    .modal-card p{margin:0;color:var(--muted);line-height:1.82}
+
+    .modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    @keyframes scan{
-      0%{transform:translateX(-100%)}
-      100%{transform:translateX(120%)}
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     }
 
-    @media (max-width: 1150px){
-      .hero-grid,
-      .mandate-grid,
-      .scriptorium,
-      .index-board,
-      .name-crypt-grid,
-      .terminal-grid,
-      .cta-grid{
-        grid-template-columns:1fr;
-      }
-
-      .hero-side{justify-self:stretch; width:100%}
-      .hero{min-height:auto}
-      .hero-grid{min-height:auto; padding:28px}
-      .mandate-image,
-      .scriptorium-image,
-      .index-image,
-      .name-crypt-image{min-height:360px; border-right:none; border-bottom:1px solid var(--line)}
-      .major-grid{grid-template-columns:1fr}
+    @media (max-width:1240px){
+      .hero,
+      .command-board,
+      .hierarchy-wrap,
+      .split{grid-template-columns:1fr}
+      .hero-copy{min-height:auto;padding:54px 0 20px}
+      .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hierarchy-image{position:relative;top:auto;min-height:380px}
+      .engine-images{grid-template-columns:1fr 1fr;grid-template-rows:auto}
     }
 
-    @media (max-width: 760px){
-      .shell{width:min(100% - 20px, 1480px)}
-      .topbar{padding-top:10px}
-      .hero-grid{padding:22px}
-      .hero-stats,
-      .ritual-list,
-      .crypt-grid{
-        grid-template-columns:1fr;
-      }
-      .data-line{
-        grid-template-columns:1fr;
-        gap:6px;
-      }
-      .section-title{font-size:2.25rem}
-      .floating-quote{left:10px; right:10px; width:auto}
+    @media (max-width:820px){
+      .page{width:min(100vw - 16px,1460px);padding-top:10px}
+      .topbar{border-radius:24px;align-items:flex-start;flex-direction:column}
+      .nav{justify-content:flex-start}
+      .hero{padding:18px;border-radius:28px;min-height:auto}
+      .hero h1{font-size:clamp(3rem,15vw,5rem)}
+      .hero-actions .btn{width:100%}
+      .hero-panel{display:none}
+      .identity-grid,
+      .quick-readouts,
+      .cards,
+      .crypt-grid,
+      .files-grid,
+      .hierarchy-meta,
+      .engine-images{grid-template-columns:1fr}
+      .section-head,
+      .command-board,
+      .cards,
+      .hierarchy-wrap,
+      .split,
+      .files-grid{padding-left:18px;padding-right:18px}
+      .section{border-radius:28px}
+      .data-line{grid-template-columns:1fr;gap:5px}
+      .boot-head{align-items:flex-start}
+      .boot-seal{width:74px;height:74px;border-radius:18px}
     }
   </style>
 </head>
-<body>
-  <canvas id="spore-canvas"></canvas>
+<body class="locked">
+  <a class="skip-link" href="#main">Skip to dossier</a>
+  <canvas id="sporeCanvas" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanline" aria-hidden="true"></div>
 
-  <div class="boot" id="bootSequence">
-    <div class="boot-panel">
-      <div class="boot-kicker">Plaguebound Dossier // Unsealing Subject Registries</div>
-      <h1 class="boot-title">The Plaguebound Dossier</h1>
-      <p class="boot-text">
-        Not every record inside The Septicarium is a chronicle. Some are slow dissections of persons,
-        warbands, relic-bearers, omen-loci, and those names whose continued existence has become tactically useful.
-        The Plaguebound Dossier is where memory is rendered into sanctioned corruption.
-      </p>
-      <div class="boot-log">
-        <div><span>Vault-breath equalized</span><span>Confirmed</span></div>
-        <div><span>Scribe-hosts admitted</span><span>Seven active</span></div>
-        <div><span>Name-crypt seals flexing</span><span>Weeping</span></div>
-        <div><span>Primary subject on rise</span><span>Mortivus Classarion</span></div>
+  <div class="boot" id="boot" role="dialog" aria-modal="true" aria-label="Plaguebound Dossier boot sequence">
+    <div class="boot-card">
+      <div class="boot-inner">
+        <div class="boot-head">
+          <div>
+            <div class="kicker">Plaguebound Dossier // Subject Registry Unsealing</div>
+            <h1>The Plaguebound Dossier</h1>
+            <p>Names are being weighed. Wargear is being remembered. The archive is deciding which truths may safely be made useful.</p>
+          </div>
+          <img class="boot-seal" src="Assets/Plaguebound-Dossier/name-crypt.jpeg" alt="Name-crypt seal">
+        </div>
+
+        <div class="boot-log" id="bootLog"></div>
+        <div class="boot-bar-shell"><div class="boot-bar" id="bootBar"></div></div>
+
+        <div class="boot-actions">
+          <div class="boot-note">The registry may be entered early. The tally still completes without your consent.</div>
+          <button class="small-btn" id="skipBoot" type="button">Enter Dossier</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="tooltip" id="tooltip"></div>
+  <main class="page" id="main">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Return to The Septicarium command deck">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <span>
+          <strong>Plaguebound Dossier</strong>
+          <span>The Septicarium / The Rotfather's Mercy / Subject Registry</span>
+        </span>
+      </a>
 
-  <div class="shell">
-    <div class="topbar">
-      <div class="crumbs">
-        <a href="index.html">The Septicarium</a>
-        <span>/</span>
-        <span>Plaguebound Dossier</span>
-        <span>/</span>
-        <span>Archive Internal</span>
-      </div>
+      <nav class="nav" aria-label="Dossier navigation">
+        <a href="index.html">Command Deck</a>
+        <a href="#entries">Entries</a>
+        <a href="#hierarchy">Hierarchy</a>
+        <a href="#name-crypt">Name-Crypt</a>
+        <button type="button" id="randomChamber">Random Chamber</button>
+      </nav>
+    </header>
 
-      <div class="top-actions">
-        <a class="ghost-btn" href="index.html">Return to Command Deck</a>
-        <a class="ghost-btn" href="mortivus-classarion.html">Open Mortivus Entry</a>
-      </div>
-    </div>
-
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="hero-main">
-          <div class="eyebrow">Primary Datavault // Subject Registry // Flesh, Oath, and Recurring Ruin</div>
-          <h1 class="hero-title">The Plaguebound Dossier</h1>
-          <p class="hero-sub">Where names are not merely remembered, but cultivated.</p>
-          <p class="hero-text">
-            This vault records those figures, assets, war-hosts, relic-bearers, omen-carriers, and battle-prophets
-            whose continued movement matters to <strong>The Rotfather’s Vanguard</strong>. It is not a neutral archive.
-            It is a chamber of plague-intelligence: a place where identity is weighed, where contradiction is preserved,
-            and where recurring names are permitted to ripen into doctrine.
-          </p>
-          <p class="hero-text">
-            Some entries are complete enough to guide a campaign. Others remain sealed until more blood, rot, or revelation
-            accumulates around them. What is housed here does not exist for admiration. It exists so that ruin may be better
-            understood, better repeated, and better directed.
-          </p>
-
-          <div class="hero-actions">
-            <a class="solid-btn" href="#major-entries" data-quote="To open a dossier is to admit that a name has begun influencing fate.">Enter Registry</a>
-            <a class="ghost-btn" href="#dossier-engine" data-quote="A true archive does not sleep. It distills the war into lessons that keep breathing.">Invoke Dossier Engine</a>
-            <a class="ghost-btn" href="#name-crypt" data-quote="Not all subjects are opened. Some are withheld until the wound grows large enough to speak.">Descend to Name-Crypt</a>
-          </div>
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <div class="tag-row">
+          <span class="tag">Primary Datavault</span>
+          <span class="tag">Warband Registry</span>
+          <span class="tag">Subject Pressure Stable</span>
         </div>
 
-        <div class="hero-side">
-          <div class="hero-card">
-            <div class="mini-label">Vault Declaration</div>
-            <h3>The Function of the Dossier</h3>
-            <p>
-              To gather mutable truths around important names and hold them under ritual pressure until pattern reveals itself.
-            </p>
-          </div>
+        <h1 id="heroTitle">The Plaguebound Dossier</h1>
+        <div class="subtitle">Where names are not remembered. They are cultivated.</div>
 
-          <div class="hero-stats">
-            <div class="stat">
-              <div class="stat-label">Datavault Type</div>
-              <div class="stat-value">Living Subject Registry</div>
-              <div class="stat-note">Maintains active and dormant entries across war-host, relic, and person.</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Integrity State</div>
-              <div class="stat-value">Contaminated by Design</div>
-              <div class="stat-note">Objectivity is not the goal. Usefulness is.</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Current Open Name</div>
-              <div class="stat-value">Mortivus Classarion</div>
-              <div class="stat-note">Most complete subject record presently allowed to surface.</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Witness Status</div>
-              <div class="stat-value">Entered Into Tally</div>
-              <div class="stat-note">Your reading is itself a small contribution to the count.</div>
-            </div>
-          </div>
+        <p class="hook">
+          This datavault records the commanders, plaguebound officers, relic-bearers, war assets, and recurring enemies whose existence has become useful to <strong>The Rotfather's Vanguard</strong>.
+        </p>
+        <p class="hook">
+          It is not a library. It is a pressure chamber. Every name stored here is weighed until identity becomes doctrine, doctrine becomes method, and method becomes another form of mercy.
+        </p>
 
-          <div class="hero-card">
-            <div class="mini-label">Internal Warning</div>
-            <p>
-              Dossier language trends toward certainty after repeated exposure. This is a known side effect of archive proximity,
-              not necessarily proof that certainty has been earned.
-            </p>
-          </div>
+        <div class="hero-actions">
+          <a class="btn primary" href="#entries">Open Subject Registry</a>
+          <a class="btn" href="#hierarchy">View Command Structure</a>
+          <a class="btn" href="#engine">Invoke Dossier Engine</a>
         </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Dossier quick readout">
+        <div class="hero-image" aria-hidden="true"></div>
+        <div class="quick-readouts">
+          <div class="readout"><div class="label">Warhost</div><div class="value">The Rotfather's Vanguard</div></div>
+          <div class="readout"><div class="label">Vessel</div><div class="value">The Rotfather's Mercy</div></div>
+          <div class="readout"><div class="label">Primary Name</div><div class="value">Mortivus Classarion</div></div>
+          <div class="readout"><div class="label">Registry State</div><div class="value" id="registryState">Breathing</div></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="overview" aria-labelledby="overviewTitle">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Dossier Command Board</div>
+          <h2 id="overviewTitle">Army Identity Snapshot</h2>
+          <p>The page now functions as the army hub: clear identity, easy navigation, readable lore, and interactive entry points into the warband's growing archive.</p>
+        </div>
+        <div class="section-chip">Archive Status: Expanding</div>
+      </div>
+
+      <div class="command-board">
+        <article class="board-main">
+          <div class="kicker">Archive Mandate</div>
+          <h3>Not a Library. A Pressure Chamber.</h3>
+          <p>The Dossier gathers mutable truths around important names and holds them under ritual scrutiny until pattern reveals itself. A commander becomes more than a brute. A relic becomes more than iron. A battle becomes instruction.</p>
+
+          <div class="identity-grid">
+            <div class="identity-item"><div class="label">Tactical Style</div><div class="value">Slow Pressure</div></div>
+            <div class="identity-item"><div class="label">Spiritual Method</div><div class="value">Corrosion of Meaning</div></div>
+            <div class="identity-item"><div class="label">Known Relic</div><div class="value">The Mercy-Sickle</div></div>
+            <div class="identity-item"><div class="label">Core Threat</div><div class="value">Attrition as Doctrine</div></div>
+          </div>
+        </article>
+
+        <aside class="board-side">
+          <div class="mini-panel">
+            <div class="kicker">Current Registry</div>
+            <h3>Open and Withheld Chambers</h3>
+            <p>Only the chambers judged useful have been surfaced. Others remain sealed until more blood, rot, or narrative pressure gathers around them.</p>
+            <div class="status-stack">
+              <div class="status-row"><span>Mortivus Classarion</span><span>Open</span></div>
+              <div class="status-row"><span>The Mercy-Sickle</span><span>Open</span></div>
+              <div class="status-row"><span>The Rotfather's Omen</span><span>Sealed</span></div>
+              <div class="status-row"><span>Future Officers</span><span>Dormant</span></div>
+            </div>
+          </div>
+
+          <div class="mini-panel">
+            <div class="kicker">Reader Guidance</div>
+            <h3>What This Page Does</h3>
+            <p>Use this Dossier to understand the army's command structure, major names, relic logic, sealed future entries, and the role each opened page plays inside the larger Septicarium.</p>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="section" id="dossier-mandate">
-      <div class="section-header">
+    <section class="section" id="entries" aria-labelledby="entriesTitle">
+      <div class="section-head">
         <div>
-          <div class="eyebrow">Archive Mandate</div>
-          <h2 class="section-title">Not a Library. A Pressure Chamber.</h2>
-          <p class="section-desc">
-            The Plaguebound Dossier does not collect names for remembrance alone. It gathers them so their contradictions,
-            wounds, methods, and recurring signals may be stored under scrutiny until they harden into strategic value.
-          </p>
+          <div class="kicker">Open Subject Chambers</div>
+          <h2 id="entriesTitle">Presently Surfaced Entries</h2>
+          <p>These are the primary open records linked from the Dossier. Each one gives the reader a different way into the army: commander, relic, atrocity, and battle-wound.</p>
         </div>
-        <div class="section-tag">Intelligence Doctrine</div>
+        <div class="section-chip">Admitted for Observation</div>
       </div>
 
-      <div class="panel mandate-grid">
-        <div class="mandate-image"></div>
-        <div class="mandate-copy">
-          <p class="lead">
-            Here are compiled command temperaments, war-signatures, campaign habits, relic patterns, doctrinal anomalies,
-            notable defeats, persistent victories, and those private obsessions that begin as quirks and end as military law.
-            It is through such slow recording that a war-master becomes more than a brute and a relic becomes more than iron.
-          </p>
-
-          <div class="ritual-list">
-            <div class="ritual-item">
-              <div class="mini-label">First Office</div>
-              <p>To distinguish a name from mere noise and determine whether it deserves long-term containment.</p>
-            </div>
-            <div class="ritual-item">
-              <div class="mini-label">Second Office</div>
-              <p>To observe how repeated battle contact alters that name’s meaning across years, wars, and witnesses.</p>
-            </div>
-            <div class="ritual-item">
-              <div class="mini-label">Third Office</div>
-              <p>To preserve those details too dangerous, shameful, or useful to be entrusted to public liturgy.</p>
-            </div>
-            <div class="ritual-item">
-              <div class="mini-label">Fourth Office</div>
-              <p>To decide which fragments should mature into full chambers and which must remain sealed beneath rot-ink.</p>
-            </div>
-          </div>
-
-          <div class="quote-box">
-            <div class="mini-label">Dossier Axiom</div>
-            “A name becomes worthy of record when it stops merely existing and begins bending outcomes around itself.”
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="major-entries">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Open Subject Chambers</div>
-          <h2 class="section-title">Presently Surfaced Entries</h2>
-          <p class="section-desc">
-            The Dossier is deliberately incomplete. It reveals only what The Septicarium presently judges useful to open.
-          </p>
-        </div>
-        <div class="section-tag">Admitted for Observation</div>
-      </div>
-
-      <div class="major-grid">
-        <article class="major-card">
-          <img src="Assets/Plaguebound-Dossier/subject-index.jpeg" alt="Subject Index" />
-          <div class="major-body">
-            <div class="mini-label">Primary Subject</div>
+      <div class="cards">
+        <article class="entry-card" style="--img:url('Assets/Plaguebound-Dossier/subject-index.jpeg');" data-title="Mortivus Classarion" data-copy="The central subject record. Start here for the commander, doctrine, contradictions, and growing myth around The Rotfather's Vanguard." data-link="mortivus-classarion.html">
+          <div class="card-top"><span class="chip">Primary Subject</span><span class="chip">Open</span></div>
+          <div class="card-body">
             <h3>Mortivus Classarion</h3>
-            <p>
-              War-master of uncertain station. Preserved as plague-champion, command anomaly, occult strategist,
-              reliquary-bearer, and aspirant to a more terrible title not yet fully earned.
-            </p>
-          </div>
-          <div class="major-actions">
-            <a class="solid-btn" href="mortivus-classarion.html">Open Subject Chamber</a>
+            <p>Command subject, plague-champion, occult strategist, and war-master of unsettled station.</p>
+            <div class="card-actions"><a class="small-btn primary" href="mortivus-classarion.html">Open File</a><span class="small-note">Character Core</span></div>
           </div>
         </article>
 
-        <article class="major-card">
-          <img src="Assets/Plaguebound-Dossier/name-crypt.jpeg" alt="Name-Crypt" />
-          <div class="major-body">
-            <div class="mini-label">Withheld Registry</div>
-            <h3>Sealed Future Names</h3>
-            <p>
-              Dormant cells prepared for plaguebound officers, rival champions, relic-servitors, omen-bearers,
-              or recurring enemies whose persistence begins to warrant a formal chamber.
-            </p>
-          </div>
-          <div class="major-actions">
-            <button class="ghost-btn" type="button" data-scroll="#name-crypt">Inspect Seals</button>
+        <article class="entry-card" style="--img:url('Assets/Plaguebound-Dossier/dossier-vault.jpeg');" data-title="The Mercy-Sickle" data-copy="The relic chamber. A weapon record that treats the blade as doctrine, artifact, and wound-teacher." data-link="the-mercy-sickle.html">
+          <div class="card-top"><span class="chip">Relic</span><span class="chip">Open</span></div>
+          <div class="card-body">
+            <h3>The Mercy-Sickle</h3>
+            <p>Inspect the blade, its history, its function, and the mercy it teaches through cutting.</p>
+            <div class="card-actions"><a class="small-btn primary" href="the-mercy-sickle.html">Open File</a><span class="small-note">Relic Horror</span></div>
           </div>
         </article>
 
-        <article class="major-card">
-          <img src="Assets/Plaguebound-Dossier/dossier-terminal.jpeg" alt="Dossier Cogitator" />
-          <div class="major-body">
-            <div class="mini-label">Unique Archive Organ</div>
-            <h3>The Distillation Engine</h3>
-            <p>
-              A plague-cogitator that squeezes fragments into usable intelligence. It does not answer cleanly,
-              but it answers with enthusiasm.
-            </p>
+        <article class="entry-card" style="--img:url('Assets/Plaguebound-Dossier/dossier-terminal.jpeg');" data-title="The Mercy He Gave" data-copy="A narrative battle record built from recovered testimony and the terrible logic of Death Guard compassion." data-link="the-mercy-he-gave.html">
+          <div class="card-top"><span class="chip">Battle Record</span><span class="chip">Open</span></div>
+          <div class="card-body">
+            <h3>The Mercy He Gave</h3>
+            <p>A recovered atrocity record where violence is remembered as deliverance by those already breaking.</p>
+            <div class="card-actions"><a class="small-btn primary" href="the-mercy-he-gave.html">Open File</a><span class="small-note">Narrative Entry</span></div>
           </div>
-          <div class="major-actions">
-            <button class="ghost-btn" type="button" data-scroll="#dossier-engine">Invoke Engine</button>
+        </article>
+
+        <article class="entry-card" style="--img:url('Assets/Plaguebound-Dossier/dossier-terminal-deep');" data-title="The Pallid Reversal" data-copy="A sealed battle fragment and historical wound. This record gives the army stakes, consequence, and a scar that refuses to close." data-link="the-pallid-reversal.html">
+          <div class="card-top"><span class="chip">Sealed Battle</span><span class="chip">Open</span></div>
+          <div class="card-body">
+            <h3>The Pallid Reversal</h3>
+            <p>The battle fragment preserved like a scar in Mortivus' history.</p>
+            <div class="card-actions"><a class="small-btn primary" href="the-pallid-reversal.html">Open File</a><span class="small-note">War Wound</span></div>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="section" id="scriptorium">
-      <div class="section-header">
+    <section class="section" id="hierarchy" aria-labelledby="hierarchyTitle">
+      <div class="section-head">
         <div>
-          <div class="eyebrow">Scribe Procession</div>
-          <h2 class="section-title">How a Dossier Is Born</h2>
-          <p class="section-desc">
-            No subject enters this vault whole. The chamber is built slowly by scribes, battlefield salvagers,
-            vox-listeners, corpse-annotators, and plague-counters who each contribute a different kind of certainty.
-          </p>
+          <div class="kicker">Army Structure</div>
+          <h2 id="hierarchyTitle">Command Hierarchy of the Vanguard</h2>
+          <p>This turns the Dossier into a true Death Guard army page, showing how the lore can expand into officers, formations, relic bearers, cult assets, and future unit pages.</p>
         </div>
-        <div class="section-tag">Scriptorium Procedure</div>
+        <div class="section-chip">Formation Logic</div>
       </div>
 
-      <div class="panel scriptorium">
-        <div class="scriptorium-image"></div>
-        <div class="scriptorium-copy">
-          <div class="scribe-steps">
-            <div class="scribe-step">
-              <div class="scribe-num">I</div>
-              <div>
-                <div class="mini-label">Acquisition</div>
-                <p>Names are first admitted through battlefield rumor, command notice, relic association, or repeated witness recurrence.</p>
-              </div>
-            </div>
-            <div class="scribe-step">
-              <div class="scribe-num">II</div>
-              <div>
-                <div class="mini-label">Comparison</div>
-                <p>Fragments are compared against prior war records. Contradictions are kept, not removed, if they reveal pattern.</p>
-              </div>
-            </div>
-            <div class="scribe-step">
-              <div class="scribe-num">III</div>
-              <div>
-                <div class="mini-label">Fermentation</div>
-                <p>Accounts are left beneath liturgical pressure until a usable temperament, doctrine, or omen-thread emerges.</p>
-              </div>
-            </div>
-            <div class="scribe-step">
-              <div class="scribe-num">IV</div>
-              <div>
-                <div class="mini-label">Opening</div>
-                <p>Only then is a chamber granted. Even then, the dossier remains provisional, because a living name continues to corrupt its own record.</p>
-              </div>
-            </div>
-          </div>
+      <div class="hierarchy-wrap">
+        <div class="hierarchy-image" aria-hidden="true"></div>
+        <div class="hierarchy-list">
+          <article class="hierarchy-card">
+            <div class="kicker">I // Command Subject</div>
+            <h3>Mortivus Classarion</h3>
+            <p>The central pressure point of the army archive. His record anchors the warband's doctrine, relic economy, battlefield behavior, and apotheosis pressure.</p>
+            <div class="hierarchy-meta"><div><div class="label">Status</div><div class="value">Open</div></div><div><div class="label">Role</div><div class="value">War-Master</div></div><div><div class="label">File</div><div class="value">Subject</div></div></div>
+          </article>
 
-          <div class="quote-box">
-            <div class="mini-label">Scribe Marginalia</div>
-            “The archive does not ask whether a witness was afraid. It asks what the fear noticed before speech failed.”
-          </div>
+          <article class="hierarchy-card">
+            <div class="kicker">II // Plaguebound Officers</div>
+            <h3>Future Command Cells</h3>
+            <p>Reserved for lieutenants, plague surgeons, tally-keepers, icon bearers, blightspawn, and other figures whose presence gives the warband operational shape.</p>
+            <div class="hierarchy-meta"><div><div class="label">Status</div><div class="value">Sealed</div></div><div><div class="label">Role</div><div class="value">Support</div></div><div><div class="label">File</div><div class="value">Future</div></div></div>
+          </article>
+
+          <article class="hierarchy-card">
+            <div class="kicker">III // Relic-Bearers</div>
+            <h3>Weapons That Continue Speaking</h3>
+            <p>Artifacts, plague weapons, censers, bells, tally chains, and sacred wargear that deserve their own examinations because they alter the battlefield's meaning.</p>
+            <div class="hierarchy-meta"><div><div class="label">Status</div><div class="value">Active</div></div><div><div class="label">Role</div><div class="value">Reliquary</div></div><div><div class="label">File</div><div class="value">Relics</div></div></div>
+          </article>
+
+          <article class="hierarchy-card">
+            <div class="kicker">IV // Blight Veterans</div>
+            <h3>The Body of the Vanguard</h3>
+            <p>Future unit pages can live here: Plague Marines, Terminators, daemon engines, Poxwalkers, and formations that define how the army fights on the table and in the lore.</p>
+            <div class="hierarchy-meta"><div><div class="label">Status</div><div class="value">Dormant</div></div><div><div class="label">Role</div><div class="value">Army</div></div><div><div class="label">File</div><div class="value">Units</div></div></div>
+          </article>
+
+          <article class="hierarchy-card">
+            <div class="kicker">V // Enemy Recurrence</div>
+            <h3>Those Who Survive Long Enough to Matter</h3>
+            <p>Repeated adversaries, rival champions, xenos resistance cells, and Imperial commanders can become indexed when ignoring them becomes tactically irresponsible.</p>
+            <div class="hierarchy-meta"><div><div class="label">Status</div><div class="value">Withheld</div></div><div><div class="label">Role</div><div class="value">Opposition</div></div><div><div class="label">File</div><div class="value">Enemy</div></div></div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="subject-index">
-      <div class="section-header">
+    <section class="section" id="name-crypt" aria-labelledby="cryptTitle">
+      <div class="section-head">
         <div>
-          <div class="eyebrow">Subject Registry</div>
-          <h2 class="section-title">Current Index of Admitted and Withheld Names</h2>
-          <p class="section-desc">
-            The central index distinguishes fully surfaced chambers from those still withheld under seal.
-            The first open record belongs to Mortivus Classarion. Others remain dormant until the archive judges them ripe.
-          </p>
+          <div class="kicker">Withheld Registry Vault</div>
+          <h2 id="cryptTitle">The Name-Crypt</h2>
+          <p>Sealed future content lives here. The reader can touch dormant cells and receive sanctioned fragments without needing full pages built yet.</p>
         </div>
-        <div class="section-tag">Index Pressure Stable</div>
+        <div class="section-chip">Interactive Seal Board</div>
       </div>
 
-      <div class="panel index-board">
-        <div class="index-image"></div>
-        <div class="index-side">
-          <div class="index-list">
-            <div class="index-entry">
-              <span class="chip">Opened Chamber</span>
-              <h3>Mortivus Classarion</h3>
-              <p>
-                Command subject. War-master of The Rotfather’s Vanguard. Entry includes origin threads, doctrinal habits,
-                panoply, weapons, victories, defeat, sub-crypts, and withheld classification pressure.
-              </p>
-              <div style="margin-top:14px;">
-                <a class="solid-btn" href="mortivus-classarion.html">Open Entry</a>
-              </div>
-            </div>
-
-            <div class="index-entry sealed">
-              <span class="chip">Sealed Chamber</span>
-              <h3>The Unfinished Title</h3>
-              <p>The archive suspects a future chamber dedicated solely to the titles Mortivus has worn, rejected, or has not yet grown into.</p>
-            </div>
-
-            <div class="index-entry sealed">
-              <span class="chip">Sealed Chamber</span>
-              <h3>The Rotfather’s Omen</h3>
-              <p>A chamber concerning the plague-prophecy obeyed by the war-host and the omen pressure it exerts on campaign choices.</p>
-            </div>
-
-            <div class="index-entry sealed">
-              <span class="chip">Sealed Chamber</span>
-              <h3>Record Not Yet Named</h3>
-              <p>Reserved for whatever future relic, atrocity, officer, or repeated adversary grows too large to remain unindexed.</p>
-            </div>
-          </div>
-
-          <div class="quote-box">
-            <div class="mini-label">Index Doctrine</div>
-            “To index a subject is not to understand it completely. It is only to admit that ignoring it has become impractical.”
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="name-crypt">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Withheld Registry Vault</div>
-          <h2 class="section-title">The Name-Crypt</h2>
-          <p class="section-desc">
-            Certain names are too incomplete for an open chamber yet too important to discard. They are held here under seal.
-            Touch a withheld cell and the crypt will disclose what little it is willing to say.
-          </p>
-        </div>
-        <div class="section-tag">Interactive Seal Board</div>
-      </div>
-
-      <div class="panel name-crypt-grid">
-        <div class="name-crypt-image"></div>
+      <div class="split">
+        <div class="crypt-image"><div class="image-label">Withheld names are not empty. They are waiting under pressure.</div></div>
         <div class="crypt-side">
           <div class="crypt-grid">
-            <button class="crypt-tile" type="button" data-crypt="unfinished">
-              <span class="mini-label">Withheld Name</span>
-              <strong>The Unfinished Title</strong>
-              <div style="margin-top:8px;color:#a79f80;">On the unstable rise of Mortivus’ many stations.</div>
-            </button>
-
-            <button class="crypt-tile" type="button" data-crypt="omen">
-              <span class="mini-label">Withheld Name</span>
-              <strong>The Rotfather’s Omen</strong>
-              <div style="margin-top:8px;color:#a79f80;">Concerning prophecy, pattern, and campaign compulsion.</div>
-            </button>
-
-            <button class="crypt-tile" type="button" data-crypt="relic">
-              <span class="mini-label">Withheld Name</span>
-              <strong>The Mercy-Sickle</strong>
-              <div style="margin-top:8px;color:#a79f80;">Reserved for the blade’s fuller reliquary record.</div>
-            </button>
-
-            <button class="crypt-tile" type="button" data-crypt="future">
-              <span class="mini-label">Dormant Cell</span>
-              <strong>Record Not Yet Named</strong>
-              <div style="margin-top:8px;color:#a79f80;">For the next wound that insists upon memory.</div>
-            </button>
+            <button class="crypt-tile active" type="button" data-crypt="unfinished"><span class="label">Withheld Name</span><strong>The Unfinished Title</strong><span>Mortivus and the stations he has not yet earned.</span></button>
+            <button class="crypt-tile" type="button" data-crypt="omen"><span class="label">Withheld Name</span><strong>The Rotfather's Omen</strong><span>Prophecy, campaign compulsion, and repeated wounds.</span></button>
+            <button class="crypt-tile" type="button" data-crypt="officers"><span class="label">Dormant Cell</span><strong>Plaguebound Officers</strong><span>Future commanders, support characters, and specialists.</span></button>
+            <button class="crypt-tile" type="button" data-crypt="enemy"><span class="label">Dormant Cell</span><strong>Enemy Recurrence File</strong><span>Adversaries who survive long enough to be indexed.</span></button>
           </div>
 
           <div class="crypt-output" id="cryptOutput">
-            <div class="mini-label">Seal Disclosure</div>
-            <h3>Awaiting Contact</h3>
-            <p>
-              The Name-Crypt does not open itself all at once. Select a withheld chamber to receive a sanctioned fragment.
-            </p>
+            <div class="kicker">Seal Disclosure</div>
+            <h3>The Unfinished Title</h3>
+            <p>Mortivus has been named plague champion, command lord, contagion-bearer, battle-theologian, and something nearer to daemonhood. The archive refuses a final answer. His significance lies precisely in that refusal.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="dossier-engine">
-      <div class="section-header">
+    <section class="section" id="engine" aria-labelledby="engineTitle">
+      <div class="section-head">
         <div>
-          <div class="eyebrow">Unique Chamber</div>
-          <h2 class="section-title">The Distillation Engine</h2>
-          <p class="section-desc">
-            This plague-cogitator is the special organ of the Dossier. It takes battlefield memory, relic ash, witness panic,
-            and command reports, then distills them into different kinds of archive output. Choose a mode and invoke it.
-          </p>
+          <div class="kicker">Unique Archive Organ</div>
+          <h2 id="engineTitle">The Distillation Engine</h2>
+          <p>The Dossier's interactive core. Choose a mode and generate a short archive reading. This makes the page re-readable and gives the site a living machine quality.</p>
         </div>
-        <div class="section-tag">Interactive Cogitator</div>
+        <div class="section-chip">Plague-Cogitator Active</div>
       </div>
 
-      <div class="panel terminal-grid">
-        <div class="terminal-stack">
-          <div class="terminal-img"></div>
-          <div class="terminal-img-deep"></div>
+      <div class="split">
+        <div class="engine-images" aria-hidden="true">
+          <div class="engine-img-a"></div>
+          <div class="engine-img-b"></div>
         </div>
 
-        <div class="terminal-side">
+        <div class="engine-side">
           <div class="tab-row">
             <button class="tab-btn active" type="button" data-mode="subject">Subject Reading</button>
-            <button class="tab-btn" type="button" data-mode="war">War-Sign</button>
+            <button class="tab-btn" type="button" data-mode="warband">Warband Doctrine</button>
             <button class="tab-btn" type="button" data-mode="relic">Relic Trace</button>
+            <button class="tab-btn" type="button" data-mode="battle">Battle Pattern</button>
             <button class="tab-btn" type="button" data-mode="omen">Omen Thread</button>
           </div>
 
-          <div class="intercept-output" id="engineOutput">
-            <div class="mini-label">Distillation Output</div>
-            <h3>Subject Reading // Mortivus Classarion</h3>
-            <p>
-              A command presence defined not by speed, but by cumulative inevitability. He weakens meaning before he weakens walls.
-            </p>
-
-            <div class="data-list">
-              <div class="data-line">
-                <div class="signal-label">Temperament</div>
-                <div>Ritual patience masking predatory calculation.</div>
-              </div>
-              <div class="data-line">
-                <div class="signal-label">Primary Utility</div>
-                <div>Transforms attrition into doctrine and defeat into future method.</div>
-              </div>
-              <div class="data-line">
-                <div class="signal-label">Archive Judgement</div>
-                <div>Too strategically fertile to remain undescribed.</div>
-              </div>
-            </div>
-          </div>
+          <div class="engine-output" id="engineOutput"></div>
 
           <div class="tab-row">
-            <button class="solid-btn" type="button" id="invokeEngine">Invoke Distillation</button>
-            <button class="ghost-btn" type="button" id="cycleQuote">Cycle Archive Maxim</button>
+            <button class="btn primary" type="button" id="invokeEngine">Generate Archive Reading</button>
+            <button class="btn" type="button" id="cycleMaxim">Cycle Archive Maxim</button>
           </div>
 
           <div class="quote-box" id="maximBox">
-            <div class="mini-label">Archive Maxim</div>
-            “In time, every war explains itself. The wise do not wait politely for the explanation.”
+            <div class="label">Archive Maxim</div>
+            “To catalogue a name is to admit that the name has already begun shaping the future.”
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="cta">
-      <div class="section-header">
+    <section class="section" id="files" aria-labelledby="filesTitle">
+      <div class="section-head">
         <div>
-          <div class="eyebrow">Next Descent</div>
-          <h2 class="section-title">Advance Deeper Into the Record</h2>
-          <p class="section-desc">
-            The Plaguebound Dossier opens the subjects. Their deeper chambers hold the full weight.
-          </p>
+          <div class="kicker">Recovered Files</div>
+          <h2 id="filesTitle">Opened Chambers</h2>
+          <p>Final navigation so the Dossier functions as a hub and every connected page remains easy to reach.</p>
         </div>
-        <div class="section-tag">Continuation Paths</div>
+        <div class="section-chip">Public Access</div>
       </div>
 
-      <div class="cta-grid">
-        <div class="module">
-          <div class="major-body">
-            <div class="mini-label">Primary Open Chamber</div>
-            <h2 style="margin:0 0 12px;">Mortivus Classarion</h2>
-            <p>
-              Proceed to the full subject record: origin threads, burdened panoply, weapons, ideology, battle doctrine,
-              tragedy, triumph, pyrrhic law, internal scrutiny, and the sub-crypts orbiting the name.
-            </p>
-          </div>
-          <div class="major-actions">
-            <a class="solid-btn" href="mortivus-classarion.html">Open Full Subject Record</a>
-          </div>
-        </div>
-
-        <div class="module">
-          <div class="major-body">
-            <div class="mini-label">Return Vector</div>
-            <h2 style="margin:0 0 12px;">Command Deck</h2>
-            <p>
-              Return to the primary command sanctum and proceed to the other datavaults of The Septicarium:
-              Battle Intercepts, Rot Scriptures, and the Relic Vault.
-            </p>
-          </div>
-          <div class="major-actions">
-            <a class="ghost-btn" href="index.html">Return to Command Deck</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="footer-nav">
-        <a class="ghost-btn" href="#top" data-quote="The archive rises slowly, but it rises.">Ascend</a>
-        <a class="ghost-btn" href="#subject-index" data-quote="A subject admitted once may never again fit inside a simple name.">Subject Index</a>
-        <a class="ghost-btn" href="#name-crypt" data-quote="What remains sealed is often waiting, not sleeping.">Name-Crypt</a>
-        <a class="ghost-btn" href="#dossier-engine" data-quote="Ask the engine clean questions and it will answer like a plague.">Distillation Engine</a>
+      <div class="files-grid">
+        <a class="file-link" href="index.html"><span class="file-main"><span class="file-title">Command Deck</span><span class="file-sub">Return to The Septicarium's main archive threshold.</span></span><span class="chip file-tag">Home</span></a>
+        <a class="file-link" href="mortivus-classarion.html"><span class="file-main"><span class="file-title">Mortivus Classarion</span><span class="file-sub">Primary subject file and command identity.</span></span><span class="chip file-tag">Open</span></a>
+        <a class="file-link" href="the-mercy-sickle.html"><span class="file-main"><span class="file-title">The Mercy-Sickle</span><span class="file-sub">Relic examination and weapon doctrine.</span></span><span class="chip file-tag">Open</span></a>
+        <a class="file-link" href="the-mercy-he-gave.html"><span class="file-main"><span class="file-title">The Mercy He Gave</span><span class="file-sub">Recovered atrocity record and witness account.</span></span><span class="chip file-tag">Open</span></a>
+        <a class="file-link" href="the-pallid-reversal.html"><span class="file-main"><span class="file-title">The Pallid Reversal</span><span class="file-sub">Sealed battle fragment and historical wound.</span></span><span class="chip file-tag">Open</span></a>
+        <a class="file-link" href="#name-crypt"><span class="file-main"><span class="file-title">Name-Crypt</span><span class="file-sub">Future entries and withheld registry cells.</span></span><span class="chip file-tag">Sealed</span></a>
       </div>
     </section>
-  </div>
 
-  <div class="floating-quote" id="floatingQuote">
-    <div class="mini-label">Hover Liturgy</div>
-    <p id="floatingQuoteText">The archive does not close around a name until the name has finished making demands.</p>
+    <footer class="footer">
+      <div><strong>Dossier Adjudication:</strong> The registry has taken your measure. The fact that you reached the end has been entered into the file.</div>
+      <div>THE SEPTICARIUM // PLAGUEBOUND DOSSIER // SUBJECT PRESSURE STABLE</div>
+    </footer>
+  </main>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="kicker" id="modalKicker">Chamber Preview</div>
+      <h3 id="modalTitle">Archive Response</h3>
+      <p id="modalCopy">The Dossier acknowledges your request.</p>
+      <div class="modal-actions">
+        <a class="btn primary" id="modalLink" href="#entries">Open File</a>
+        <button class="btn" id="closeModal" type="button">Close</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    const boot = document.getElementById('bootSequence');
-    window.addEventListener('load', () => {
-      setTimeout(() => boot.classList.add('hidden'), 1700);
-    });
-
-    // Canvas spores
-    const canvas = document.getElementById('spore-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h, spores = [];
-
-    function resizeCanvas() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      spores = Array.from({length: Math.min(90, Math.floor(w / 22))}, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 2.1 + .5,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: -(Math.random() * 0.28 + 0.08),
-        a: Math.random() * 0.35 + 0.08
-      }));
-    }
-
-    function drawSpores() {
-      ctx.clearRect(0, 0, w, h);
-      spores.forEach(s => {
-        s.x += s.vx;
-        s.y += s.vy;
-        if (s.y < -10) { s.y = h + 10; s.x = Math.random() * w; }
-        if (s.x < -10) s.x = w + 10;
-        if (s.x > w + 10) s.x = -10;
-
-        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
-        g.addColorStop(0, `rgba(210,229,123,${s.a})`);
-        g.addColorStop(.35, `rgba(132,167,71,${s.a * .65})`);
-        g.addColorStop(1, 'rgba(132,167,71,0)');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r * 5.4, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(drawSpores);
-    }
-
-    resizeCanvas();
-    drawSpores();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Smooth scroll buttons
-    document.querySelectorAll('[data-scroll]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = document.querySelector(btn.dataset.scroll);
-        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-      });
-    });
-
-    // Floating hover quotes
-    const hoverQuotes = [
-      "A sealed chamber is not absence. It is pressure waiting for shape.",
-      "The scribe does not preserve the battle. He preserves what the battle exposed.",
-      "Where a name accumulates enough corpses, doctrine soon gathers behind it.",
-      "The crypt keeps withheld things warm until they deserve language.",
-      "Nothing enters the dossier unchanged. Not even memory.",
-      "A subject record is a war-mask for truth: shaped, hardened, and made useful."
+    const bootLines = [
+      "Vault-breath equalized across subject registry...",
+      "Dossier hero image accepted as command threshold.",
+      "Scriptorium scribes counted: seven active, three muttering.",
+      "Name-Crypt seals flexing beneath public pressure.",
+      "Primary subject recovered: Mortivus Classarion.",
+      "Relic trace indexed: The Mercy-Sickle.",
+      "Battle wound linked: The Pallid Reversal.",
+      "Dossier opened. Certainty not guaranteed."
     ];
-    const floatingQuoteText = document.getElementById('floatingQuoteText');
 
-    document.querySelectorAll('[data-quote]').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        floatingQuoteText.textContent = el.dataset.quote;
+    const boot = document.getElementById("boot");
+    const bootLog = document.getElementById("bootLog");
+    const bootBar = document.getElementById("bootBar");
+    const skipBoot = document.getElementById("skipBoot");
+
+    function finishBoot(){
+      boot.classList.add("hide");
+      document.body.classList.remove("locked");
+      setTimeout(() => boot.remove(), 820);
+    }
+
+    function runBoot(){
+      let i = 0;
+      let progress = 0;
+      const lineTimer = setInterval(() => {
+        if(i >= bootLines.length){ clearInterval(lineTimer); return; }
+        const row = document.createElement("div");
+        row.className = "boot-line";
+        row.innerHTML = `<span>LOG</span><div>${bootLines[i]}</div>`;
+        bootLog.appendChild(row);
+        i++;
+      }, 350);
+
+      const progressTimer = setInterval(() => {
+        progress += 5;
+        bootBar.style.width = Math.min(progress,100) + "%";
+        if(progress >= 100){ clearInterval(progressTimer); setTimeout(finishBoot,450); }
+      }, 115);
+
+      skipBoot.addEventListener("click", () => {
+        clearInterval(lineTimer);
+        clearInterval(progressTimer);
+        bootBar.style.width = "100%";
+        finishBoot();
+      });
+    }
+
+    runBoot();
+
+    const registryStates = ["Breathing", "Indexing", "Weighing Names", "Corroding Certainty", "Awaiting Blood", "Pressure Stable"];
+    const registryState = document.getElementById("registryState");
+    let registryIndex = 0;
+    setInterval(() => {
+      registryIndex = (registryIndex + 1) % registryStates.length;
+      registryState.textContent = registryStates[registryIndex];
+    }, 2400);
+
+    const modal = document.getElementById("modal");
+    const modalKicker = document.getElementById("modalKicker");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalCopy = document.getElementById("modalCopy");
+    const modalLink = document.getElementById("modalLink");
+    const closeModal = document.getElementById("closeModal");
+
+    function openModal({kicker="Chamber Preview", title, copy, link="#entries", linkText="Open File"}){
+      modalKicker.textContent = kicker;
+      modalTitle.textContent = title;
+      modalCopy.textContent = copy;
+      modalLink.href = link;
+      modalLink.textContent = linkText;
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+    }
+
+    function hideModal(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+    }
+
+    closeModal.addEventListener("click", hideModal);
+    modal.addEventListener("click", event => { if(event.target === modal) hideModal(); });
+    document.addEventListener("keydown", event => { if(event.key === "Escape") hideModal(); });
+
+    document.querySelectorAll(".entry-card").forEach(card => {
+      card.addEventListener("click", event => {
+        if(event.target.closest("a")) return;
+        openModal({title:card.dataset.title, copy:card.dataset.copy, link:card.dataset.link});
       });
     });
 
-    document.querySelectorAll('.ghost-btn, .solid-btn, .tab-btn, .crypt-tile').forEach(el => {
-      el.addEventListener('mouseleave', () => {
-        floatingQuoteText.textContent = hoverQuotes[Math.floor(Math.random() * hoverQuotes.length)];
-      });
+    document.getElementById("randomChamber").addEventListener("click", () => {
+      const links = ["mortivus-classarion.html", "the-mercy-sickle.html", "the-mercy-he-gave.html", "the-pallid-reversal.html", "#name-crypt", "#engine"];
+      window.location.href = links[Math.floor(Math.random() * links.length)];
     });
 
-    // Tooltip
-    const tooltip = document.getElementById('tooltip');
-    document.querySelectorAll('.chip, .mini-label').forEach(el => {
-      el.addEventListener('mouseenter', e => {
-        tooltip.textContent = "Archive notation: a short identifying liturgy used to distinguish chamber function, seal state, or data sanctity.";
-        tooltip.classList.add('show');
-      });
-      el.addEventListener('mousemove', e => {
-        tooltip.style.left = (e.clientX + 16) + 'px';
-        tooltip.style.top = (e.clientY + 16) + 'px';
-      });
-      el.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
-    });
-
-    // Name crypt outputs
-    const cryptOutput = document.getElementById('cryptOutput');
     const cryptData = {
-      unfinished: {
-        title: "The Unfinished Title",
-        text: "Mortivus has been named plague champion, command lord, contagion-bearer, battle-theologian, shrine-armor butcher, and something nearer to daemonhood. The archive refuses a final answer. His significance lies precisely in that refusal."
-      },
-      omen: {
-        title: "The Rotfather’s Omen",
-        text: "A private plague-prophecy carried by The Rotfather’s Vanguard. It appears not as a full scripture but as recurring battlefield decisions: repeated returns to certain wounds, sites, silences, and enemy archetypes. The omen is obeyed even by those who cannot fully recite it."
-      },
-      relic: {
-        title: "The Mercy-Sickle",
-        text: "Reserved for its own reliquary chamber. Reports suggest the blade does not merely wound. It edits courage, interrupts liturgy, and leaves survivors with the conviction that they were not struck at random, but selected as proof."
-      },
-      future: {
-        title: "Record Not Yet Named",
-        text: "An empty cell maintained for future necessity. It will open when the next relic, atrocity, officer, rival, or repeated adversary grows too consequential to remain a rumor."
-      }
+      unfinished:{title:"The Unfinished Title", text:"Mortivus has been named plague champion, command lord, contagion-bearer, battle-theologian, and something nearer to daemonhood. The archive refuses a final answer. His significance lies precisely in that refusal."},
+      omen:{title:"The Rotfather's Omen", text:"A private plague-prophecy carried by The Rotfather's Vanguard. It appears not as a full scripture but as recurring battlefield decisions: repeated returns to certain wounds, sites, silences, and enemy archetypes."},
+      officers:{title:"Plaguebound Officers", text:"Reserved for future lieutenants, tally-keepers, plague surgeons, blightspawn, icon bearers, and other specialists whose battlefield function becomes too important to remain generic."},
+      enemy:{title:"Enemy Recurrence File", text:"An adversary does not receive a chamber for opposing the Vanguard once. It receives a chamber when survival becomes pattern, and pattern becomes useful."}
     };
 
-    document.querySelectorAll('.crypt-tile').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const data = cryptData[btn.dataset.crypt];
-        cryptOutput.innerHTML = `
-          <div class="mini-label">Seal Disclosure</div>
-          <h3>${data.title}</h3>
-          <p>${data.text}</p>
-        `;
+    const cryptOutput = document.getElementById("cryptOutput");
+    document.querySelectorAll(".crypt-tile").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".crypt-tile").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        const data = cryptData[button.dataset.crypt];
+        cryptOutput.innerHTML = `<div class="kicker">Seal Disclosure</div><h3>${data.title}</h3><p>${data.text}</p>`;
       });
     });
 
-    // Distillation Engine
-    const engineOutput = document.getElementById('engineOutput');
-    const maximBox = document.getElementById('maximBox');
-    const invokeBtn = document.getElementById('invokeEngine');
-    const cycleQuoteBtn = document.getElementById('cycleQuote');
-    let currentMode = 'subject';
-
+    const engineOutput = document.getElementById("engineOutput");
     const engineData = {
-      subject: [
-        {
-          title: "Subject Reading // Mortivus Classarion",
-          text: "A command presence defined not by haste, but by cumulative inevitability. He weakens meaning before he weakens walls.",
-          list: [
-            ["Temperament", "Ritual patience masking predatory calculation."],
-            ["Primary Utility", "Transforms attrition into doctrine and defeat into future method."],
-            ["Archive Judgement", "Too strategically fertile to remain undescribed."]
-          ]
-        },
-        {
-          title: "Subject Reading // Core Pattern",
-          text: "Mortivus repeatedly favors battlefields where spiritual confidence can be converted into infection routes.",
-          list: [
-            ["Preferred Targets", "Fortress-shrines, oath-heavy defenders, elite survivors, and proud command hierarchies."],
-            ["Strategic Habit", "Delay the killing blow until morale can witness itself failing."],
-            ["Outcome Signature", "Enemies remember not only pain, but a humiliating clarity."]
-          ]
-        }
+      subject:[
+        {title:"Subject Reading // Mortivus Classarion", text:"A command presence defined not by speed, but by cumulative inevitability. He weakens meaning before he weakens walls.", list:[["Temperament","Ritual patience masking predatory calculation."],["Primary Utility","Transforms attrition into doctrine and defeat into future method."],["Archive Judgement","Too strategically fertile to remain undescribed."]]},
+        {title:"Subject Reading // Core Pattern", text:"Mortivus favors battlefields where spiritual confidence can be converted into infection routes.", list:[["Preferred Targets","Fortress-shrines, oath-heavy defenders, proud command hierarchies."],["Strategic Habit","Delay the killing blow until morale can witness itself failing."],["Outcome Signature","Enemies remember not only pain, but humiliating clarity."]]}
       ],
-      war: [
-        {
-          title: "War-Sign // Vanguard Campaign Signature",
-          text: "The Rotfather’s Vanguard advances like a liturgy of corrosion: command severed late, meaning undermined early, resistance taught to help destroy itself.",
-          list: [
-            ["Approach", "Pressure, contamination, isolation, revelation."],
-            ["Operational Shape", "Slow convergence followed by decisive personal violence."],
-            ["Common Residue", "Weeping walls, spoiled sacrament, corpse-sealed leadership."]
-          ]
-        },
-        {
-          title: "War-Sign // Favored Conditions",
-          text: "The archive records heightened effectiveness where enemy identity is heavily ritualized and therefore vulnerable to targeted spiritual decay.",
-          list: [
-            ["Optimal Theatre", "Shrines, citadels, fortified processional cities."],
-            ["Enemy Failure Mode", "Orders remain technically intact after their meaning has already died."],
-            ["Strategic Value", "Collapse radiates outward through culture, not merely casualties."]
-          ]
-        }
+      warband:[
+        {title:"Warband Doctrine // The Vanguard", text:"The Rotfather's Vanguard advances by making resistance feel increasingly irrational.", list:[["Approach","Pressure, contamination, isolation, revelation."],["Operational Shape","Slow convergence followed by decisive personal violence."],["Common Residue","Spoiled sacrament, corpse-sealed leadership, silence after bells."]]},
+        {title:"Warband Doctrine // Patient Ruin", text:"The army does not need immediate collapse. It needs conditions where collapse will explain itself as mercy.", list:[["Pace","Slow enough to become weather."],["Primary Weapon","Certainty turned against itself."],["End State","A world that stops arguing with its infection."]]}
       ],
-      relic: [
-        {
-          title: "Relic Trace // Attached Implements",
-          text: "Mortivus’ record is inseparable from a cluster of instruments: the Mercy-Sickle, the Rite-Spitter, chains of tally and censure, and the shrine-heavy burden of his plate.",
-          list: [
-            ["Primary Relic", "The Mercy-Sickle; feared for selection as much as slaughter."],
-            ["Secondary Implement", "Rite-Spitter; doctrinal confusion often follows impact."],
-            ["Associated Material", "Seals, censers, bells, tags, fragments cut from the condemned."]
-          ]
-        },
-        {
-          title: "Relic Trace // Archive Suspicion",
-          text: "The subject’s gear behaves more like an expanding reliquary than a fixed war-loadout. Additions are rarely decorative. They tend to mean something.",
-          list: [
-            ["Observed Tendency", "Material accretion linked to battles and vows."],
-            ["Interpretation", "Panoply as sermon; equipment as growing doctrine."],
-            ["Risk", "The subject may be assembling himself toward a future station."]
-          ]
-        }
+      relic:[
+        {title:"Relic Trace // The Mercy-Sickle", text:"The blade does not merely wound. It teaches selection, edits courage, and leaves survivors feeling chosen rather than spared.", list:[["Primary Relic","The Mercy-Sickle."],["Secondary Pattern","Violence translated into doctrine."],["Risk","The weapon may be shaping the subject as much as serving him."]]},
+        {title:"Relic Trace // Growing Panoply", text:"The subject's wargear behaves more like an expanding reliquary than a fixed loadout.", list:[["Observed Tendency","Material accretion linked to battles and vows."],["Interpretation","Equipment as sermon."],["Archive Suspicion","The subject may be assembling himself toward a future station."]]}
       ],
-      omen: [
-        {
-          title: "Omen Thread // Recurring Pattern",
-          text: "The archive cannot yet state the full prophecy guiding the host, but it confirms the existence of a repeated pull toward particular wounds, bells, reliquaries, and unfinished defeats.",
-          list: [
-            ["Compulsion Markers", "Repetition, withheld closure, return to instructional pain."],
-            ["Archive Concern", "The host sometimes behaves as though serving a narrative not fully visible to itself."],
-            ["Potential Result", "War transformed into proof for later apotheosis."]
-          ]
-        },
-        {
-          title: "Omen Thread // Dossier Warning",
-          text: "Repeated contact with omen-heavy records can distort judgement. Readers begin seeing coherence even where the archive has not yet formally ratified it.",
-          list: [
-            ["Symptom", "Increased certainty without proportionate evidence."],
-            ["Containment", "Cross-reference against battle and relic chambers."],
-            ["Current Status", "Observed, not corrected."]
-          ]
-        }
+      battle:[
+        {title:"Battle Pattern // Meaning Before Walls", text:"The Vanguard commonly attacks morale, interpretation, and ritual confidence before final physical breach.", list:[["Opening Move","Corrupt what defenders believe their defense means."],["Middle Pressure","Force command to keep issuing technically correct but spiritually dead orders."],["Final State","The fortress remains standing after its purpose has fallen."]]},
+        {title:"Battle Pattern // Reversal Logic", text:"Defeats are preserved because they become better weapons later.", list:[["Failure Use","Identify what resisted the plague too cleanly."],["Archive Function","Turn embarrassment into doctrine."],["Future Value","Return with a wound that remembers how it was made."]]}
+      ],
+      omen:[
+        {title:"Omen Thread // Recurring Wound", text:"The archive confirms a repeated pull toward certain sites, bells, reliquaries, and unfinished defeats.", list:[["Compulsion Markers","Return, repetition, withheld closure."],["Archive Concern","The host behaves as if obeying a narrative not fully visible to itself."],["Potential Result","War transformed into proof for later apotheosis."]]},
+        {title:"Omen Thread // Reader Warning", text:"Repeated contact with omen-heavy records can distort judgement. Readers begin seeing coherence before the archive ratifies it.", list:[["Symptom","Increased certainty without proportionate evidence."],["Containment","Cross-reference against battle and relic chambers."],["Current Status","Observed, not corrected."]]}
       ]
     };
 
-    const maxims = [
-      "In time, every war explains itself. The wise do not wait politely for the explanation.",
-      "The cleanest subject records are often the least useful. Rot reveals itself through excess.",
-      "To catalogue a name is to admit that the name has already begun shaping the future.",
-      "A withheld fragment is not a failure of knowledge. It is an investment in dread.",
-      "Every archive eventually chooses between accuracy and potency. The Septicarium chose long ago.",
-      "The scribe who records only facts builds a coffin. The scribe who records pattern builds a weapon."
-    ];
+    let currentMode = "subject";
 
     function renderEngine(mode){
-      const set = engineData[mode];
-      const pick = set[Math.floor(Math.random() * set.length)];
+      const choices = engineData[mode];
+      const pick = choices[Math.floor(Math.random() * choices.length)];
       engineOutput.innerHTML = `
-        <div class="mini-label">Distillation Output</div>
+        <div class="kicker">Distillation Output</div>
         <h3>${pick.title}</h3>
         <p>${pick.text}</p>
         <div class="data-list">
-          ${pick.list.map(item => `
-            <div class="data-line">
-              <div class="signal-label">${item[0]}</div>
-              <div>${item[1]}</div>
-            </div>
-          `).join("")}
+          ${pick.list.map(item => `<div class="data-line"><div class="data-key">${item[0]}</div><div>${item[1]}</div></div>`).join("")}
         </div>
       `;
     }
 
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentMode = btn.dataset.mode;
+    document.querySelectorAll(".tab-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        currentMode = button.dataset.mode;
         renderEngine(currentMode);
       });
     });
 
-    invokeBtn.addEventListener('click', () => renderEngine(currentMode));
+    document.getElementById("invokeEngine").addEventListener("click", () => renderEngine(currentMode));
 
-    cycleQuoteBtn.addEventListener('click', () => {
-      maximBox.innerHTML = `
-        <div class="mini-label">Archive Maxim</div>
-        ${maxims[Math.floor(Math.random() * maxims.length)]}
-      `;
+    const maxims = [
+      "To catalogue a name is to admit that the name has already begun shaping the future.",
+      "A withheld fragment is not a failure of knowledge. It is an investment in dread.",
+      "The cleanest subject records are often the least useful. Rot reveals itself through excess.",
+      "Every archive eventually chooses between accuracy and potency. The Septicarium chose long ago.",
+      "The scribe who records only facts builds a coffin. The scribe who records pattern builds a weapon."
+    ];
+
+    document.getElementById("cycleMaxim").addEventListener("click", () => {
+      const maxim = maxims[Math.floor(Math.random() * maxims.length)];
+      document.getElementById("maximBox").innerHTML = `<div class="label">Archive Maxim</div>“${maxim}”`;
     });
 
-    // initial
-    renderEngine('subject');
+    renderEngine("subject");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.18});
+
+    document.querySelectorAll(".entry-card, .hierarchy-card").forEach(el => observer.observe(el));
+
+    const hero = document.querySelector(".hero");
+    document.addEventListener("mousemove", event => {
+      const x = (event.clientX / window.innerWidth - .5) * 10;
+      const y = (event.clientY / window.innerHeight - .5) * 10;
+      hero.style.transform = `translate(${x * -.08}px, ${y * -.08}px)`;
+    });
+
+    const canvas = document.getElementById("sporeCanvas");
+    const ctx = canvas.getContext("2d");
+    const mouse = {x:window.innerWidth/2, y:window.innerHeight/2};
+    let particles = [];
+
+    function resizeCanvas(){
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * ratio);
+      canvas.height = Math.floor(window.innerHeight * ratio);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(ratio,0,0,ratio,0,0);
+      createParticles();
+    }
+
+    function createParticles(){
+      const count = Math.max(85, Math.floor(window.innerWidth / 15));
+      particles = Array.from({length:count}, () => ({
+        x:Math.random() * window.innerWidth,
+        y:Math.random() * window.innerHeight,
+        r:Math.random() * 2.4 + .6,
+        vx:(Math.random() - .5) * .30,
+        vy:(Math.random() - .5) * .25 - .08,
+        a:Math.random() * .45 + .12,
+        p:Math.random() * Math.PI * 2,
+        sigil:Math.random() > .90
+      }));
+    }
+
+    function drawSigil(p){
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(Date.now() * .00012 + p.p);
+      ctx.strokeStyle = `rgba(198,216,112,${p.a * .52})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0,0,p.r * 3,0,Math.PI*2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-p.r*3,0); ctx.lineTo(p.r*3,0);
+      ctx.moveTo(0,-p.r*3); ctx.lineTo(0,p.r*3);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function animate(){
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      for(const p of particles){
+        p.p += .012;
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.hypot(dx,dy);
+        if(dist < 135){ p.x -= dx * .0022; p.y -= dy * .0022; }
+        p.x += p.vx + Math.sin(p.p) * .11;
+        p.y += p.vy + Math.cos(p.p * .7) * .09;
+        if(p.x < -20) p.x = window.innerWidth + 20;
+        if(p.x > window.innerWidth + 20) p.x = -20;
+        if(p.y < -20) p.y = window.innerHeight + 20;
+        if(p.y > window.innerHeight + 20) p.y = -20;
+
+        if(p.sigil){
+          drawSigil(p);
+        } else {
+          const pulse = .36 + Math.sin(p.p) * .08;
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(198,216,112,${p.a * pulse})`;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "rgba(198,216,112,.25)";
+          ctx.arc(p.x,p.y,p.r + Math.sin(p.p) * .35,0,Math.PI*2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("mousemove", event => { mouse.x = event.clientX; mouse.y = event.clientY; });
+    resizeCanvas();
+    animate();
   </script>
 </body>
 </html>
