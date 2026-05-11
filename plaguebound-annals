@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Plaguebound Annals of The Rotfather's Vanguard aboard The Rotfather's Mercy." />
+  <title>The Septicarium | The Plaguebound Annals</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void: #020302;
+      --black: #050604;
+      --ship: #090b07;
+      --deep: #0e110b;
+      --panel: rgba(15, 18, 11, 0.90);
+      --panel-heavy: rgba(7, 9, 5, 0.96);
+      --glass: rgba(18, 22, 13, 0.72);
+      --brass: #9b8247;
+      --brass-hot: #d3bd78;
+      --mold: #6f8f3c;
+      --mold-hot: #b6d866;
+      --rot: #d7df91;
+      --parchment: #dfd2ac;
+      --parchment-dim: #aa9d7a;
+      --bone: #e8ddbf;
+      --ash: #8d8267;
+      --rust: #8a3d1f;
+      --blood: #4b130c;
+      --blue-gloom: #405461;
+      --green-fume: rgba(158, 210, 85, 0.42);
+      --line: rgba(214, 223, 145, 0.22);
+      --line-strong: rgba(214, 223, 145, 0.52);
+      --shadow: 0 34px 100px rgba(0,0,0,.68);
+      --glow: 0 0 55px rgba(149, 190, 82, .16);
+      --glow-strong: 0 0 72px rgba(182, 216, 102, .22);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1580px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      overflow-x: hidden;
+      font-family: "Spectral", Georgia, serif;
+      background:
+        radial-gradient(circle at 8% 10%, rgba(111, 143, 60, .16), transparent 30%),
+        radial-gradient(circle at 82% 8%, rgba(64, 84, 97, .13), transparent 28%),
+        radial-gradient(circle at 48% 84%, rgba(138, 61, 31, .14), transparent 42%),
+        linear-gradient(135deg, #010201, #070906 48%, #030402);
+      transition: background 700ms var(--ease), filter 700ms var(--ease);
+    }
+
+    body.locked { overflow: hidden; }
+    body[data-rite="seal"] { background: radial-gradient(circle at 16% 8%, rgba(182,216,102,.18), transparent 34%), radial-gradient(circle at 80% 20%, rgba(64,84,97,.12), transparent 30%), linear-gradient(135deg,#010201,#080906 50%,#020302); }
+    body[data-rite="records"] { background: radial-gradient(circle at 16% 8%, rgba(211,189,120,.16), transparent 35%), radial-gradient(circle at 84% 16%, rgba(92,121,57,.15), transparent 30%), linear-gradient(135deg,#020302,#0b0b06 50%,#030402); }
+    body[data-rite="war"] { background: radial-gradient(circle at 18% 10%, rgba(138,61,31,.20), transparent 34%), radial-gradient(circle at 78% 18%, rgba(182,216,102,.17), transparent 30%), linear-gradient(135deg,#020302,#100906 52%,#030402); }
+    body[data-rite="vault"] { background: radial-gradient(circle at 20% 12%, rgba(64,84,97,.18), transparent 34%), radial-gradient(circle at 74% 16%, rgba(211,189,120,.13), transparent 30%), linear-gradient(135deg,#010201,#070b09 52%,#020302); }
+
+    ::selection { background: rgba(182,216,102,.25); color: var(--rot); }
+    a { color: inherit; }
+    button { font: inherit; }
+    h1,h2,h3,h4 { font-family: "Cinzel", Georgia, serif; }
+
+    .label,
+    .kicker,
+    .chip,
+    .nav a,
+    .nav button,
+    .btn,
+    .smallcap,
+    .meter-title,
+    .node-text,
+    .filter-btn,
+    .record-tab,
+    .sigil-label {
+      font-family: "Inter", system-ui, sans-serif;
+      font-weight: 900;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    #annalsCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .72;
+    }
+
+    .grain,
+    .gridveil,
+    .vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .grain {
+      opacity: .085;
+      mix-blend-mode: screen;
+      background-image:
+        radial-gradient(circle at 20% 40%, rgba(255,255,255,.65) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,.38) 0 1px, transparent 1px),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,.44) 0 1px, transparent 1px);
+      background-size: 170px 170px, 220px 220px, 290px 290px;
+    }
+
+    .gridveil {
+      opacity: .08;
+      background-image:
+        linear-gradient(rgba(214,223,145,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(214,223,145,.032) 1px, transparent 1px);
+      background-size: 88px 88px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 82%);
+    }
+
+    .vignette {
+      z-index: 2;
+      background:
+        radial-gradient(circle at center, transparent 36%, rgba(0,0,0,.78) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.62));
+    }
+
+    /* UNIQUE BOOT: ANNALS INDEXING RITE */
+    .boot {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(81, 103, 44, .38), transparent 28%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,.55), rgba(0,0,0,.98) 72%),
+        linear-gradient(135deg, #020302, #090b07 55%, #010201);
+      transition: opacity 900ms var(--ease), visibility 900ms var(--ease);
+    }
+
+    .boot.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .boot-altar {
+      width: min(1180px, 100%);
+      min-height: 680px;
+      border: 1px solid rgba(214,223,145,.25);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(8,10,6,.96), rgba(17,20,12,.88)),
+        radial-gradient(circle at 10% 10%, rgba(182,216,102,.08), transparent 34%),
+        radial-gradient(circle at 90% 78%, rgba(138,61,31,.12), transparent 38%);
+      box-shadow: var(--shadow), 0 0 120px rgba(149,190,82,.14);
+      overflow: hidden;
+      position: relative;
+      display: grid;
+      grid-template-columns: .88fr 1.12fr;
+    }
+
+    .boot-altar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 1px, transparent 9px),
+        linear-gradient(90deg, transparent, rgba(214,223,145,.045), transparent);
+      opacity: .25;
+      pointer-events: none;
+    }
+
+    .boot-seal-wrap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 680px;
+      border-right: 1px solid rgba(214,223,145,.14);
+      background:
+        radial-gradient(circle at center, rgba(182,216,102,.12), transparent 48%),
+        rgba(0,0,0,.20);
+    }
+
+    .boot-ring,
+    .boot-ring::before,
+    .boot-ring::after {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px dashed rgba(214,223,145,.24);
+      animation: rotateRing linear infinite;
+      content: "";
+    }
+
+    .boot-ring { width: 430px; height: 430px; animation-duration: 42s; }
+    .boot-ring::before { inset: 42px; animation-duration: 31s; animation-direction: reverse; }
+    .boot-ring::after { inset: 92px; animation-duration: 19s; }
+
+    @keyframes rotateRing { to { transform: rotate(360deg); } }
+
+    .boot-seal {
+      position: relative;
+      z-index: 2;
+      width: min(360px, 82%);
+      aspect-ratio: 1/1;
+      object-fit: contain;
+      filter: drop-shadow(0 0 38px rgba(182,216,102,.16));
+      animation: sealPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes sealPulse {
+      0%,100% { transform: scale(.985); filter: drop-shadow(0 0 24px rgba(182,216,102,.12)); }
+      50% { transform: scale(1.01); filter: drop-shadow(0 0 44px rgba(182,216,102,.24)); }
+    }
+
+    .boot-copy {
+      position: relative;
+      z-index: 3;
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .boot-copy .kicker { color: var(--mold-hot); font-size: .68rem; margin-bottom: 14px; }
+    .boot-copy h1 { margin: 0 0 16px; font-size: clamp(2.6rem, 7vw, 6.4rem); line-height: .86; letter-spacing: -.04em; color: #f0e5c4; }
+    .boot-copy p { margin: 0 0 18px; color: var(--parchment-dim); line-height: 1.78; font-size: 1.05rem; max-width: 78ch; }
+
+    .indexing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin: 4px 0 16px;
+    }
+
+    .index-cell {
+      min-height: 104px;
+      border: 1px solid rgba(214,223,145,.16);
+      border-radius: 18px;
+      padding: 13px;
+      background: rgba(0,0,0,.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .index-cell::after {
+      content: "";
+      position: absolute;
+      left: -20%;
+      right: -20%;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--mold-hot), transparent);
+      transform: translateX(-100%);
+      opacity: .6;
+    }
+
+    .index-cell.active::after { animation: scanAcross 700ms var(--ease) forwards; }
+    @keyframes scanAcross { to { transform: translateX(100%); } }
+
+    .index-cell .label { color: var(--mold-hot); font-size: .52rem; margin-bottom: 8px; }
+    .index-cell strong { display: block; color: var(--bone); line-height: 1.45; font-weight: 600; }
+
+    .boot-ledger {
+      border: 1px solid rgba(214,223,145,.16);
+      border-radius: 18px;
+      background: rgba(0,0,0,.28);
+      padding: 14px;
+      min-height: 128px;
+      font-family: "JetBrains Mono", monospace;
+      color: #ddd0ab;
+      font-size: .9rem;
+      display: grid;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .boot-line { opacity: 0; transform: translateY(6px); animation: lineIn 260ms var(--ease) forwards; }
+    .boot-line::before { content: "✠ "; color: var(--mold-hot); }
+    @keyframes lineIn { to { opacity: 1; transform: none; } }
+
+    .boot-bar {
+      height: 10px;
+      border: 1px solid rgba(214,223,145,.18);
+      border-radius: 999px;
+      background: rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+
+    .boot-bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--blood), var(--rust), var(--brass), var(--mold-hot));
+      box-shadow: 0 0 36px rgba(182,216,102,.30);
+      transition: width 280ms ease;
+    }
+
+    .page {
+      position: relative;
+      z-index: 5;
+      width: min(var(--max), calc(100% - 28px));
+      margin: 0 auto;
+      padding: 14px 0 90px;
+    }
+
+    .top-shell {
+      position: sticky;
+      top: 10px;
+      z-index: 80;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .topbar,
+    .annals-meter {
+      border: 1px solid rgba(214,223,145,.22);
+      border-radius: 24px;
+      background: rgba(7,9,5,.82);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 15px 44px rgba(0,0,0,.42);
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 14px;
+    }
+
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      color: var(--ash);
+      font-size: .64rem;
+      line-height: 1.5;
+    }
+
+    .crumbs a {
+      color: var(--mold-hot);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .crumbs a:hover { border-color: var(--mold-hot); }
+
+    .nav { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 7px; }
+    .nav a,
+    .nav button {
+      color: #e7dec1;
+      text-decoration: none;
+      font-size: .56rem;
+      border: 1px solid rgba(214,223,145,.22);
+      border-radius: 999px;
+      background: rgba(14,17,10,.70);
+      padding: 9px 10px;
+      cursor: pointer;
+      transition: 220ms var(--ease);
+    }
+    .nav a:hover,
+    .nav button:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      color: var(--rot);
+      background: rgba(36,45,19,.85);
+    }
+
+    .annals-meter {
+      display: grid;
+      grid-template-columns: 180px 1fr 200px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+    }
+
+    .meter-title { color: var(--mold-hot); font-size: .54rem; margin-bottom: 5px; }
+    .meter-text { color: var(--bone); font-size: .84rem; line-height: 1.35; }
+    .meter-bars { display: grid; gap: 8px; }
+    .meter-row { display: grid; grid-template-columns: 140px 1fr 42px; gap: 10px; align-items: center; }
+    .meter-row .label { font-size: .50rem; color: var(--mold-hot); }
+    .bar-shell { height: 10px; border: 1px solid rgba(214,223,145,.16); border-radius: 999px; background: rgba(255,255,255,.05); overflow: hidden; }
+    .bar-fill { height: 100%; width: var(--w); background: linear-gradient(90deg, var(--blood), var(--rust), var(--brass), var(--mold-hot)); transition: width 420ms var(--ease); }
+    .bar-num { color: var(--parchment-dim); font-size: .72rem; text-align: right; }
+
+    .hero {
+      min-height: 88vh;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 26px;
+      padding: clamp(22px, 4vw, 54px);
+      background: #030402;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background:
+        linear-gradient(100deg, rgba(2,3,2,.96) 0%, rgba(5,7,4,.84) 36%, rgba(6,8,5,.40) 70%, rgba(2,3,2,.88) 100%),
+        url("Assets/Plaguebound%20Annals/plaguebound-annals-hero.png") center/cover no-repeat;
+      transform: scale(1.035);
+      filter: contrast(1.08) saturate(.94);
+      transition: transform 900ms var(--ease), filter 900ms var(--ease);
+    }
+    .hero:hover::before { transform: scale(1.06); filter: contrast(1.12) saturate(1.02); }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 18% 42%, rgba(182,216,102,.16), transparent 28%),
+        radial-gradient(circle at 78% 38%, rgba(211,189,120,.10), transparent 30%),
+        linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.80));
+    }
+
+    .hero-left,
+    .hero-right { display: flex; flex-direction: column; justify-content: flex-end; min-height: calc(88vh - 110px); }
+
+    .eyebrow { color: var(--mold-hot); font-size: .70rem; line-height: 1.6; margin-bottom: 14px; }
+    .hero h1 {
+      margin: 0 0 16px;
+      color: #f3e8c5;
+      font-size: clamp(3.4rem, 8.4vw, 8rem);
+      line-height: .82;
+      letter-spacing: -.055em;
+      text-shadow: 0 14px 44px rgba(0,0,0,.70);
+    }
+    .hero-sub {
+      margin: 0 0 16px;
+      color: var(--rot);
+      font-family: "Cinzel", Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.35rem, 2.5vw, 2.3rem);
+      line-height: 1.15;
+      max-width: 35ch;
+    }
+    .hero-copy {
+      margin: 0 0 14px;
+      color: #ddd0ae;
+      line-height: 1.86;
+      font-size: 1.08rem;
+      max-width: 78ch;
+    }
+    .hero-copy strong { color: #f1e7c5; }
+
+    .btn {
+      border: 1px solid rgba(214,223,145,.32);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(111,143,60,.13), rgba(8,10,6,.86));
+      color: #efe5c5;
+      padding: 13px 15px;
+      font-size: .62rem;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 220ms var(--ease);
+    }
+    .btn:hover { transform: translateY(-2px); border-color: var(--line-strong); box-shadow: 0 18px 40px rgba(0,0,0,.35), var(--glow); color: var(--rot); }
+    .btn.brass { background: linear-gradient(180deg, rgba(155,130,71,.18), rgba(12,10,5,.88)); border-color: rgba(211,189,120,.35); }
+    .btn.rust { background: linear-gradient(180deg, rgba(138,61,31,.18), rgba(16,8,5,.88)); border-color: rgba(177,84,40,.42); }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+    .card,
+    .panel,
+    .category-card,
+    .image-card,
+    .record-card,
+    .ledger-panel,
+    .doctrine-card,
+    .sigil-panel,
+    .entry-card,
+    .modal-frame {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(180deg, rgba(14,17,10,.86), rgba(5,7,4,.94));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card::before,
+    .panel::before,
+    .category-card::before,
+    .record-card::before,
+    .ledger-panel::before,
+    .doctrine-card::before,
+    .sigil-panel::before,
+    .entry-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 16% 0%, rgba(182,216,102,.07), transparent 30%),
+        linear-gradient(90deg, transparent, rgba(214,223,145,.035), transparent);
+      pointer-events: none;
+      opacity: .75;
+    }
+
+    .hero-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .card { padding: 16px; min-height: 145px; cursor: pointer; transition: 240ms var(--ease); }
+    .card:hover,
+    .category-card:hover,
+    .record-card:hover,
+    .doctrine-card:hover,
+    .entry-card:hover { transform: translateY(-5px); border-color: var(--line-strong); box-shadow: var(--shadow), var(--glow-strong); }
+    .card .label,
+    .category-card .label,
+    .record-card .label,
+    .doctrine-card .label,
+    .entry-card .label { color: var(--mold-hot); font-size: .55rem; margin-bottom: 8px; }
+    .card h3,
+    .category-card h3,
+    .record-card h3,
+    .doctrine-card h3,
+    .entry-card h3 { margin: 0 0 8px; color: #efe4c1; font-size: 1.24rem; line-height: 1.08; }
+    .card p,
+    .category-card p,
+    .record-card p,
+    .doctrine-card p,
+    .entry-card p,
+    .panel p,
+    .ledger-panel p,
+    .sigil-panel p { margin: 0; color: var(--parchment-dim); line-height: 1.72; }
+
+    .section { padding-top: 38px; }
+    .section-block {
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: linear-gradient(180deg, rgba(10,12,7,.78), rgba(4,6,4,.94));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 26px 26px 0;
+      margin-bottom: 18px;
+    }
+    .section-title { margin: 0; color: #f1e6c3; font-size: clamp(2.2rem, 5vw, 4.6rem); line-height: .94; letter-spacing: -.025em; }
+    .section-desc { margin: 11px 0 0; max-width: 94ch; color: #bdb18d; line-height: 1.82; font-size: 1.03rem; }
+    .kicker { color: var(--mold-hot); font-size: .64rem; margin-bottom: 10px; }
+    .chip { color: var(--mold-hot); border: 1px solid rgba(182,216,102,.28); border-radius: 999px; background: rgba(10,18,7,.66); padding: 10px 12px; font-size: .54rem; white-space: nowrap; }
+    .wide-pad { padding: 24px 26px 28px; }
+
+    .image-card { background: #040503; display: grid; grid-template-rows: 1fr auto; }
+    .image-card img,
+    .category-card img,
+    .record-card img,
+    .entry-card img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.08) saturate(.96); transition: transform 650ms var(--ease), filter 650ms var(--ease); }
+    .image-card:hover img,
+    .category-card:hover img,
+    .record-card:hover img,
+    .entry-card:hover img { transform: scale(1.045); filter: contrast(1.13) saturate(1.05); }
+    .caption { padding: 14px; border-top: 1px solid var(--line); background: rgba(5,7,4,.88); }
+
+    /* SIGIL INDEXING WHEEL */
+    .sigil-layout { display: grid; grid-template-columns: .95fr 1.05fr; gap: 18px; padding: 24px 26px 28px; }
+    .sigil-panel { min-height: 680px; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at center, rgba(182,216,102,.10), transparent 44%), linear-gradient(180deg, rgba(12,15,9,.92), rgba(4,6,4,.96)); }
+    .sigil-stage { position: relative; width: min(560px, 100%); aspect-ratio: 1/1; display: grid; place-items: center; }
+    .sigil-stage::before,
+    .sigil-stage::after { content: ""; position: absolute; border-radius: 50%; border: 1px dashed rgba(214,223,145,.23); animation: rotateRing linear infinite; }
+    .sigil-stage::before { inset: 3%; animation-duration: 48s; }
+    .sigil-stage::after { inset: 14%; animation-duration: 31s; animation-direction: reverse; }
+    .sigil-img { width: 66%; aspect-ratio: 1/1; object-fit: contain; filter: drop-shadow(0 0 32px rgba(182,216,102,.14)); z-index: 2; }
+    .sigil-node {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 126px;
+      min-height: 50px;
+      transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-250px) rotate(calc(-1 * var(--angle)));
+      border: 1px solid rgba(214,223,145,.20);
+      border-radius: 999px;
+      background: rgba(5,7,4,.78);
+      color: var(--parchment);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 8px;
+      font-size: .50rem;
+      cursor: pointer;
+      transition: 220ms var(--ease);
+      z-index: 3;
+    }
+    .sigil-node:hover,
+    .sigil-node.active { background: rgba(58,72,28,.92); color: var(--rot); border-color: var(--line-strong); box-shadow: var(--glow); }
+
+    .ledger-panel { padding: 24px; min-height: 680px; display: grid; align-content: start; gap: 16px; }
+    .ledger-panel h3 { margin: 0; color: #f2e7c5; font-size: 2.3rem; line-height: 1.05; }
+    .ledger-panel p { font-size: 1.04rem; }
+    .ledger-meta { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .meta-cell { border: 1px solid rgba(214,223,145,.14); border-radius: 16px; background: rgba(0,0,0,.22); padding: 12px; }
+    .meta-cell .label { color: var(--mold-hot); font-size: .52rem; margin-bottom: 7px; }
+    .meta-cell strong { color: #eadfbd; line-height: 1.45; font-weight: 600; }
+
+    /* CATEGORY VAULT */
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .filter-btn {
+      border: 1px solid rgba(214,223,145,.22);
+      border-radius: 999px;
+      background: rgba(0,0,0,.25);
+      color: var(--parchment);
+      padding: 10px 12px;
+      font-size: .54rem;
+      cursor: pointer;
+      transition: 220ms var(--ease);
+    }
+    .filter-btn:hover,
+    .filter-btn.active { border-color: var(--line-strong); background: rgba(61,77,29,.78); color: var(--rot); }
+
+    .category-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .category-card { display: grid; grid-template-rows: 250px auto; cursor: pointer; transition: 240ms var(--ease); min-height: 510px; }
+    .category-body { padding: 16px; display: grid; gap: 12px; align-content: start; }
+    .category-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { color: var(--mold-hot); border: 1px solid rgba(182,216,102,.22); border-radius: 999px; background: rgba(0,0,0,.22); padding: 6px 8px; font-family: "Inter", system-ui, sans-serif; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; font-size: .50rem; }
+
+    .category-reveal {
+      border-top: 1px dashed rgba(214,223,145,.18);
+      padding-top: 10px;
+      display: none;
+    }
+    .category-card.open .category-reveal { display: block; }
+    .category-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .category-list li { color: #cfc4a2; line-height: 1.5; padding-left: 14px; position: relative; }
+    .category-list li::before { content: "✠"; position: absolute; left: 0; color: var(--mold-hot); font-size: .65rem; }
+
+    /* RECORD TEMPLATE */
+    .record-layout { display: grid; grid-template-columns: .42fr .58fr; gap: 18px; padding: 24px 26px 28px; }
+    .record-tabs { display: grid; gap: 10px; }
+    .record-tab {
+      width: 100%;
+      text-align: left;
+      border: 1px solid rgba(214,223,145,.18);
+      border-radius: 18px;
+      background: rgba(0,0,0,.24);
+      color: var(--parchment);
+      padding: 14px;
+      cursor: pointer;
+      transition: 220ms var(--ease);
+      font-size: .58rem;
+      line-height: 1.45;
+    }
+    .record-tab.active,
+    .record-tab:hover { border-color: var(--line-strong); background: rgba(61,77,29,.76); color: var(--rot); transform: translateX(4px); }
+    .record-output { padding: 24px; min-height: 675px; display: grid; align-content: start; gap: 14px; }
+    .record-output h3 { margin: 0; color: #f2e7c5; font-size: 2.15rem; line-height: 1.04; }
+    .record-output p { color: var(--parchment-dim); line-height: 1.8; font-size: 1.04rem; margin: 0; }
+
+    .record-table { display: grid; gap: 10px; margin-top: 4px; }
+    .record-row { border: 1px solid rgba(214,223,145,.14); border-radius: 16px; background: rgba(0,0,0,.20); padding: 12px; }
+    .record-row .label { color: var(--mold-hot); font-size: .51rem; margin-bottom: 7px; }
+    .record-row strong { color: #e6dabb; font-weight: 600; line-height: 1.45; }
+
+    .media-duo { display: grid; grid-template-columns: 1.05fr .95fr; gap: 18px; padding: 24px 26px 28px; }
+    .media-duo .image-card { min-height: 650px; }
+    .doctrine-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .doctrine-card { padding: 16px; min-height: 190px; cursor: pointer; transition: 220ms var(--ease); }
+
+    /* BATTLE RECORD TABLE */
+    .battle-table { display: grid; grid-template-columns: 1.04fr .96fr; gap: 18px; padding: 24px 26px 28px; }
+    .battle-table .image-card { min-height: 670px; }
+    .chronicle-stack { display: grid; gap: 12px; }
+    .entry-card { padding: 18px; cursor: pointer; transition: 220ms var(--ease); }
+    .entry-card .status { color: var(--brass-hot); font-family: "JetBrains Mono", monospace; font-size: .82rem; margin-top: 8px; }
+
+    .footer { padding: 28px; }
+    .footer h2 { margin: 0 0 14px; color: #f1e6c3; font-size: clamp(2.5rem,5vw,5rem); line-height: .92; }
+    .footer p { margin: 0 0 14px; color: #cfc3a0; line-height: 1.86; font-size: 1.06rem; max-width: 110ch; }
+    .footer-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+    .floating-rite {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 90;
+      width: min(430px, calc(100% - 36px));
+      border: 1px solid rgba(214,223,145,.28);
+      border-radius: 22px;
+      background: rgba(6,8,5,.90);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow), var(--glow);
+      overflow: hidden;
+    }
+    .floating-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid rgba(214,223,145,.16); padding: 12px 14px; color: var(--mold-hot); font-size: .56rem; }
+    .floating-head button { border: 0; background: transparent; color: var(--bone); cursor: pointer; font-size: 1rem; }
+    .floating-body { padding: 14px; color: #d6caab; line-height: 1.72; font-size: .96rem; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 220;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: rgba(2,3,2,.76);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: 250ms ease;
+    }
+    .modal.show { opacity: 1; visibility: visible; pointer-events: auto; }
+    .modal-frame { width: min(760px, 100%); border-color: var(--line-strong); background: linear-gradient(180deg, rgba(18,21,12,.98), rgba(5,7,4,.99)); padding: 24px; display: grid; gap: 12px; }
+    .modal-frame h3 { margin: 0; color: #f2e7c5; font-size: 2rem; line-height: 1.05; }
+    .modal-frame p { margin: 0; color: #d2c6a7; line-height: 1.78; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+
+    @media (max-width: 1250px) {
+      .boot-altar,
+      .hero,
+      .sigil-layout,
+      .record-layout,
+      .media-duo,
+      .battle-table { grid-template-columns: 1fr; }
+      .boot-seal-wrap { min-height: 420px; border-right: 0; border-bottom: 1px solid rgba(214,223,145,.14); }
+      .boot-altar { min-height: auto; }
+      .hero-left,
+      .hero-right { min-height: auto; }
+      .annals-meter { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .sigil-node { display: none; }
+      .sigil-panel,.ledger-panel,.record-output,.media-duo .image-card,.battle-table .image-card { min-height: 500px; }
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(100% - 18px, var(--max)); }
+      .top-shell { top: 6px; }
+      .topbar { grid-template-columns: 1fr; }
+      .nav { justify-content: flex-start; }
+      .hero-grid,
+      .indexing-grid,
+      .ledger-meta,
+      .category-grid,
+      .doctrine-grid { grid-template-columns: 1fr; }
+      .section-header,
+      .wide-pad,
+      .sigil-layout,
+      .record-layout,
+      .media-duo,
+      .battle-table { padding-left: 18px; padding-right: 18px; }
+      .hero { padding: 22px; border-radius: 28px; }
+      .hero h1 { font-size: clamp(3rem, 15vw, 5rem); }
+      .meter-row { grid-template-columns: 1fr; gap: 6px; }
+      .floating-rite { left: 10px; right: 10px; width: auto; }
+    }
+  </style>
+</head>
+
+<body class="locked" data-rite="seal">
+  <canvas id="annalsCanvas" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="gridveil" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div class="boot" id="boot">
+    <div class="boot-altar">
+      <div class="boot-seal-wrap">
+        <div class="boot-ring" aria-hidden="true"></div>
+        <img class="boot-seal" src="Assets/Plaguebound%20Annals/plaguebound-annals-seal.png" alt="The Plaguebound Annals seal">
+      </div>
+      <div class="boot-copy">
+        <div class="kicker">Annals Indexing Rite // The Rotfather's Mercy // Seal-Chain Initiation</div>
+        <h1>The Plaguebound Annals</h1>
+        <p>The seal is not opened. It is convinced to remember. Every unit, relic, war-form, and recorded slaughter inside The Rotfather's Vanguard is weighed here beneath brass, mildew, candle-fat, and sealed plague doctrine.</p>
+
+        <div class="indexing-grid">
+          <div class="index-cell"><div class="label">Seal Layer</div><strong>Archive sigil accepted. Chains remain tense.</strong></div>
+          <div class="index-cell"><div class="label">Ledger Layer</div><strong>Unit histories exhumed from rusted record-vaults.</strong></div>
+          <div class="index-cell"><div class="label">War Layer</div><strong>Battle doctrines cross-indexed with surviving wounds.</strong></div>
+          <div class="index-cell"><div class="label">Unwritten Layer</div><strong>Empty records prepared for future contagion.</strong></div>
+        </div>
+
+        <div class="boot-ledger" id="bootLedger"></div>
+        <div class="boot-bar"><span id="bootBar"></span></div>
+        <div style="margin-top:16px"><button class="btn brass" id="skipBoot" type="button">Break Seal</button></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="page" id="top">
+    <header class="top-shell">
+      <div class="topbar">
+        <div class="crumbs label">
+          <a href="index.html">The Septicarium</a><span>/</span><a href="plaguebound-dossier.html">Plaguebound Dossier</a><span>/</span><span>The Plaguebound Annals</span>
+        </div>
+        <nav class="nav" aria-label="Page navigation">
+          <a href="#seal">Seal</a>
+          <a href="#vault">Annals Vault</a>
+          <a href="#record-template">Record Anatomy</a>
+          <a href="#doctrine">War-Forms</a>
+          <a href="#chronicles">Chronicles</a>
+          <button type="button" id="riteBtn">Rite</button>
+        </nav>
+      </div>
+
+      <div class="annals-meter">
+        <div>
+          <div class="meter-title">Active Index</div>
+          <div class="meter-text" id="activeIndex">Seal-chain waking.</div>
+        </div>
+        <div class="meter-bars">
+          <div class="meter-row"><div class="label">Record Saturation</div><div class="bar-shell"><div class="bar-fill" id="recordFill" style="--w: 24%"></div></div><div class="bar-num" id="recordNum">24%</div></div>
+          <div class="meter-row"><div class="label">War Memory</div><div class="bar-shell"><div class="bar-fill" id="warFill" style="--w: 31%"></div></div><div class="bar-num" id="warNum">31%</div></div>
+        </div>
+        <div>
+          <div class="meter-title">Annals Condition</div>
+          <div class="meter-text" id="conditionText">Awaiting first classification.</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero" data-rite="seal" data-record="24" data-war="31" data-whisper="The seal does not guard knowledge. It infects memory until knowledge grows teeth.">
+      <div class="hero-left">
+        <div class="eyebrow label">Central War-Archive // Unit Histories // Doctrine Reliquary</div>
+        <h1>The Plaguebound Annals</h1>
+        <p class="hero-sub">Where every war-form is named, chained, studied, and remembered as rot.</p>
+        <p class="hero-copy"><strong>The Plaguebound Annals</strong> are the internal record-vault of The Rotfather's Vanguard. Here, commanders are not listed as entries. Infantry are not reduced to numbers. Engines are not catalogued as machines. Every formation is preserved as a living war-function inside the slow anatomy of the plague host.</p>
+        <p class="hero-copy">The Annals exist to bind unit identity, battlefield doctrine, weapons, afflictions, relics, visual markings, and future chronicles into one diseased body of record.</p>
+        <div class="hero-actions">
+          <a class="btn brass" href="#vault">Open the Annals Vault</a>
+          <a class="btn" href="#record-template">View Record Anatomy</a>
+          <a class="btn rust" href="#chronicles">Enter Battle Records</a>
+        </div>
+      </div>
+      <aside class="hero-right">
+        <div class="hero-grid">
+          <article class="card interactive" data-title="Annals Function" data-text="The Annals preserve each war-form as doctrine, not inventory. A unit is recorded by what it does to space, fear, flesh, armor, and memory."><div class="label">Primary Function</div><h3>War-Forms, Not Rosters</h3><p>Every entry is a living military-religious profile.</p></article>
+          <article class="card interactive" data-title="Record Tone" data-text="No entry is written as game notation. Every rule-like quality is translated into observable battlefield reality."><div class="label">Voice Law</div><h3>No External Witness</h3><p>The archive never admits the world beyond the war.</p></article>
+          <article class="card interactive" data-title="Future Growth" data-text="Narrative battles, unit histories, named formations, and war-pattern observations can grow here without crowding the Command Deck."><div class="label">Growth Pattern</div><h3>Unwritten Records Await</h3><p>The page is built to expand without becoming dense.</p></article>
+          <article class="card interactive" data-title="Visual Doctrine" data-text="The Annals bind image, icon, unit memory, weapons, formation behavior, and battlefield ritual into one readable shrine."><div class="label">Visual Doctrine</div><h3>Cinematic Military Rot</h3><p>Every section is designed as a grim record chamber.</p></article>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="seal" data-rite="seal" data-record="34" data-war="42" data-whisper="The bell in the seal is not rung. It listens for names that deserve to rot longer.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Seal of the Annals // Rot-Index Wheel</div>
+            <h2 class="section-title">The Seal Chooses the Record</h2>
+            <p class="section-desc">The Plaguebound Annals do not open as a book. They turn as a seal-wheel. Each spoke binds a different class of war-memory: command, infantry, engines, relics, battle records, future wounds, and the unnamed formations still waiting for a proper death.</p>
+          </div>
+          <div class="chip">Interactive Seal Index</div>
+        </div>
+
+        <div class="sigil-layout">
+          <div class="sigil-panel">
+            <div class="sigil-stage" id="sigilStage">
+              <img class="sigil-img" src="Assets/Plaguebound%20Annals/plaguebound-annals-seal.png" alt="Plaguebound Annals seal">
+              <button class="sigil-node active" style="--angle:0deg" data-node="command">Command</button>
+              <button class="sigil-node" style="--angle:51deg" data-node="infantry">Infantry</button>
+              <button class="sigil-node" style="--angle:102deg" data-node="terminator">Terminator</button>
+              <button class="sigil-node" style="--angle:153deg" data-node="engine">Engines</button>
+              <button class="sigil-node" style="--angle:204deg" data-node="relic">Relics</button>
+              <button class="sigil-node" style="--angle:255deg" data-node="chronicle">Chronicles</button>
+              <button class="sigil-node" style="--angle:306deg" data-node="unwritten">Unwritten</button>
+            </div>
+          </div>
+
+          <article class="ledger-panel">
+            <div class="label" id="nodeLabel">Seal-Spoke I</div>
+            <h3 id="nodeTitle">Command Entities</h3>
+            <p id="nodeBody">Those whose will travels farther than their bodies. Lords, surgeons, tally-keepers, icon-bearers, and plague savants whose presence changes the meaning of every formation around them.</p>
+            <div class="ledger-meta">
+              <div class="meta-cell"><div class="label">Preserved As</div><strong id="nodePreserved">Authority, doctrine, aura, wound-memory.</strong></div>
+              <div class="meta-cell"><div class="label">Annals Question</div><strong id="nodeQuestion">What does command look like when charisma has rotted into contagion?</strong></div>
+              <div class="meta-cell"><div class="label">First Records</div><strong id="nodeFirst">Mortivus Classarion, Putrifiers, Surgeons, Tallymen, Blightspawn.</strong></div>
+              <div class="meta-cell"><div class="label">State</div><strong id="nodeState">Active and expanding.</strong></div>
+            </div>
+            <p id="nodeWhisper">The seal marks command not by rank alone, but by how many bodies begin to behave differently when the commander enters the field.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="vault" data-rite="records" data-record="55" data-war="58" data-whisper="The shelves do not separate unit from story. They separate remembered rot from rot still waiting to earn a name.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">The Annals Vault // Classification Chambers</div>
+            <h2 class="section-title">The Warband Divided by Function</h2>
+            <p class="section-desc">Each chamber below will become a threshold to future records. Every unit receives its own place in the Annals, not as a detached entry, but as a cinematic study of how it fights, endures, kills, protects, corrupts, and becomes myth inside The Rotfather's Vanguard.</p>
+          </div>
+          <div class="chip">Click Cards to Unseal</div>
+        </div>
+
+        <div class="wide-pad">
+          <div class="filters" aria-label="Annals filters">
+            <button class="filter-btn active" data-filter="all">All Records</button>
+            <button class="filter-btn" data-filter="living">Living War-Forms</button>
+            <button class="filter-btn" data-filter="engine">Engines & Armor</button>
+            <button class="filter-btn" data-filter="record">Records & Doctrine</button>
+            <button class="filter-btn" data-filter="future">Awaiting Record</button>
+          </div>
+
+          <div class="category-grid" id="categoryGrid">
+            <article class="category-card" data-kind="living" data-title="Command Entities" data-text="The command chamber records beings whose presence changes nearby war-forms: lords, surgeons, putrifiers, icon bearers, tally keepers, and those who turn strategy into infection.">
+              <img src="Assets/Plaguebound%20Annals/annals-command-entities.png" alt="Death Guard command entities gathered in council">
+              <div class="category-body"><div class="label">Command Chamber</div><h3>Command Entities</h3><p>Lords, plague savants, surgeons, tally-keepers, and ritual specialists.</p><div class="category-tags"><span class="tag">Authority</span><span class="tag">Auras</span><span class="tag">Doctrine</span></div><div class="category-reveal"><ul class="category-list"><li>Mortivus Classarion</li><li>Foul Blightspawn</li><li>Tallyman</li><li>Plague Surgeon</li><li>Biologus Putrifier</li><li>Icon Bearer</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="living" data-title="Plaguebound Infantry" data-text="The infantry chamber preserves the core walking sickness of the warband: Plague Marines, Poxwalkers, and support figures moving together as slow battlefield conquest.">
+              <img src="Assets/Plaguebound%20Annals/annals-plaguebound-infantry.png" alt="Death Guard infantry formation advancing">
+              <div class="category-body"><div class="label">Infantry Chamber</div><h3>Plaguebound Infantry</h3><p>The advancing body of the warband: patient, diseased, and inevitable.</p><div class="category-tags"><span class="tag">Advance</span><span class="tag">Attrition</span><span class="tag">Rot-Line</span></div><div class="category-reveal"><ul class="category-list"><li>Plague Marines</li><li>Poxwalkers</li><li>Icon-borne infantry rites</li><li>Support-corrupted formations</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="living" data-title="Terminator Orders" data-text="The Terminator chamber holds the slowest and heaviest war-saints of the host: Blightlord anvils and Deathshroud executioners who make proximity feel like judgment.">
+              <img src="Assets/Plaguebound%20Annals/annals-plaguebound-infantry.png" alt="Death Guard terminator orders represented within infantry procession">
+              <div class="category-body"><div class="label">Iron Reliquary</div><h3>Terminator Orders</h3><p>The sealed elites: walking crypts, executioners, and armored vows.</p><div class="category-tags"><span class="tag">Blightlord</span><span class="tag">Deathshroud</span><span class="tag">Bodyguard</span></div><div class="category-reveal"><ul class="category-list"><li>Blightlord Terminators</li><li>Deathshroud Terminators</li><li>Personal guard formations</li><li>Named oath-cadres</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="engine" data-title="Daemon Engines" data-text="The engine chamber records corrupted war machines as living industrial predators: drones, haulers, crawlers, helbrutes, brigands, transports, and shrine-hulks.">
+              <img src="Assets/Plaguebound%20Annals/annals-daemon-engines.png" alt="Daemon engine staging bay aboard plague warship">
+              <div class="category-body"><div class="label">Engine Bay</div><h3>Daemon Engines</h3><p>Corrupted machinery prepared for battle as sacred industrial beasts.</p><div class="category-tags"><span class="tag">Engines</span><span class="tag">Armor</span><span class="tag">Forge-Rites</span></div><div class="category-reveal"><ul class="category-list"><li>Foetid Bloat-drone</li><li>Myphitic Blight-hauler</li><li>Plagueburst Crawler</li><li>Helbrute</li><li>War Dog Brigand</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="engine" data-title="Armored Relics" data-text="The armored relic chamber preserves carriers, siege hulls, transports, and ancient war-platforms whose bodies are part engine, part shrine, part grave.">
+              <img src="Assets/Plaguebound%20Annals/annals-daemon-engines.png" alt="Armored plague war assets in staging bay">
+              <div class="category-body"><div class="label">Armored Reliquary</div><h3>Armored Relics</h3><p>Transports and siege hulls that move like chapels dragged through war.</p><div class="category-tags"><span class="tag">Rhino</span><span class="tag">Land Raider</span><span class="tag">Siege</span></div><div class="category-reveal"><ul class="category-list"><li>Rhino</li><li>Land Raider</li><li>Plagueburst Crawler</li><li>Corrupted convoy doctrines</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="living" data-title="Auxilia & Experiments" data-text="The experimental chamber holds things not easily classed: spawn, failed blessings, warcamp attachments, and bodies whose usefulness arrived after coherence ended.">
+              <img src="Assets/Plaguebound%20Annals/annals-archive-chamber.png" alt="Plague archive chamber with preserved specimens">
+              <div class="category-body"><div class="label">Specimen Chamber</div><h3>Auxilia & Experiments</h3><p>Unstable bodies, corrupted auxiliaries, spawn-things, and failed miracles.</p><div class="category-tags"><span class="tag">Experiments</span><span class="tag">Spawn</span><span class="tag">Aberrant</span></div><div class="category-reveal"><ul class="category-list"><li>Chaos Spawn</li><li>Ritual experiments</li><li>Captured war-assets</li><li>Unstable auxiliaries</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="record" data-title="Relics, Wargear & Contagion Systems" data-text="The relic chamber binds weapons, icons, bells, blades, toxins, disease-vessels, and sacred instruments into records of function and dread.">
+              <img src="Assets/Plaguebound%20Annals/annals-archive-chamber.png" alt="Annals archive chamber with plague relics">
+              <div class="category-body"><div class="label">Relic Ledger</div><h3>Relics, Wargear & Contagion Systems</h3><p>Weapons, toxins, icons, and disease instruments preserved as doctrine.</p><div class="category-tags"><span class="tag">Relics</span><span class="tag">Weapons</span><span class="tag">Contagion</span></div><div class="category-reveal"><ul class="category-list"><li>The Mercy-Sickle</li><li>Plague bells</li><li>Blight grenades</li><li>Icons and plague standards</li><li>Biological contagion systems</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="record" data-title="Narrative Battle Records" data-text="The battle record chamber receives full war accounts, defeats, victories, grudges, named engagements, and future campaign histories.">
+              <img src="Assets/Plaguebound%20Annals/annals-battle-records.png" alt="Plague-war battle records table">
+              <div class="category-body"><div class="label">Chronicle Desk</div><h3>Narrative Battle Records</h3><p>Victories, defeats, grudges, and battlefield memories given form.</p><div class="category-tags"><span class="tag">Chronicles</span><span class="tag">Campaigns</span><span class="tag">Grudges</span></div><div class="category-reveal"><ul class="category-list"><li>The Pallid Reversal</li><li>Future war records</li><li>Campaign histories</li><li>Enemy-specific grudges</li></ul></div></div>
+            </article>
+
+            <article class="category-card" data-kind="future" data-title="Unwritten / Awaiting Record" data-text="The unwritten chamber keeps space for what has not yet earned a name: future units, future battles, future formations, future failures, and future saints of rot.">
+              <img src="Assets/Plaguebound%20Annals/plaguebound-annals-seal.png" alt="The Plaguebound Annals seal">
+              <div class="category-body"><div class="label">Unwritten Vault</div><h3>Unwritten / Awaiting Record</h3><p>Empty chains, sealed pages, and names not yet earned.</p><div class="category-tags"><span class="tag">Future</span><span class="tag">Awaiting</span><span class="tag">Sealed</span></div><div class="category-reveal"><ul class="category-list"><li>Units awaiting full record</li><li>Future names</li><li>Unwritten formations</li><li>Campaign hooks</li></ul></div></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="record-template" data-rite="vault" data-record="72" data-war="64" data-whisper="A unit is not complete until its weapons, wounds, failures, and habits of killing have all been named.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Unit Record Anatomy // In-Universe Structure</div>
+            <h2 class="section-title">How a War-Form Is Written</h2>
+            <p class="section-desc">Every future unit page can follow this structure. The language remains fully in-universe: no distant observer, no gaming table, no external mechanics. Every quality becomes battlefield reality.</p>
+          </div>
+          <div class="chip">Future Unit Blueprint</div>
+        </div>
+
+        <div class="record-layout">
+          <div class="record-tabs" id="recordTabs">
+            <button class="record-tab active" data-tab="identity">I. Unit Identity</button>
+            <button class="record-tab" data-tab="function">II. War-Function</button>
+            <button class="record-tab" data-tab="afflictions">III. Innate Afflictions</button>
+            <button class="record-tab" data-tab="weapons">IV. Weapons & Wargear</button>
+            <button class="record-tab" data-tab="endurance">V. Armor & Endurance</button>
+            <button class="record-tab" data-tab="doctrine">VI. Battlefield Doctrine</button>
+            <button class="record-tab" data-tab="behavior">VII. Combat Behavior</button>
+            <button class="record-tab" data-tab="associations">VIII. Synergistic War-Forms</button>
+            <button class="record-tab" data-tab="failure">IX. Failure Conditions</button>
+            <button class="record-tab" data-tab="variants">X. Named Formations</button>
+            <button class="record-tab" data-tab="hooks">XI. Chronicle Hooks</button>
+            <button class="record-tab" data-tab="visual">XII. Visual Doctrine</button>
+          </div>
+          <article class="record-output panel">
+            <div class="label" id="recordLabel">Record Layer I</div>
+            <h3 id="recordTitle">Unit Identity</h3>
+            <p id="recordBody">The name, classification, command association, current standing, and preserved purpose of the war-form. This is where the unit stops being generic and becomes part of The Rotfather's Vanguard.</p>
+            <div class="record-table">
+              <div class="record-row"><div class="label">Annals Question</div><strong id="recordQuestion">What is this formation called when the warband speaks of it as kin?</strong></div>
+              <div class="record-row"><div class="label">Recorded Elements</div><strong id="recordElements">Name, classification, known attachments, oath-state, battlefield station.</strong></div>
+              <div class="record-row"><div class="label">Cinematic Translation</div><strong id="recordTranslation">A unit record begins with identity before function, because the Annals do not preserve anonymous rot.</strong></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="doctrine" data-rite="war" data-record="82" data-war="80" data-whisper="Doctrine is not advice. Doctrine is the shape violence takes after it has become tradition.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Visual Doctrine // The First Four Chambers</div>
+            <h2 class="section-title">The Annals as Living War-Architecture</h2>
+            <p class="section-desc">These chambers are the visual spine of the page: the archive, the command sanctum, the infantry procession, and the daemon-engine staging bay. Each one gives a different kind of record its own atmosphere.</p>
+          </div>
+          <div class="chip">Image-Led Lore Structure</div>
+        </div>
+
+        <div class="media-duo">
+          <figure class="image-card">
+            <img src="Assets/Plaguebound%20Annals/annals-archive-chamber.png" alt="Archive chamber of The Plaguebound Annals">
+            <figcaption class="caption"><div class="label">Archive Chamber</div><p>The quiet vault where unit records, specimen jars, relics, and war-documents are preserved as sacred evidence.</p></figcaption>
+          </figure>
+          <div class="doctrine-grid">
+            <article class="doctrine-card interactive" data-title="Archive Chamber" data-text="This is the deep interior of the Annals: quiet, heavy, ceremonial, and diseased. It holds the long memory of the warband."><div class="label">Chamber I</div><h3>Archive Memory</h3><p>Where the warband stores what refuses to die cleanly.</p></article>
+            <article class="doctrine-card interactive" data-title="Command Sanctum" data-text="The command sanctum records authority as atmosphere: a table of decisions, surrounded by plague-armored figures whose will has become contagion."><div class="label">Chamber II</div><h3>Command Will</h3><p>Where Mortivus and his senior entities become doctrine.</p></article>
+            <article class="doctrine-card interactive" data-title="Infantry Procession" data-text="The infantry chamber turns marching into theology. Poxwalkers, Plague Marines, terminators, and plague specialists move as one layered infection."><div class="label">Chamber III</div><h3>Infantry Doctrine</h3><p>Where the slow advance becomes military scripture.</p></article>
+            <article class="doctrine-card interactive" data-title="Engine Bay" data-text="The engine bay preserves machines as beasts, siege shrines, and disease-hulks prepared for war under sacred maintenance rites."><div class="label">Chamber IV</div><h3>Armored Rot</h3><p>Where engines are fed, blessed, chained, and released.</p></article>
+            <article class="doctrine-card interactive" data-title="War-Pattern Observations" data-text="War-patterns are not external strategy notes. They are recurring battlefield behaviors observed by the Annals and translated into doctrine."><div class="label">Chamber V</div><h3>War-Pattern Observations</h3><p>How formations behave when the fighting becomes real.</p></article>
+            <article class="doctrine-card interactive" data-title="Unwritten Records" data-text="The Unwritten Vault remains empty by design. Empty spaces are invitations for future names, wounds, and recorded defeats."><div class="label">Chamber VI</div><h3>Awaiting Names</h3><p>Where future units wait for their first true record.</p></article>
+          </div>
+        </div>
+
+        <div class="media-duo" style="padding-top:0">
+          <figure class="image-card">
+            <img src="Assets/Plaguebound%20Annals/annals-command-entities.png" alt="Command entities of the warband">
+            <figcaption class="caption"><div class="label">Command Entities</div><p>The command brain of The Rotfather's Vanguard gathered around plague-war decisions.</p></figcaption>
+          </figure>
+          <figure class="image-card">
+            <img src="Assets/Plaguebound%20Annals/annals-daemon-engines.png" alt="Daemon engines and armored relics in staging bay">
+            <figcaption class="caption"><div class="label">Daemon Engines & Armored Relics</div><p>The forge-chamber where crawling artillery, drones, haulers, helbrutes, brigands, transports, and siege hulls are prepared for war.</p></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="chronicles" data-rite="records" data-record="94" data-war="91" data-whisper="Battle records are not written after war. They are written by what the war leaves behind.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Narrative Battle Records // Chronicle Desk</div>
+            <h2 class="section-title">Where Future Battles Will Be Preserved</h2>
+            <p class="section-desc">This chamber keeps the index from crowding. Narrative battles, campaign histories, grudges, war-pattern observations, and named unit moments can all be added here later as records rather than retroactive clutter.</p>
+          </div>
+          <div class="chip">Ready for Future Chronicles</div>
+        </div>
+
+        <div class="battle-table">
+          <figure class="image-card">
+            <img src="Assets/Plaguebound%20Annals/annals-battle-records.png" alt="Battle record table inside The Plaguebound Annals">
+            <figcaption class="caption"><div class="label">Battle Record Table</div><p>War histories are reconstructed through relics, ledgers, casualty fragments, vox remnants, and preserved battlefield remains.</p></figcaption>
+          </figure>
+          <div class="chronicle-stack">
+            <article class="entry-card interactive" data-title="The Pallid Reversal" data-text="An Ork-origin battle chronicle concerning Gorzag Pallkrump's ambush of Mortivus Classarion. Already preserved as a full scrap-vox record."><div class="label">Existing Chronicle</div><h3>The Pallid Reversal</h3><p>Ork victory record. Mortivus corrected, not destroyed.</p><div class="status">STATUS: RECOVERED AND INDEXED</div></article>
+            <article class="entry-card interactive" data-title="Future Battle Records" data-text="New games and stories can enter here as proper chronicle pages only when they earn the weight of a full record."><div class="label">Future Chamber</div><h3>Future Battle Records</h3><p>Victories, defeats, grudges, reversals, and recorded survival.</p><div class="status">STATUS: AWAITING BLOOD</div></article>
+            <article class="entry-card interactive" data-title="War-Pattern Observations" data-text="This is the in-universe home for strategic notes: observed patterns of advance, target behavior, survival doctrine, formation habits, and repeated failures."><div class="label">Doctrine Chamber</div><h3>War-Pattern Observations</h3><p>Not advice. Repeated violence made legible.</p><div class="status">STATUS: PARTIALLY SEALED</div></article>
+            <article class="entry-card interactive" data-title="Unit Chronicle Hooks" data-text="Each unit page should collect future moments: impossible endurance, failed charges, slain leaders, objective seizures, catastrophic loss, heroic decay, or strange survival."><div class="label">Unit Memory</div><h3>Chronicle Hooks</h3><p>Small battlefield moments that may become full records.</p><div class="status">STATUS: OPEN LEDGER</div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-rite="vault" data-record="88" data-war="76" data-whisper="The Annals are ready. Now the units must earn their pages.">
+      <div class="section-block footer">
+        <div class="kicker">Final Seal // Page Function</div>
+        <h2>The Annals Are the Warband's Memory Engine.</h2>
+        <p>The Command Deck remains clean because the Annals carry the weight. From this chamber, every future unit can receive its own record: identity, war-function, afflictions, weapons, endurance, doctrine, behavior, associations, failure conditions, named formations, chronicle hooks, and visual doctrine.</p>
+        <p>The next true record should begin with one unit and treat it as real. Not as a list. Not as a profile. As a formation that moves, kills, suffers, survives, and changes the battlefield simply by entering it.</p>
+        <div class="footer-actions">
+          <a class="btn brass" href="index.html">Return to Command Deck</a>
+          <a class="btn" href="plaguebound-dossier.html">Open Plaguebound Dossier</a>
+          <a class="btn" href="mortivus-classarion.html">Open Mortivus Classarion</a>
+          <a class="btn rust" href="the-pallid-reversal.html">Open The Pallid Reversal</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="floating-rite" id="floatingRite">
+    <div class="floating-head label"><span>Annals Whisper</span><button id="closeFloating" type="button">×</button></div>
+    <div class="floating-body" id="floatingText">The seal does not guard knowledge. It infects memory until knowledge grows teeth.</div>
+  </aside>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-frame" role="dialog" aria-modal="true">
+      <div class="label">Annals Annotation</div>
+      <h3 id="modalTitle">Record</h3>
+      <p id="modalText">The Annals answer.</p>
+      <div class="modal-actions"><button class="btn" id="closeModal" type="button">Seal Annotation</button></div>
+    </div>
+  </div>
+
+  <script>
+    const boot = document.getElementById('boot');
+    const bootLedger = document.getElementById('bootLedger');
+    const bootBar = document.getElementById('bootBar');
+    const bootCells = [...document.querySelectorAll('.index-cell')];
+    const bootLines = [
+      'Seal-chain engaged.',
+      'Ledger mildew disturbed. Do not inhale.',
+      'Command entities cross-indexed by authority residue.',
+      'Infantry procession counted by footfall, not number.',
+      'Engine bay records awakened beneath oil and hymn.',
+      'Unwritten pages opened for future wounds.',
+      'The Plaguebound Annals remember.'
+    ];
+    let bootIndex = 0;
+    function finishBoot(){
+      boot.classList.add('hidden');
+      document.body.classList.remove('locked');
+      setTimeout(() => boot.remove(), 950);
+    }
+    const bootTimer = setInterval(() => {
+      if (bootIndex < bootLines.length) {
+        const line = document.createElement('div');
+        line.className = 'boot-line';
+        line.textContent = bootLines[bootIndex];
+        bootLedger.appendChild(line);
+        bootBar.style.width = ((bootIndex + 1) / bootLines.length * 100) + '%';
+        bootCells.forEach((cell, idx) => cell.classList.toggle('active', idx === bootIndex % bootCells.length));
+        bootIndex++;
+      } else {
+        clearInterval(bootTimer);
+        setTimeout(finishBoot, 620);
+      }
+    }, 310);
+    document.getElementById('skipBoot').addEventListener('click', () => { clearInterval(bootTimer); bootBar.style.width = '100%'; finishBoot(); });
+
+    const recordFill = document.getElementById('recordFill');
+    const warFill = document.getElementById('warFill');
+    const recordNum = document.getElementById('recordNum');
+    const warNum = document.getElementById('warNum');
+    const activeIndex = document.getElementById('activeIndex');
+    const conditionText = document.getElementById('conditionText');
+    const floatingText = document.getElementById('floatingText');
+
+    function setPageState(record, war, rite){
+      recordFill.style.width = record + '%';
+      warFill.style.width = war + '%';
+      recordNum.textContent = record + '%';
+      warNum.textContent = war + '%';
+      if (rite) document.body.dataset.rite = rite;
+      if (record < 45) { activeIndex.textContent = 'Seal-chain waking.'; conditionText.textContent = 'Awaiting first classification.'; }
+      else if (record < 75) { activeIndex.textContent = 'Vault classifications active.'; conditionText.textContent = 'Records responding to touch.'; }
+      else { activeIndex.textContent = 'Annals fully indexed.'; conditionText.textContent = 'War-memory saturated.'; }
+    }
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const d = entry.target.dataset;
+        setPageState(Number(d.record || 30), Number(d.war || 30), d.rite);
+        if (d.whisper) floatingText.textContent = d.whisper;
+      });
+    }, { threshold: 0.33 });
+    document.querySelectorAll('section[data-record]').forEach(section => sectionObserver.observe(section));
+
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    function openModal(title, text){
+      modalTitle.textContent = title;
+      modalText.textContent = text;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+    }
+    document.querySelectorAll('.interactive').forEach(el => {
+      el.addEventListener('click', () => openModal(el.dataset.title || 'Annals Record', el.dataset.text || 'The record remains sealed.'));
+    });
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    const nodeData = {
+      command: {
+        label:'Seal-Spoke I', title:'Command Entities',
+        body:'Those whose will travels farther than their bodies. Lords, surgeons, tally-keepers, icon-bearers, and plague savants whose presence changes the meaning of every formation around them.',
+        preserved:'Authority, doctrine, aura, wound-memory.', question:'What does command look like when charisma has rotted into contagion?', first:'Mortivus Classarion, Putrifiers, Surgeons, Tallymen, Blightspawn.', state:'Active and expanding.',
+        whisper:'Command is measured by the bodies that begin to behave differently when it enters the field.'
+      },
+      infantry: {
+        label:'Seal-Spoke II', title:'Plaguebound Infantry',
+        body:'The infantry chamber records the slow body of the warband: Poxwalkers at the edges, Plague Marines at the center, specialists breathing doctrine into the line, and terminator shapes behind them like sealed judgments.',
+        preserved:'Advance pattern, infection density, infantry rites.', question:'How does the line claim ground before it kills?', first:'Plague Marines, Poxwalkers, support specialists, infantry icons.', state:'Awaiting first unit page.',
+        whisper:'The line does not move fast because the ground comes to it spoiled.'
+      },
+      terminator: {
+        label:'Seal-Spoke III', title:'Terminator Orders',
+        body:'Blightlords and Deathshroud are preserved as walking crypt-orders, each one a sealed mass of armor, vow, patience, and ruin.',
+        preserved:'Oath-state, bodyguard logic, execution doctrine.', question:'What kind of warrior makes proximity feel like a sentence?', first:'Blightlord Terminators, Deathshroud Terminators.', state:'Sealed, awaiting order names.',
+        whisper:'The Terminator does not arrive late. It arrives when escape has become mythology.'
+      },
+      engine: {
+        label:'Seal-Spoke IV', title:'Daemon Engines & Armored Relics',
+        body:'Engines, crawlers, haulers, drones, helbrutes, brigands, transports, and siege-hulks are remembered as industrial beasts with sacred maintenance needs.',
+        preserved:'Engine hunger, armor memory, forge-rite behavior.', question:'When does a machine become a shrine that kills?', first:'Bloat-drone, Blight-hauler, Plagueburst Crawler, Helbrute, Rhino, Land Raider, Brigand.', state:'Engine bay active.',
+        whisper:'Every engine wants release. The Annals record what it costs to feed it.'
+      },
+      relic: {
+        label:'Seal-Spoke V', title:'Relics, Wargear & Contagion Systems',
+        body:'Weapons, bells, icons, blades, toxins, syringes, corrupted ammunition, and plague instruments are indexed by the kinds of death they make possible.',
+        preserved:'Weapon behavior, ritual use, contagion vectors.', question:'What does the relic do to flesh, morale, armor, and memory?', first:'The Mercy-Sickle, plague bells, blight grenades, icons, disease vessels.', state:'Reliquary partially open.',
+        whisper:'A weapon is not complete until the enemy learns its name too late.'
+      },
+      chronicle: {
+        label:'Seal-Spoke VI', title:'Narrative Battle Records',
+        body:'The chronicle chamber receives full battle accounts only after the field leaves enough evidence to deserve preservation.',
+        preserved:'Victories, defeats, grudges, reversals, battlefield consequences.', question:'What changed because the war happened?', first:'The Pallid Reversal and future battle records.', state:'One record indexed.',
+        whisper:'The Annals prefer battles that leave scars useful enough to read.'
+      },
+      unwritten: {
+        label:'Seal-Spoke VII', title:'Unwritten / Awaiting Record',
+        body:'The empty chamber is not absence. It is hunger. Every unit not yet named, every future story, every failed experiment, every formation awaiting distinction rests here.',
+        preserved:'Potential names, empty chains, sealed placeholders.', question:'What has not yet earned preservation?', first:'All future unit pages and unnamed formations.', state:'Open and expectant.',
+        whisper:'Blank pages rot fastest. They know they are wanted.'
+      }
+    };
+
+    const nodeLabel = document.getElementById('nodeLabel');
+    const nodeTitle = document.getElementById('nodeTitle');
+    const nodeBody = document.getElementById('nodeBody');
+    const nodePreserved = document.getElementById('nodePreserved');
+    const nodeQuestion = document.getElementById('nodeQuestion');
+    const nodeFirst = document.getElementById('nodeFirst');
+    const nodeState = document.getElementById('nodeState');
+    const nodeWhisper = document.getElementById('nodeWhisper');
+
+    document.querySelectorAll('.sigil-node').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sigil-node').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const n = nodeData[btn.dataset.node];
+        nodeLabel.textContent = n.label;
+        nodeTitle.textContent = n.title;
+        nodeBody.textContent = n.body;
+        nodePreserved.textContent = n.preserved;
+        nodeQuestion.textContent = n.question;
+        nodeFirst.textContent = n.first;
+        nodeState.textContent = n.state;
+        nodeWhisper.textContent = n.whisper;
+        floatingText.textContent = n.whisper;
+        setPageState(58, 62, 'records');
+      });
+    });
+
+    document.querySelectorAll('.category-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('open');
+        floatingText.textContent = card.dataset.text;
+      });
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.category-card').forEach(card => {
+          const show = filter === 'all' || card.dataset.kind === filter;
+          card.style.display = show ? 'grid' : 'none';
+        });
+        floatingText.textContent = filter === 'all' ? 'All chambers answer at once. The shelves dislike this.' : 'The Annals narrow their attention. Chains settle around the chosen chamber.';
+      });
+    });
+
+    const recordData = {
+      identity: ['Record Layer I','Unit Identity','The name, classification, command association, current standing, and preserved purpose of the war-form. This is where the unit stops being generic and becomes part of The Rotfather\'s Vanguard.','What is this formation called when the warband speaks of it as kin?','Name, classification, known attachments, oath-state, battlefield station.','A unit record begins with identity before function, because the Annals do not preserve anonymous rot.'],
+      function: ['Record Layer II','War-Function','What the formation exists to do in real war: hold, break, contaminate, escort, hunt, screen, siege, absorb, execute, or make the enemy misread the field.','What pressure does this war-form place upon the battlefield?','Operational purpose, favored environment, enemy experience, command value.','Function is not a tip. It is the reason the unit exists in the plague host.'],
+      afflictions: ['Record Layer III','Innate Afflictions & Battlefield Abilities','Observable battlefield qualities made cinematic: contagion pressure, corrupted physiology, aura effects, chemical rites, endurance behavior, and psychic or spiritual contamination.','What does the unit make worse simply by being present?','Afflictions, auras, blessings, disease vectors, environmental effects.','Every ability becomes something an enemy could see, smell, fear, or misunderstand.'],
+      weapons: ['Record Layer IV','Weapons & Wargear','Each weapon is described by how it kills, what it prefers to strike, how it sounds, what it leaves behind, and what ritual meaning it carries.','What kind of death does each instrument specialize in?','Blades, launchers, sprayers, guns, grenades, icons, bells, plague tools.','Weapons are recorded as behaviors, not equipment lists.'],
+      endurance: ['Record Layer V','Armor & Endurance','How the war-form receives damage, why it survives, what finally threatens it, and what endurance looks like from the enemy side.','What must happen before this thing admits injury?','Armor, resilience, wound behavior, structural weakness, survival style.','Death Guard endurance should feel physical, disgusting, heavy, and unfair.'],
+      doctrine: ['Record Layer VI','Battlefield Doctrine','The formation\'s true pattern of war: how it advances, anchors, withdraws, protects, screens, breaks, or smothers space.','What repeated behavior defines this unit in battle?','Advance pattern, engagement style, target behavior, ground control, retreat logic.','Doctrine is tradition becoming violence.'],
+      behavior: ['Record Layer VII','Combat Behavior','How the unit fights when the distance closes: movement, posture, aggression, patience, target fixation, sensory dread, and killing rhythm.','What does the enemy experience when this unit becomes close?','Manner of killing, rhythm, posture, fear effect, finishing behavior.','Behavior makes the unit cinematic.'],
+      associations: ['Record Layer VIII','Synergistic War-Forms','Which commanders, relics, engines, infantry, or contagion systems change what this unit becomes when placed beside it.','What does this war-form become in the presence of another?','Command associations, escort logic, support rites, formation pairings.','Synergy becomes battlefield relationship, not arithmetic.'],
+      failure: ['Record Layer IX','Failure Conditions','The conditions under which the unit fails, collapses, is misused, becomes isolated, or meets an enemy form it cannot efficiently corrupt.','Where does this war-form rupture?','Exposure, isolation, speed pressure, range mismatch, command severance, overcommitment.','Even rot has failure conditions.'],
+      variants: ['Record Layer X','Named Formations / Squad Variants','Named squads, cohorts, guards, choirs, engines, oath-groups, and altered versions that develop from actual stories or visual identity.','What name has this formation earned?','Squad names, markings, leaders, scars, battlefield reputation, current status.','Names should be earned by behavior, not assigned too early.'],
+      hooks: ['Record Layer XI','Chronicle Hooks','Small battlefield moments worth preserving later: impossible survival, a failed assault, a slain commander, a broken line, a strange duel, or a unit becoming myth by accident.','What happened that could become a record?','MVP moments, failures, grudges, survival events, enemy reactions.','Hooks keep the Annals alive without forcing every battle into a full page.'],
+      visual: ['Record Layer XII','Visual Doctrine','How the unit should look in art, photography, prompt language, site cards, markings, basing, relic details, and page identity.','What visual truth makes this unit unmistakable?','Color, armor weathering, icons, posture, environment, image prompt anchors.','Visual doctrine keeps every page cinematic and distinct.']
+    };
+
+    const recordLabel = document.getElementById('recordLabel');
+    const recordTitle = document.getElementById('recordTitle');
+    const recordBody = document.getElementById('recordBody');
+    const recordQuestion = document.getElementById('recordQuestion');
+    const recordElements = document.getElementById('recordElements');
+    const recordTranslation = document.getElementById('recordTranslation');
+
+    document.querySelectorAll('.record-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.record-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const r = recordData[tab.dataset.tab];
+        recordLabel.textContent = r[0];
+        recordTitle.textContent = r[1];
+        recordBody.textContent = r[2];
+        recordQuestion.textContent = r[3];
+        recordElements.textContent = r[4];
+        recordTranslation.textContent = r[5];
+        floatingText.textContent = r[5];
+        setPageState(78, 70, 'vault');
+      });
+    });
+
+    document.getElementById('closeFloating').addEventListener('click', () => document.getElementById('floatingRite').style.display = 'none');
+    document.getElementById('riteBtn').addEventListener('click', () => {
+      document.getElementById('floatingRite').style.display = 'block';
+      floatingText.textContent = 'The Annals are not a list. They are a memory engine aboard a ship that refuses clean history.';
+    });
+
+    const canvas = document.getElementById('annalsCanvas');
+    const ctx = canvas.getContext('2d');
+    let motes = [];
+
+    function resizeCanvas(){
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = innerWidth * ratio;
+      canvas.height = innerHeight * ratio;
+      canvas.style.width = innerWidth + 'px';
+      canvas.style.height = innerHeight + 'px';
+      ctx.setTransform(ratio,0,0,ratio,0,0);
+      const count = Math.min(190, Math.floor(innerWidth / 8));
+      motes = Array.from({ length: count }, () => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        s: Math.random() * 2.6 + .5,
+        v: Math.random() * .34 + .04,
+        drift: Math.random() * .42 - .21,
+        a: Math.random() * Math.PI * 2,
+        type: Math.random() > .76 ? 'ash' : Math.random() > .52 ? 'spore' : 'dust'
+      }));
+    }
+
+    function drawMotes(){
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      for (const m of motes) {
+        m.y -= m.v;
+        m.x += Math.sin(m.a) * .16 + m.drift;
+        m.a += .01;
+        if (m.y < -20) { m.y = innerHeight + 20; m.x = Math.random() * innerWidth; }
+        if (m.x < -20) m.x = innerWidth + 20;
+        if (m.x > innerWidth + 20) m.x = -20;
+        const color = m.type === 'ash' ? '211,189,120' : m.type === 'spore' ? '182,216,102' : '170,157,122';
+        const g = ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.s*8);
+        g.addColorStop(0, `rgba(${color}, .18)`);
+        g.addColorStop(.48, `rgba(${color}, .045)`);
+        g.addColorStop(1, `rgba(${color}, 0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(m.x,m.y,m.s*6,0,Math.PI*2);
+        ctx.fill();
+      }
+      requestAnimationFrame(drawMotes);
+    }
+    resizeCanvas();
+    drawMotes();
+    addEventListener('resize', resizeCanvas);
+  </script>
+</body>
+</html>
