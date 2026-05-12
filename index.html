@@ -3,36 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="The Septicarium of The Rotfather's Mercy - an in-universe Death Guard plague-intelligence archive." />
-  <title>The Septicarium | The Rotfather's Mercy</title>
+  <meta name="description" content="The Septicarium aboard The Rotfather's Mercy, a living plague-intelligence command deck for The Rotfather's Vanguard." />
+  <title>The Septicarium | Command Deck</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#040604;
-      --bg-soft:#080c07;
-      --panel:#0c120b;
-      --panel-2:#10170e;
-      --panel-3:#141c11;
-      --text:#eee6c9;
-      --text-strong:#fff6d8;
-      --muted:#aaa386;
-      --muted-2:#7f8667;
-      --green:#c0d15d;
-      --green-hot:#e0f27c;
-      --rot:#7ea94b;
-      --brass:#b89a55;
-      --rust:#9a6235;
-      --blood:#7d3b31;
-      --blue:#3e535c;
-      --line:rgba(196,214,108,.18);
-      --line-strong:rgba(210,229,116,.42);
-      --shadow:0 26px 90px rgba(0,0,0,.58);
-      --radius:28px;
-      --radius-sm:18px;
+      --void:#020302;
+      --black:#050604;
+      --ship:#070a06;
+      --deck:#0b0f08;
+      --panel:#10150c;
+      --panel-heavy:#060805;
+      --glass:rgba(9,13,8,.78);
+      --bone:#ede4c4;
+      --bone-hot:#fff1c9;
+      --parchment:#d8cba7;
+      --dim:#aaa081;
+      --ash:#7b735e;
+      --mold:#7f9e42;
+      --mold-hot:#b8d866;
+      --rot:#d8e797;
+      --brass:#a98d4e;
+      --brass-hot:#d6bd75;
+      --rust:#8d3f20;
+      --blood:#4a120d;
+      --blue:#334b54;
+      --ork:#6f8f3c;
+      --line:rgba(216,231,151,.18);
+      --line-strong:rgba(216,231,151,.46);
+      --shadow:0 34px 100px rgba(0,0,0,.66);
+      --glow:0 0 55px rgba(184,216,102,.15);
+      --glow-strong:0 0 75px rgba(184,216,102,.25);
+      --radius:30px;
+      --radius-sm:20px;
+      --max:1580px;
       --ease:cubic-bezier(.2,.8,.2,1);
     }
 
@@ -41,282 +49,300 @@
     body{
       margin:0;
       min-height:100vh;
-      color:var(--text);
-      font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(168,190,74,.12), transparent 28%),
-        radial-gradient(circle at 88% 10%, rgba(143,85,40,.12), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(92,125,52,.10), transparent 38%),
-        linear-gradient(180deg, #030503 0%, #070a06 42%, #030503 100%);
+      color:var(--bone);
       overflow-x:hidden;
-      transition:background .55s var(--ease), filter .55s var(--ease);
+      font-family:"Spectral", Georgia, serif;
+      background:
+        radial-gradient(circle at 12% 4%, rgba(184,216,102,.15), transparent 32%),
+        radial-gradient(circle at 86% 12%, rgba(169,141,78,.12), transparent 30%),
+        radial-gradient(circle at 50% 92%, rgba(141,63,32,.14), transparent 44%),
+        linear-gradient(135deg,#010201,#070906 48%,#020302);
+      transition:background .75s var(--ease), filter .75s var(--ease);
     }
 
-    body.no-scroll{overflow:hidden}
-    body[data-zone="command"]{background:radial-gradient(circle at 15% 0%,rgba(168,190,74,.12),transparent 28%),radial-gradient(circle at 88% 10%,rgba(143,85,40,.12),transparent 30%),radial-gradient(circle at 50% 100%,rgba(92,125,52,.10),transparent 38%),linear-gradient(180deg,#030503 0%,#070a06 42%,#030503 100%)}
-    body[data-zone="dossier"]{background:radial-gradient(circle at 13% 0%,rgba(63,83,92,.20),transparent 30%),radial-gradient(circle at 88% 10%,rgba(168,190,74,.10),transparent 30%),linear-gradient(180deg,#020403 0%,#061011 45%,#030503 100%)}
-    body[data-zone="annals"]{background:radial-gradient(circle at 13% 0%,rgba(184,154,85,.18),transparent 32%),radial-gradient(circle at 88% 10%,rgba(168,190,74,.14),transparent 30%),linear-gradient(180deg,#030503 0%,#0b0a06 45%,#030503 100%)}
-    body[data-zone="relic"]{background:radial-gradient(circle at 13% 0%,rgba(154,98,53,.18),transparent 32%),radial-gradient(circle at 88% 10%,rgba(184,154,85,.16),transparent 30%),linear-gradient(180deg,#030503 0%,#100805 45%,#030503 100%)}
-    body[data-zone="battle"]{background:radial-gradient(circle at 13% 0%,rgba(125,59,49,.20),transparent 32%),radial-gradient(circle at 88% 10%,rgba(168,190,74,.13),transparent 30%),linear-gradient(180deg,#030503 0%,#0f0705 45%,#030503 100%)}
+    body.locked{overflow:hidden}
+    body[data-chamber="command"]{background:radial-gradient(circle at 12% 4%,rgba(184,216,102,.15),transparent 32%),radial-gradient(circle at 86% 12%,rgba(169,141,78,.12),transparent 30%),linear-gradient(135deg,#010201,#070906 48%,#020302)}
+    body[data-chamber="annals"]{background:radial-gradient(circle at 15% 6%,rgba(214,189,117,.16),transparent 34%),radial-gradient(circle at 80% 14%,rgba(184,216,102,.13),transparent 30%),linear-gradient(135deg,#020302,#0b0a06 50%,#030402)}
+    body[data-chamber="dossier"]{background:radial-gradient(circle at 14% 7%,rgba(51,75,84,.22),transparent 34%),radial-gradient(circle at 82% 16%,rgba(184,216,102,.10),transparent 30%),linear-gradient(135deg,#010201,#050b0c 52%,#020302)}
+    body[data-chamber="relic"]{background:radial-gradient(circle at 14% 7%,rgba(169,141,78,.18),transparent 34%),radial-gradient(circle at 82% 16%,rgba(141,63,32,.18),transparent 30%),linear-gradient(135deg,#020302,#100805 52%,#030402)}
+    body[data-chamber="battle"]{background:radial-gradient(circle at 16% 8%,rgba(141,63,32,.24),transparent 36%),radial-gradient(circle at 80% 16%,rgba(111,143,60,.18),transparent 30%),linear-gradient(135deg,#020302,#120704 52%,#030402)}
+    body[data-chamber="blackbox"]{background:radial-gradient(circle at 16% 8%,rgba(65,82,86,.22),transparent 36%),radial-gradient(circle at 80% 16%,rgba(141,63,32,.13),transparent 30%),linear-gradient(135deg,#020302,#05090a 52%,#020302)}
 
+    ::selection{background:rgba(184,216,102,.26);color:var(--rot)}
     a{color:inherit}
     button{font:inherit}
-    ::selection{background:rgba(196,214,108,.28);color:var(--text-strong)}
+    h1,h2,h3,h4{font-family:"Cinzel", Georgia, serif}
 
-    #rotCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.85}
-    .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.07;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 1px,transparent 1px 4px);mix-blend-mode:soft-light}
-    .scanline{position:fixed;left:0;right:0;top:-15%;z-index:2;height:12%;pointer-events:none;opacity:.11;background:linear-gradient(180deg,transparent,rgba(210,229,116,.18),transparent);animation:scan 8s linear infinite}@keyframes scan{to{top:115%}}
-    .vignette{position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(circle at center,transparent 38%,rgba(0,0,0,.72) 100%),linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.40))}
+    .label,.kicker,.chip,.nav a,.nav button,.btn,.seal-label,.stat-label,.route-link,.file-tag,.smallcap,.boot-line span,.phase-label{
+      font-family:"Inter", system-ui, sans-serif;
+      font-weight:900;
+      letter-spacing:.17em;
+      text-transform:uppercase;
+    }
 
-    .skip-link{position:absolute;left:16px;top:-80px;z-index:200;padding:12px 16px;border-radius:999px;background:var(--green);color:#111509;font-weight:800;transition:.2s ease}.skip-link:focus{top:16px}
+    .skip-link{position:absolute;left:16px;top:-90px;z-index:500;padding:12px 16px;border-radius:999px;background:var(--rot);color:#111607;font-family:"Inter",sans-serif;font-weight:900;transition:.2s ease}.skip-link:focus{top:16px}
 
-    .boot{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 45%,rgba(172,198,79,.15),transparent 32%),linear-gradient(180deg,rgba(3,5,3,.98),rgba(2,3,2,.995));transition:opacity .75s var(--ease),visibility .75s var(--ease)}
-    .boot.hide{opacity:0;visibility:hidden;pointer-events:none}
-    .boot-card{width:min(920px,100%);border:1px solid var(--line);border-radius:30px;background:linear-gradient(180deg,rgba(12,18,11,.94),rgba(5,8,5,.97));box-shadow:var(--shadow);overflow:hidden;position:relative}.boot-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 8%,rgba(204,229,102,.12),transparent 22%),radial-gradient(circle at 10% 92%,rgba(147,88,45,.12),transparent 28%);pointer-events:none}
-    .boot-inner{position:relative;z-index:2;padding:26px}.boot-head{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-bottom:20px}.boot-seal{width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 38px rgba(198,224,97,.18);background:#090d08}
-    .kicker{color:var(--green);text-transform:uppercase;letter-spacing:.24em;font-size:.74rem;font-weight:800}.boot h1,.hero h1,h2,h3,h4{font-family:"Cinzel",serif}.boot h1{margin:8px 0 0;font-size:clamp(2.2rem,4vw,3.4rem);line-height:.9;letter-spacing:.03em}.boot p{margin:10px 0 0;color:var(--muted);line-height:1.7;max-width:640px}.boot-log{min-height:210px;border:1px solid rgba(196,214,108,.14);border-radius:20px;background:rgba(4,7,4,.70);padding:16px;overflow:hidden}.boot-line{display:flex;gap:12px;align-items:flex-start;padding:7px 0;opacity:0;transform:translateY(8px);animation:rise .32s var(--ease) forwards;color:#d9d3b8;line-height:1.45}.boot-line span{flex:0 0 auto;color:var(--green);font-size:.72rem;letter-spacing:.18em;font-weight:900;margin-top:3px}@keyframes rise{to{opacity:1;transform:none}}
-    .boot-progress{height:10px;margin-top:16px;border:1px solid rgba(196,214,108,.14);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.05)}.boot-bar{width:0%;height:100%;background:linear-gradient(90deg,var(--rust),var(--rot),var(--green-hot));box-shadow:0 0 22px rgba(210,229,116,.32);transition:width .22s linear}.boot-actions{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:16px}.boot-note{color:var(--muted-2);font-size:.9rem}
+    canvas.atmo{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+    #ashCanvas{z-index:0;opacity:.72}
+    #smokeCanvas{z-index:1;opacity:.42;mix-blend-mode:screen}
+    #signalCanvas{z-index:4;opacity:.62;mix-blend-mode:screen}
+    .grain,.scan-veil,.vignette,.deck-grid{position:fixed;inset:0;pointer-events:none}
+    .grain{z-index:2;opacity:.075;mix-blend-mode:screen;background-image:radial-gradient(circle at 20% 40%,rgba(255,255,255,.58) 0 1px,transparent 1px),radial-gradient(circle at 80% 20%,rgba(255,255,255,.36) 0 1px,transparent 1px),radial-gradient(circle at 50% 80%,rgba(255,255,255,.42) 0 1px,transparent 1px);background-size:170px 170px,230px 230px,310px 310px}
+    .deck-grid{z-index:3;opacity:.08;background-image:linear-gradient(rgba(216,231,151,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(216,231,151,.035) 1px,transparent 1px);background-size:90px 90px;mask-image:radial-gradient(circle at center,black 0%,transparent 84%)}
+    .scan-veil{z-index:5;opacity:.12;background:repeating-linear-gradient(to bottom,rgba(216,231,151,.036) 0 1px,transparent 2px 8px)}
+    .vignette{z-index:6;background:radial-gradient(circle at center,transparent 35%,rgba(0,0,0,.78) 100%),linear-gradient(to bottom,rgba(0,0,0,.05),rgba(0,0,0,.55))}
 
-    .page{position:relative;z-index:5;width:min(1440px,calc(100vw - 28px));margin:0 auto;padding:16px 0 50px}.topbar{position:sticky;top:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 14px;margin-bottom:18px;border:1px solid var(--line);border-radius:999px;background:rgba(6,10,6,.70);backdrop-filter:blur(16px);box-shadow:0 12px 34px rgba(0,0,0,.28)}
-    .brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);flex:0 0 auto}.brand strong{display:block;font-family:"Cinzel",serif;letter-spacing:.06em;line-height:1}.brand span{display:block;color:var(--muted);font-size:.86rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw}
-    .nav{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.nav a,.nav button,.btn,.small-btn{text-decoration:none;border:1px solid rgba(196,214,108,.16);color:var(--text);background:rgba(10,15,9,.62);border-radius:999px;padding:10px 13px;font-size:.76rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:transform .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease),box-shadow .22s var(--ease)}.nav a:hover,.nav button:hover,.btn:hover,.small-btn:hover{transform:translateY(-2px);border-color:rgba(210,229,116,.36);background:rgba(18,27,16,.88);box-shadow:0 14px 26px rgba(0,0,0,.24)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px}.btn.primary{color:#111607;background:linear-gradient(180deg,var(--green-hot),var(--green));border-color:rgba(230,244,130,.72);box-shadow:0 14px 30px rgba(192,209,93,.16)}.btn.primary:hover{background:linear-gradient(180deg,#eefc91,#c7dc63)}.btn.brass{border-color:rgba(184,154,85,.42);background:linear-gradient(180deg,rgba(184,154,85,.18),rgba(10,15,9,.70))}.btn.rust{border-color:rgba(154,98,53,.42);background:linear-gradient(180deg,rgba(154,98,53,.18),rgba(10,15,9,.70))}
+    /* BOOT */
+    .boot{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 42%,rgba(81,103,44,.38),transparent 28%),radial-gradient(circle at 50% 50%,rgba(0,0,0,.55),rgba(0,0,0,.98) 72%),linear-gradient(135deg,#020302,#090b07 55%,#010201);transition:opacity .9s var(--ease),visibility .9s var(--ease)}
+    .boot.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .boot-shell{width:min(1180px,100%);min-height:680px;border:1px solid rgba(216,231,151,.25);border-radius:34px;background:linear-gradient(135deg,rgba(8,10,6,.96),rgba(17,20,12,.88)),radial-gradient(circle at 10% 10%,rgba(184,216,102,.08),transparent 34%),radial-gradient(circle at 90% 78%,rgba(141,63,32,.12),transparent 38%);box-shadow:var(--shadow),0 0 120px rgba(184,216,102,.14);overflow:hidden;position:relative;display:grid;grid-template-columns:.86fr 1.14fr}
+    .boot-shell::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.03),rgba(255,255,255,.03) 1px,transparent 1px,transparent 9px),linear-gradient(90deg,transparent,rgba(216,231,151,.045),transparent);opacity:.25;pointer-events:none}
+    .boot-seal-wrap{position:relative;display:grid;place-items:center;min-height:680px;border-right:1px solid rgba(216,231,151,.14);background:radial-gradient(circle at center,rgba(184,216,102,.12),transparent 48%),rgba(0,0,0,.20)}
+    .boot-ring,.boot-ring::before,.boot-ring::after{position:absolute;border-radius:50%;border:1px dashed rgba(216,231,151,.24);animation:rotateRing linear infinite;content:""}
+    .boot-ring{width:430px;height:430px;animation-duration:42s}.boot-ring::before{inset:42px;animation-duration:31s;animation-direction:reverse}.boot-ring::after{inset:92px;animation-duration:19s}@keyframes rotateRing{to{transform:rotate(360deg)}}
+    .boot-seal{position:relative;z-index:2;width:min(330px,78%);aspect-ratio:1/1;object-fit:cover;border-radius:50%;border:1px solid var(--line-strong);box-shadow:0 0 60px rgba(184,216,102,.18);animation:sealPulse 3s ease-in-out infinite}@keyframes sealPulse{0%,100%{transform:scale(.985)}50%{transform:scale(1.018)}}
+    .boot-copy{position:relative;z-index:3;padding:34px;display:flex;flex-direction:column;justify-content:center}.boot-copy .kicker{color:var(--mold-hot);font-size:.68rem;margin-bottom:14px}.boot-copy h1{margin:0 0 16px;font-size:clamp(2.6rem,7vw,6.4rem);line-height:.86;letter-spacing:-.04em;color:#f0e5c4}.boot-copy p{margin:0 0 18px;color:var(--dim);line-height:1.78;font-size:1.05rem;max-width:78ch}
+    .boot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:4px 0 16px}.boot-cell{min-height:104px;border:1px solid rgba(216,231,151,.16);border-radius:18px;padding:13px;background:rgba(0,0,0,.22);position:relative;overflow:hidden}.boot-cell::after{content:"";position:absolute;left:-20%;right:-20%;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--mold-hot),transparent);transform:translateX(-100%);opacity:.6}.boot-cell.active::after{animation:scanAcross .7s var(--ease) forwards}@keyframes scanAcross{to{transform:translateX(100%)}}.boot-cell .label{color:var(--mold-hot);font-size:.52rem;margin-bottom:8px}.boot-cell strong{display:block;color:var(--bone);line-height:1.45;font-weight:600}
+    .boot-log{border:1px solid rgba(216,231,151,.16);border-radius:18px;background:rgba(0,0,0,.28);padding:14px;min-height:128px;font-family:"JetBrains Mono",monospace;color:#ddd0ab;font-size:.9rem;display:grid;gap:7px;margin-bottom:14px}.boot-line{opacity:0;transform:translateY(6px);animation:lineIn .26s var(--ease) forwards}.boot-line span{color:var(--mold-hot);margin-right:10px}.boot-line::before{content:"✠ ";color:var(--mold-hot)}@keyframes lineIn{to{opacity:1;transform:none}}
+    .boot-bar{height:10px;border:1px solid rgba(216,231,151,.18);border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden}.boot-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));box-shadow:0 0 36px rgba(184,216,102,.30);transition:width .28s ease}
 
-    .hero{position:relative;overflow:hidden;min-height:680px;border:1px solid var(--line);border-radius:34px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.55fr);gap:26px;padding:30px;box-shadow:var(--shadow);isolation:isolate}.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(3,6,3,.94) 0%,rgba(5,8,5,.76) 50%,rgba(5,8,5,.88) 100%),linear-gradient(180deg,rgba(4,6,4,.12),rgba(2,3,2,.78)),url("Assets/Index/index-hero.jpeg") center/cover no-repeat;z-index:-2;transform:scale(1.025);transition:transform .8s var(--ease),filter .8s var(--ease)}.hero:hover::before{transform:scale(1.055);filter:saturate(1.05) contrast(1.03)}.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 75% 16%,rgba(210,229,116,.16),transparent 24%),radial-gradient(circle at 12% 80%,rgba(154,98,53,.18),transparent 30%);pointer-events:none}.hero-copy{display:grid;align-content:center;min-height:620px;max-width:860px}.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}.tag{border:1px solid rgba(196,214,108,.16);border-radius:999px;background:rgba(7,11,6,.62);color:var(--green);padding:9px 12px;font-size:.74rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(3.3rem,7.2vw,7.2rem);line-height:.84;letter-spacing:.018em;text-shadow:0 12px 44px rgba(0,0,0,.64)}.hero .subtitle{margin:16px 0 0;font-family:"Cinzel",serif;font-size:clamp(1.25rem,2vw,2rem);color:var(--green-hot);font-style:italic}.hero .hook{max-width:760px;margin:24px 0 0;color:#d8d0b5;font-size:1.12rem;line-height:1.86}.hero .hook strong{color:var(--text-strong)}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.hero-panel{align-self:center;border:1px solid var(--line);border-radius:28px;background:rgba(7,11,7,.66);backdrop-filter:blur(14px);box-shadow:0 22px 44px rgba(0,0,0,.34);padding:18px;display:grid;gap:16px}.seal-orbit{position:relative;min-height:310px;border:1px solid rgba(196,214,108,.13);border-radius:24px;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%,rgba(196,214,108,.12),transparent 34%),linear-gradient(180deg,rgba(9,13,8,.66),rgba(4,7,4,.88));overflow:hidden}.seal-orbit::before,.seal-orbit::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(196,214,108,.18);inset:12%;animation:spin 34s linear infinite}.seal-orbit::after{inset:22%;border-style:solid;border-color:rgba(196,214,108,.09);animation-duration:48s;animation-direction:reverse}@keyframes spin{to{transform:rotate(360deg)}}.seal-orbit img{width:min(235px,68%);aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 42px rgba(196,214,108,.22);z-index:2;animation:breathe 5s ease-in-out infinite}@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}.quick-readouts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.readout{border:1px solid rgba(196,214,108,.10);border-radius:18px;background:rgba(5,8,5,.62);padding:13px}.readout .label{color:var(--muted-2);font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;font-weight:800;margin-bottom:5px}.readout .value{font-family:"Cinzel",serif;line-height:1.18;color:var(--text-strong)}
+    .page{position:relative;z-index:10;width:min(var(--max),calc(100% - 28px));margin:0 auto;padding:14px 0 90px}.top-shell{position:sticky;top:10px;z-index:90;display:grid;gap:8px;margin-bottom:16px}.topbar,.command-meter{border:1px solid rgba(216,231,151,.22);border-radius:24px;background:rgba(7,9,5,.82);backdrop-filter:blur(14px);box-shadow:0 15px 44px rgba(0,0,0,.42)}.topbar{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:12px 14px}.brand{display:flex;align-items:center;gap:12px;min-width:0;text-decoration:none}.brand img{width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 24px rgba(184,216,102,.15)}.brand strong{display:block;font-family:"Cinzel",serif;letter-spacing:.05em;color:var(--bone-hot)}.brand span span{display:block;color:var(--ash);font-size:.86rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw}.nav{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:7px}.nav a,.nav button{color:#e7dec1;text-decoration:none;font-size:.56rem;border:1px solid rgba(216,231,151,.22);border-radius:999px;background:rgba(14,17,10,.70);padding:9px 10px;cursor:pointer;transition:.22s var(--ease)}.nav a:hover,.nav button:hover{transform:translateY(-2px);border-color:var(--line-strong);color:var(--rot);background:rgba(36,45,19,.85)}
+    .command-meter{display:grid;grid-template-columns:220px 1fr 230px;gap:12px;align-items:center;padding:10px 12px}.stat-label{color:var(--mold-hot);font-size:.54rem;margin-bottom:5px}.stat-text{color:var(--bone);font-size:.84rem;line-height:1.35}.meter-bars{display:grid;gap:8px}.meter-row{display:grid;grid-template-columns:145px 1fr 48px;gap:10px;align-items:center}.meter-row .label{font-size:.50rem;color:var(--mold-hot)}.bar-shell{height:10px;border:1px solid rgba(216,231,151,.16);border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}.bar-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));transition:width .42s var(--ease)}.bar-num{color:var(--dim);font-size:.72rem;text-align:right;font-family:"JetBrains Mono",monospace}
 
-    .section{margin-top:22px;border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(9,13,8,.75),rgba(4,7,4,.90));box-shadow:var(--shadow);overflow:hidden}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:26px 26px 0;flex-wrap:wrap}.section h2{margin:8px 0 0;font-size:clamp(2rem,3.6vw,3.45rem);line-height:.95}.section-head p{margin:12px 0 0;color:var(--muted);line-height:1.75;max-width:820px}.section-chip{padding:10px 14px;border:1px solid rgba(196,214,108,.16);border-radius:999px;color:var(--green);background:rgba(7,11,7,.62);font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+    .hero{min-height:88vh;position:relative;isolation:isolate;overflow:hidden;border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);display:grid;grid-template-columns:.98fr 1.02fr;gap:26px;padding:clamp(22px,4vw,54px);background:#030402}.hero::before{content:"";position:absolute;inset:0;z-index:-3;background:linear-gradient(100deg,rgba(2,3,2,.96) 0%,rgba(5,7,4,.84) 38%,rgba(6,8,5,.42) 72%,rgba(2,3,2,.88) 100%),url("Assets/Index/index-hero.jpeg") center/cover no-repeat;transform:scale(1.035);filter:contrast(1.08) saturate(.94);transition:transform .9s var(--ease),filter .9s var(--ease)}.hero:hover::before{transform:scale(1.06);filter:contrast(1.12) saturate(1.02)}.hero::after{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 18% 42%,rgba(184,216,102,.16),transparent 28%),radial-gradient(circle at 78% 38%,rgba(214,189,117,.10),transparent 30%),linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.80))}.hero-left,.hero-right{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(88vh - 110px)}.eyebrow{color:var(--mold-hot);font-size:.70rem;line-height:1.6;margin-bottom:14px}.hero h1{margin:0 0 16px;color:#f3e8c5;font-size:clamp(3.4rem,8.4vw,8rem);line-height:.82;letter-spacing:-.055em;text-shadow:0 14px 44px rgba(0,0,0,.70)}.hero-sub{margin:0 0 16px;color:var(--rot);font-family:"Cinzel",Georgia,serif;font-style:italic;font-size:clamp(1.35rem,2.5vw,2.3rem);line-height:1.15;max-width:38ch}.hero-copy{margin:0 0 14px;color:#ddd0ae;line-height:1.86;font-size:1.08rem;max-width:82ch}.hero-copy strong{color:#f1e7c5}.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{border:1px solid rgba(216,231,151,.32);border-radius:999px;background:linear-gradient(180deg,rgba(111,143,60,.13),rgba(8,10,6,.86));color:#efe5c5;padding:13px 15px;font-size:.62rem;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.22s var(--ease)}.btn:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:0 18px 40px rgba(0,0,0,.35),var(--glow);color:var(--rot)}.btn.brass{background:linear-gradient(180deg,rgba(169,141,78,.18),rgba(12,10,5,.88));border-color:rgba(214,189,117,.35)}.btn.rust{background:linear-gradient(180deg,rgba(141,63,32,.18),rgba(16,8,5,.88));border-color:rgba(177,84,40,.42)}
 
-    .paths{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.path-card{min-height:340px;position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(196,214,108,.14);border-radius:26px;background:#090d08;cursor:pointer;transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);text-decoration:none;color:inherit}.path-card.revealed{opacity:1;transform:none}.path-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.08),rgba(5,8,5,.55) 48%,rgba(3,5,3,.96) 100%),radial-gradient(circle at 82% 16%,rgba(210,229,116,.16),transparent 24%),var(--img) center/cover no-repeat;transform:scale(1.02);filter:saturate(.96) brightness(.78);z-index:-2;transition:transform .55s var(--ease),filter .55s var(--ease)}.path-card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(196,214,108,.08),transparent 44%,rgba(154,98,53,.09));opacity:.9}.path-card:hover,.path-card.active{transform:translateY(-7px);border-color:rgba(210,229,116,.38);box-shadow:0 24px 46px rgba(0,0,0,.40)}.path-card:hover::before,.path-card.active::before{transform:scale(1.08);filter:saturate(1.08) brightness(.9)}.path-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:16px}.status{border:1px solid rgba(196,214,108,.17);background:rgba(4,7,4,.68);color:var(--green);border-radius:999px;padding:7px 10px;font-size:.66rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.path-body{position:absolute;left:16px;right:16px;bottom:16px;display:grid;gap:12px}.path-card h3{margin:0;font-size:1.62rem;line-height:1.04}.path-card p{margin:0;color:#d2cbb2;line-height:1.65;max-width:94%}.path-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.path-note{color:var(--muted-2);font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .command-dial{position:relative;min-height:520px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at center,rgba(184,216,102,.11),transparent 42%),linear-gradient(180deg,rgba(12,15,9,.86),rgba(4,6,4,.96));box-shadow:var(--shadow);overflow:hidden;display:grid;place-items:center;padding:20px}.command-dial::before,.command-dial::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(216,231,151,.22);animation:rotateRing linear infinite}.command-dial::before{width:420px;height:420px;animation-duration:54s}.command-dial::after{width:280px;height:280px;animation-duration:34s;animation-direction:reverse}.dial-seal{position:relative;z-index:2;width:min(250px,52%);aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 48px rgba(184,216,102,.18)}.dial-node{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-226px) rotate(calc(-1 * var(--angle)));width:118px;min-height:46px;border:1px solid rgba(216,231,151,.20);border-radius:999px;background:rgba(5,7,4,.78);color:var(--parchment);display:grid;place-items:center;text-align:center;padding:8px;font-size:.50rem;cursor:pointer;transition:.22s var(--ease)}.dial-node:hover,.dial-node.active{background:rgba(58,72,28,.92);color:var(--rot);border-color:var(--line-strong);box-shadow:var(--glow)}
 
-    .overview-grid{padding:24px 26px 28px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(320px,.55fr);gap:18px}.lore-panel,.status-panel,.guide-card,.fragment-card,.annals-division-card{border:1px solid rgba(196,214,108,.12);border-radius:26px;background:rgba(7,11,7,.62);padding:22px}.lore-panel p{margin:0 0 16px;color:#d3ccb2;line-height:1.86;font-size:1.02rem}.lore-panel p:last-child{margin-bottom:0}.lore-panel strong{color:var(--text-strong)}.status-panel{display:grid;gap:14px;align-content:start}.status-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid rgba(196,214,108,.10)}.status-row:last-child{border-bottom:0}.status-name{font-weight:800;color:var(--text-strong)}.status-value{color:var(--green-hot);font-family:"Cinzel",serif;white-space:nowrap}.terminal{margin-top:8px;min-height:86px;border:1px solid rgba(196,214,108,.13);border-radius:18px;background:rgba(3,5,3,.66);padding:14px;color:#dcd5bb;line-height:1.6;font-family:"JetBrains Mono",monospace}.terminal .prefix{color:var(--green);font-weight:900;letter-spacing:.12em}
+    .section{padding-top:38px}.section-block{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(10,12,7,.78),rgba(4,6,4,.94));box-shadow:var(--shadow);overflow:hidden}.section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;padding:26px 26px 0;margin-bottom:18px}.section-title{margin:0;color:#f1e6c3;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.94;letter-spacing:-.025em}.section-desc{margin:11px 0 0;max-width:98ch;color:#bdb18d;line-height:1.82;font-size:1.03rem}.kicker{color:var(--mold-hot);font-size:.64rem;margin-bottom:10px}.chip{color:var(--mold-hot);border:1px solid rgba(184,216,102,.28);border-radius:999px;background:rgba(10,18,7,.66);padding:10px 12px;font-size:.54rem;white-space:nowrap}.wide-pad{padding:24px 26px 28px}
 
-    .guide-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.guide-card{position:relative;overflow:hidden;min-height:255px;display:grid;align-content:space-between;gap:16px}.guide-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.30),rgba(4,7,4,.94)),var(--img) center/cover no-repeat;opacity:.36;z-index:0}.guide-card>*{position:relative;z-index:1}.guide-number{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:rgba(4,7,4,.62);color:var(--green-hot);font-family:"Cinzel",serif;font-size:1.3rem;font-weight:800}.guide-card h3{margin:0;font-size:1.55rem;line-height:1.05}.guide-card p{color:var(--muted);line-height:1.72;margin:8px 0 0}
+    .route-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding:24px 26px 28px}.route-door{position:relative;min-height:470px;border:1px solid rgba(216,231,151,.15);border-radius:26px;background:#050604;overflow:hidden;text-decoration:none;color:inherit;display:flex;align-items:flex-end;padding:16px;transition:.28s var(--ease);box-shadow:var(--shadow);isolation:isolate}.route-door::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.55) 48%,rgba(0,0,0,.96)),var(--img) center/cover no-repeat;filter:brightness(.78) contrast(1.08) saturate(.95);transform:scale(1.02);transition:.7s var(--ease)}.route-door::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 12%,var(--accent),transparent 30%),linear-gradient(135deg,rgba(216,231,151,.06),transparent 42%);opacity:.82}.route-door:hover,.route-door.active{transform:translateY(-8px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow-strong)}.route-door:hover::before,.route-door.active::before{transform:scale(1.08);filter:brightness(.9) contrast(1.14) saturate(1.05)}.route-door.inspected{border-color:rgba(214,189,117,.46)}.route-door.inspected .seal-state::after{content:" // WARMED";color:var(--brass-hot)}.door-body{display:grid;gap:10px;position:relative;z-index:2}.seal-state{font-family:"JetBrains Mono",monospace;color:var(--mold-hot);font-size:.72rem;line-height:1.4}.route-door h3{margin:0;color:#f2e7c5;font-size:clamp(1.5rem,2vw,2.2rem);line-height:.96}.route-door p{margin:0;color:#d2c6a4;line-height:1.65}.route-meta{display:flex;flex-wrap:wrap;gap:7px}.tag{font-family:"Inter",sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--mold-hot);border:1px solid rgba(184,216,102,.22);border-radius:999px;background:rgba(0,0,0,.26);padding:6px 8px;font-size:.48rem;font-weight:900}
 
-    .lore-river{padding:24px 26px 30px;display:grid;grid-template-columns:minmax(280px,.42fr) minmax(0,1fr);gap:22px;align-items:start}.river-image{position:sticky;top:96px;min-height:520px;border:1px solid rgba(196,214,108,.12);border-radius:28px;overflow:hidden;background:#090d08}.river-image::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.05),rgba(4,7,4,.82)),url("Assets/Index/command-sanctum.jpeg") center/cover no-repeat;filter:saturate(1.02) brightness(.82);transform:scale(1.04)}.river-image::after{content:"THE SHIP BENEATH THE ARCHIVE";position:absolute;left:18px;right:18px;bottom:18px;color:var(--green);font-size:.78rem;font-weight:900;letter-spacing:.22em;line-height:1.6}.fragments{display:grid;gap:16px}.fragment-card{transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease)}.fragment-card.revealed{opacity:1;transform:none}.fragment-card:hover{border-color:rgba(210,229,116,.28)}.fragment-card h3{margin:8px 0 0;font-size:1.65rem;line-height:1.08}.fragment-card p{margin:12px 0 0;color:#d3ccb2;line-height:1.82;font-size:1.02rem}
+    .spine-layout{display:grid;grid-template-columns:.86fr 1.14fr;gap:18px;padding:24px 26px 28px}.spine-panel,.oath-panel,.future-card,.file-link,.modal-frame{border:1px solid rgba(216,231,151,.15);border-radius:24px;background:linear-gradient(180deg,rgba(14,17,10,.82),rgba(5,7,4,.95));box-shadow:var(--shadow);position:relative;overflow:hidden}.spine-panel::before,.oath-panel::before,.future-card::before,.file-link::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 0%,rgba(184,216,102,.07),transparent 30%),linear-gradient(90deg,transparent,rgba(216,231,151,.035),transparent);pointer-events:none}.spine-panel{padding:24px;display:grid;align-content:start;gap:16px}.spine-panel h3{margin:0;color:#f2e7c5;font-size:2.35rem;line-height:1.03}.spine-panel p{margin:0;color:#d2c6a7;line-height:1.82;font-size:1.04rem}.spine-panel strong{color:var(--bone-hot)}.spine-map{display:grid;gap:10px}.spine-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid rgba(216,231,151,.13);border-radius:16px;background:rgba(0,0,0,.20);padding:12px}.spine-row span:first-child{color:#e6dabb}.spine-row span:last-child{color:var(--mold-hot);font-family:"Cinzel",serif;white-space:nowrap}.oath-panel{padding:24px;min-height:520px;display:grid;align-content:center;gap:14px}.oath-panel .terminal{border:1px solid rgba(216,231,151,.16);border-radius:18px;background:rgba(0,0,0,.27);padding:16px;color:#dfd3b1;line-height:1.72;font-family:"JetBrains Mono",monospace}.terminal strong{color:var(--mold-hot)}
 
-    .files-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.file-link{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;border:1px solid rgba(196,214,108,.12);border-radius:22px;background:rgba(7,11,7,.62);padding:16px;transition:.25s var(--ease)}.file-link:hover{transform:translateY(-3px);border-color:rgba(210,229,116,.32);background:rgba(14,21,12,.82);box-shadow:0 16px 34px rgba(0,0,0,.28)}.file-main{display:grid;gap:5px}.file-title{font-family:"Cinzel",serif;font-size:1.22rem;color:var(--text-strong);line-height:1.08}.file-sub{color:var(--muted);line-height:1.5;font-size:.94rem}.file-tag{flex:0 0 auto;color:var(--green);border:1px solid rgba(196,214,108,.13);border-radius:999px;padding:8px 10px;background:rgba(4,7,4,.58);font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.footer{margin-top:22px;border:1px solid var(--line);border-radius:26px;background:rgba(7,11,7,.72);padding:18px 20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--muted);line-height:1.6}.footer a{color:var(--green-hot);text-decoration:none;border-bottom:1px solid transparent}.footer a:hover{border-color:var(--green-hot)}
+    .ship-layout{display:grid;grid-template-columns:minmax(300px,.42fr) minmax(0,1fr);gap:22px;padding:24px 26px 30px;align-items:start}.ship-image{position:sticky;top:122px;min-height:560px;border:1px solid rgba(216,231,151,.14);border-radius:28px;overflow:hidden;background:#050604;box-shadow:var(--shadow)}.ship-image::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.05),rgba(4,7,4,.82)),url("Assets/Index/command-sanctum.jpeg") center/cover no-repeat;filter:saturate(1.02) brightness(.82);transform:scale(1.04)}.ship-image::after{content:"THE SHIP BENEATH THE ARCHIVE";position:absolute;left:18px;right:18px;bottom:18px;color:var(--mold-hot);font-size:.78rem;font-weight:900;letter-spacing:.22em;line-height:1.6}.ship-fragments{display:grid;gap:16px}.fragment-card{border:1px solid rgba(216,231,151,.13);border-radius:24px;background:rgba(7,11,7,.68);padding:22px;transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease);box-shadow:var(--shadow)}.fragment-card.revealed{opacity:1;transform:none}.fragment-card:hover{border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}.fragment-card h3{margin:8px 0 0;color:#f2e7c5;font-size:1.68rem;line-height:1.08}.fragment-card p{margin:12px 0 0;color:#d2c6a7;line-height:1.82;font-size:1.02rem}
 
-    .floating{position:fixed;right:18px;bottom:18px;z-index:80;width:min(430px,calc(100% - 36px));border:1px solid rgba(210,229,116,.28);border-radius:22px;background:rgba(6,10,6,.86);backdrop-filter:blur(14px);box-shadow:var(--shadow);overflow:hidden}.floating-head{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(196,214,108,.12);padding:12px 14px}.floating-head strong{font-size:.72rem;letter-spacing:.18em;color:var(--green);text-transform:uppercase}.floating-head button{border:0;background:transparent;color:var(--text);font-size:1.2rem;cursor:pointer}.floating-body{padding:14px;color:#d6ceb2;line-height:1.68;font-size:.94rem}
+    .future-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:24px 26px 28px}.future-card{padding:20px;min-height:270px;display:grid;align-content:space-between;gap:16px;transition:.26s var(--ease)}.future-card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}.phase-label{color:var(--mold-hot);font-size:.55rem}.future-card h3{margin:0;color:#f2e7c5;font-size:1.6rem;line-height:1.05}.future-card p{margin:10px 0 0;color:#cfc3a0;line-height:1.72}.future-card .seal-state{margin-top:14px}
 
-    @media (max-width:1100px){.hero{grid-template-columns:1fr}.hero-copy{min-height:auto}.paths,.guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-grid,.lore-river{grid-template-columns:1fr}.river-image{position:relative;top:auto}.topbar{border-radius:24px;align-items:flex-start}.files-grid{grid-template-columns:1fr}}
-    @media (max-width:720px){.page{width:min(100% - 18px,1440px)}.topbar{position:relative;top:auto;display:grid;border-radius:22px}.nav{justify-content:flex-start}.hero{padding:22px;border-radius:28px}.quick-readouts,.paths,.guide-grid{grid-template-columns:1fr}.section-head,.paths,.overview-grid,.guide-grid,.lore-river,.files-grid{padding-left:18px;padding-right:18px}.hero h1{font-size:clamp(3rem,14vw,5.4rem)}.floating{left:10px;right:10px;width:auto}.boot-head{align-items:flex-start}.boot-seal{width:72px;height:72px}}
+    .file-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.file-link{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;padding:16px;transition:.25s var(--ease)}.file-link:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}.file-main{display:grid;gap:5px;position:relative;z-index:2}.file-title{font-family:"Cinzel",serif;font-size:1.22rem;color:var(--bone-hot);line-height:1.08}.file-sub{color:var(--dim);line-height:1.5;font-size:.94rem}.file-tag{position:relative;z-index:2;flex:0 0 auto;color:var(--mold-hot);border:1px solid rgba(184,216,102,.22);border-radius:999px;padding:8px 10px;background:rgba(4,7,4,.58);font-size:.56rem}
+
+    .footer{margin-top:38px;border:1px solid var(--line);border-radius:26px;background:rgba(7,11,7,.72);padding:18px 20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--dim);line-height:1.6}.footer a{color:var(--rot);text-decoration:none;border-bottom:1px solid transparent}.footer a:hover{border-color:var(--rot)}
+
+    .floating{position:fixed;right:18px;bottom:18px;z-index:120;width:min(440px,calc(100% - 36px));border:1px solid rgba(216,231,151,.28);border-radius:22px;background:rgba(6,8,5,.90);backdrop-filter:blur(12px);box-shadow:var(--shadow),var(--glow);overflow:hidden}.floating-head{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid rgba(216,231,151,.16);padding:12px 14px;color:var(--mold-hot);font-size:.56rem}.floating-head button{border:0;background:transparent;color:var(--bone);cursor:pointer;font-size:1rem}.floating-body{padding:14px;color:#d6caab;line-height:1.72;font-size:.96rem}.floating-meter{height:5px;background:rgba(255,255,255,.05);overflow:hidden}.floating-meter span{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));transition:width .4s var(--ease)}
+
+    .modal{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:18px;background:rgba(2,3,2,.76);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-frame{width:min(780px,100%);border-color:var(--line-strong);background:linear-gradient(180deg,rgba(18,21,12,.98),rgba(5,7,4,.99));padding:24px;display:grid;gap:12px}.modal-frame h3{margin:0;color:#f2e7c5;font-size:2rem;line-height:1.05}.modal-frame p{margin:0;color:#d2c6a7;line-height:1.78}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}canvas.atmo{display:none!important}}
+    @media (max-width:1320px){.route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.boot-shell,.hero,.spine-layout,.ship-layout{grid-template-columns:1fr}.boot-seal-wrap{min-height:420px;border-right:0;border-bottom:1px solid rgba(216,231,151,.14)}.boot-shell{min-height:auto}.hero-left,.hero-right{min-height:auto}.command-meter{grid-template-columns:1fr}.ship-image{position:relative;top:auto}.future-grid{grid-template-columns:1fr 1fr}.command-dial{min-height:420px}.dial-node{display:none}}
+    @media (max-width:760px){.page{width:min(100% - 18px,var(--max))}.top-shell{top:6px}.topbar{grid-template-columns:1fr}.brand span span{max-width:78vw}.nav{justify-content:flex-start}.route-grid,.future-grid,.file-grid,.boot-grid{grid-template-columns:1fr}.section-header,.wide-pad,.route-grid,.spine-layout,.ship-layout,.future-grid,.file-grid{padding-left:18px;padding-right:18px}.hero{padding:22px;border-radius:28px}.hero h1{font-size:clamp(3rem,15vw,5rem)}.meter-row{grid-template-columns:1fr;gap:6px}.floating{left:10px;right:10px;width:auto}.boot-copy{padding:22px}.boot-seal{width:min(240px,72%)}}
   </style>
 </head>
 
-<body class="no-scroll" data-zone="command">
-  <a class="skip-link" href="#main">Skip to archive</a>
-  <canvas id="rotCanvas" aria-hidden="true"></canvas>
+<body class="locked" data-chamber="command">
+  <a class="skip-link" href="#main">Skip to Command Deck</a>
+
+  <canvas class="atmo" id="ashCanvas" aria-hidden="true"></canvas>
+  <canvas class="atmo" id="smokeCanvas" aria-hidden="true"></canvas>
+  <canvas class="atmo" id="signalCanvas" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
-  <div class="scanline" aria-hidden="true"></div>
+  <div class="deck-grid" aria-hidden="true"></div>
+  <div class="scan-veil" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
 
   <div class="boot" id="boot">
-    <div class="boot-card">
-      <div class="boot-inner">
-        <div class="boot-head">
-          <div>
-            <div class="kicker">The Rotfather's Mercy // Command Deck Oath-Rite</div>
-            <h1>The Septicarium</h1>
-            <p>Speak the vow beneath the rusted nave. Let the seven seals taste the breath. Let the bells remain unstruck until the ship accepts the witness. The Annals are the great descent. All lesser chambers hang from their chains.</p>
-          </div>
-          <img class="boot-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
+    <div class="boot-shell">
+      <div class="boot-seal-wrap">
+        <div class="boot-ring" aria-hidden="true"></div>
+        <img class="boot-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
+      </div>
+      <div class="boot-copy">
+        <div class="kicker">The Rotfather's Mercy // Command Deck Oath-Rite</div>
+        <h1>The Septicarium</h1>
+        <p>The Command Deck does not wake for visitors. It wakes for witnesses. Speak beneath the rusted nave. Let the seals taste the breath. Let the ship decide which wound is heavy enough to descend.</p>
+        <div class="boot-grid">
+          <div class="boot-cell"><div class="label">First Seal</div><strong>Command nave breathing through old brass.</strong></div>
+          <div class="boot-cell"><div class="label">Second Seal</div><strong>Annals chain lowering beneath the deck.</strong></div>
+          <div class="boot-cell"><div class="label">Third Seal</div><strong>Subject-script sealed behind blue-black glass.</strong></div>
+          <div class="boot-cell"><div class="label">Fourth Seal</div><strong>War-chronicle hooks warming in the dark.</strong></div>
         </div>
         <div class="boot-log" id="bootLog"></div>
-        <div class="boot-progress"><div class="boot-bar" id="bootBar"></div></div>
-        <div class="boot-actions">
-          <button class="btn primary" id="skipBoot" type="button">Enter Command Deck</button>
-          <div class="boot-note">Oath accepted beneath plague-bell silence. The Annals answer below the Command Deck.</div>
-        </div>
+        <div class="boot-bar"><span id="bootBar"></span></div>
+        <div style="margin-top:16px"><button class="btn brass" id="skipBoot" type="button">Speak the Last Vow</button></div>
       </div>
     </div>
   </div>
 
   <main class="page" id="main">
-    <header class="topbar">
-      <a class="brand" href="#main" aria-label="The Septicarium home">
-        <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
-        <span><strong>The Septicarium</strong><span>The Rotfather's Mercy // Command Deck</span></span>
-      </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#archives">Archives</a>
-        <a href="plaguebound-annals.html">Annals</a>
-        <a href="plaguebound-dossier.html">Dossier</a>
-        <a href="#ship">Ship</a>
-        <a href="#records">Records</a>
-        <button type="button" id="voxToggle">Vox</button>
-      </nav>
+    <header class="top-shell">
+      <div class="topbar">
+        <a class="brand" href="#main" aria-label="The Septicarium Command Deck">
+          <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
+          <span><strong>The Septicarium</strong><span>The Rotfather's Mercy // Command Deck</span></span>
+        </a>
+        <nav class="nav" aria-label="Command Deck navigation">
+          <a href="#descent">Descent</a>
+          <a href="#routes">Seals</a>
+          <a href="#spine">Spine</a>
+          <a href="#ship">Ship</a>
+          <a href="#unwritten">Unwritten</a>
+          <button id="voxToggle" type="button">Vox</button>
+        </nav>
+      </div>
+      <div class="command-meter">
+        <div><div class="stat-label">Deck Pulse</div><div class="stat-text" id="deckPulse">The nave is breathing at low pressure.</div></div>
+        <div class="meter-bars">
+          <div class="meter-row"><div class="label">Seal Pressure</div><div class="bar-shell"><div class="bar-fill" id="pressureFill" style="--w:18%"></div></div><div class="bar-num" id="pressureNum">XVIII</div></div>
+          <div class="meter-row"><div class="label">Memory Heat</div><div class="bar-shell"><div class="bar-fill" id="memoryFill" style="--w:22%"></div></div><div class="bar-num" id="memoryNum">XXII</div></div>
+        </div>
+        <div><div class="stat-label">Active Chamber</div><div class="stat-text" id="activeChamber">Command Deck // awaiting witness.</div></div>
+      </div>
     </header>
 
-    <section class="hero" data-zone="command" data-vox="The Command Deck is not the archive. It is the wound that remembers where every other wound is kept.">
-      <div class="hero-copy">
-        <div class="tag-row">
-          <span class="tag">Death Guard Archive</span>
-          <span class="tag">The Rotfather's Vanguard</span>
-          <span class="tag">Shipboard Intelligence</span>
-        </div>
+    <section class="hero" id="descent" data-chamber="command" data-pressure="18" data-memory="22" data-channel="command" data-whisper="The Command Deck is not the archive. It is the wound that decides where every other wound descends.">
+      <div class="hero-left">
+        <div class="eyebrow label">The Rotfather's Mercy // Command Routing Nave // Oath-Control</div>
         <h1>The Septicarium</h1>
-        <div class="subtitle">A plague-intelligence archive aboard The Rotfather's Mercy.</div>
-        <p class="hook"><strong>The Septicarium</strong> does not collect clean history. It inhales oaths, rust, plague-smoke, broken armor, battlefield testimony, and the last heat of corrupted vox-signals. All records descend into the same great vault.</p>
-        <p class="hook">The <strong>Plaguebound Annals</strong> are the master archive beneath The Rotfather's Mercy: subject files, mustered formations, relic systems, war-engines, and battle chronicles chained into one living memory.</p>
+        <p class="hero-sub">The ship does not store history. It decides which wounds are allowed to keep breathing.</p>
+        <p class="hero-copy"><strong>The Septicarium</strong> is the living command nave of The Rotfather's Mercy, where plague-memory, battle evidence, subject-script, relic weight, and corrupted vox testimony are weighed before descent.</p>
+        <p class="hero-copy">No record enters clean. The Command Deck listens for weight. If the wound is large enough, the ship lowers it into the Annals. If the face is dangerous enough, it is caged in the Subject-Scriptorium. If the object remembers touch, the Reliquary receives it. If the field still speaks, the War-Chronicles keep it warm.</p>
+        <p class="hero-copy">This is not a map. This is the nave where the ship chooses which door opens.</p>
         <div class="hero-actions">
-          <a class="btn primary" href="plaguebound-annals.html">Open The Plaguebound Annals</a>
-          <a class="btn" href="plaguebound-dossier.html">Open The Plaguebound Dossier</a>
-          <a class="btn rust" href="the-pallid-reversal.html">Read The Pallid Reversal</a>
+          <a class="btn brass" href="plaguebound-annals.html" data-route-click="annals">Descend to the Annals</a>
+          <a class="btn" href="plaguebound-dossier.html" data-route-click="dossier">Open the Subject-Scriptorium</a>
+          <a class="btn rust" href="the-pallid-reversal.html" data-route-click="battle">Enter a War-Chronicle</a>
         </div>
       </div>
-
-      <aside class="hero-panel">
-        <div class="seal-orbit">
-          <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
-        </div>
-        <div class="quick-readouts">
-          <div class="readout"><div class="label">Annals</div><div class="value">Master Archive</div></div>
-          <div class="readout"><div class="label">Scriptorium</div><div class="value">Subject Files</div></div>
-          <div class="readout"><div class="label">Vault</div><div class="value">Relics</div></div>
-          <div class="readout"><div class="label">Intercepts</div><div class="value">Battles</div></div>
+      <aside class="hero-right">
+        <div class="command-dial" aria-label="Command Deck chamber dial">
+          <img class="dial-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
+          <button class="dial-node active" style="--angle:0deg" data-dial="command">Command</button>
+          <button class="dial-node" style="--angle:72deg" data-dial="annals">Annals</button>
+          <button class="dial-node" style="--angle:144deg" data-dial="dossier">Scriptorium</button>
+          <button class="dial-node" style="--angle:216deg" data-dial="relic">Reliquary</button>
+          <button class="dial-node" style="--angle:288deg" data-dial="battle">Chronicles</button>
         </div>
       </aside>
     </section>
 
-    <section class="section" id="archives" data-zone="annals" data-vox="Names are sealed apart from war-forms. The archive is cleaner when each wound has the correct chamber.">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Primary Chamber Door</div>
-          <h2>The Annals Are the Descent.</h2>
-          <p>The Command Deck no longer divides the warband into rival doors. The Plaguebound Annals receive the whole record: subject files, mustered bodies, war-engines, relic systems, battlefield doctrines, and the chronicles of fields that refused to die quietly.</p>
+    <section class="section" id="routes" data-chamber="annals" data-pressure="56" data-memory="48" data-channel="annals" data-whisper="The sealed doors are not choices. They are judgments. Each opens only when the wound matches the chamber.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Sealed Descent Doors // Command Deck Routing</div>
+            <h2 class="section-title">The Doors Answer by Weight, Not Order.</h2>
+            <p class="section-desc">The Command Deck does not present destinations. It weighs the witness and opens the chamber that can survive what is being carried. Each seal below is an active wound in the ship's memory.</p>
+          </div>
+          <div class="chip">Hover to Warm the Seal</div>
         </div>
-        <div class="section-chip">Chambers Re-Sealed</div>
-      </div>
-
-      <div class="paths">
-        <a class="path-card" href="plaguebound-annals.html" style="--img:url('Assets/Plaguebound%20Annals/plaguebound-annals-hero.png')" data-vox="The Annals are the master archive: subject files, mustered formations, relic systems, engines, war-patterns, and battle chronicles.">
-          <div class="path-top"><span class="status">Master Archive</span></div>
-          <div class="path-body">
-            <h3>The Plaguebound Annals</h3>
-            <p>The warband's living memory: subject files, unit histories, war-form records, battlefield doctrines, relic systems, narrative battle chronicles, and unwritten formations.</p>
-            <div class="path-actions"><span class="path-note">Master Vault / All Records</span><span class="small-btn">Open Annals</span></div>
-          </div>
-        </a>
-
-        <a class="path-card" href="mortivus-classarion.html" style="--img:url('Assets/Index/command-sanctum.jpeg')" data-vox="Mortivus belongs to the Dossier because his name alters the meaning of the warband around him.">
-          <div class="path-top"><span class="status">Subject File</span></div>
-          <div class="path-body">
-            <h3>Mortivus Classarion</h3>
-            <p>The central named command entity of The Rotfather's Vanguard, preserved as subject file, doctrine wound, and command contagion.</p>
-            <div class="path-actions"><span class="path-note">Command Entity</span><span class="small-btn">Open File</span></div>
-          </div>
-        </a>
-
-        <a class="path-card" href="the-mercy-sickle.html" style="--img:url('Assets/Index/relic-vault.jpeg')" data-vox="The relic vault preserves objects whose purpose exceeds their shape.">
-          <div class="path-top"><span class="status">Relic Vault</span></div>
-          <div class="path-body">
-            <h3>The Mercy-Sickle</h3>
-            <p>A sacred weapon record preserved as relic, doctrine, omen, and the cutting edge of Mortivus' will.</p>
-            <div class="path-actions"><span class="path-note">Relic / Weapon / Rite</span><span class="small-btn">Open Vault</span></div>
-          </div>
-        </a>
-
-        <a class="path-card" href="the-mercy-he-gave.html" style="--img:url('Assets/Index/rot-scriptures.jpeg')" data-vox="The blackbox record remains where corrupted mercy first learned to speak through damage.">
-          <div class="path-top"><span class="status">Blackbox</span></div>
-          <div class="path-body">
-            <h3>The Mercy He Gave</h3>
-            <p>A corrupted Kin record recovered as confession, transmission, and the first proof that mercy can become plague.</p>
-            <div class="path-actions"><span class="path-note">Recovered Signal</span><span class="small-btn">Open Record</span></div>
-          </div>
-        </a>
-
-        <a class="path-card" href="the-pallid-reversal.html" style="--img:url('Assets/Pallid%20Reversal/pallid-reversal-hero.jpeg')" data-vox="Battle chronicles enter the Annals when the field leaves enough evidence to deserve memory.">
-          <div class="path-top"><span class="status">Battle Chronicle</span></div>
-          <div class="path-body">
-            <h3>The Pallid Reversal</h3>
-            <p>An Ork-origin scrap-vox battle chronicle concerning Gorzag Pallkrump's ambush and Mortivus Classarion's costly correction.</p>
-            <div class="path-actions"><span class="path-note">War / Reversal / Ork Record</span><span class="small-btn">Read Chronicle</span></div>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="section" id="archive-division" data-zone="dossier" data-vox="The oath decides which door answers. The ship listens first, then opens the wound that matches the witness.">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Archive Division</div>
-          <h2>The Annals Hold the Lesser Chambers</h2>
-          <p>The Command Deck does not explain itself to the unsworn. It listens to the vow, tastes the witness, and lowers the sworn into the Annals, where subject-script, muster records, reliquaries, and battle-chronicles hang from the same diseased spine.</p>
-        </div>
-        <div class="section-chip">Chamber Rite Complete</div>
-      </div>
-
-      <div class="overview-grid">
-        <article class="lore-panel">
-          <p><strong>The Plaguebound Annals</strong> are the master vault beneath The Rotfather's Mercy. The Annals do not compete with the Dossier. They contain it.</p>
-          <p><strong>The Subject-Scriptorium</strong> now lives within the Annals, where dangerous faces are pressed into subject-script and prevented from spreading through the rest of the archive.</p>
-          <p>Below it, the muster-vaults count Plague Marines, Poxwalkers, Terminator Orders, Daemon Engines, Armored Relics, contagion systems, and battlefield histories by footfall, wound, and doctrine. The Command Deck stands above them all as the nave where the oath is heard.</p>
-        </article>
-
-        <aside class="status-panel">
-          <div class="status-row"><div class="status-name">Master Archive</div><div class="status-value">Annals</div></div>
-          <div class="status-row"><div class="status-name">Named Entities</div><div class="status-value">Subject-Scriptorium</div></div>
-          <div class="status-row"><div class="status-name">Units & Formations</div><div class="status-value">Muster-Vaults</div></div>
-          <div class="status-row"><div class="status-name">Relics & Instruments</div><div class="status-value">Vault</div></div>
-          <div class="status-row"><div class="status-name">Wars & Reversals</div><div class="status-value">Chronicles</div></div>
-          <div class="terminal"><span class="prefix">SEPTICARIUM OATH:</span> I enter beneath plague-bell silence. I offer breath to rust, witness to rot, and memory to the ship that keeps what should have died.</div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section" id="ship" data-zone="command" data-vox="The ship is not backdrop. The ship is the archive's body.">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Shipboard Intelligence</div>
-          <h2>The Rotfather's Mercy Carries More Than War</h2>
-          <p>The Septicarium is not a clean repository placed aboard a vessel. It is part of the ship's anatomy: command sanctum, reliquary, vox-wound, battle archive, and plague memory system braided into the same rusted body.</p>
-        </div>
-        <div class="section-chip">The Ship Beneath the Archive</div>
-      </div>
-
-      <div class="lore-river">
-        <div class="river-image"></div>
-        <div class="fragments">
-          <article class="fragment-card"><div class="kicker">Command Deck</div><h3>The Archive Has a Bridge</h3><p>The Command Deck routes the visitor through the ship's memory. It does not hold every record. It decides which chamber should receive the wound.</p></article>
-          <article class="fragment-card"><div class="kicker">Dossier Chain</div><h3>Names Are Dangerous Enough to Cage</h3><p>A named entity is not merely important. A named entity can alter the behavior of nearby records. The Dossier exists because some names contaminate whatever text surrounds them.</p></article>
-          <article class="fragment-card"><div class="kicker">Annals Chain</div><h3>War-Forms Need Their Own Memory</h3><p>A unit is not a number. A formation is not a list. The Annals preserve how a war-form moves, kills, endures, fails, associates, and becomes myth inside The Rotfather's Vanguard.</p></article>
-          <article class="fragment-card"><div class="kicker">Reliquary Chain</div><h3>Objects Learn Doctrine</h3><p>Some weapons are not tools. Some bells are not signals. Some relics are battlefield laws with handles, blades, chains, and names.</p></article>
+        <div class="route-grid">
+          <a class="route-door" href="plaguebound-annals.html" style="--img:url('Assets/Plaguebound%20Annals/plaguebound-annals-hero.png');--accent:rgba(214,189,117,.20)" data-route="annals" data-pressure="78" data-memory="74" data-whisper="The Annals do not open upward. They pull the sworn down.">
+            <div class="door-body"><div class="seal-state">LOWER VAULT BREATHING</div><h3>The Plaguebound Annals</h3><p>The master descent: subject-script, mustered formations, relic systems, engines, war-patterns, and battle-chronicles chained into one living memory.</p><div class="route-meta"><span class="tag">Master Archive</span><span class="tag">All Records</span></div></div>
+          </a>
+          <a class="route-door" href="plaguebound-dossier.html" style="--img:url('Assets/Index/plaguebound-dossier.jpeg');--accent:rgba(51,75,84,.22)" data-route="dossier" data-pressure="62" data-memory="58" data-whisper="The blue-black scriptorium cages faces that make nearby records unstable.">
+            <div class="door-body"><div class="seal-state">FACE-CONTAINMENT ACTIVE</div><h3>The Plaguebound Dossier</h3><p>The Subject-Scriptorium chamber where command entities, rivals, specialists, and dangerous faces are pressed into sealed script.</p><div class="route-meta"><span class="tag">Subject Files</span><span class="tag">Containment</span></div></div>
+          </a>
+          <a class="route-door" href="the-mercy-sickle.html" style="--img:url('Assets/Index/relic-vault.jpeg');--accent:rgba(169,141,78,.22)" data-route="relic" data-pressure="69" data-memory="63" data-whisper="The Reliquary keeps objects that remember touch and weapons that learned to choose witnesses.">
+            <div class="door-body"><div class="seal-state">RELIQUARY PRESSURE RISING</div><h3>The Mercy-Sickle</h3><p>A relic record of edge, doctrine, omen, and wound-memory. Mortivus' weapon is not stored. It is restrained.</p><div class="route-meta"><span class="tag">Relic</span><span class="tag">Weapon-Rite</span></div></div>
+          </a>
+          <a class="route-door" href="the-pallid-reversal.html" style="--img:url('Assets/Pallid%20Reversal/pallid-reversal-hero.jpeg');--accent:rgba(141,63,32,.24)" data-route="battle" data-pressure="84" data-memory="88" data-whisper="The basin still burns in the archive. Scrap remembers impact better than flesh.">
+            <div class="door-body"><div class="seal-state">FIELD EVIDENCE STILL WARM</div><h3>The Pallid Reversal</h3><p>An Ork-origin scrap-vox chronicle of ambush, detonation, controlled retreat, and the humiliation that survived.</p><div class="route-meta"><span class="tag">Battle</span><span class="tag">Scrap-Vox</span></div></div>
+          </a>
+          <a class="route-door" href="the-mercy-he-gave.html" style="--img:url('Assets/Index/rot-scriptures.jpeg');--accent:rgba(65,82,86,.22)" data-route="blackbox" data-pressure="58" data-memory="71" data-whisper="The blackbox record is not damaged. It is still confessing.">
+            <div class="door-body"><div class="seal-state">BLACKBOX HUMOUR LEAKING</div><h3>The Mercy He Gave</h3><p>A corrupted transmission where mercy became plague, signal became confession, and damage learned to speak.</p><div class="route-meta"><span class="tag">Blackbox</span><span class="tag">Recovered Signal</span></div></div>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="section" id="records" data-zone="battle" data-vox="The archive does not require every battle to be written now. It requires every future battle to know where it belongs.">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Record Routing</div>
-          <h2>Future Growth Without Crowding the Index</h2>
-          <p>The Command Deck remains clean because every future record has a destination. Unit research begins in the Annals. Named characters deepen the Dossier. Full narrative battles become chronicles when they earn the weight.</p>
+    <section class="section" id="spine" data-chamber="dossier" data-pressure="68" data-memory="70" data-channel="dossier" data-whisper="The spine beneath the deck holds the lesser chambers in place. A door is only a surface wound.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">The Great Spine Beneath the Deck</div>
+            <h2 class="section-title">The Annals Contain the Lesser Chambers.</h2>
+            <p class="section-desc">The Dossier does not rival the Annals. The Reliquary does not float apart from the war. The Chronicles are not loose stories. Every chamber hangs from the same diseased spine beneath The Rotfather's Mercy.</p>
+          </div>
+          <div class="chip">Spine Pressure Stable</div>
         </div>
-        <div class="section-chip">Ready for Future Pages</div>
-      </div>
-
-      <div class="guide-grid">
-        <article class="guide-card" style="--img:url('Assets/Plaguebound%20Annals/annals-plaguebound-infantry.png')"><div class="guide-number">I</div><div><h3>Begin With One War-Form</h3><p>Plague Marines, Terminators, engines, or support figures can each receive a full cinematic record inside the Annals.</p></div></article>
-        <article class="guide-card" style="--img:url('Assets/Plaguebound%20Annals/annals-battle-records.png')"><div class="guide-number">II</div><div><h3>Let Battles Become Evidence</h3><p>Future games and narrative conflicts can be added later as records, not forced retroactive summaries.</p></div></article>
-        <article class="guide-card" style="--img:url('Assets/Plaguebound%20Annals/annals-command-entities.png')"><div class="guide-number">III</div><div><h3>Name Only What Earns a File</h3><p>Named characters enter the Dossier when their actions, offices, rivalries, or mutations make them dangerous enough to preserve.</p></div></article>
+        <div class="spine-layout">
+          <article class="spine-panel">
+            <h3>One Memory Engine. Many Organs.</h3>
+            <p><strong>The Command Deck</strong> hears the oath and weighs the witness. It does not preserve everything. It determines where the record must descend.</p>
+            <p><strong>The Plaguebound Annals</strong> form the master archive below. Within them hang subject-script, muster-vaults, engine-crypts, reliquaries, battle-chronicles, and unwritten chains.</p>
+            <p><strong>The Septicarium</strong> grows by evidence. A unit must earn descent. A face must become dangerous. A relic must remember touch. A battle must leave proof.</p>
+          </article>
+          <aside class="oath-panel">
+            <div class="spine-map">
+              <div class="spine-row"><span>Command Nave</span><span>The Septicarium</span></div>
+              <div class="spine-row"><span>Master Descent</span><span>Annals</span></div>
+              <div class="spine-row"><span>Dangerous Faces</span><span>Scriptorium</span></div>
+              <div class="spine-row"><span>Mustered Bodies</span><span>Vaults</span></div>
+              <div class="spine-row"><span>Objects with Memory</span><span>Reliquary</span></div>
+              <div class="spine-row"><span>Fields that Speak</span><span>Chronicles</span></div>
+            </div>
+            <div class="terminal"><strong>SEPTICARIUM OATH:</strong><br>I enter beneath plague-bell silence. I offer breath to rust, witness to rot, and memory to the ship that keeps what should have died.</div>
+          </aside>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="files" data-zone="annals" data-vox="The file doors are simple because the chambers behind them are not.">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Direct File Access</div>
-          <h2>Open the Active Chambers</h2>
-          <p>These are the current sealed pathways through the ship. The Annals now becomes the central home for future unit and formation records.</p>
+    <section class="section" id="ship" data-chamber="command" data-pressure="50" data-memory="66" data-channel="command" data-whisper="The ship is not backdrop. The ship is the archive's body.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">The Ship That Houses the Wound</div>
+            <h2 class="section-title">The Rotfather's Mercy Carries More Than War.</h2>
+            <p class="section-desc">The Septicarium is not a clean repository placed aboard a vessel. It is part of the ship's anatomy: command sanctum, reliquary, vox-wound, battle archive, and plague memory system braided into the same rusted body.</p>
+          </div>
+          <div class="chip">Ship-Body Active</div>
         </div>
-        <div class="section-chip">Active Files</div>
+        <div class="ship-layout">
+          <div class="ship-image"></div>
+          <div class="ship-fragments">
+            <article class="fragment-card"><div class="kicker">Command Deck</div><h3>The Archive Has a Bridge</h3><p>The Command Deck routes the visitor through the ship's memory. It does not hold every record. It decides which chamber should receive the wound.</p></article>
+            <article class="fragment-card"><div class="kicker">Subject-Scriptorium</div><h3>Faces Are Caged When They Become Contagious</h3><p>A named entity is not merely important. A named entity can alter the behavior of nearby records. The Dossier exists because some faces contaminate whatever text surrounds them.</p></article>
+            <article class="fragment-card"><div class="kicker">Plaguebound Annals</div><h3>War-Forms Need Their Own Memory</h3><p>A unit is not a number. A formation is not a list. The Annals preserve how a war-form moves, kills, endures, fails, associates, and becomes myth inside The Rotfather's Vanguard.</p></article>
+            <article class="fragment-card"><div class="kicker">Reliquary</div><h3>Objects Learn Doctrine</h3><p>Some weapons are not tools. Some bells are not signals. Some relics are battlefield laws with handles, blades, chains, and names.</p></article>
+          </div>
+        </div>
       </div>
-      <div class="files-grid">
-        <a class="file-link" href="plaguebound-annals.html"><div class="file-main"><div class="file-title">The Plaguebound Annals</div><div class="file-sub">Unit histories, war-form records, battlefield doctrines, relic systems, and battle chronicles.</div></div><div class="file-tag">Annals</div></a>
-        <a class="file-link" href="plaguebound-dossier.html"><div class="file-main"><div class="file-title">The Plaguebound Dossier</div><div class="file-sub">The subject-scriptorium chamber for command entities, rivals, specialists, and dangerous faces.</div></div><div class="file-tag">Dossier</div></a>
-        <a class="file-link" href="mortivus-classarion.html"><div class="file-main"><div class="file-title">Mortivus Classarion</div><div class="file-sub">Primary command subject file for The Rotfather's Vanguard.</div></div><div class="file-tag">Subject</div></a>
-        <a class="file-link" href="the-mercy-sickle.html"><div class="file-main"><div class="file-title">The Mercy-Sickle</div><div class="file-sub">Relic weapon record and sacred instrument of war.</div></div><div class="file-tag">Relic</div></a>
-        <a class="file-link" href="the-mercy-he-gave.html"><div class="file-main"><div class="file-title">The Mercy He Gave</div><div class="file-sub">Recovered blackbox transmission and corrupted mercy record.</div></div><div class="file-tag">Blackbox</div></a>
-        <a class="file-link" href="the-pallid-reversal.html"><div class="file-main"><div class="file-title">The Pallid Reversal</div><div class="file-sub">Ork-origin battle chronicle and scrap-vox reversal record.</div></div><div class="file-tag">Chronicle</div></a>
+    </section>
+
+    <section class="section" id="unwritten" data-chamber="battle" data-pressure="76" data-memory="82" data-channel="battle" data-whisper="The Command Deck does not ask for more records. It waits for the next wound heavy enough to lower.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Chains Awaiting Weight</div>
+            <h2 class="section-title">The Next Record Must Earn Descent.</h2>
+            <p class="section-desc">The Command Deck does not crowd itself with every future wound. It keeps the hooks ready. When a war-form, relic, face, or battlefield earns enough gravity, the ship lowers it into the chamber that can survive the memory.</p>
+          </div>
+          <div class="chip">Unwritten Hooks Warm</div>
+        </div>
+        <div class="future-grid">
+          <article class="future-card" data-whisper="The Annals accept no list. A unit must become a moving wound before the vault will keep it."><div><div class="phase-label">First Chain</div><h3>One War-Form Must Earn Descent</h3><p>The next unit record should begin as a living battlefield presence, not a profile. It must move, kill, endure, fail, and leave doctrine behind.</p></div><div class="seal-state">AWAITING FIRST FULL UNIT RECORD</div></article>
+          <article class="future-card" data-whisper="No battle is lowered into the Annals until wreckage, testimony, failure, and consequence remain warm enough to speak."><div><div class="phase-label">Second Chain</div><h3>A Field Must Leave Proof</h3><p>Future battles enter only when enough evidence remains: wreckage, testimony, reversals, grudges, strange survival, or failure worth preserving.</p></div><div class="seal-state">AWAITING FIELD EVIDENCE</div></article>
+          <article class="future-card" data-whisper="The Subject-Scriptorium does not preserve faces for vanity. It cages those that alter the records around them."><div><div class="phase-label">Third Chain</div><h3>A Face Must Become Dangerous</h3><p>The next subject file should be earned through command weight, rivalry, mutation, failure, office, or recurring threat.</p></div><div class="seal-state">AWAITING DANGEROUS FACE</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="files" data-chamber="annals" data-pressure="64" data-memory="72" data-channel="annals" data-whisper="The passageways are simple only because the chambers behind them are not.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker">Opened Seals</div>
+            <h2 class="section-title">Passageways Already Warm.</h2>
+            <p class="section-desc">These seals have already answered the Command Deck. Each one descends into a chamber with enough memory to remain dangerous.</p>
+          </div>
+          <div class="chip">Direct Descent</div>
+        </div>
+        <div class="file-grid">
+          <a class="file-link" href="plaguebound-annals.html"><div class="file-main"><div class="file-title">The Plaguebound Annals</div><div class="file-sub">The master archive descent for subject files, war-forms, relic systems, and battle chronicles.</div></div><div class="file-tag">Annals</div></a>
+          <a class="file-link" href="plaguebound-dossier.html"><div class="file-main"><div class="file-title">The Plaguebound Dossier</div><div class="file-sub">The Subject-Scriptorium chamber for command entities, rivals, specialists, and dangerous faces.</div></div><div class="file-tag">Dossier</div></a>
+          <a class="file-link" href="mortivus-classarion.html"><div class="file-main"><div class="file-title">Mortivus Classarion</div><div class="file-sub">Primary command subject file for The Rotfather's Vanguard.</div></div><div class="file-tag">Subject</div></a>
+          <a class="file-link" href="the-mercy-sickle.html"><div class="file-main"><div class="file-title">The Mercy-Sickle</div><div class="file-sub">Relic weapon record and sacred instrument of war.</div></div><div class="file-tag">Relic</div></a>
+          <a class="file-link" href="the-mercy-he-gave.html"><div class="file-main"><div class="file-title">The Mercy He Gave</div><div class="file-sub">Recovered blackbox transmission and corrupted mercy record.</div></div><div class="file-tag">Blackbox</div></a>
+          <a class="file-link" href="the-pallid-reversal.html"><div class="file-main"><div class="file-title">The Pallid Reversal</div><div class="file-sub">Ork-origin battle chronicle and scrap-vox reversal record.</div></div><div class="file-tag">Chronicle</div></a>
+        </div>
       </div>
     </section>
 
@@ -327,88 +353,279 @@
   </main>
 
   <aside class="floating" id="floating">
-    <div class="floating-head"><strong>Command Vox</strong><button type="button" id="closeVox">×</button></div>
-    <div class="floating-body" id="voxText">The Command Deck is not the archive. It is the wound that remembers where every other wound is kept.</div>
+    <div class="floating-head label"><span>Command Vox</span><button type="button" id="closeVox">×</button></div>
+    <div class="floating-meter"><span id="voxMeter" style="--w:18%"></span></div>
+    <div class="floating-body" id="voxText">The Command Deck is not the archive. It is the wound that decides where every other wound descends.</div>
   </aside>
 
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-frame" role="dialog" aria-modal="true">
+      <div class="label" id="modalLabel">Command Deck Annotation</div>
+      <h3 id="modalTitle">Record</h3>
+      <p id="modalText">The ship answers.</p>
+      <div class="modal-actions"><button class="btn" id="closeModal" type="button">Reseal</button></div>
+    </div>
+  </div>
+
   <script>
-    const boot=document.getElementById('boot');
-    const bootLog=document.getElementById('bootLog');
-    const bootBar=document.getElementById('bootBar');
-    const bootLines=[
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const state = {
+      chamber: 'command',
+      channel: 'command',
+      pressure: 18,
+      memory: 22,
+      activeRoute: null,
+      inspected: new Set(),
+      ticks: 0
+    };
+
+    const whispers = {
+      command: [
+        'The Command Deck is not the archive. It is the wound that decides where every other wound descends.',
+        'The ship has noticed your pause.',
+        'Do not touch a seal unless you intend descent.',
+        'The nave is listening through rust and old breath.'
+      ],
+      annals: [
+        'The Annals do not open upward. They pull the sworn down.',
+        'The master vault does not keep lists. It keeps what survived being useful.',
+        'The lower chains are warmer than they should be.'
+      ],
+      dossier: [
+        'The blue-black scriptorium cages faces that make nearby records unstable.',
+        'A face becomes dangerous when the archive begins correcting itself around the name.',
+        'Subject-script should not be read aloud without a witness.'
+      ],
+      relic: [
+        'The Reliquary keeps objects that remember touch.',
+        'A weapon is not complete until the enemy learns its name too late.',
+        'Something in the vault has shifted against its chain.'
+      ],
+      battle: [
+        'A field that leaves evidence is never finished.',
+        'Scrap remembers impact better than flesh.',
+        'The dead do not testify cleanly.'
+      ],
+      blackbox: [
+        'The blackbox record is not damaged. It is still confessing.',
+        'Signal rot is still a kind of prayer.',
+        'The transmission repeats because the wound has not closed.'
+      ]
+    };
+
+    const boot = document.getElementById('boot');
+    const bootLog = document.getElementById('bootLog');
+    const bootBar = document.getElementById('bootBar');
+    const bootCells = [...document.querySelectorAll('.boot-cell')];
+    const bootLines = [
       ['I','I breathe the rot and do not turn from it.'],
       ['II','I enter the nave where all records descend.'],
       ['III','I offer witness to the Annals beneath the ship.'],
       ['IV','I accept the muster of flesh, engine, relic, and war.'],
       ['V','I leave no clean memory behind me.'],
-      ['VI','I am received by The Rotfather\'s Mercy. The Annals open.']
+      ['VI','I am received by The Rotfather\'s Mercy. The Command Deck opens.']
     ];
-    let bootIndex=0;
-    function finishBoot(){boot.classList.add('hide');document.body.classList.remove('no-scroll');setTimeout(()=>boot.remove(),850)}
-    const bootTimer=setInterval(()=>{
-      if(bootIndex<bootLines.length){
-        const line=document.createElement('div');
-        line.className='boot-line';
-        line.innerHTML=`<span>${bootLines[bootIndex][0]}</span><div>${bootLines[bootIndex][1]}</div>`;
+    let bootIndex = 0;
+    function finishBoot(){ boot.classList.add('hidden'); document.body.classList.remove('locked'); setTimeout(()=>boot.remove(),950); }
+    const bootTimer = setInterval(() => {
+      if(bootIndex < bootLines.length){
+        const line = document.createElement('div');
+        line.className = 'boot-line';
+        line.innerHTML = `<span>${bootLines[bootIndex][0]}</span>${bootLines[bootIndex][1]}`;
         bootLog.appendChild(line);
-        bootBar.style.width=((bootIndex+1)/bootLines.length*100)+'%';
+        bootBar.style.width = ((bootIndex + 1) / bootLines.length * 100) + '%';
+        bootCells.forEach((cell, idx) => cell.classList.toggle('active', idx === bootIndex % bootCells.length));
         bootIndex++;
-      } else {
-        clearInterval(bootTimer);
-        setTimeout(finishBoot,550);
-      }
-    },360);
-    document.getElementById('skipBoot').addEventListener('click',()=>{clearInterval(bootTimer);bootBar.style.width='100%';finishBoot()});
+      } else { clearInterval(bootTimer); setTimeout(finishBoot, 620); }
+    }, 320);
+    document.getElementById('skipBoot').addEventListener('click', () => { clearInterval(bootTimer); bootBar.style.width = '100%'; finishBoot(); });
 
-    const voxText=document.getElementById('voxText');
-    const floating=document.getElementById('floating');
-    document.getElementById('closeVox').addEventListener('click',()=>floating.style.display='none');
-    document.getElementById('voxToggle').addEventListener('click',()=>{floating.style.display='block';voxText.textContent='The Annals are the descent. The Plaguebound Dossier remains the subject-scriptorium chamber where dangerous faces are sealed.'});
+    const pressureFill = document.getElementById('pressureFill');
+    const memoryFill = document.getElementById('memoryFill');
+    const pressureNum = document.getElementById('pressureNum');
+    const memoryNum = document.getElementById('memoryNum');
+    const deckPulse = document.getElementById('deckPulse');
+    const activeChamber = document.getElementById('activeChamber');
+    const voxText = document.getElementById('voxText');
+    const voxMeter = document.getElementById('voxMeter');
 
-    const revealObserver=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed')}})
-    },{threshold:.16});
-    document.querySelectorAll('.path-card,.fragment-card').forEach(el=>revealObserver.observe(el));
+    function roman(value){
+      if(value < 25) return 'XVIII';
+      if(value < 50) return 'XLII';
+      if(value < 70) return 'LXIV';
+      if(value < 86) return 'LXXVIII';
+      return 'XCII';
+    }
 
-    const zoneObserver=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          const zone=entry.target.dataset.zone;
-          const vox=entry.target.dataset.vox;
-          if(zone)document.body.dataset.zone=zone;
-          if(vox)voxText.textContent=vox;
-        }
-      })
-    },{threshold:.35});
-    document.querySelectorAll('[data-zone]').forEach(el=>zoneObserver.observe(el));
-    document.querySelectorAll('[data-vox]').forEach(el=>{
-      el.addEventListener('mouseenter',()=>{voxText.textContent=el.dataset.vox; if(el.dataset.zone)document.body.dataset.zone=el.dataset.zone;});
+    function randomWhisper(channel){
+      const list = whispers[channel] || whispers.command;
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function updateState(next = {}){
+      Object.assign(state, next);
+      document.body.dataset.chamber = state.chamber;
+      pressureFill.style.width = state.pressure + '%';
+      memoryFill.style.width = state.memory + '%';
+      voxMeter.style.width = state.pressure + '%';
+      pressureNum.textContent = roman(state.pressure);
+      memoryNum.textContent = roman(state.memory);
+      activeChamber.textContent = `${state.chamber.toUpperCase()} // ${state.inspected.size} seals warmed`;
+      if(state.pressure < 40) deckPulse.textContent = 'The nave is breathing at low pressure.';
+      else if(state.pressure < 75) deckPulse.textContent = 'The Command Deck is weighing the witness.';
+      else deckPulse.textContent = 'Seal pressure high. The ship expects descent.';
+      document.querySelectorAll('.route-door').forEach(card => card.classList.toggle('active', card.dataset.route === state.activeRoute));
+    }
+
+    function speak(text, channel){
+      voxText.textContent = text || randomWhisper(channel || state.channel);
+    }
+
+    function inspectRoute(route, pressure, memory, whisper){
+      state.inspected.add(route);
+      const card = document.querySelector(`.route-door[data-route="${route}"]`);
+      if(card) card.classList.add('inspected');
+      updateState({ chamber: route, channel: route, activeRoute: route, pressure, memory });
+      speak(whisper, route);
+    }
+
+    const routeCards = document.querySelectorAll('.route-door');
+    routeCards.forEach(card => {
+      card.addEventListener('mouseenter', () => inspectRoute(card.dataset.route, Number(card.dataset.pressure || 50), Number(card.dataset.memory || 50), card.dataset.whisper));
+      card.addEventListener('focus', () => inspectRoute(card.dataset.route, Number(card.dataset.pressure || 50), Number(card.dataset.memory || 50), card.dataset.whisper));
     });
 
-    const canvas=document.getElementById('rotCanvas');
-    const ctx=canvas.getContext('2d');
-    let motes=[];
-    function resize(){
-      const r=Math.min(devicePixelRatio||1,2);
-      canvas.width=innerWidth*r;canvas.height=innerHeight*r;
-      canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';
-      ctx.setTransform(r,0,0,r,0,0);
-      motes=Array.from({length:Math.min(170,Math.floor(innerWidth/8))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2.5+.4,v:Math.random()*.34+.035,d:Math.random()*.34-.17,a:Math.random()*Math.PI*2,t:Math.random()>.74?'spark':Math.random()>.48?'spore':'ash'}));
-    }
-    function draw(){
-      ctx.clearRect(0,0,innerWidth,innerHeight);
-      for(const p of motes){
-        p.y-=p.v;p.x+=Math.sin(p.a)*.14+p.d;p.a+=.01;
-        if(p.y<-20){p.y=innerHeight+20;p.x=Math.random()*innerWidth}
-        if(p.x<-20)p.x=innerWidth+20;if(p.x>innerWidth+20)p.x=-20;
-        const col=p.t==='spark'?'184,154,85':p.t==='spore'?'192,209,93':'170,163,134';
-        const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.s*8);
-        g.addColorStop(0,`rgba(${col},.18)`);g.addColorStop(.48,`rgba(${col},.045)`);g.addColorStop(1,`rgba(${col},0)`);
-        ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.s*6,0,Math.PI*2);ctx.fill();
+    document.querySelectorAll('[data-route-click]').forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        const route = link.dataset.routeClick;
+        updateState({ chamber: route, channel: route, activeRoute: route, pressure: 66, memory: 62 });
+        speak(null, route);
+      });
+    });
+
+    document.querySelectorAll('.dial-node').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.dial-node').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const chamber = btn.dataset.dial;
+        updateState({ chamber, channel: chamber, activeRoute: chamber, pressure: chamber === 'command' ? 28 : 70, memory: chamber === 'battle' ? 86 : 64 });
+        speak(null, chamber);
+      });
+    });
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting) return;
+        const d = entry.target.dataset;
+        updateState({ chamber: d.chamber || 'command', channel: d.channel || d.chamber || 'command', pressure: Number(d.pressure || 30), memory: Number(d.memory || 30), activeRoute: d.chamber || null });
+        if(d.whisper) speak(d.whisper, d.channel || d.chamber);
+      });
+    }, { threshold:.34 });
+    document.querySelectorAll('section[data-chamber]').forEach(sec => sectionObserver.observe(sec));
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('revealed'); });
+    }, { threshold:.16 });
+    document.querySelectorAll('.fragment-card').forEach(el => revealObserver.observe(el));
+
+    document.querySelectorAll('[data-whisper]').forEach(el => {
+      el.addEventListener('mouseenter', () => { if(el.dataset.whisper) speak(el.dataset.whisper, state.channel); });
+    });
+
+    const floating = document.getElementById('floating');
+    document.getElementById('closeVox').addEventListener('click', () => floating.style.display = 'none');
+    document.getElementById('voxToggle').addEventListener('click', () => { floating.style.display = 'block'; speak(null, state.channel); });
+
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalLabel = document.getElementById('modalLabel');
+    function openModal(label, title, text){ modalLabel.textContent = label; modalTitle.textContent = title; modalText.textContent = text; modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+    // Layered atmosphere engine
+    class Layer {
+      constructor(id, count, init, draw){
+        this.canvas = document.getElementById(id);
+        this.ctx = this.canvas.getContext('2d');
+        this.count = count;
+        this.init = init;
+        this.drawParticle = draw;
+        this.items = [];
       }
-      requestAnimationFrame(draw);
+      resize(){
+        const r = Math.min(devicePixelRatio || 1, 2);
+        this.canvas.width = innerWidth * r;
+        this.canvas.height = innerHeight * r;
+        this.canvas.style.width = innerWidth + 'px';
+        this.canvas.style.height = innerHeight + 'px';
+        this.ctx.setTransform(r,0,0,r,0,0);
+        this.items = Array.from({length: typeof this.count === 'function' ? this.count() : this.count}, () => this.init());
+      }
+      draw(){
+        this.ctx.clearRect(0,0,innerWidth,innerHeight);
+        this.items.forEach(p => this.drawParticle(this.ctx, p, state));
+      }
     }
-    resize();draw();addEventListener('resize',resize);
+
+    const ashLayer = new Layer('ashCanvas', () => Math.min(180, Math.floor(innerWidth / 8)),
+      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2.6+.5,v:Math.random()*.34+.04,d:Math.random()*.42-.21,a:Math.random()*Math.PI*2,type:Math.random()>.72?'spark':Math.random()>.48?'spore':'ash'}),
+      (ctx,p,s) => {
+        const boost = s.chamber === 'battle' ? 1.8 : s.chamber === 'relic' ? 1.25 : 1;
+        p.y -= p.v * boost; p.x += Math.sin(p.a)*.16 + p.d; p.a += .01;
+        if(p.y < -20){p.y = innerHeight + 20; p.x = Math.random()*innerWidth;}
+        if(p.x < -20) p.x = innerWidth + 20; if(p.x > innerWidth + 20) p.x = -20;
+        const col = p.type === 'spark' ? (s.chamber === 'battle' ? '216,106,44' : '214,189,117') : p.type === 'spore' ? '184,216,102' : '167,155,121';
+        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.s*8);
+        g.addColorStop(0,`rgba(${col},.18)`); g.addColorStop(.48,`rgba(${col},.045)`); g.addColorStop(1,`rgba(${col},0)`);
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x,p.y,p.s*6,0,Math.PI*2); ctx.fill();
+      }
+    );
+
+    const smokeLayer = new Layer('smokeCanvas', () => Math.min(26, Math.floor(innerWidth / 54)),
+      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*110+80,v:Math.random()*.08+.025,d:Math.random()*.18-.09,a:Math.random()*Math.PI*2}),
+      (ctx,p,s) => {
+        p.y -= p.v; p.x += Math.sin(p.a)*.10 + p.d; p.a += .003;
+        if(p.y < -p.r){p.y = innerHeight + p.r; p.x = Math.random()*innerWidth;}
+        const alpha = s.chamber === 'battle' ? .075 : s.chamber === 'blackbox' ? .055 : .04;
+        const col = s.chamber === 'dossier' ? '70,95,102' : s.chamber === 'battle' ? '120,70,42' : '120,135,92';
+        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+        g.addColorStop(0,`rgba(${col},${alpha})`); g.addColorStop(1,`rgba(${col},0)`);
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      }
+    );
+
+    const signalLayer = new Layer('signalCanvas', 34,
+      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,len:Math.random()*90+40,life:Math.random()*100,spd:Math.random()*1.2+.3}),
+      (ctx,p,s) => {
+        p.life += p.spd;
+        if(p.life > 130){p.life = 0; p.x = Math.random()*innerWidth; p.y = Math.random()*innerHeight;}
+        const pulse = Math.sin(p.life/130*Math.PI);
+        const intensity = (s.pressure/100) * pulse;
+        if(intensity <= 0) return;
+        const col = s.chamber === 'battle' ? '216,106,44' : s.chamber === 'dossier' ? '95,130,140' : s.chamber === 'relic' ? '214,189,117' : '184,216,102';
+        ctx.strokeStyle = `rgba(${col},${0.16*intensity})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.lineTo(p.x + p.len, p.y + Math.sin(p.life*.04)*18);
+        ctx.stroke();
+      }
+    );
+
+    const layers = [ashLayer, smokeLayer, signalLayer];
+    function resizeLayers(){ layers.forEach(l => l.resize()); }
+    function animate(){ if(!prefersReduced){ layers.forEach(l => l.draw()); } state.ticks++; requestAnimationFrame(animate); }
+    resizeLayers(); animate(); addEventListener('resize', resizeLayers);
+
+    setInterval(() => {
+      if(document.hidden) return;
+      if(Math.random() > .58) speak(null, state.channel);
+    }, 9000);
   </script>
 </body>
 </html>
