@@ -113,6 +113,8 @@
 
     .command-dial{position:relative;min-height:520px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at center,rgba(184,216,102,.11),transparent 42%),linear-gradient(180deg,rgba(12,15,9,.86),rgba(4,6,4,.96));box-shadow:var(--shadow);overflow:hidden;display:grid;place-items:center;padding:20px}.command-dial::before,.command-dial::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(216,231,151,.22);animation:rotateRing linear infinite}.command-dial::before{width:420px;height:420px;animation-duration:54s}.command-dial::after{width:280px;height:280px;animation-duration:34s;animation-direction:reverse}.dial-seal{position:relative;z-index:2;width:min(250px,52%);aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 48px rgba(184,216,102,.18)}.dial-node{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-226px) rotate(calc(-1 * var(--angle)));width:118px;min-height:46px;border:1px solid rgba(216,231,151,.20);border-radius:999px;background:rgba(5,7,4,.78);color:var(--parchment);display:grid;place-items:center;text-align:center;padding:8px;font-size:.50rem;cursor:pointer;transition:.22s var(--ease)}.dial-node:hover,.dial-node.active{background:rgba(58,72,28,.92);color:var(--rot);border-color:var(--line-strong);box-shadow:var(--glow)}
 
+    .lore-inscription{padding-top:38px}.inscription-frame{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:32px;background:linear-gradient(135deg,rgba(10,12,7,.88),rgba(4,6,4,.96)),radial-gradient(circle at 12% 0%,rgba(184,216,102,.08),transparent 30%);box-shadow:var(--shadow);padding:clamp(24px,4vw,42px);display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.38fr);gap:22px;isolation:isolate}.inscription-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(216,231,151,.04),transparent),repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0 1px,transparent 1px 8px);pointer-events:none;z-index:-1}.inscription-kicker{color:var(--mold-hot);font-family:"Inter",system-ui,sans-serif;font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px}.inscription-title{margin:0 0 16px;color:#f1e6c3;font-size:clamp(2.1rem,4.5vw,4.8rem);line-height:.92;letter-spacing:-.035em}.inscription-copy{display:grid;gap:14px}.inscription-copy p{margin:0;color:#d2c6a7;line-height:1.86;font-size:1.07rem;max-width:96ch}.inscription-copy strong{color:var(--bone-hot)}.inscription-side{border:1px solid rgba(216,231,151,.15);border-radius:24px;background:rgba(0,0,0,.24);padding:18px;display:grid;align-content:center;gap:12px}.inscription-side .seal-label{color:var(--mold-hot);font-size:.54rem}.inscription-side p{margin:0;color:#cfc3a0;line-height:1.72}.oath-line{font-family:"JetBrains Mono",monospace;border-left:2px solid rgba(184,216,102,.42);padding-left:12px;color:#dfd3b1}.lore-inscription.alt .inscription-frame{background:linear-gradient(135deg,rgba(12,10,6,.88),rgba(4,6,4,.96)),radial-gradient(circle at 85% 0%,rgba(214,189,117,.08),transparent 34%)}.lore-inscription.battle .inscription-frame{background:linear-gradient(135deg,rgba(14,7,5,.88),rgba(4,6,4,.96)),radial-gradient(circle at 85% 0%,rgba(141,63,32,.12),transparent 34%)}
+
     .section{padding-top:38px}.section-block{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(10,12,7,.78),rgba(4,6,4,.94));box-shadow:var(--shadow);overflow:hidden}.section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;padding:26px 26px 0;margin-bottom:18px}.section-title{margin:0;color:#f1e6c3;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.94;letter-spacing:-.025em}.section-desc{margin:11px 0 0;max-width:98ch;color:#bdb18d;line-height:1.82;font-size:1.03rem}.kicker{color:var(--mold-hot);font-size:.64rem;margin-bottom:10px}.chip{color:var(--mold-hot);border:1px solid rgba(184,216,102,.28);border-radius:999px;background:rgba(10,18,7,.66);padding:10px 12px;font-size:.54rem;white-space:nowrap}.wide-pad{padding:24px 26px 28px}
 
     .route-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding:24px 26px 28px}.route-door{position:relative;min-height:470px;border:1px solid rgba(216,231,151,.15);border-radius:26px;background:#050604;overflow:hidden;text-decoration:none;color:inherit;display:flex;align-items:flex-end;padding:16px;transition:.28s var(--ease);box-shadow:var(--shadow);isolation:isolate}.route-door::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.55) 48%,rgba(0,0,0,.96)),var(--img) center/cover no-repeat;filter:brightness(.78) contrast(1.08) saturate(.95);transform:scale(1.02);transition:.7s var(--ease)}.route-door::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 12%,var(--accent),transparent 30%),linear-gradient(135deg,rgba(216,231,151,.06),transparent 42%);opacity:.82}.route-door:hover,.route-door.active{transform:translateY(-8px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow-strong)}.route-door:hover::before,.route-door.active::before{transform:scale(1.08);filter:brightness(.9) contrast(1.14) saturate(1.05)}.route-door.inspected{border-color:rgba(214,189,117,.46)}.route-door.inspected .seal-state::after{content:" // WARMED";color:var(--brass-hot)}.door-body{display:grid;gap:10px;position:relative;z-index:2}.seal-state{font-family:"JetBrains Mono",monospace;color:var(--mold-hot);font-size:.72rem;line-height:1.4}.route-door h3{margin:0;color:#f2e7c5;font-size:clamp(1.5rem,2vw,2.2rem);line-height:.96}.route-door p{margin:0;color:#d2c6a4;line-height:1.65}.route-meta{display:flex;flex-wrap:wrap;gap:7px}.tag{font-family:"Inter",sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--mold-hot);border:1px solid rgba(184,216,102,.22);border-radius:999px;background:rgba(0,0,0,.26);padding:6px 8px;font-size:.48rem;font-weight:900}
@@ -132,7 +134,7 @@
     .modal{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:18px;background:rgba(2,3,2,.76);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-frame{width:min(780px,100%);border-color:var(--line-strong);background:linear-gradient(180deg,rgba(18,21,12,.98),rgba(5,7,4,.99));padding:24px;display:grid;gap:12px}.modal-frame h3{margin:0;color:#f2e7c5;font-size:2rem;line-height:1.05}.modal-frame p{margin:0;color:#d2c6a7;line-height:1.78}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
 
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}canvas.atmo{display:none!important}}
-    @media (max-width:1320px){.route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.boot-shell,.hero,.spine-layout,.ship-layout{grid-template-columns:1fr}.boot-seal-wrap{min-height:420px;border-right:0;border-bottom:1px solid rgba(216,231,151,.14)}.boot-shell{min-height:auto}.hero-left,.hero-right{min-height:auto}.command-meter{grid-template-columns:1fr}.ship-image{position:relative;top:auto}.future-grid{grid-template-columns:1fr 1fr}.command-dial{min-height:420px}.dial-node{display:none}}
+    @media (max-width:1320px){.inscription-frame{grid-template-columns:1fr}.route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.boot-shell,.hero,.spine-layout,.ship-layout{grid-template-columns:1fr}.boot-seal-wrap{min-height:420px;border-right:0;border-bottom:1px solid rgba(216,231,151,.14)}.boot-shell{min-height:auto}.hero-left,.hero-right{min-height:auto}.command-meter{grid-template-columns:1fr}.ship-image{position:relative;top:auto}.future-grid{grid-template-columns:1fr 1fr}.command-dial{min-height:420px}.dial-node{display:none}}
     @media (max-width:760px){.page{width:min(100% - 18px,var(--max))}.top-shell{top:6px}.topbar{grid-template-columns:1fr}.brand span span{max-width:78vw}.nav{justify-content:flex-start}.route-grid,.future-grid,.file-grid,.boot-grid{grid-template-columns:1fr}.section-header,.wide-pad,.route-grid,.spine-layout,.ship-layout,.future-grid,.file-grid{padding-left:18px;padding-right:18px}.hero{padding:22px;border-radius:28px}.hero h1{font-size:clamp(3rem,15vw,5rem)}.meter-row{grid-template-columns:1fr;gap:6px}.floating{left:10px;right:10px;width:auto}.boot-copy{padding:22px}.boot-seal{width:min(240px,72%)}}
   </style>
 </head>
@@ -223,6 +225,25 @@
       </aside>
     </section>
 
+    <section class="lore-inscription" id="command-inscription" data-chamber="command" data-pressure="36" data-memory="34" data-channel="command" data-whisper="The Command Deck is not a map. It is a judge made of brass, rot, and remembered pressure.">
+      <div class="inscription-frame">
+        <div>
+          <div class="inscription-kicker">Command Deck Inscription // Nave-Law</div>
+          <h2 class="inscription-title">The Command Deck Is Not a Map.</h2>
+          <div class="inscription-copy">
+            <p>Those who mistake <strong>The Septicarium</strong> for a simple archive are usually still clean enough to believe records are placed by hand.</p>
+            <p>Aboard <strong>The Rotfather's Mercy</strong>, memory descends by weight. The Command Deck does not organize history. It listens for pressure: a face that has become dangerous, a relic that remembers touch, a battle that still speaks through wreckage, a war-form that has earned doctrine through repeated violence.</p>
+            <p>Only then does the ship open a lower chamber. Only then does the wound receive a door.</p>
+          </div>
+        </div>
+        <aside class="inscription-side">
+          <div class="seal-label">Nave Reading</div>
+          <p class="oath-line">The sworn do not choose the chamber. The chamber recognizes the wound carried before it.</p>
+          <p>The visitor sees doors. The ship sees pressure, witness, and rot-density.</p>
+        </aside>
+      </div>
+    </section>
+
     <section class="section" id="routes" data-chamber="annals" data-pressure="56" data-memory="48" data-channel="annals" data-whisper="The sealed doors are not choices. They are judgments. Each opens only when the wound matches the chamber.">
       <div class="section-block">
         <div class="section-header">
@@ -250,6 +271,25 @@
             <div class="door-body"><div class="seal-state">BLACKBOX HUMOUR LEAKING</div><h3>The Mercy He Gave</h3><p>A corrupted transmission where mercy became plague, signal became confession, and damage learned to speak.</p><div class="route-meta"><span class="tag">Blackbox</span><span class="tag">Recovered Signal</span></div></div>
           </a>
         </div>
+      </div>
+    </section>
+
+    <section class="lore-inscription alt" id="wound-selection" data-chamber="annals" data-pressure="62" data-memory="66" data-channel="annals" data-whisper="The ship chooses the wound by what refuses to stop speaking.">
+      <div class="inscription-frame">
+        <div>
+          <div class="inscription-kicker">Descent Principle // How the Ship Chooses</div>
+          <h2 class="inscription-title">The Ship Chooses the Wound.</h2>
+          <div class="inscription-copy">
+            <p>Not every record is worthy of descent. A name may be spoken a thousand times and still remain too light for the Subject-Scriptorium. A blade may kill a hundred bodies and still fail to become a relic. A battle may fill the deck with ash and leave nothing the Annals can preserve.</p>
+            <p>The ship waits for the moment when memory becomes pressure. The face begins changing nearby accounts. The weapon leaves wounds that behave like scripture. The field keeps speaking through scrap, mud, bell-metal, and enemy testimony.</p>
+            <p>That is when the Command Deck opens. Not before.</p>
+          </div>
+        </div>
+        <aside class="inscription-side">
+          <div class="seal-label">Routing Maxim</div>
+          <p class="oath-line">A record is not admitted because it happened. It is admitted because it refuses to finish happening.</p>
+          <p>The Annals do not preserve events. They preserve consequences with enough rot left in them to move.</p>
+        </aside>
       </div>
     </section>
 
@@ -285,6 +325,25 @@
       </div>
     </section>
 
+    <section class="lore-inscription" id="dangerous-records" data-chamber="dossier" data-pressure="70" data-memory="74" data-channel="dossier" data-whisper="A record becomes dangerous when the archive starts changing around it.">
+      <div class="inscription-frame">
+        <div>
+          <div class="inscription-kicker">Subject-Warning // The Nature of Dangerous Records</div>
+          <h2 class="inscription-title">Some Records Begin to Behave.</h2>
+          <div class="inscription-copy">
+            <p>The Septicarium does not fear lies. Lies rot quickly. The dangerous records are the ones that remain stable after corruption, the ones that keep returning to the same shape no matter how many times the ship seals them away.</p>
+            <p>A commander becomes more than a commander when nearby war-forms begin arranging themselves around his absence. A rival becomes more than an enemy when his tactics infect future preparations. A relic becomes more than an object when those who describe it start writing in the shape of the wound it made.</p>
+            <p>These are the records the Command Deck watches most closely. These are the records that can teach the archive to hunger.</p>
+          </div>
+        </div>
+        <aside class="inscription-side">
+          <div class="seal-label">Containment Note</div>
+          <p class="oath-line">When a record changes the records around it, the Subject-Scriptorium begins to breathe.</p>
+          <p>That is not a malfunction. That is the first proof of significance.</p>
+        </aside>
+      </div>
+    </section>
+
     <section class="section" id="ship" data-chamber="command" data-pressure="50" data-memory="66" data-channel="command" data-whisper="The ship is not backdrop. The ship is the archive's body.">
       <div class="section-block">
         <div class="section-header">
@@ -304,6 +363,25 @@
             <article class="fragment-card"><div class="kicker">Reliquary</div><h3>Objects Learn Doctrine</h3><p>Some weapons are not tools. Some bells are not signals. Some relics are battlefield laws with handles, blades, chains, and names.</p></article>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="lore-inscription battle" id="unwritten-inscription" data-chamber="battle" data-pressure="74" data-memory="80" data-channel="battle" data-whisper="The unwritten hooks are patient because the future always arrives wounded.">
+      <div class="inscription-frame">
+        <div>
+          <div class="inscription-kicker">Unwritten Hook-Law // Future Descent</div>
+          <h2 class="inscription-title">The Empty Hooks Are Not Empty.</h2>
+          <div class="inscription-copy">
+            <p>The Command Deck keeps hooks for wars that have not yet burned, units that have not yet earned their rot-name, rivals whose faces have not yet become dangerous, and relics still hidden in the future's rust.</p>
+            <p>Nothing is forced into the Annals to make the archive look full. The ship has no use for filler. It waits for proof: a squad that survives the impossible, an engine that becomes feared by pattern, a defeat that teaches doctrine, a victory ugly enough to leave residue.</p>
+            <p>The Unwritten Chain is patience given architecture. It is how The Septicarium grows without becoming clean.</p>
+          </div>
+        </div>
+        <aside class="inscription-side">
+          <div class="seal-label">Awaiting Weight</div>
+          <p class="oath-line">A blank chain is not an absence. It is a promise that the next wound will be judged before it is kept.</p>
+          <p>The future is not planned here. It is baited.</p>
+        </aside>
       </div>
     </section>
 
