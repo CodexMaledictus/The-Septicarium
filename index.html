@@ -139,7 +139,7 @@
       <nav class="nav" aria-label="Primary navigation">
         <a href="#archives">Archives</a>
         <a href="plaguebound-annals.html">Annals</a>
-        <a href="plaguebound-annals.html#subject-scriptorium">Subject-Scriptorium</a>
+        <a href="plaguebound-dossier.html">Dossier</a>
         <a href="#ship">Ship</a>
         <a href="#records">Records</a>
         <button type="button" id="voxToggle">Vox</button>
@@ -159,7 +159,7 @@
         <p class="hook">The <strong>Plaguebound Annals</strong> are the master archive beneath The Rotfather's Mercy: subject files, mustered formations, relic systems, war-engines, and battle chronicles chained into one living memory.</p>
         <div class="hero-actions">
           <a class="btn primary" href="plaguebound-annals.html">Open The Plaguebound Annals</a>
-          <a class="btn" href="plaguebound-annals.html#subject-scriptorium">Enter the Subject-Scriptorium</a>
+          <a class="btn" href="plaguebound-dossier.html">Open The Plaguebound Dossier</a>
           <a class="btn rust" href="the-pallid-reversal.html">Read The Pallid Reversal</a>
         </div>
       </div>
@@ -194,15 +194,6 @@
             <h3>The Plaguebound Annals</h3>
             <p>The warband's living memory: subject files, unit histories, war-form records, battlefield doctrines, relic systems, narrative battle chronicles, and unwritten formations.</p>
             <div class="path-actions"><span class="path-note">Master Vault / All Records</span><span class="small-btn">Open Annals</span></div>
-          </div>
-        </a>
-
-        <a class="path-card" href="plaguebound-annals.html#subject-scriptorium" style="--img:url('Assets/Index/plaguebound-dossier.jpeg')" data-vox="The Subject-Scriptorium is no longer a rival archive. It is a chamber within the Annals where dangerous faces are pressed into subject-script.">
-          <div class="path-top"><span class="status">Annals Chamber</span></div>
-          <div class="path-body">
-            <h3>The Subject-Scriptorium</h3>
-            <p>A chamber within the Annals where Mortivus Classarion, command figures, plague specialists, champions, rivals, and dangerous faces are sealed into subject-script.</p>
-            <div class="path-actions"><span class="path-note">Subject Files / Named Entities</span><span class="small-btn">Enter Scriptorium</span></div>
           </div>
         </a>
 
@@ -321,7 +312,7 @@
       </div>
       <div class="files-grid">
         <a class="file-link" href="plaguebound-annals.html"><div class="file-main"><div class="file-title">The Plaguebound Annals</div><div class="file-sub">Unit histories, war-form records, battlefield doctrines, relic systems, and battle chronicles.</div></div><div class="file-tag">Annals</div></a>
-        <a class="file-link" href="plaguebound-annals.html#subject-scriptorium"><div class="file-main"><div class="file-title">The Subject-Scriptorium</div><div class="file-sub">A chamber within the Annals for subject files, command entities, rivals, specialists, and dangerous faces.</div></div><div class="file-tag">Scriptorium</div></a>
+        <a class="file-link" href="plaguebound-dossier.html"><div class="file-main"><div class="file-title">The Plaguebound Dossier</div><div class="file-sub">The subject-scriptorium chamber for command entities, rivals, specialists, and dangerous faces.</div></div><div class="file-tag">Dossier</div></a>
         <a class="file-link" href="mortivus-classarion.html"><div class="file-main"><div class="file-title">Mortivus Classarion</div><div class="file-sub">Primary command subject file for The Rotfather's Vanguard.</div></div><div class="file-tag">Subject</div></a>
         <a class="file-link" href="the-mercy-sickle.html"><div class="file-main"><div class="file-title">The Mercy-Sickle</div><div class="file-sub">Relic weapon record and sacred instrument of war.</div></div><div class="file-tag">Relic</div></a>
         <a class="file-link" href="the-mercy-he-gave.html"><div class="file-main"><div class="file-title">The Mercy He Gave</div><div class="file-sub">Recovered blackbox transmission and corrupted mercy record.</div></div><div class="file-tag">Blackbox</div></a>
@@ -331,7 +322,7 @@
 
     <footer class="footer">
       <div>The Septicarium // The Rotfather's Mercy // The Rotfather's Vanguard</div>
-      <div><a href="plaguebound-annals.html">The Plaguebound Annals</a> · <a href="plaguebound-annals.html#subject-scriptorium">The Subject-Scriptorium</a> · <a href="#main">Return to Command Deck</a></div>
+      <div><a href="plaguebound-annals.html">The Plaguebound Annals</a> · <a href="plaguebound-dossier.html">The Plaguebound Dossier</a> · <a href="#main">Return to Command Deck</a></div>
     </footer>
   </main>
 
@@ -372,7 +363,7 @@
     const voxText=document.getElementById('voxText');
     const floating=document.getElementById('floating');
     document.getElementById('closeVox').addEventListener('click',()=>floating.style.display='none');
-    document.getElementById('voxToggle').addEventListener('click',()=>{floating.style.display='block';voxText.textContent='The Annals are the descent. The Subject-Scriptorium is only one chamber hanging from its diseased spine.'});
+    document.getElementById('voxToggle').addEventListener('click',()=>{floating.style.display='block';voxText.textContent='The Annals are the descent. The Plaguebound Dossier remains the subject-scriptorium chamber where dangerous faces are sealed.'});
 
     const revealObserver=new IntersectionObserver(entries=>{
       entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed')}})
