@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -24,8 +24,10 @@
       --green:#c0d15d;
       --green-hot:#e0f27c;
       --rot:#7ea94b;
+      --brass:#b89a55;
       --rust:#9a6235;
       --blood:#7d3b31;
+      --blue:#3e535c;
       --line:rgba(196,214,108,.18);
       --line-strong:rgba(210,229,116,.42);
       --shadow:0 26px 90px rgba(0,0,0,.58);
@@ -47,1712 +49,374 @@
         radial-gradient(circle at 50% 100%, rgba(92,125,52,.10), transparent 38%),
         linear-gradient(180deg, #030503 0%, #070a06 42%, #030503 100%);
       overflow-x:hidden;
+      transition:background .55s var(--ease), filter .55s var(--ease);
     }
 
     body.no-scroll{overflow:hidden}
+    body[data-zone="command"]{background:radial-gradient(circle at 15% 0%,rgba(168,190,74,.12),transparent 28%),radial-gradient(circle at 88% 10%,rgba(143,85,40,.12),transparent 30%),radial-gradient(circle at 50% 100%,rgba(92,125,52,.10),transparent 38%),linear-gradient(180deg,#030503 0%,#070a06 42%,#030503 100%)}
+    body[data-zone="dossier"]{background:radial-gradient(circle at 13% 0%,rgba(63,83,92,.20),transparent 30%),radial-gradient(circle at 88% 10%,rgba(168,190,74,.10),transparent 30%),linear-gradient(180deg,#020403 0%,#061011 45%,#030503 100%)}
+    body[data-zone="annals"]{background:radial-gradient(circle at 13% 0%,rgba(184,154,85,.18),transparent 32%),radial-gradient(circle at 88% 10%,rgba(168,190,74,.14),transparent 30%),linear-gradient(180deg,#030503 0%,#0b0a06 45%,#030503 100%)}
+    body[data-zone="relic"]{background:radial-gradient(circle at 13% 0%,rgba(154,98,53,.18),transparent 32%),radial-gradient(circle at 88% 10%,rgba(184,154,85,.16),transparent 30%),linear-gradient(180deg,#030503 0%,#100805 45%,#030503 100%)}
+    body[data-zone="battle"]{background:radial-gradient(circle at 13% 0%,rgba(125,59,49,.20),transparent 32%),radial-gradient(circle at 88% 10%,rgba(168,190,74,.13),transparent 30%),linear-gradient(180deg,#030503 0%,#0f0705 45%,#030503 100%)}
 
     a{color:inherit}
     button{font:inherit}
+    ::selection{background:rgba(196,214,108,.28);color:var(--text-strong)}
 
-    ::selection{
-      background:rgba(196,214,108,.28);
-      color:var(--text-strong);
-    }
+    #rotCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.85}
+    .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.07;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 1px,transparent 1px 4px);mix-blend-mode:soft-light}
+    .scanline{position:fixed;left:0;right:0;top:-15%;z-index:2;height:12%;pointer-events:none;opacity:.11;background:linear-gradient(180deg,transparent,rgba(210,229,116,.18),transparent);animation:scan 8s linear infinite}@keyframes scan{to{top:115%}}
+    .vignette{position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(circle at center,transparent 38%,rgba(0,0,0,.72) 100%),linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.40))}
 
-    #rotCanvas{
-      position:fixed;
-      inset:0;
-      width:100%;
-      height:100%;
-      z-index:0;
-      pointer-events:none;
-      opacity:.85;
-    }
+    .skip-link{position:absolute;left:16px;top:-80px;z-index:200;padding:12px 16px;border-radius:999px;background:var(--green);color:#111509;font-weight:800;transition:.2s ease}.skip-link:focus{top:16px}
 
-    .grain{
-      position:fixed;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-      opacity:.07;
-      background-image:
-        repeating-linear-gradient(0deg, rgba(255,255,255,.18) 0 1px, transparent 1px 3px),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 4px);
-      mix-blend-mode:soft-light;
-    }
+    .boot{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at 50% 45%,rgba(172,198,79,.15),transparent 32%),linear-gradient(180deg,rgba(3,5,3,.98),rgba(2,3,2,.995));transition:opacity .75s var(--ease),visibility .75s var(--ease)}
+    .boot.hide{opacity:0;visibility:hidden;pointer-events:none}
+    .boot-card{width:min(920px,100%);border:1px solid var(--line);border-radius:30px;background:linear-gradient(180deg,rgba(12,18,11,.94),rgba(5,8,5,.97));box-shadow:var(--shadow);overflow:hidden;position:relative}.boot-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 8%,rgba(204,229,102,.12),transparent 22%),radial-gradient(circle at 10% 92%,rgba(147,88,45,.12),transparent 28%);pointer-events:none}
+    .boot-inner{position:relative;z-index:2;padding:26px}.boot-head{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-bottom:20px}.boot-seal{width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 38px rgba(198,224,97,.18);background:#090d08}
+    .kicker{color:var(--green);text-transform:uppercase;letter-spacing:.24em;font-size:.74rem;font-weight:800}.boot h1,.hero h1,h2,h3,h4{font-family:"Cinzel",serif}.boot h1{margin:8px 0 0;font-size:clamp(2.2rem,4vw,3.4rem);line-height:.9;letter-spacing:.03em}.boot p{margin:10px 0 0;color:var(--muted);line-height:1.7;max-width:640px}.boot-log{min-height:210px;border:1px solid rgba(196,214,108,.14);border-radius:20px;background:rgba(4,7,4,.70);padding:16px;overflow:hidden}.boot-line{display:flex;gap:12px;align-items:flex-start;padding:7px 0;opacity:0;transform:translateY(8px);animation:rise .32s var(--ease) forwards;color:#d9d3b8;line-height:1.45}.boot-line span{flex:0 0 auto;color:var(--green);font-size:.72rem;letter-spacing:.18em;font-weight:900;margin-top:3px}@keyframes rise{to{opacity:1;transform:none}}
+    .boot-progress{height:10px;margin-top:16px;border:1px solid rgba(196,214,108,.14);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.05)}.boot-bar{width:0%;height:100%;background:linear-gradient(90deg,var(--rust),var(--rot),var(--green-hot));box-shadow:0 0 22px rgba(210,229,116,.32);transition:width .22s linear}.boot-actions{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:16px}.boot-note{color:var(--muted-2);font-size:.9rem}
 
-    .scanline{
-      position:fixed;
-      left:0;
-      right:0;
-      top:-15%;
-      z-index:2;
-      height:12%;
-      pointer-events:none;
-      opacity:.11;
-      background:linear-gradient(180deg, transparent, rgba(210,229,116,.18), transparent);
-      animation:scan 8s linear infinite;
-    }
+    .page{position:relative;z-index:5;width:min(1440px,calc(100vw - 28px));margin:0 auto;padding:16px 0 50px}.topbar{position:sticky;top:12px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 14px;margin-bottom:18px;border:1px solid var(--line);border-radius:999px;background:rgba(6,10,6,.70);backdrop-filter:blur(16px);box-shadow:0 12px 34px rgba(0,0,0,.28)}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);flex:0 0 auto}.brand strong{display:block;font-family:"Cinzel",serif;letter-spacing:.06em;line-height:1}.brand span{display:block;color:var(--muted);font-size:.86rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw}
+    .nav{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.nav a,.nav button,.btn,.small-btn{text-decoration:none;border:1px solid rgba(196,214,108,.16);color:var(--text);background:rgba(10,15,9,.62);border-radius:999px;padding:10px 13px;font-size:.76rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:transform .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease),box-shadow .22s var(--ease)}.nav a:hover,.nav button:hover,.btn:hover,.small-btn:hover{transform:translateY(-2px);border-color:rgba(210,229,116,.36);background:rgba(18,27,16,.88);box-shadow:0 14px 26px rgba(0,0,0,.24)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px}.btn.primary{color:#111607;background:linear-gradient(180deg,var(--green-hot),var(--green));border-color:rgba(230,244,130,.72);box-shadow:0 14px 30px rgba(192,209,93,.16)}.btn.primary:hover{background:linear-gradient(180deg,#eefc91,#c7dc63)}.btn.brass{border-color:rgba(184,154,85,.42);background:linear-gradient(180deg,rgba(184,154,85,.18),rgba(10,15,9,.70))}.btn.rust{border-color:rgba(154,98,53,.42);background:linear-gradient(180deg,rgba(154,98,53,.18),rgba(10,15,9,.70))}
 
-    @keyframes scan{
-      to{top:115%}
-    }
+    .hero{position:relative;overflow:hidden;min-height:680px;border:1px solid var(--line);border-radius:34px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.55fr);gap:26px;padding:30px;box-shadow:var(--shadow);isolation:isolate}.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(3,6,3,.94) 0%,rgba(5,8,5,.76) 50%,rgba(5,8,5,.88) 100%),linear-gradient(180deg,rgba(4,6,4,.12),rgba(2,3,2,.78)),url("Assets/Index/index-hero.jpeg") center/cover no-repeat;z-index:-2;transform:scale(1.025);transition:transform .8s var(--ease),filter .8s var(--ease)}.hero:hover::before{transform:scale(1.055);filter:saturate(1.05) contrast(1.03)}.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 75% 16%,rgba(210,229,116,.16),transparent 24%),radial-gradient(circle at 12% 80%,rgba(154,98,53,.18),transparent 30%);pointer-events:none}.hero-copy{display:grid;align-content:center;min-height:620px;max-width:860px}.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}.tag{border:1px solid rgba(196,214,108,.16);border-radius:999px;background:rgba(7,11,6,.62);color:var(--green);padding:9px 12px;font-size:.74rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(3.3rem,7.2vw,7.2rem);line-height:.84;letter-spacing:.018em;text-shadow:0 12px 44px rgba(0,0,0,.64)}.hero .subtitle{margin:16px 0 0;font-family:"Cinzel",serif;font-size:clamp(1.25rem,2vw,2rem);color:var(--green-hot);font-style:italic}.hero .hook{max-width:760px;margin:24px 0 0;color:#d8d0b5;font-size:1.12rem;line-height:1.86}.hero .hook strong{color:var(--text-strong)}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.hero-panel{align-self:center;border:1px solid var(--line);border-radius:28px;background:rgba(7,11,7,.66);backdrop-filter:blur(14px);box-shadow:0 22px 44px rgba(0,0,0,.34);padding:18px;display:grid;gap:16px}.seal-orbit{position:relative;min-height:310px;border:1px solid rgba(196,214,108,.13);border-radius:24px;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%,rgba(196,214,108,.12),transparent 34%),linear-gradient(180deg,rgba(9,13,8,.66),rgba(4,7,4,.88));overflow:hidden}.seal-orbit::before,.seal-orbit::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(196,214,108,.18);inset:12%;animation:spin 34s linear infinite}.seal-orbit::after{inset:22%;border-style:solid;border-color:rgba(196,214,108,.09);animation-duration:48s;animation-direction:reverse}@keyframes spin{to{transform:rotate(360deg)}}.seal-orbit img{width:min(235px,68%);aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 42px rgba(196,214,108,.22);z-index:2;animation:breathe 5s ease-in-out infinite}@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}.quick-readouts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.readout{border:1px solid rgba(196,214,108,.10);border-radius:18px;background:rgba(5,8,5,.62);padding:13px}.readout .label{color:var(--muted-2);font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;font-weight:800;margin-bottom:5px}.readout .value{font-family:"Cinzel",serif;line-height:1.18;color:var(--text-strong)}
 
-    .skip-link{
-      position:absolute;
-      left:16px;
-      top:-80px;
-      z-index:200;
-      padding:12px 16px;
-      border-radius:999px;
-      background:var(--green);
-      color:#111509;
-      font-weight:800;
-      transition:.2s ease;
-    }
+    .section{margin-top:22px;border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(9,13,8,.75),rgba(4,7,4,.90));box-shadow:var(--shadow);overflow:hidden}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:26px 26px 0;flex-wrap:wrap}.section h2{margin:8px 0 0;font-size:clamp(2rem,3.6vw,3.45rem);line-height:.95}.section-head p{margin:12px 0 0;color:var(--muted);line-height:1.75;max-width:820px}.section-chip{padding:10px 14px;border:1px solid rgba(196,214,108,.16);border-radius:999px;color:var(--green);background:rgba(7,11,7,.62);font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
 
-    .skip-link:focus{top:16px}
+    .paths{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.path-card{min-height:340px;position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(196,214,108,.14);border-radius:26px;background:#090d08;cursor:pointer;transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);text-decoration:none;color:inherit}.path-card.revealed{opacity:1;transform:none}.path-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.08),rgba(5,8,5,.55) 48%,rgba(3,5,3,.96) 100%),radial-gradient(circle at 82% 16%,rgba(210,229,116,.16),transparent 24%),var(--img) center/cover no-repeat;transform:scale(1.02);filter:saturate(.96) brightness(.78);z-index:-2;transition:transform .55s var(--ease),filter .55s var(--ease)}.path-card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(196,214,108,.08),transparent 44%,rgba(154,98,53,.09));opacity:.9}.path-card:hover,.path-card.active{transform:translateY(-7px);border-color:rgba(210,229,116,.38);box-shadow:0 24px 46px rgba(0,0,0,.40)}.path-card:hover::before,.path-card.active::before{transform:scale(1.08);filter:saturate(1.08) brightness(.9)}.path-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:16px}.status{border:1px solid rgba(196,214,108,.17);background:rgba(4,7,4,.68);color:var(--green);border-radius:999px;padding:7px 10px;font-size:.66rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.path-body{position:absolute;left:16px;right:16px;bottom:16px;display:grid;gap:12px}.path-card h3{margin:0;font-size:1.62rem;line-height:1.04}.path-card p{margin:0;color:#d2cbb2;line-height:1.65;max-width:94%}.path-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.path-note{color:var(--muted-2);font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
 
-    .boot{
-      position:fixed;
-      inset:0;
-      z-index:100;
-      display:grid;
-      place-items:center;
-      padding:18px;
-      background:
-        radial-gradient(circle at 50% 45%, rgba(172,198,79,.15), transparent 32%),
-        linear-gradient(180deg, rgba(3,5,3,.98), rgba(2,3,2,.995));
-      transition:opacity .75s var(--ease), visibility .75s var(--ease);
-    }
+    .overview-grid{padding:24px 26px 28px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(320px,.55fr);gap:18px}.lore-panel,.status-panel,.guide-card,.fragment-card,.annals-division-card{border:1px solid rgba(196,214,108,.12);border-radius:26px;background:rgba(7,11,7,.62);padding:22px}.lore-panel p{margin:0 0 16px;color:#d3ccb2;line-height:1.86;font-size:1.02rem}.lore-panel p:last-child{margin-bottom:0}.lore-panel strong{color:var(--text-strong)}.status-panel{display:grid;gap:14px;align-content:start}.status-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid rgba(196,214,108,.10)}.status-row:last-child{border-bottom:0}.status-name{font-weight:800;color:var(--text-strong)}.status-value{color:var(--green-hot);font-family:"Cinzel",serif;white-space:nowrap}.terminal{margin-top:8px;min-height:86px;border:1px solid rgba(196,214,108,.13);border-radius:18px;background:rgba(3,5,3,.66);padding:14px;color:#dcd5bb;line-height:1.6;font-family:"JetBrains Mono",monospace}.terminal .prefix{color:var(--green);font-weight:900;letter-spacing:.12em}
 
-    .boot.hide{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-    }
+    .guide-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.guide-card{position:relative;overflow:hidden;min-height:255px;display:grid;align-content:space-between;gap:16px}.guide-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.30),rgba(4,7,4,.94)),var(--img) center/cover no-repeat;opacity:.36;z-index:0}.guide-card>*{position:relative;z-index:1}.guide-number{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:rgba(4,7,4,.62);color:var(--green-hot);font-family:"Cinzel",serif;font-size:1.3rem;font-weight:800}.guide-card h3{margin:0;font-size:1.55rem;line-height:1.05}.guide-card p{color:var(--muted);line-height:1.72;margin:8px 0 0}
 
-    .boot-card{
-      width:min(820px, 100%);
-      border:1px solid var(--line);
-      border-radius:30px;
-      background:linear-gradient(180deg, rgba(12,18,11,.94), rgba(5,8,5,.97));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
+    .lore-river{padding:24px 26px 30px;display:grid;grid-template-columns:minmax(280px,.42fr) minmax(0,1fr);gap:22px;align-items:start}.river-image{position:sticky;top:96px;min-height:520px;border:1px solid rgba(196,214,108,.12);border-radius:28px;overflow:hidden;background:#090d08}.river-image::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.05),rgba(4,7,4,.82)),url("Assets/Index/command-sanctum.jpeg") center/cover no-repeat;filter:saturate(1.02) brightness(.82);transform:scale(1.04)}.river-image::after{content:"THE SHIP BENEATH THE ARCHIVE";position:absolute;left:18px;right:18px;bottom:18px;color:var(--green);font-size:.78rem;font-weight:900;letter-spacing:.22em;line-height:1.6}.fragments{display:grid;gap:16px}.fragment-card{transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease)}.fragment-card.revealed{opacity:1;transform:none}.fragment-card:hover{border-color:rgba(210,229,116,.28)}.fragment-card h3{margin:8px 0 0;font-size:1.65rem;line-height:1.08}.fragment-card p{margin:12px 0 0;color:#d3ccb2;line-height:1.82;font-size:1.02rem}
 
-    .boot-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 82% 8%, rgba(204,229,102,.12), transparent 22%),
-        radial-gradient(circle at 10% 92%, rgba(147,88,45,.12), transparent 28%);
-      pointer-events:none;
-    }
+    .files-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.file-link{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;border:1px solid rgba(196,214,108,.12);border-radius:22px;background:rgba(7,11,7,.62);padding:16px;transition:.25s var(--ease)}.file-link:hover{transform:translateY(-3px);border-color:rgba(210,229,116,.32);background:rgba(14,21,12,.82);box-shadow:0 16px 34px rgba(0,0,0,.28)}.file-main{display:grid;gap:5px}.file-title{font-family:"Cinzel",serif;font-size:1.22rem;color:var(--text-strong);line-height:1.08}.file-sub{color:var(--muted);line-height:1.5;font-size:.94rem}.file-tag{flex:0 0 auto;color:var(--green);border:1px solid rgba(196,214,108,.13);border-radius:999px;padding:8px 10px;background:rgba(4,7,4,.58);font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.footer{margin-top:22px;border:1px solid var(--line);border-radius:26px;background:rgba(7,11,7,.72);padding:18px 20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--muted);line-height:1.6}.footer a{color:var(--green-hot);text-decoration:none;border-bottom:1px solid transparent}.footer a:hover{border-color:var(--green-hot)}
 
-    .boot-inner{
-      position:relative;
-      z-index:2;
-      padding:26px;
-    }
+    .floating{position:fixed;right:18px;bottom:18px;z-index:80;width:min(430px,calc(100% - 36px));border:1px solid rgba(210,229,116,.28);border-radius:22px;background:rgba(6,10,6,.86);backdrop-filter:blur(14px);box-shadow:var(--shadow);overflow:hidden}.floating-head{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(196,214,108,.12);padding:12px 14px}.floating-head strong{font-size:.72rem;letter-spacing:.18em;color:var(--green);text-transform:uppercase}.floating-head button{border:0;background:transparent;color:var(--text);font-size:1.2rem;cursor:pointer}.floating-body{padding:14px;color:#d6ceb2;line-height:1.68;font-size:.94rem}
 
-    .boot-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:22px;
-      margin-bottom:20px;
-    }
-
-    .boot-seal{
-      width:96px;
-      height:96px;
-      border-radius:50%;
-      object-fit:cover;
-      border:1px solid var(--line-strong);
-      box-shadow:0 0 38px rgba(198,224,97,.18);
-      background:#090d08;
-    }
-
-    .kicker{
-      color:var(--green);
-      text-transform:uppercase;
-      letter-spacing:.24em;
-      font-size:.74rem;
-      font-weight:800;
-    }
-
-    .boot h1,
-    .hero h1,
-    h2,
-    h3,
-    h4{
-      font-family:"Cinzel", serif;
-    }
-
-    .boot h1{
-      margin:8px 0 0;
-      font-size:clamp(2.2rem, 4vw, 3.4rem);
-      line-height:.9;
-      letter-spacing:.03em;
-    }
-
-    .boot p{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.7;
-      max-width:560px;
-    }
-
-    .boot-log{
-      min-height:194px;
-      border:1px solid rgba(196,214,108,.14);
-      border-radius:20px;
-      background:rgba(4,7,4,.70);
-      padding:16px;
-      overflow:hidden;
-    }
-
-    .boot-line{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      padding:7px 0;
-      opacity:0;
-      transform:translateY(8px);
-      animation:rise .32s var(--ease) forwards;
-      color:#d9d3b8;
-      line-height:1.45;
-    }
-
-    .boot-line span{
-      flex:0 0 auto;
-      color:var(--green);
-      font-size:.72rem;
-      letter-spacing:.18em;
-      font-weight:900;
-      margin-top:3px;
-    }
-
-    @keyframes rise{to{opacity:1; transform:none}}
-
-    .boot-progress{
-      height:10px;
-      margin-top:16px;
-      border:1px solid rgba(196,214,108,.14);
-      border-radius:999px;
-      overflow:hidden;
-      background:rgba(255,255,255,.05);
-    }
-
-    .boot-bar{
-      width:0%;
-      height:100%;
-      background:linear-gradient(90deg, var(--rust), var(--rot), var(--green-hot));
-      box-shadow:0 0 22px rgba(210,229,116,.32);
-      transition:width .22s linear;
-    }
-
-    .boot-actions{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:16px;
-    }
-
-    .boot-note{
-      color:var(--muted-2);
-      font-size:.9rem;
-    }
-
-    .page{
-      position:relative;
-      z-index:5;
-      width:min(1440px, calc(100vw - 28px));
-      margin:0 auto;
-      padding:16px 0 50px;
-    }
-
-    .topbar{
-      position:sticky;
-      top:12px;
-      z-index:50;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      padding:12px 14px;
-      margin-bottom:18px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(6,10,6,.70);
-      backdrop-filter:blur(16px);
-      box-shadow:0 12px 34px rgba(0,0,0,.28);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-
-    .brand img{
-      width:44px;
-      height:44px;
-      border-radius:50%;
-      object-fit:cover;
-      border:1px solid var(--line-strong);
-      flex:0 0 auto;
-    }
-
-    .brand strong{
-      display:block;
-      font-family:"Cinzel", serif;
-      letter-spacing:.06em;
-      line-height:1;
-    }
-
-    .brand span{
-      display:block;
-      color:var(--muted);
-      font-size:.86rem;
-      margin-top:4px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width:58vw;
-    }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .nav a,
-    .nav button,
-    .btn,
-    .small-btn{
-      text-decoration:none;
-      border:1px solid rgba(196,214,108,.16);
-      color:var(--text);
-      background:rgba(10,15,9,.62);
-      border-radius:999px;
-      padding:10px 13px;
-      font-size:.76rem;
-      font-weight:800;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:transform .22s var(--ease), border-color .22s var(--ease), background .22s var(--ease), box-shadow .22s var(--ease);
-    }
-
-    .nav a:hover,
-    .nav button:hover,
-    .btn:hover,
-    .small-btn:hover{
-      transform:translateY(-2px);
-      border-color:rgba(210,229,116,.36);
-      background:rgba(18,27,16,.88);
-      box-shadow:0 14px 26px rgba(0,0,0,.24);
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:14px 18px;
-    }
-
-    .btn.primary{
-      color:#111607;
-      background:linear-gradient(180deg, var(--green-hot), var(--green));
-      border-color:rgba(230,244,130,.72);
-      box-shadow:0 14px 30px rgba(192,209,93,.16);
-    }
-
-    .btn.primary:hover{
-      background:linear-gradient(180deg, #eefc91, #c7dc63);
-    }
-
-    .hero{
-      position:relative;
-      overflow:hidden;
-      min-height:680px;
-      border:1px solid var(--line);
-      border-radius:34px;
-      display:grid;
-      grid-template-columns:minmax(0,1.05fr) minmax(340px,.55fr);
-      gap:26px;
-      padding:30px;
-      box-shadow:var(--shadow);
-      isolation:isolate;
-    }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(100deg, rgba(3,6,3,.94) 0%, rgba(5,8,5,.76) 50%, rgba(5,8,5,.88) 100%),
-        linear-gradient(180deg, rgba(4,6,4,.12), rgba(2,3,2,.78)),
-        url("Assets/Index/index-hero.jpeg") center/cover no-repeat;
-      z-index:-2;
-      transform:scale(1.025);
-      transition:transform .8s var(--ease), filter .8s var(--ease);
-    }
-
-    .hero:hover::before{
-      transform:scale(1.055);
-      filter:saturate(1.05) contrast(1.03);
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-1;
-      background:
-        radial-gradient(circle at 75% 16%, rgba(210,229,116,.16), transparent 24%),
-        radial-gradient(circle at 12% 80%, rgba(154,98,53,.18), transparent 30%);
-      pointer-events:none;
-    }
-
-    .hero-copy{
-      display:grid;
-      align-content:center;
-      min-height:620px;
-      max-width:860px;
-    }
-
-    .tag-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:18px;
-    }
-
-    .tag{
-      border:1px solid rgba(196,214,108,.16);
-      border-radius:999px;
-      background:rgba(7,11,6,.62);
-      color:var(--green);
-      padding:9px 12px;
-      font-size:.74rem;
-      font-weight:800;
-      letter-spacing:.17em;
-      text-transform:uppercase;
-    }
-
-    .hero h1{
-      margin:0;
-      font-size:clamp(3.3rem, 7.2vw, 7.2rem);
-      line-height:.84;
-      letter-spacing:.018em;
-      text-shadow:0 12px 44px rgba(0,0,0,.64);
-    }
-
-    .hero .subtitle{
-      margin:16px 0 0;
-      font-family:"Cinzel", serif;
-      font-size:clamp(1.25rem, 2vw, 2rem);
-      color:var(--green-hot);
-      font-style:italic;
-    }
-
-    .hero .hook{
-      max-width:760px;
-      margin:24px 0 0;
-      color:#d8d0b5;
-      font-size:1.12rem;
-      line-height:1.86;
-    }
-
-    .hero .hook strong{color:var(--text-strong)}
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:26px;
-    }
-
-    .hero-panel{
-      align-self:center;
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:rgba(7,11,7,.66);
-      backdrop-filter:blur(14px);
-      box-shadow:0 22px 44px rgba(0,0,0,.34);
-      padding:18px;
-      display:grid;
-      gap:16px;
-    }
-
-    .seal-orbit{
-      position:relative;
-      min-height:310px;
-      border:1px solid rgba(196,214,108,.13);
-      border-radius:24px;
-      display:grid;
-      place-items:center;
-      background:
-        radial-gradient(circle at 50% 50%, rgba(196,214,108,.12), transparent 34%),
-        linear-gradient(180deg, rgba(9,13,8,.66), rgba(4,7,4,.88));
-      overflow:hidden;
-    }
-
-    .seal-orbit::before,
-    .seal-orbit::after{
-      content:"";
-      position:absolute;
-      border-radius:50%;
-      border:1px dashed rgba(196,214,108,.18);
-      inset:12%;
-      animation:spin 34s linear infinite;
-    }
-
-    .seal-orbit::after{
-      inset:22%;
-      border-style:solid;
-      border-color:rgba(196,214,108,.09);
-      animation-duration:48s;
-      animation-direction:reverse;
-    }
-
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    .seal-orbit img{
-      width:min(235px, 68%);
-      aspect-ratio:1/1;
-      border-radius:50%;
-      object-fit:cover;
-      border:1px solid var(--line-strong);
-      box-shadow:0 0 42px rgba(196,214,108,.22);
-      z-index:2;
-      animation:breathe 5s ease-in-out infinite;
-    }
-
-    @keyframes breathe{
-      0%,100%{transform:scale(1)}
-      50%{transform:scale(1.025)}
-    }
-
-    .quick-readouts{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .readout{
-      border:1px solid rgba(196,214,108,.10);
-      border-radius:18px;
-      background:rgba(5,8,5,.62);
-      padding:13px;
-    }
-
-    .readout .label{
-      color:var(--muted-2);
-      font-size:.68rem;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-weight:800;
-      margin-bottom:5px;
-    }
-
-    .readout .value{
-      font-family:"Cinzel", serif;
-      line-height:1.18;
-      color:var(--text-strong);
-    }
-
-    .section{
-      margin-top:22px;
-      border:1px solid var(--line);
-      border-radius:32px;
-      background:linear-gradient(180deg, rgba(9,13,8,.75), rgba(4,7,4,.90));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:18px;
-      padding:26px 26px 0;
-      flex-wrap:wrap;
-    }
-
-    .section h2{
-      margin:8px 0 0;
-      font-size:clamp(2rem,3.6vw,3.45rem);
-      line-height:.95;
-    }
-
-    .section-head p{
-      margin:12px 0 0;
-      color:var(--muted);
-      line-height:1.75;
-      max-width:760px;
-    }
-
-    .section-chip{
-      padding:10px 14px;
-      border:1px solid rgba(196,214,108,.16);
-      border-radius:999px;
-      color:var(--green);
-      background:rgba(7,11,7,.62);
-      font-size:.72rem;
-      font-weight:800;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-
-    .paths{
-      padding:24px 26px 28px;
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:16px;
-    }
-
-    .path-card{
-      min-height:340px;
-      position:relative;
-      isolation:isolate;
-      overflow:hidden;
-      border:1px solid rgba(196,214,108,.14);
-      border-radius:26px;
-      background:#090d08;
-      cursor:pointer;
-      transform:translateY(18px);
-      opacity:0;
-      transition:opacity .6s var(--ease), transform .6s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
-    }
-
-    .path-card.revealed{
-      opacity:1;
-      transform:none;
-    }
-
-    .path-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(4,7,4,.08), rgba(5,8,5,.55) 48%, rgba(3,5,3,.96) 100%),
-        radial-gradient(circle at 82% 16%, rgba(210,229,116,.16), transparent 24%),
-        var(--img) center/cover no-repeat;
-      transform:scale(1.02);
-      filter:saturate(.96) brightness(.78);
-      z-index:-2;
-      transition:transform .55s var(--ease), filter .55s var(--ease);
-    }
-
-    .path-card::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-1;
-      background:linear-gradient(135deg, rgba(196,214,108,.08), transparent 44%, rgba(154,98,53,.09));
-      opacity:.9;
-    }
-
-    .path-card:hover,
-    .path-card.active{
-      transform:translateY(-7px);
-      border-color:rgba(210,229,116,.38);
-      box-shadow:0 24px 46px rgba(0,0,0,.40);
-    }
-
-    .path-card:hover::before,
-    .path-card.active::before{
-      transform:scale(1.08);
-      filter:saturate(1.08) brightness(.9);
-    }
-
-    .path-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      padding:16px;
-    }
-
-    .status{
-      border:1px solid rgba(196,214,108,.17);
-      background:rgba(4,7,4,.68);
-      color:var(--green);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:.66rem;
-      font-weight:900;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .path-body{
-      position:absolute;
-      left:16px;
-      right:16px;
-      bottom:16px;
-      display:grid;
-      gap:12px;
-    }
-
-    .path-card h3{
-      margin:0;
-      font-size:1.62rem;
-      line-height:1.04;
-    }
-
-    .path-card p{
-      margin:0;
-      color:#d2cbb2;
-      line-height:1.65;
-      max-width:94%;
-    }
-
-    .path-actions{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .path-note{
-      color:var(--muted-2);
-      font-size:.72rem;
-      font-weight:800;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .overview-grid{
-      padding:24px 26px 28px;
-      display:grid;
-      grid-template-columns:minmax(0,.9fr) minmax(320px,.55fr);
-      gap:18px;
-    }
-
-    .lore-panel,
-    .status-panel,
-    .guide-card,
-    .fragment-card{
-      border:1px solid rgba(196,214,108,.12);
-      border-radius:26px;
-      background:rgba(7,11,7,.62);
-      padding:22px;
-    }
-
-    .lore-panel p{
-      margin:0 0 16px;
-      color:#d3ccb2;
-      line-height:1.86;
-      font-size:1.02rem;
-    }
-
-    .lore-panel p:last-child{margin-bottom:0}
-
-    .status-panel{
-      display:grid;
-      gap:14px;
-      align-content:start;
-    }
-
-    .status-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:12px;
-      align-items:center;
-      padding:13px 0;
-      border-bottom:1px solid rgba(196,214,108,.10);
-    }
-
-    .status-row:last-child{border-bottom:0}
-
-    .status-name{
-      font-weight:800;
-      color:var(--text-strong);
-    }
-
-    .status-value{
-      color:var(--green);
-      font-family:"Cinzel", serif;
-      white-space:nowrap;
-    }
-
-    .terminal{
-      margin-top:8px;
-      min-height:86px;
-      border:1px solid rgba(196,214,108,.13);
-      border-radius:18px;
-      background:rgba(3,5,3,.66);
-      padding:14px;
-      color:#dcd5bb;
-      line-height:1.6;
-      font-family:"Inter", monospace;
-    }
-
-    .terminal .prefix{
-      color:var(--green);
-      font-weight:900;
-      letter-spacing:.12em;
-    }
-
-    .guide-grid{
-      padding:24px 26px 28px;
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:16px;
-    }
-
-    .guide-card{
-      position:relative;
-      overflow:hidden;
-      min-height:255px;
-      display:grid;
-      align-content:space-between;
-      gap:16px;
-    }
-
-    .guide-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(4,7,4,.30), rgba(4,7,4,.94)),
-        var(--img) center/cover no-repeat;
-      opacity:.36;
-      z-index:0;
-    }
-
-    .guide-card > *{position:relative; z-index:1}
-
-    .guide-number{
-      width:48px;
-      height:48px;
-      display:grid;
-      place-items:center;
-      border:1px solid var(--line);
-      border-radius:50%;
-      background:rgba(4,7,4,.62);
-      color:var(--green-hot);
-      font-family:"Cinzel", serif;
-      font-size:1.3rem;
-      font-weight:800;
-    }
-
-    .guide-card h3{
-      margin:0;
-      font-size:1.55rem;
-      line-height:1.05;
-    }
-
-    .guide-card p{
-      color:var(--muted);
-      line-height:1.72;
-      margin:8px 0 0;
-    }
-
-    .lore-river{
-      padding:24px 26px 30px;
-      display:grid;
-      grid-template-columns:minmax(280px,.42fr) minmax(0,1fr);
-      gap:22px;
-      align-items:start;
-    }
-
-    .river-image{
-      position:sticky;
-      top:96px;
-      min-height:520px;
-      border:1px solid rgba(196,214,108,.12);
-      border-radius:28px;
-      overflow:hidden;
-      background:#090d08;
-    }
-
-    .river-image::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(4,7,4,.05), rgba(4,7,4,.82)),
-        url("Assets/Index/command-sanctum.jpeg") center/cover no-repeat;
-      filter:saturate(1.02) brightness(.82);
-      transform:scale(1.04);
-    }
-
-    .river-image::after{
-      content:"THE SHIP BENEATH THE ARCHIVE";
-      position:absolute;
-      left:18px;
-      right:18px;
-      bottom:18px;
-      color:var(--green);
-      font-size:.78rem;
-      font-weight:900;
-      letter-spacing:.22em;
-      line-height:1.6;
-    }
-
-    .fragments{
-      display:grid;
-      gap:16px;
-    }
-
-    .fragment-card{
-      transform:translateY(18px);
-      opacity:0;
-      transition:opacity .6s var(--ease), transform .6s var(--ease), border-color .25s var(--ease);
-    }
-
-    .fragment-card.revealed{
-      opacity:1;
-      transform:none;
-    }
-
-    .fragment-card:hover{
-      border-color:rgba(210,229,116,.28);
-    }
-
-    .fragment-card h3{
-      margin:8px 0 0;
-      font-size:1.65rem;
-      line-height:1.08;
-    }
-
-    .fragment-card p{
-      margin:12px 0 0;
-      color:#d3ccb2;
-      line-height:1.82;
-      font-size:1.02rem;
-    }
-
-    .files-grid{
-      padding:24px 26px 28px;
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:14px;
-    }
-
-    .file-link{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      text-decoration:none;
-      border:1px solid rgba(196,214,108,.12);
-      border-radius:22px;
-      background:rgba(7,11,7,.62);
-      padding:16px;
-      transition:.25s var(--ease);
-    }
-
-    .file-link:hover{
-      transform:translateY(-3px);
-      border-color:rgba(210,229,116,.32);
-      background:rgba(14,21,12,.82);
-      box-shadow:0 16px 34px rgba(0,0,0,.28);
-    }
-
-    .file-main{
-      display:grid;
-      gap:5px;
-    }
-
-    .file-title{
-      font-family:"Cinzel", serif;
-      font-size:1.22rem;
-      color:var(--text-strong);
-      line-height:1.08;
-    }
-
-    .file-sub{
-      color:var(--muted);
-      line-height:1.5;
-      font-size:.94rem;
-    }
-
-    .file-tag{
-      flex:0 0 auto;
-      color:var(--green);
-      border:1px solid rgba(196,214,108,.13);
-      border-radius:999px;
-      padding:8px 10px;
-      background:rgba(4,7,4,.58);
-      font-size:.68rem;
-      font-weight:900;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .footer{
-      margin-top:22px;
-      border:1px solid var(--line);
-      border-radius:26px;
-      background:rgba(7,11,7,.72);
-      padding:18px 20px;
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-      color:var(--muted);
-      line-height:1.6;
-    }
-
-    .footer strong{color:var(--text-strong)}
-
-    .modal{
-      position:fixed;
-      inset:0;
-      z-index:90;
-      display:grid;
-      place-items:center;
-      padding:18px;
-      background:rgba(2,4,2,.72);
-      backdrop-filter:blur(10px);
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-      transition:.25s ease;
-    }
-
-    .modal.show{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
-    }
-
-    .modal-card{
-      width:min(720px,100%);
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(12,18,11,.98), rgba(5,8,5,.99));
-      box-shadow:var(--shadow);
-      padding:24px;
-      display:grid;
-      gap:14px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .modal-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:radial-gradient(circle at 80% 12%, rgba(210,229,116,.10), transparent 25%);
-      pointer-events:none;
-    }
-
-    .modal-card > *{position:relative; z-index:1}
-
-    .modal-card h3{
-      margin:0;
-      font-size:2rem;
-      line-height:1.04;
-    }
-
-    .modal-card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.82;
-    }
-
-    .modal-actions{
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *,*::before,*::after{animation:none!important; transition:none!important; scroll-behavior:auto!important}
-    }
-
-    @media (max-width:1180px){
-      .hero,
-      .overview-grid,
-      .lore-river{
-        grid-template-columns:1fr;
-      }
-      .hero-copy{min-height:auto; padding:54px 0 20px}
-      .paths{grid-template-columns:repeat(2, minmax(0,1fr))}
-      .river-image{position:relative; top:auto; min-height:360px}
-    }
-
-    @media (max-width:820px){
-      .page{width:min(100vw - 16px, 1440px); padding-top:10px}
-      .topbar{border-radius:24px; align-items:flex-start; flex-direction:column}
-      .nav{justify-content:flex-start}
-      .hero{padding:18px; border-radius:28px; min-height:auto}
-      .hero h1{font-size:clamp(3rem, 15vw, 5rem)}
-      .hero-actions .btn{width:100%}
-      .hero-panel{display:none}
-      .quick-readouts,
-      .paths,
-      .guide-grid,
-      .files-grid{grid-template-columns:1fr}
-      .section-head,
-      .paths,
-      .overview-grid,
-      .guide-grid,
-      .lore-river,
-      .files-grid{padding-left:18px; padding-right:18px}
-      .section{border-radius:28px}
-      .boot-head{align-items:flex-start}
-      .boot-seal{width:72px; height:72px}
-    }
+    @media (max-width:1100px){.hero{grid-template-columns:1fr}.hero-copy{min-height:auto}.paths,.guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-grid,.lore-river{grid-template-columns:1fr}.river-image{position:relative;top:auto}.topbar{border-radius:24px;align-items:flex-start}.files-grid{grid-template-columns:1fr}}
+    @media (max-width:720px){.page{width:min(100% - 18px,1440px)}.topbar{position:relative;top:auto;display:grid;border-radius:22px}.nav{justify-content:flex-start}.hero{padding:22px;border-radius:28px}.quick-readouts,.paths,.guide-grid{grid-template-columns:1fr}.section-head,.paths,.overview-grid,.guide-grid,.lore-river,.files-grid{padding-left:18px;padding-right:18px}.hero h1{font-size:clamp(3rem,14vw,5.4rem)}.floating{left:10px;right:10px;width:auto}.boot-head{align-items:flex-start}.boot-seal{width:72px;height:72px}}
   </style>
 </head>
-<body class="no-scroll">
+
+<body class="no-scroll" data-zone="command">
   <a class="skip-link" href="#main">Skip to archive</a>
   <canvas id="rotCanvas" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
 
-  <div class="boot" id="boot" role="dialog" aria-modal="true" aria-label="Septicarium boot sequence">
+  <div class="boot" id="boot">
     <div class="boot-card">
       <div class="boot-inner">
         <div class="boot-head">
           <div>
-            <div class="kicker">Plague-Intelligence Sanctum // Initial Rouse</div>
+            <div class="kicker">The Rotfather's Mercy // Command Deck Wake-Rite</div>
             <h1>The Septicarium</h1>
-            <p>The vessel wakes. The tally turns. The archive decides whether your curiosity is useful enough to preserve.</p>
+            <p>The ship wakes by chamber, not by command. Dossier chains tighten around names. Annals chains open beneath formations. Relics remain hungry. Battle records keep breathing.</p>
           </div>
           <img class="boot-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
         </div>
-
         <div class="boot-log" id="bootLog"></div>
-
-        <div class="boot-progress" aria-hidden="true">
-          <div class="boot-bar" id="bootBar"></div>
-        </div>
-
+        <div class="boot-progress"><div class="boot-bar" id="bootBar"></div></div>
         <div class="boot-actions">
-          <div class="boot-note">The breach may be skipped. The memory of your arrival will not be.</div>
-          <button class="small-btn" id="skipBoot" type="button">Enter Archive</button>
+          <button class="btn primary" id="skipBoot" type="button">Enter Command Deck</button>
+          <div class="boot-note">Archive division corrected: names to Dossier, war-forms to Annals.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="page" id="main">
+  <main class="page" id="main">
     <header class="topbar">
-      <a class="brand" href="index.html" aria-label="The Septicarium home">
-        <img src="Assets/Index/septicarium-seal.jpeg" alt="">
-        <span>
-          <strong>The Septicarium</strong>
-          <span>Plague-intelligence archive // The Rotfather's Mercy</span>
-        </span>
+      <a class="brand" href="#main" aria-label="The Septicarium home">
+        <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
+        <span><strong>The Septicarium</strong><span>The Rotfather's Mercy // Command Deck</span></span>
       </a>
-
       <nav class="nav" aria-label="Primary navigation">
-        <a href="#paths">Explore</a>
-        <a href="#start">Start Here</a>
-        <a href="#lore">Lore</a>
-        <a href="#files">Files</a>
-        <button type="button" id="randomFile">Random File</button>
+        <a href="#archives">Archives</a>
+        <a href="plaguebound-dossier.html">Dossier</a>
+        <a href="plaguebound-annals.html">Annals</a>
+        <a href="#ship">Ship</a>
+        <a href="#records">Records</a>
+        <button type="button" id="voxToggle">Vox</button>
       </nav>
     </header>
 
-    <section class="hero" aria-labelledby="heroTitle">
+    <section class="hero" data-zone="command" data-vox="The Command Deck is not the archive. It is the wound that remembers where every other wound is kept.">
       <div class="hero-copy">
         <div class="tag-row">
           <span class="tag">Death Guard Archive</span>
           <span class="tag">The Rotfather's Vanguard</span>
-          <span class="tag">Witness Logged</span>
+          <span class="tag">Shipboard Intelligence</span>
         </div>
-
-        <h1 id="heroTitle">The Septicarium</h1>
-        <div class="subtitle">Where mercy is counted in rot.</div>
-
-        <p class="hook">
-          This is the public-facing plague-intelligence archive of <strong>The Rotfather's Mercy</strong>, a diseased war-vessel carrying the records, relics, battle wounds, and forbidden scriptures of <strong>The Rotfather's Vanguard</strong>.
-        </p>
-        <p class="hook">
-          Begin gently. The archive is not organized for your safety. It is organized by what the rot has chosen to remember.
-        </p>
-
+        <h1>The Septicarium</h1>
+        <div class="subtitle">A plague-intelligence archive aboard The Rotfather's Mercy.</div>
+        <p class="hook"><strong>The Septicarium</strong> does not collect clean history. It chains names, war-forms, relics, reversals, and battlefield doctrines inside chambers where memory can rot without becoming useless.</p>
+        <p class="hook">The Command Deck now divides the archive properly: the <strong>Plaguebound Dossier</strong> preserves dangerous names, while the <strong>Plaguebound Annals</strong> preserve the warband's living parts.</p>
         <div class="hero-actions">
-          <a class="btn primary" href="#paths">Choose Your Infection</a>
-          <a class="btn" href="plaguebound-dossier.html">Open Dossier</a>
-          <button class="btn" type="button" id="sealButton">Invoke the Seal</button>
+          <a class="btn primary" href="plaguebound-annals.html">Open The Plaguebound Annals</a>
+          <a class="btn" href="plaguebound-dossier.html">Open The Plaguebound Dossier</a>
+          <a class="btn rust" href="the-pallid-reversal.html">Read The Pallid Reversal</a>
         </div>
       </div>
 
-      <aside class="hero-panel" aria-label="Archive live readout">
+      <aside class="hero-panel">
         <div class="seal-orbit">
           <img src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
         </div>
-
         <div class="quick-readouts">
-          <div class="readout">
-            <div class="label">Vessel</div>
-            <div class="value">The Rotfather's Mercy</div>
-          </div>
-          <div class="readout">
-            <div class="label">Host</div>
-            <div class="value">The Rotfather's Vanguard</div>
-          </div>
-          <div class="readout">
-            <div class="label">Primary Subject</div>
-            <div class="value">Mortivus Classarion</div>
-          </div>
-          <div class="readout">
-            <div class="label">Vessel Time</div>
-            <div class="value" id="vesselTime">--:--:--</div>
-          </div>
+          <div class="readout"><div class="label">Dossier</div><div class="value">Named Subjects</div></div>
+          <div class="readout"><div class="label">Annals</div><div class="value">War-Forms</div></div>
+          <div class="readout"><div class="label">Vault</div><div class="value">Relics</div></div>
+          <div class="readout"><div class="label">Intercepts</div><div class="value">Battles</div></div>
         </div>
       </aside>
     </section>
 
-    <section class="section" id="paths" aria-labelledby="pathsTitle">
+    <section class="section" id="archives" data-zone="annals" data-vox="Names are sealed apart from war-forms. The archive is cleaner when each wound has the correct chamber.">
       <div class="section-head">
         <div>
-          <div class="kicker">Primary Interface</div>
-          <h2 id="pathsTitle">Choose Your Infection</h2>
-          <p>Each chamber gives the reader a different way into the army: character, battle, relic, doctrine, or archive atmosphere. The homepage becomes a command deck instead of a wall of lore.</p>
+          <div class="kicker">Primary Archive Doors</div>
+          <h2>Dossier for Names. Annals for War-Forms.</h2>
+          <p>The index remains the Command Deck. It does not need to hold every future record. Named beings descend into the Dossier. Units, formations, war-patterns, relic systems, and battle histories descend into the Annals.</p>
         </div>
-        <div class="section-chip">Interactive Chambers</div>
+        <div class="section-chip">Archive Division Complete</div>
       </div>
 
-      <div class="paths" id="pathGrid">
-        <article class="path-card" style="--img:url('Assets/Index/command-sanctum.jpeg');" data-title="Command Sanctum" data-copy="The central threshold of the archive. Use this page to understand what The Septicarium is before descending into subject files, relics, and battle fragments." data-link="#overview">
-          <div class="path-top">
-            <span class="status">Start</span>
-            <span class="status">Open</span>
-          </div>
+      <div class="paths">
+        <a class="path-card" href="plaguebound-dossier.html" style="--img:url('Assets/Index/plaguebound-dossier.jpeg')" data-vox="The Dossier preserves named subject files, command entities, rival warlords, and dangerous persons.">
+          <div class="path-top"><span class="status">Named Archive</span></div>
           <div class="path-body">
-            <h3>Command Sanctum</h3>
-            <p>Understand the vessel, the archive, and why these records are still breathing.</p>
-            <div class="path-actions">
-              <a class="small-btn" href="#overview">Open File</a>
-              <span class="path-note">Best first click</span>
-            </div>
+            <h3>The Plaguebound Dossier</h3>
+            <p>Named subject files: Mortivus Classarion, command figures, plague specialists, champions, rival warlords, and individuals dangerous enough to isolate.</p>
+            <div class="path-actions"><span class="path-note">Names / Subjects / Rivals</span><span class="small-btn">Open Dossier</span></div>
           </div>
-        </article>
+        </a>
 
-        <article class="path-card" style="--img:url('Assets/Index/plaguebound-dossier.jpeg');" data-title="Plaguebound Dossier" data-copy="The warband file. This is where command identity, named figures, hierarchy, and internal corruption are preserved for tactical and devotional use." data-link="plaguebound-dossier.html">
-          <div class="path-top">
-            <span class="status">Dossier</span>
-            <span class="status">Open</span>
-          </div>
+        <a class="path-card" href="plaguebound-annals.html" style="--img:url('Assets/Plaguebound%20Annals/plaguebound-annals-hero.png')" data-vox="The Annals preserve units, formations, battlefield doctrine, relic systems, war-patterns, and battle histories.">
+          <div class="path-top"><span class="status">New Chamber</span></div>
           <div class="path-body">
-            <h3>Plaguebound Dossier</h3>
-            <p>Study the warband, its commanders, and the names where rot gathers weight.</p>
-            <div class="path-actions">
-              <a class="small-btn" href="plaguebound-dossier.html">Open File</a>
-              <span class="path-note">Warband Identity</span>
-            </div>
+            <h3>The Plaguebound Annals</h3>
+            <p>The warband's memory engine: unit histories, war-form records, battlefield doctrines, relic systems, narrative battle chronicles, and unwritten formations.</p>
+            <div class="path-actions"><span class="path-note">Units / Formations / Records</span><span class="small-btn">Open Annals</span></div>
           </div>
-        </article>
+        </a>
 
-        <article class="path-card" style="--img:url('Assets/Index/plaguebound-dossiername-crypt.jpeg');" data-title="Mortivus Classarion" data-copy="The central subject file. Mortivus should feel like the anchor for the whole site: not fully explained, not safely ranked, but watched because he is still becoming." data-link="mortivus-classarion.html">
-          <div class="path-top">
-            <span class="status">Subject</span>
-            <span class="status">Open</span>
-          </div>
+        <a class="path-card" href="mortivus-classarion.html" style="--img:url('Assets/Index/command-sanctum.jpeg')" data-vox="Mortivus belongs to the Dossier because his name alters the meaning of the warband around him.">
+          <div class="path-top"><span class="status">Subject File</span></div>
           <div class="path-body">
             <h3>Mortivus Classarion</h3>
-            <p>Enter the primary command record of The Rotfather's Vanguard.</p>
-            <div class="path-actions">
-              <a class="small-btn" href="mortivus-classarion.html">Open File</a>
-              <span class="path-note">Character Core</span>
-            </div>
+            <p>The central named command entity of The Rotfather's Vanguard, preserved as subject file, doctrine wound, and command contagion.</p>
+            <div class="path-actions"><span class="path-note">Command Entity</span><span class="small-btn">Open File</span></div>
           </div>
-        </article>
+        </a>
 
-        <article class="path-card" style="--img:url('Assets/Index/relic-vault.jpeg');" data-title="The Mercy-Sickle" data-copy="The relic entry. This page should feel like forensic examination, sacred dread, and weapon biography all at once." data-link="the-mercy-sickle.html">
-          <div class="path-top">
-            <span class="status">Relic</span>
-            <span class="status">Open</span>
-          </div>
+        <a class="path-card" href="the-mercy-sickle.html" style="--img:url('Assets/Index/relic-vault.jpeg')" data-vox="The relic vault preserves objects whose purpose exceeds their shape.">
+          <div class="path-top"><span class="status">Relic Vault</span></div>
           <div class="path-body">
             <h3>The Mercy-Sickle</h3>
-            <p>Inspect the blade, its doctrine, and the mercy it teaches by cutting.</p>
-            <div class="path-actions">
-              <a class="small-btn" href="the-mercy-sickle.html">Open File</a>
-              <span class="path-note">Relic Horror</span>
-            </div>
+            <p>A sacred weapon record preserved as relic, doctrine, omen, and the cutting edge of Mortivus' will.</p>
+            <div class="path-actions"><span class="path-note">Relic / Weapon / Rite</span><span class="small-btn">Open Vault</span></div>
           </div>
-        </article>
+        </a>
 
-        <article class="path-card" style="--img:url('Assets/Index/battle-intercepts.jpeg');" data-title="The Mercy He Gave" data-copy="A battle-story path through atrocity, testimony, and the strange kindness Death Guard logic pretends to offer." data-link="the-mercy-he-gave.html">
-          <div class="path-top">
-            <span class="status">Battle</span>
-            <span class="status">Open</span>
-          </div>
+        <a class="path-card" href="the-mercy-he-gave.html" style="--img:url('Assets/Index/rot-scriptures.jpeg')" data-vox="The blackbox record remains where corrupted mercy first learned to speak through damage.">
+          <div class="path-top"><span class="status">Blackbox</span></div>
           <div class="path-body">
             <h3>The Mercy He Gave</h3>
-            <p>Read a recovered account of violence mistaken for deliverance.</p>
-            <div class="path-actions">
-              <a class="small-btn" href="the-mercy-he-gave.html">Open File</a>
-              <span class="path-note">Narrative Entry</span>
-            </div>
+            <p>A corrupted Kin record recovered as confession, transmission, and the first proof that mercy can become plague.</p>
+            <div class="path-actions"><span class="path-note">Recovered Signal</span><span class="small-btn">Open Record</span></div>
           </div>
-        </article>
+        </a>
 
-        <article class="path-card" style="--img:url('Assets/Index/battle-interceptsplague-augur-station.jpeg');" data-title="The Pallid Reversal" data-copy="A sealed wound in Mortivus' history. This should function as the page readers visit when they want stakes, mystery, and consequence." data-link="the-pallid-reversal.html">
-          <div class="path-top">
-            <span class="status">Sealed Battle</span>
-            <span class="status">Open</span>
-          </div>
+        <a class="path-card" href="the-pallid-reversal.html" style="--img:url('Assets/Pallid%20Reversal/pallid-reversal-hero.jpeg')" data-vox="Battle chronicles enter the Annals when the field leaves enough evidence to deserve memory.">
+          <div class="path-top"><span class="status">Battle Chronicle</span></div>
           <div class="path-body">
             <h3>The Pallid Reversal</h3>
-            <p>Enter the battle fragment that the archive preserves like a scar.</p>
-            <div class="path-actions">
-              <a class="small-btn" href="the-pallid-reversal.html">Open File</a>
-              <span class="path-note">War Wound</span>
-            </div>
+            <p>An Ork-origin scrap-vox battle chronicle concerning Gorzag Pallkrump's ambush and Mortivus Classarion's costly correction.</p>
+            <div class="path-actions"><span class="path-note">War / Reversal / Ork Record</span><span class="small-btn">Read Chronicle</span></div>
           </div>
-        </article>
+        </a>
       </div>
     </section>
 
-    <section class="section" id="overview" aria-labelledby="overviewTitle">
+    <section class="section" id="archive-division" data-zone="dossier" data-vox="If the record begins with who they are, open the Dossier. If it begins with what they do in war, open the Annals.">
       <div class="section-head">
         <div>
-          <div class="kicker">Public Clarification</div>
-          <h2 id="overviewTitle">What Is The Septicarium?</h2>
-          <p>A clean explanation for new readers, without draining the in-universe tone out of the page.</p>
+          <div class="kicker">Archive Division</div>
+          <h2>Names Are Sealed Apart From War-Forms</h2>
+          <p>The Command Deck no longer carries every record at once. The Septicarium divides memory by function: names enter the Dossier, while formations, relic systems, and battle histories descend into the Annals.</p>
         </div>
-        <div class="section-chip">Archive Status: Breathing</div>
+        <div class="section-chip">Index Correction Complete</div>
       </div>
 
       <div class="overview-grid">
-        <div class="lore-panel">
-          <p><strong>The Septicarium</strong> is an in-universe Death Guard archive built around The Rotfather's Vanguard, a plague warband operating from the vessel known as <strong>The Rotfather's Mercy</strong>.</p>
-          <p>Every page is treated as a recovered file: a battle record, a relic examination, a command entry, a plaguebound dossier, or a corrupted scripture.</p>
-          <p>Some records are tactical. Some are devotional. Some should not have survived long enough to be read.</p>
-        </div>
+        <article class="lore-panel">
+          <p><strong>The Plaguebound Dossier</strong> preserves named entities. Mortivus Classarion, command figures, plague specialists, champions, rivals, and recurring enemies belong there once their names become dangerous enough to require isolation.</p>
+          <p><strong>The Plaguebound Annals</strong> preserve the warband's living parts: Plague Marines, Poxwalkers, Terminator Orders, Daemon Engines, Armored Relics, contagion systems, narrative battle records, and future unit chronicles.</p>
+          <p>A name becomes a subject file. A formation becomes an Annals record. A weapon enters the reliquary. A battle becomes a chronicle only when the field leaves enough evidence behind.</p>
+        </article>
 
-        <aside class="status-panel" aria-label="Current archive status">
-          <div class="kicker">Current Archive Status</div>
-          <div class="status-row"><span class="status-name">Warband Dossier</span><span class="status-value">Active</span></div>
-          <div class="status-row"><span class="status-name">Relic Vault</span><span class="status-value">Unstable</span></div>
-          <div class="status-row"><span class="status-name">Battle Intercepts</span><span class="status-value">Partial</span></div>
-          <div class="status-row"><span class="status-name">Rot Scriptures</span><span class="status-value">Withheld</span></div>
-          <div class="status-row"><span class="status-name">Ship Systems</span><span class="status-value">Breathing</span></div>
-          <div class="terminal" id="terminalLine"><span class="prefix">VOX:</span> The archive has detected you.</div>
+        <aside class="status-panel">
+          <div class="status-row"><div class="status-name">Named Entities</div><div class="status-value">Dossier</div></div>
+          <div class="status-row"><div class="status-name">Units & Formations</div><div class="status-value">Annals</div></div>
+          <div class="status-row"><div class="status-name">Relics & Instruments</div><div class="status-value">Vault</div></div>
+          <div class="status-row"><div class="status-name">Wars & Reversals</div><div class="status-value">Chronicles</div></div>
+          <div class="terminal"><span class="prefix">SEPTICARIUM RULE:</span> If the record begins with who they are, open the Dossier. If the record begins with what they do in war, open the Annals.</div>
         </aside>
       </div>
     </section>
 
-    <section class="section" id="start" aria-labelledby="startTitle">
+    <section class="section" id="ship" data-zone="command" data-vox="The ship is not backdrop. The ship is the archive's body.">
       <div class="section-head">
         <div>
-          <div class="kicker">Reader Path</div>
-          <h2 id="startTitle">New to the Archive? Begin Here.</h2>
-          <p>This gives visitors a simple reading order so they do not feel lost inside the lore.</p>
+          <div class="kicker">Shipboard Intelligence</div>
+          <h2>The Rotfather's Mercy Carries More Than War</h2>
+          <p>The Septicarium is not a clean repository placed aboard a vessel. It is part of the ship's anatomy: command sanctum, reliquary, vox-wound, battle archive, and plague memory system braided into the same rusted body.</p>
         </div>
-        <div class="section-chip">Recommended Descent</div>
-      </div>
-
-      <div class="guide-grid">
-        <article class="guide-card" style="--img:url('Assets/Index/plaguebound-dossiername-crypt.jpeg');">
-          <div class="guide-number">I</div>
-          <div>
-            <h3>Mortivus Classarion</h3>
-            <p>Begin with the central subject. Learn who the archive is watching and why it refuses to fully define him.</p>
-          </div>
-          <a class="small-btn" href="mortivus-classarion.html">Read First</a>
-        </article>
-
-        <article class="guide-card" style="--img:url('Assets/Index/relic-vault.jpeg');">
-          <div class="guide-number">II</div>
-          <div>
-            <h3>The Mercy-Sickle</h3>
-            <p>Move from commander to instrument. See how the warband turns violence into doctrine.</p>
-          </div>
-          <a class="small-btn" href="the-mercy-sickle.html">Read Second</a>
-        </article>
-
-        <article class="guide-card" style="--img:url('Assets/Index/battle-interceptscampaign-intelligence.jpeg');">
-          <div class="guide-number">III</div>
-          <div>
-            <h3>The Pallid Reversal</h3>
-            <p>Then read the wound. This is where history stops feeling like a record and starts feeling like a curse.</p>
-          </div>
-          <a class="small-btn" href="the-pallid-reversal.html">Read Third</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="lore" aria-labelledby="loreTitle">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Vertical Lore Scroll</div>
-          <h2 id="loreTitle">The Ship Beneath the Archive</h2>
-          <p>The deeper lore now stretches vertically in short fragments, giving the reader atmosphere without overwhelming the first screen.</p>
-        </div>
-        <div class="section-chip">Scroll-Witness Format</div>
+        <div class="section-chip">The Ship Beneath the Archive</div>
       </div>
 
       <div class="lore-river">
-        <div class="river-image" aria-hidden="true"></div>
+        <div class="river-image"></div>
         <div class="fragments">
-          <article class="fragment-card">
-            <div class="kicker">I // The Vessel</div>
-            <h3>The Rotfather's Mercy</h3>
-            <p>The vessel does not sail. It advances like a wound learning geography. Decks breathe beneath plated rust. Bulkheads sweat old war. Somewhere below the command sanctum, engines pulse with the patience of an organ that has mistaken machinery for flesh.</p>
-          </article>
-
-          <article class="fragment-card">
-            <div class="kicker">II // The Archive</div>
-            <h3>Memory as Contagion</h3>
-            <p>The Septicarium does not preserve knowledge to keep it safe. It preserves knowledge so it can ripen. Every battlefield report, every relic sketch, every broken prayer and dying testimony is weighed for future usefulness.</p>
-          </article>
-
-          <article class="fragment-card">
-            <div class="kicker">III // The Warband</div>
-            <h3>The Rotfather's Vanguard</h3>
-            <p>The warband does not hurry toward conquest. It lets resistance exhaust itself. It lets hope ferment. By the time the Vanguard arrives in force, many worlds have already begun explaining their own surrender as wisdom.</p>
-          </article>
-
-          <article class="fragment-card">
-            <div class="kicker">IV // The Lie of Mercy</div>
-            <h3>What the Survivors Say</h3>
-            <p>Recovered witnesses often describe the same final confusion: that the pain lessened when they stopped resisting. The archive records this as doctrinal evidence. The living call it horror. The Septicarium calls it mercy becoming legible.</p>
-          </article>
-
-          <article class="fragment-card">
-            <div class="kicker">V // The Warning</div>
-            <h3>Do Not Trust Clean Text</h3>
-            <p>Clean records are the easiest to corrupt. A stain announces itself. A wound has honesty. But a perfect sentence can carry infection across a thousand minds before the first reader notices the fever.</p>
-          </article>
+          <article class="fragment-card"><div class="kicker">Command Deck</div><h3>The Archive Has a Bridge</h3><p>The Command Deck routes the visitor through the ship's memory. It does not hold every record. It decides which chamber should receive the wound.</p></article>
+          <article class="fragment-card"><div class="kicker">Dossier Chain</div><h3>Names Are Dangerous Enough to Cage</h3><p>A named entity is not merely important. A named entity can alter the behavior of nearby records. The Dossier exists because some names contaminate whatever text surrounds them.</p></article>
+          <article class="fragment-card"><div class="kicker">Annals Chain</div><h3>War-Forms Need Their Own Memory</h3><p>A unit is not a number. A formation is not a list. The Annals preserve how a war-form moves, kills, endures, fails, associates, and becomes myth inside The Rotfather's Vanguard.</p></article>
+          <article class="fragment-card"><div class="kicker">Reliquary Chain</div><h3>Objects Learn Doctrine</h3><p>Some weapons are not tools. Some bells are not signals. Some relics are battlefield laws with handles, blades, chains, and names.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="files" aria-labelledby="filesTitle">
+    <section class="section" id="records" data-zone="battle" data-vox="The archive does not require every battle to be written now. It requires every future battle to know where it belongs.">
       <div class="section-head">
         <div>
-          <div class="kicker">Recovered Files</div>
-          <h2 id="filesTitle">Opened Chambers</h2>
-          <p>Every link below points to an existing page in the repository so the index functions as a true hub.</p>
+          <div class="kicker">Record Routing</div>
+          <h2>Future Growth Without Crowding the Index</h2>
+          <p>The Command Deck remains clean because every future record has a destination. Unit research begins in the Annals. Named characters deepen the Dossier. Full narrative battles become chronicles when they earn the weight.</p>
         </div>
-        <div class="section-chip">Public Access</div>
+        <div class="section-chip">Ready for Future Pages</div>
       </div>
 
+      <div class="guide-grid">
+        <article class="guide-card" style="--img:url('Assets/Plaguebound%20Annals/annals-plaguebound-infantry.png')"><div class="guide-number">I</div><div><h3>Begin With One War-Form</h3><p>Plague Marines, Terminators, engines, or support figures can each receive a full cinematic record inside the Annals.</p></div></article>
+        <article class="guide-card" style="--img:url('Assets/Plaguebound%20Annals/annals-battle-records.png')"><div class="guide-number">II</div><div><h3>Let Battles Become Evidence</h3><p>Future games and narrative conflicts can be added later as records, not forced retroactive summaries.</p></div></article>
+        <article class="guide-card" style="--img:url('Assets/Plaguebound%20Annals/annals-command-entities.png')"><div class="guide-number">III</div><div><h3>Name Only What Earns a File</h3><p>Named characters enter the Dossier when their actions, offices, rivalries, or mutations make them dangerous enough to preserve.</p></div></article>
+      </div>
+    </section>
+
+    <section class="section" id="files" data-zone="annals" data-vox="The file doors are simple because the chambers behind them are not.">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Direct File Access</div>
+          <h2>Open the Active Chambers</h2>
+          <p>These are the current sealed pathways through the ship. The Annals now becomes the central home for future unit and formation records.</p>
+        </div>
+        <div class="section-chip">Active Files</div>
+      </div>
       <div class="files-grid">
-        <a class="file-link" href="plaguebound-dossier.html">
-          <span class="file-main"><span class="file-title">Plaguebound Dossier</span><span class="file-sub">Warband hierarchy, named subjects, and plaguebound records.</span></span>
-          <span class="file-tag">Open</span>
-        </a>
-        <a class="file-link" href="mortivus-classarion.html">
-          <span class="file-main"><span class="file-title">Mortivus Classarion</span><span class="file-sub">Primary subject file and command identity.</span></span>
-          <span class="file-tag">Open</span>
-        </a>
-        <a class="file-link" href="the-mercy-sickle.html">
-          <span class="file-main"><span class="file-title">The Mercy-Sickle</span><span class="file-sub">Relic examination and weapon doctrine.</span></span>
-          <span class="file-tag">Open</span>
-        </a>
-        <a class="file-link" href="the-mercy-he-gave.html">
-          <span class="file-main"><span class="file-title">The Mercy He Gave</span><span class="file-sub">Recovered atrocity record and witness account.</span></span>
-          <span class="file-tag">Open</span>
-        </a>
-        <a class="file-link" href="the-pallid-reversal.html">
-          <span class="file-main"><span class="file-title">The Pallid Reversal</span><span class="file-sub">Sealed battle fragment and historical wound.</span></span>
-          <span class="file-tag">Open</span>
-        </a>
-        <a class="file-link" href="index.html">
-          <span class="file-main"><span class="file-title">Return to Command Sanctum</span><span class="file-sub">Reopen the main archive threshold.</span></span>
-          <span class="file-tag">Home</span>
-        </a>
+        <a class="file-link" href="plaguebound-annals.html"><div class="file-main"><div class="file-title">The Plaguebound Annals</div><div class="file-sub">Unit histories, war-form records, battlefield doctrines, relic systems, and battle chronicles.</div></div><div class="file-tag">Annals</div></a>
+        <a class="file-link" href="plaguebound-dossier.html"><div class="file-main"><div class="file-title">The Plaguebound Dossier</div><div class="file-sub">Named subject files, command entities, rivals, specialists, and dangerous persons.</div></div><div class="file-tag">Dossier</div></a>
+        <a class="file-link" href="mortivus-classarion.html"><div class="file-main"><div class="file-title">Mortivus Classarion</div><div class="file-sub">Primary command subject file for The Rotfather's Vanguard.</div></div><div class="file-tag">Subject</div></a>
+        <a class="file-link" href="the-mercy-sickle.html"><div class="file-main"><div class="file-title">The Mercy-Sickle</div><div class="file-sub">Relic weapon record and sacred instrument of war.</div></div><div class="file-tag">Relic</div></a>
+        <a class="file-link" href="the-mercy-he-gave.html"><div class="file-main"><div class="file-title">The Mercy He Gave</div><div class="file-sub">Recovered blackbox transmission and corrupted mercy record.</div></div><div class="file-tag">Blackbox</div></a>
+        <a class="file-link" href="the-pallid-reversal.html"><div class="file-main"><div class="file-title">The Pallid Reversal</div><div class="file-sub">Ork-origin battle chronicle and scrap-vox reversal record.</div></div><div class="file-tag">Chronicle</div></a>
       </div>
     </section>
 
     <footer class="footer">
-      <div><strong>Visitor Adjudication:</strong> The archive has taken notice. Whether this proves useful, instructive, or terminal remains under review.</div>
-      <div>THE SEPTICARIUM // THE ROTFATHER'S MERCY // PUBLIC ECHO</div>
+      <div>The Septicarium // The Rotfather's Mercy // The Rotfather's Vanguard</div>
+      <div><a href="plaguebound-annals.html">The Plaguebound Annals</a> · <a href="plaguebound-dossier.html">The Plaguebound Dossier</a> · <a href="#main">Return to Command Deck</a></div>
     </footer>
-  </div>
+  </main>
 
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="kicker" id="modalKicker">Archive Response</div>
-      <h3 id="modalTitle">Seal Answered</h3>
-      <p id="modalCopy">The Septicarium acknowledges your request. That is not the same as granting it.</p>
-      <div class="modal-actions">
-        <a class="btn primary" href="#paths" id="modalLink">Continue Descent</a>
-        <button class="btn" type="button" id="closeModal">Close</button>
-      </div>
-    </div>
-  </div>
+  <aside class="floating" id="floating">
+    <div class="floating-head"><strong>Command Vox</strong><button type="button" id="closeVox">×</button></div>
+    <div class="floating-body" id="voxText">The Command Deck is not the archive. It is the wound that remembers where every other wound is kept.</div>
+  </aside>
 
   <script>
-    const bootLines = [
-      "Seal-threads tasting witness presence...",
-      "Vessel designation recovered: The Rotfather's Mercy.",
-      "Public echo stabilized around plague-intelligence sanctum.",
-      "Subject file located: Mortivus Classarion.",
-      "Relic trace confirmed: The Mercy-Sickle.",
-      "Battle wound indexed: The Pallid Reversal.",
-      "Visitor curiosity entered into low-priority tally.",
-      "Archive conclusion: access permitted. Safety not implied."
+    const boot=document.getElementById('boot');
+    const bootLog=document.getElementById('bootLog');
+    const bootBar=document.getElementById('bootBar');
+    const bootLines=[
+      ['001','Command Deck respiration detected.'],
+      ['002','Dossier chain corrected: named subjects only.'],
+      ['003','Annals chain opened: units, formations, war-forms.'],
+      ['004','Reliquary remains sealed around sacred instruments.'],
+      ['005','Battle chronicles routed through future Annals records.'],
+      ['006','Index no longer crowded. Ship doors listening.']
     ];
-
-    const modalData = {
-      seal: {
-        kicker:"Archive Response",
-        title:"Seal Invocation Accepted",
-        copy:"The sigil answers in low corrosion. Your presence has been folded deeper into the archive's memory. No new authority has been granted. The feeling of having been measured, however, is authentic.",
-        link:"#paths",
-        linkText:"Choose Infection"
+    let bootIndex=0;
+    function finishBoot(){boot.classList.add('hide');document.body.classList.remove('no-scroll');setTimeout(()=>boot.remove(),850)}
+    const bootTimer=setInterval(()=>{
+      if(bootIndex<bootLines.length){
+        const line=document.createElement('div');
+        line.className='boot-line';
+        line.innerHTML=`<span>${bootLines[bootIndex][0]}</span><div>${bootLines[bootIndex][1]}</div>`;
+        bootLog.appendChild(line);
+        bootBar.style.width=((bootIndex+1)/bootLines.length*100)+'%';
+        bootIndex++;
+      } else {
+        clearInterval(bootTimer);
+        setTimeout(finishBoot,550);
       }
-    };
+    },360);
+    document.getElementById('skipBoot').addEventListener('click',()=>{clearInterval(bootTimer);bootBar.style.width='100%';finishBoot()});
 
-    const terminalLines = [
-      "The archive has detected you.",
-      "The ship remembers prior visitors.",
-      "Mercy signature spreading through lower decks.",
-      "Do not trust clean text.",
-      "The seal is not a symbol. It is a mouth holding still.",
-      "A file opens only when the wound beneath it ripens."
-    ];
+    const voxText=document.getElementById('voxText');
+    const floating=document.getElementById('floating');
+    document.getElementById('closeVox').addEventListener('click',()=>floating.style.display='none');
+    document.getElementById('voxToggle').addEventListener('click',()=>{floating.style.display='block';voxText.textContent='The Dossier names the dangerous. The Annals remembers the war.'});
 
-    const randomDestinations = [
-      "plaguebound-dossier.html",
-      "mortivus-classarion.html",
-      "the-mercy-sickle.html",
-      "the-mercy-he-gave.html",
-      "the-pallid-reversal.html"
-    ];
+    const revealObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('revealed')}})
+    },{threshold:.16});
+    document.querySelectorAll('.path-card,.fragment-card').forEach(el=>revealObserver.observe(el));
 
-    const boot = document.getElementById("boot");
-    const bootLog = document.getElementById("bootLog");
-    const bootBar = document.getElementById("bootBar");
-    const skipBoot = document.getElementById("skipBoot");
-
-    function completeBoot(){
-      boot.classList.add("hide");
-      document.body.classList.remove("no-scroll");
-      setTimeout(() => boot.remove(), 850);
-    }
-
-    function runBoot(){
-      let index = 0;
-      let progress = 0;
-
-      const lineTimer = setInterval(() => {
-        if(index >= bootLines.length){
-          clearInterval(lineTimer);
-          return;
-        }
-        const row = document.createElement("div");
-        row.className = "boot-line";
-        row.innerHTML = `<span>LOG</span><div>${bootLines[index]}</div>`;
-        bootLog.appendChild(row);
-        index++;
-      }, 360);
-
-      const progressTimer = setInterval(() => {
-        progress += 5;
-        bootBar.style.width = Math.min(progress, 100) + "%";
-        if(progress >= 100){
-          clearInterval(progressTimer);
-          setTimeout(completeBoot, 450);
-        }
-      }, 115);
-
-      skipBoot.addEventListener("click", () => {
-        clearInterval(lineTimer);
-        clearInterval(progressTimer);
-        bootBar.style.width = "100%";
-        completeBoot();
-      });
-    }
-
-    runBoot();
-
-    const vesselTime = document.getElementById("vesselTime");
-    function tick(){
-      vesselTime.textContent = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit", second:"2-digit"});
-    }
-    tick();
-    setInterval(tick, 1000);
-
-    const modal = document.getElementById("modal");
-    const modalKicker = document.getElementById("modalKicker");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalCopy = document.getElementById("modalCopy");
-    const modalLink = document.getElementById("modalLink");
-    const closeModal = document.getElementById("closeModal");
-
-    function openModal(data){
-      modalKicker.textContent = data.kicker || "Archive Response";
-      modalTitle.textContent = data.title;
-      modalCopy.textContent = data.copy;
-      modalLink.href = data.link || "#paths";
-      modalLink.textContent = data.linkText || "Continue";
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function hideModal(){
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    document.getElementById("sealButton").addEventListener("click", () => openModal(modalData.seal));
-    closeModal.addEventListener("click", hideModal);
-    modal.addEventListener("click", (event) => {
-      if(event.target === modal) hideModal();
-    });
-    document.addEventListener("keydown", (event) => {
-      if(event.key === "Escape") hideModal();
-    });
-
-    document.querySelectorAll(".path-card").forEach(card => {
-      card.addEventListener("click", event => {
-        if(event.target.closest("a")) return;
-        openModal({
-          kicker:"Chamber Preview",
-          title:card.dataset.title,
-          copy:card.dataset.copy,
-          link:card.dataset.link,
-          linkText:card.dataset.link && card.dataset.link.startsWith("#") ? "Go to Section" : "Open File"
-        });
-      });
-    });
-
-    document.getElementById("randomFile").addEventListener("click", () => {
-      const next = randomDestinations[Math.floor(Math.random() * randomDestinations.length)];
-      window.location.href = next;
-    });
-
-    const terminalLine = document.getElementById("terminalLine");
-    let terminalIndex = 0;
-    setInterval(() => {
-      terminalIndex = (terminalIndex + 1) % terminalLines.length;
-      terminalLine.style.opacity = "0";
-      terminalLine.style.transform = "translateY(6px)";
-      setTimeout(() => {
-        terminalLine.innerHTML = `<span class="prefix">VOX:</span> ${terminalLines[terminalIndex]}`;
-        terminalLine.style.opacity = "1";
-        terminalLine.style.transform = "translateY(0)";
-      }, 180);
-    }, 4200);
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+    const zoneObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
         if(entry.isIntersecting){
-          entry.target.classList.add("revealed");
-          observer.unobserve(entry.target);
+          const zone=entry.target.dataset.zone;
+          const vox=entry.target.dataset.vox;
+          if(zone)document.body.dataset.zone=zone;
+          if(vox)voxText.textContent=vox;
         }
-      });
-    }, {threshold:.18});
-
-    document.querySelectorAll(".path-card, .fragment-card").forEach(el => observer.observe(el));
-
-    const hero = document.querySelector(".hero");
-    document.addEventListener("mousemove", event => {
-      const x = (event.clientX / window.innerWidth - .5) * 10;
-      const y = (event.clientY / window.innerHeight - .5) * 10;
-      hero.style.transform = `translate(${x * -.08}px, ${y * -.08}px)`;
+      })
+    },{threshold:.35});
+    document.querySelectorAll('[data-zone]').forEach(el=>zoneObserver.observe(el));
+    document.querySelectorAll('[data-vox]').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{voxText.textContent=el.dataset.vox; if(el.dataset.zone)document.body.dataset.zone=el.dataset.zone;});
     });
 
-    const canvas = document.getElementById("rotCanvas");
-    const ctx = canvas.getContext("2d");
-    const mouse = {x:window.innerWidth/2, y:window.innerHeight/2};
-    let particles = [];
-
-    function resizeCanvas(){
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(window.innerWidth * ratio);
-      canvas.height = Math.floor(window.innerHeight * ratio);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(ratio,0,0,ratio,0,0);
-      createParticles();
+    const canvas=document.getElementById('rotCanvas');
+    const ctx=canvas.getContext('2d');
+    let motes=[];
+    function resize(){
+      const r=Math.min(devicePixelRatio||1,2);
+      canvas.width=innerWidth*r;canvas.height=innerHeight*r;
+      canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';
+      ctx.setTransform(r,0,0,r,0,0);
+      motes=Array.from({length:Math.min(170,Math.floor(innerWidth/8))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2.5+.4,v:Math.random()*.34+.035,d:Math.random()*.34-.17,a:Math.random()*Math.PI*2,t:Math.random()>.74?'spark':Math.random()>.48?'spore':'ash'}));
     }
-
-    function createParticles(){
-      const count = Math.max(80, Math.floor(window.innerWidth / 15));
-      particles = Array.from({length:count}, () => ({
-        x:Math.random() * window.innerWidth,
-        y:Math.random() * window.innerHeight,
-        r:Math.random() * 2.4 + .6,
-        vx:(Math.random() - .5) * .32,
-        vy:(Math.random() - .5) * .26 - .08,
-        a:Math.random() * .45 + .12,
-        p:Math.random() * Math.PI * 2,
-        sigil:Math.random() > .90
-      }));
-    }
-
-    function drawSigil(p){
-      ctx.save();
-      ctx.translate(p.x,p.y);
-      ctx.rotate(Date.now() * .00012 + p.p);
-      ctx.strokeStyle = `rgba(198,214,108,${p.a * .52})`;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(0,0,p.r * 3,0,Math.PI*2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(-p.r*3,0);
-      ctx.lineTo(p.r*3,0);
-      ctx.moveTo(0,-p.r*3);
-      ctx.lineTo(0,p.r*3);
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function animate(){
-      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-      for(const p of particles){
-        p.p += .012;
-        const dx = mouse.x - p.x;
-        const dy = mouse.y - p.y;
-        const dist = Math.hypot(dx,dy);
-        if(dist < 135){
-          p.x -= dx * .0022;
-          p.y -= dy * .0022;
-        }
-        p.x += p.vx + Math.sin(p.p) * .11;
-        p.y += p.vy + Math.cos(p.p * .7) * .09;
-        if(p.x < -20) p.x = window.innerWidth + 20;
-        if(p.x > window.innerWidth + 20) p.x = -20;
-        if(p.y < -20) p.y = window.innerHeight + 20;
-        if(p.y > window.innerHeight + 20) p.y = -20;
-
-        if(p.sigil){
-          drawSigil(p);
-        } else {
-          const pulse = .36 + Math.sin(p.p) * .08;
-          ctx.beginPath();
-          ctx.fillStyle = `rgba(198,214,108,${p.a * pulse})`;
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = "rgba(198,214,108,.25)";
-          ctx.arc(p.x,p.y,p.r + Math.sin(p.p) * .35,0,Math.PI*2);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        }
+    function draw(){
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      for(const p of motes){
+        p.y-=p.v;p.x+=Math.sin(p.a)*.14+p.d;p.a+=.01;
+        if(p.y<-20){p.y=innerHeight+20;p.x=Math.random()*innerWidth}
+        if(p.x<-20)p.x=innerWidth+20;if(p.x>innerWidth+20)p.x=-20;
+        const col=p.t==='spark'?'184,154,85':p.t==='spore'?'192,209,93':'170,163,134';
+        const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.s*8);
+        g.addColorStop(0,`rgba(${col},.18)`);g.addColorStop(.48,`rgba(${col},.045)`);g.addColorStop(1,`rgba(${col},0)`);
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.s*6,0,Math.PI*2);ctx.fill();
       }
-      requestAnimationFrame(animate);
+      requestAnimationFrame(draw);
     }
-
-    window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("mousemove", event => {
-      mouse.x = event.clientX;
-      mouse.y = event.clientY;
-    });
-
-    resizeCanvas();
-    animate();
+    resize();draw();addEventListener('resize',resize);
   </script>
 </body>
 </html>
