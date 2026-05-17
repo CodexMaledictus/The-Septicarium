@@ -965,6 +965,13 @@
       .whisper-box{left:8px;right:8px;width:auto}
       .top-shell{top:6px}
     }
+  
+
+    /* Immersion fix: remove floating whisper panel so relic/background imagery stays unobstructed */
+    .whisper-box{
+      display:none !important;
+    }
+
   </style>
 </head>
 <body class="locked" data-risk="sealed">
@@ -1010,7 +1017,6 @@
           <a href="#provenance">Provenance</a>
           <a href="#motions">Four Motions</a>
           <a href="#battle">Perfumed Refusal</a>
-          <button type="button" id="whisperButton">Whisper</button>
         </nav>
       </div>
 
