@@ -1222,11 +1222,646 @@
       .boot-head{align-items:flex-start}
       .boot-seal{width:74px;height:74px;border-radius:18px}
     }
+  
+
+    /* ============================================================
+       ELITE EXPANSION LAYER
+       Preserves original Dossier architecture and adds subject-custody depth.
+    ============================================================ */
+
+    #redactionCanvas,
+    #threadCanvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+    }
+
+    #redactionCanvas{
+      z-index:0;
+      opacity:.38;
+      mix-blend-mode:screen;
+    }
+
+    #threadCanvas{
+      z-index:2;
+      opacity:.45;
+      mix-blend-mode:screen;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+      opacity:.13;
+      background:
+        linear-gradient(90deg, transparent 0 7%, rgba(198,216,112,.06) 7.15%, transparent 7.3% 92.5%, rgba(198,216,112,.04) 92.8%, transparent 93%),
+        radial-gradient(circle at 50% 0%, rgba(200,220,98,.12), transparent 34%);
+      mix-blend-mode:screen;
+    }
+
+    .boot-card{
+      width:min(1040px,100%);
+    }
+
+    .boot-card::after{
+      content:"SUBJECT CUSTODY // NAME-CRYPT // RECORDABLE FACES ONLY";
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:14px;
+      color:rgba(200,220,98,.22);
+      font-size:.62rem;
+      letter-spacing:.30em;
+      font-weight:900;
+      text-transform:uppercase;
+      text-align:center;
+      pointer-events:none;
+    }
+
+    .boot-log{
+      position:relative;
+    }
+
+    .boot-log::before{
+      content:"";
+      position:absolute;
+      inset:10px;
+      border:1px dashed rgba(198,216,112,.10);
+      border-radius:16px;
+      pointer-events:none;
+    }
+
+    .dossier-oath{
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:
+        linear-gradient(135deg,rgba(12,18,11,.82),rgba(5,8,5,.94)),
+        radial-gradient(circle at 12% 0%,rgba(218,235,128,.08),transparent 28%);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(320px,.42fr);
+      gap:0;
+    }
+
+    .oath-copy{
+      padding:clamp(22px,4vw,42px);
+    }
+
+    .oath-copy h2{
+      margin:8px 0 12px;
+      font-size:clamp(2rem,4vw,4rem);
+      line-height:.94;
+    }
+
+    .oath-copy p{
+      margin:0 0 14px;
+      color:#d8cfb4;
+      line-height:1.84;
+      max-width:94ch;
+    }
+
+    .oath-side{
+      min-height:360px;
+      border-left:1px solid rgba(198,216,112,.12);
+      background:
+        linear-gradient(180deg, rgba(4,7,4,.10), rgba(4,7,4,.80)),
+        url("Assets/Plaguebound-Dossier/name-crypt.jpeg") center/cover no-repeat;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .oath-side::before,
+    .oath-side::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      border:1px dashed rgba(218,235,128,.18);
+      inset:14%;
+      animation:spin 55s linear infinite;
+    }
+
+    .oath-side::after{
+      inset:28%;
+      animation-duration:38s;
+      animation-direction:reverse;
+      border-style:solid;
+      opacity:.6;
+    }
+
+    .oath-side .image-label{
+      font-size:.66rem;
+      bottom:20px;
+    }
+
+    .pressure-ribbon{
+      margin-top:22px;
+      border:1px solid rgba(198,216,112,.16);
+      border-radius:999px;
+      background:rgba(6,10,6,.74);
+      box-shadow:0 18px 44px rgba(0,0,0,.32);
+      padding:11px 14px;
+      display:grid;
+      grid-template-columns:180px 1fr 190px;
+      gap:14px;
+      align-items:center;
+      backdrop-filter:blur(10px);
+    }
+
+    .pressure-ribbon .ribbon-title{
+      color:var(--acid);
+      font-size:.62rem;
+    }
+
+    .pressure-ribbon .ribbon-copy{
+      color:#d8cfb4;
+      line-height:1.48;
+      font-size:.92rem;
+    }
+
+    .pressure-track{
+      height:10px;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+
+    .pressure-fill{
+      display:block;
+      height:100%;
+      width:26%;
+      background:linear-gradient(90deg,var(--blood),var(--rust),var(--rot),var(--acid-hot));
+      box-shadow:0 0 22px rgba(218,235,128,.30);
+      transition:width .45s var(--ease);
+    }
+
+    .name-custody-wall{
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:
+        linear-gradient(180deg, rgba(9,13,8,.76), rgba(4,7,4,.92)),
+        radial-gradient(circle at 84% 0%,rgba(200,220,98,.08),transparent 28%);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .custody-head{
+      padding:26px 26px 0;
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .custody-head h2{
+      margin:8px 0 0;
+      font-size:clamp(2rem,3.6vw,3.6rem);
+      line-height:.94;
+    }
+
+    .custody-head p{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.75;
+      max-width:850px;
+    }
+
+    .drawer-grid{
+      padding:24px 26px 28px;
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .drawer{
+      position:relative;
+      min-height:210px;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:14px 14px 24px 24px;
+      background:
+        linear-gradient(180deg,rgba(30,34,19,.74),rgba(6,9,6,.94));
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      overflow:hidden;
+      cursor:pointer;
+      transition:transform .24s var(--ease), border-color .24s var(--ease), box-shadow .24s var(--ease);
+    }
+
+    .drawer::before{
+      content:"";
+      position:absolute;
+      left:16px;
+      top:-1px;
+      width:46%;
+      height:30px;
+      border:1px solid rgba(198,216,112,.15);
+      border-bottom:0;
+      border-radius:13px 13px 0 0;
+      background:rgba(38,43,22,.86);
+    }
+
+    .drawer::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,transparent,rgba(0,0,0,.70)),
+        var(--drawer-img) center/cover no-repeat;
+      opacity:.32;
+      transition:.35s var(--ease);
+    }
+
+    .drawer:hover{
+      transform:translateY(-6px);
+      border-color:var(--line-strong);
+      box-shadow:var(--glow);
+    }
+
+    .drawer:hover::after{
+      opacity:.52;
+      transform:scale(1.05);
+    }
+
+    .drawer > *{
+      position:relative;
+      z-index:2;
+    }
+
+    .drawer h3{
+      margin:0 0 8px;
+      color:var(--text-strong);
+      font-size:1.22rem;
+      line-height:1.06;
+    }
+
+    .drawer p{
+      margin:0;
+      color:#d4ccb0;
+      line-height:1.55;
+      font-size:.94rem;
+    }
+
+    .drawer .drawer-mark{
+      position:absolute;
+      top:8px;
+      left:26px;
+      color:var(--acid);
+      font-size:.45rem;
+      z-index:3;
+    }
+
+    .drawer .seal-state{
+      position:absolute;
+      right:10px;
+      top:10px;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:999px;
+      background:rgba(0,0,0,.34);
+      color:var(--acid);
+      padding:6px 8px;
+      font-size:.46rem;
+      z-index:3;
+    }
+
+    .drawer.sealed{
+      filter:saturate(.72);
+      opacity:.82;
+    }
+
+    .drawer.sealed .seal-state{
+      color:var(--rust);
+    }
+
+    .registry-slab{
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:linear-gradient(135deg,rgba(10,15,9,.82),rgba(5,8,5,.96));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:.92fr 1.08fr;
+    }
+
+    .registry-slab-image{
+      min-height:520px;
+      background:
+        linear-gradient(180deg,rgba(4,7,4,.08),rgba(4,7,4,.76)),
+        url("Assets/Plaguebound-Dossier/dossier-scriptorium.jpeg") center/cover no-repeat;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .registry-slab-image::after{
+      content:"SUBJECT-SCRIPTORIUM // BIOGRAPHY REFUSED // PRESSURE RETAINED";
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:18px;
+      color:var(--acid);
+      font-size:.68rem;
+      letter-spacing:.20em;
+      font-weight:900;
+      line-height:1.55;
+      text-transform:uppercase;
+    }
+
+    .registry-slab-body{
+      padding:clamp(22px,4vw,42px);
+      display:grid;
+      align-content:center;
+      gap:14px;
+    }
+
+    .registry-slab-body h2{
+      margin:0;
+      color:var(--text-strong);
+      font-size:clamp(2rem,4vw,4.2rem);
+      line-height:.92;
+    }
+
+    .registry-slab-body p{
+      margin:0;
+      color:#d8cfb4;
+      line-height:1.82;
+    }
+
+    .custody-steps{
+      display:grid;
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .custody-step{
+      border:1px solid rgba(198,216,112,.12);
+      border-radius:18px;
+      background:rgba(0,0,0,.20);
+      padding:14px;
+      display:grid;
+      grid-template-columns:48px 1fr;
+      gap:12px;
+      opacity:0;
+      transform:translateY(16px);
+      transition:opacity .6s var(--ease), transform .6s var(--ease), border-color .25s var(--ease);
+    }
+
+    .custody-step.revealed{
+      opacity:1;
+      transform:none;
+    }
+
+    .custody-step:hover{
+      border-color:rgba(218,235,128,.28);
+    }
+
+    .step-num{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line-strong);
+      color:var(--acid-hot);
+      background:rgba(7,11,7,.72);
+      font-family:"Cinzel",serif;
+      font-weight:900;
+    }
+
+    .custody-step h3{
+      margin:0 0 6px;
+      color:var(--text-strong);
+      font-size:1.15rem;
+      line-height:1.1;
+    }
+
+    .custody-step p{
+      font-size:.98rem;
+      line-height:1.65;
+    }
+
+    .folder-rail{
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:rgba(7,11,7,.72);
+      box-shadow:var(--shadow);
+      padding:22px;
+      overflow:hidden;
+    }
+
+    .folder-rail-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:18px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .folder-rail-head h2{
+      margin:8px 0 0;
+      font-size:clamp(2rem,3.4vw,3.4rem);
+      line-height:.95;
+    }
+
+    .rail-track{
+      display:flex;
+      gap:14px;
+      overflow-x:auto;
+      padding:12px 4px 18px;
+      scroll-snap-type:x mandatory;
+    }
+
+    .rail-track::-webkit-scrollbar{height:10px}
+    .rail-track::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px}
+    .rail-track::-webkit-scrollbar-thumb{background:rgba(198,216,112,.28);border-radius:999px}
+
+    .rail-folder{
+      flex:0 0 min(360px,82vw);
+      min-height:270px;
+      scroll-snap-align:start;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:18px 18px 28px 28px;
+      background:linear-gradient(180deg,rgba(28,31,18,.82),rgba(5,8,5,.96));
+      padding:18px;
+      position:relative;
+      display:grid;
+      align-content:end;
+      text-decoration:none;
+      overflow:hidden;
+      transition:.24s var(--ease);
+    }
+
+    .rail-folder::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.75)),var(--rail-img) center/cover no-repeat;
+      opacity:.34;
+      transition:.4s var(--ease);
+    }
+
+    .rail-folder:hover{
+      transform:translateY(-5px);
+      border-color:var(--line-strong);
+      box-shadow:var(--glow);
+    }
+
+    .rail-folder:hover::before{
+      opacity:.52;
+      transform:scale(1.05);
+    }
+
+    .rail-folder > *{
+      position:relative;
+      z-index:2;
+    }
+
+    .rail-folder h3{
+      margin:0 0 9px;
+      color:var(--text-strong);
+      font-size:1.45rem;
+      line-height:1.05;
+    }
+
+    .rail-folder p{
+      margin:0;
+      color:#d4ccb0;
+      line-height:1.58;
+    }
+
+    .rail-folder .file-status{
+      position:absolute;
+      top:12px;
+      right:12px;
+      border:1px solid rgba(198,216,112,.14);
+      border-radius:999px;
+      padding:7px 9px;
+      background:rgba(0,0,0,.36);
+      color:var(--acid);
+      font-size:.48rem;
+    }
+
+    .floating-dossier{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:140;
+      width:min(430px,calc(100% - 36px));
+      border:1px solid rgba(198,216,112,.22);
+      border-radius:22px;
+      background:rgba(6,10,6,.86);
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .floating-dossier-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border-bottom:1px solid rgba(198,216,112,.13);
+      padding:12px 14px;
+      color:var(--acid);
+      font-size:.56rem;
+    }
+
+    .floating-dossier-head button{
+      border:0;
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      font-size:1rem;
+    }
+
+    .floating-dossier-body{
+      padding:14px;
+      color:#d6ccab;
+      line-height:1.72;
+      font-size:.95rem;
+    }
+
+    .redact-mark{
+      display:inline-block;
+      color:transparent;
+      background:rgba(8,12,7,.92);
+      border:1px solid rgba(198,216,112,.10);
+      border-radius:4px;
+      padding:0 .55em;
+      transform:translateY(.08em);
+    }
+
+    .redact-mark:hover{
+      color:var(--acid-hot);
+      background:rgba(26,36,16,.82);
+    }
+
+    @media (max-width:1240px){
+      .dossier-oath,
+      .registry-slab{
+        grid-template-columns:1fr;
+      }
+      .oath-side{
+        border-left:0;
+        border-top:1px solid rgba(198,216,112,.12);
+      }
+      .drawer-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .pressure-ribbon{
+        grid-template-columns:1fr;
+        border-radius:24px;
+      }
+    }
+
+    @media (max-width:820px){
+      .drawer-grid{
+        grid-template-columns:1fr;
+        padding-left:18px;
+        padding-right:18px;
+      }
+      .dossier-oath,
+      .name-custody-wall,
+      .registry-slab,
+      .folder-rail{
+        border-radius:28px;
+      }
+      .custody-head{
+        padding-left:18px;
+        padding-right:18px;
+      }
+      .registry-slab-image{
+        min-height:360px;
+      }
+      .custody-step{
+        grid-template-columns:1fr;
+      }
+      .floating-dossier{
+        left:10px;
+        right:10px;
+        width:auto;
+      }
+    }
+
+
   </style>
 </head>
 <body class="locked">
   <a class="skip-link" href="#main">Skip to dossier</a>
   <canvas id="sporeCanvas" aria-hidden="true"></canvas>
+  <canvas id="redactionCanvas" aria-hidden="true"></canvas>
+  <canvas id="threadCanvas" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
 
@@ -1265,6 +1900,7 @@
 
       <nav class="nav" aria-label="Dossier navigation">
         <a href="index.html">Command Deck</a>
+        <a href="plaguebound-annals.html">Annals</a>
         <a href="#entries">Entries</a>
         <a href="#hierarchy">Hierarchy</a>
         <a href="#name-crypt">Name-Crypt</a>
@@ -1306,6 +1942,29 @@
           <div class="readout"><div class="label">Registry State</div><div class="value" id="registryState">Breathing</div></div>
         </div>
       </aside>
+    </section>
+
+
+    <section class="dossier-oath" id="subject-oath" aria-labelledby="subjectOathTitle">
+      <div class="oath-copy">
+        <div class="kicker">Subject-Scriptorium Distinction</div>
+        <h2 id="subjectOathTitle">The Dossier does not keep armies. It keeps faces that bend armies.</h2>
+        <p>The Annals carry the warband's full burden: units, engines, relics, battles, wounds, and doctrines. The Dossier is narrower and more dangerous. It receives only names that have become pressure points.</p>
+        <p>A subject is admitted when its presence changes other records. A commander alters formations. A relic-bearer alters the meaning of a weapon. A rival alters the shape of future hate. A specialist alters the army's method of survival.</p>
+        <p>The Dossier therefore refuses clean biography. It preserves recurrence, function, contradiction, and the moment a name becomes too useful to leave unchained.</p>
+      </div>
+      <div class="oath-side" aria-hidden="true">
+        <div class="image-label">Name-Crypt Oath // record only what changes the chamber around it</div>
+      </div>
+    </section>
+
+    <section class="pressure-ribbon" aria-label="Dossier pressure readout">
+      <div>
+        <div class="ribbon-title label">Registry Pressure</div>
+        <div id="dossierPressureNumber" class="value">026</div>
+      </div>
+      <div class="ribbon-copy" id="dossierPressureText">The visible registry is stable. Sealed names remain withheld by design, not absence.</div>
+      <div class="pressure-track"><span class="pressure-fill" id="dossierPressureFill"></span></div>
     </section>
 
     <section class="section" id="overview" aria-labelledby="overviewTitle">
@@ -1351,6 +2010,58 @@
             <p>Begin with the surfaced names. Follow the relic traces. Note what remains sealed. The Dossier does not explain itself for comfort. It reveals only enough for the next descent.</p>
           </div>
         </aside>
+      </div>
+    </section>
+
+
+    <section class="name-custody-wall" id="custody-wall" aria-labelledby="custodyWallTitle">
+      <div class="custody-head">
+        <div>
+          <div class="kicker">Subject Custody Wall</div>
+          <h2 id="custodyWallTitle">The drawers show what the Dossier is willing to admit.</h2>
+          <p>Open records glow. Sealed records remain under pressure. A name becomes visible only after it proves it can damage the archive around it.</p>
+        </div>
+        <div class="section-chip">Dangerous Names Only</div>
+      </div>
+
+      <div class="drawer-grid">
+        <article class="drawer dossier-drawer" style="--drawer-img:url('Assets/Plaguebound-Dossier/subject-index.jpeg')" data-title="Primary Subject" data-copy="Mortivus Classarion remains the central visible subject because the warband's doctrine bends around his name.">
+          <div class="drawer-mark">Drawer I</div><div class="seal-state">Open</div>
+          <h3>Primary Subject</h3><p>Mortivus Classarion and the command pressure surrounding him.</p>
+        </article>
+        <article class="drawer dossier-drawer" style="--drawer-img:url('Assets/Plaguebound-Dossier/dossier-vault.jpeg')" data-title="Relic-Bearers" data-copy="Relic-bearing subjects are kept here when a weapon, bell, blade, or plague-object becomes inseparable from identity.">
+          <div class="drawer-mark">Drawer II</div><div class="seal-state">Open</div>
+          <h3>Relic-Bearers</h3><p>Objects that alter the name carrying them.</p>
+        </article>
+        <article class="drawer sealed dossier-drawer" style="--drawer-img:url('Assets/Plaguebound-Dossier/name-crypt.jpeg')" data-title="Plaguebound Officers" data-copy="Future officers wait until they become more than useful support. They must become recurring pressure.">
+          <div class="drawer-mark">Drawer III</div><div class="seal-state">Sealed</div>
+          <h3>Plaguebound Officers</h3><p>Tallymen, surgeons, putrifiers, and command organs.</p>
+        </article>
+        <article class="drawer sealed dossier-drawer" style="--drawer-img:url('Assets/Plaguebound-Dossier/dossier-terminal.jpeg')" data-title="Enemy Recurrence" data-copy="An enemy is admitted only when survival becomes pattern and pattern becomes useful to the warband.">
+          <div class="drawer-mark">Drawer IV</div><div class="seal-state">Sealed</div>
+          <h3>Enemy Recurrence</h3><p>Rivals who survive long enough to matter.</p>
+        </article>
+        <article class="drawer sealed dossier-drawer" style="--drawer-img:url('Assets/Plaguebound-Dossier/dossier-terminal-deep')" data-title="Omen-Bearers" data-copy="Some subjects matter because they appear too often near wounds, failed prophecies, and repeated silences.">
+          <div class="drawer-mark">Drawer V</div><div class="seal-state">Sealed</div>
+          <h3>Omen-Bearers</h3><p>Faces that gather pattern without permission.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="registry-slab" id="subject-scriptorium" aria-labelledby="subjectScriptoriumTitle">
+      <div class="registry-slab-image" aria-hidden="true"></div>
+      <div class="registry-slab-body">
+        <div class="kicker">Subject-Scriptorium Procedure</div>
+        <h2 id="subjectScriptoriumTitle">A living name is not written. It is restrained until it explains itself.</h2>
+        <p>Each subject enters through fragments: battlefield rumor, weapon trace, repeated witness phrase, impossible survival, relic association, or the discomfort of nearby records changing shape.</p>
+        <p>The Dossier does not correct contradictions too early. Contradictions are often the first signs that a subject is still becoming useful.</p>
+
+        <div class="custody-steps">
+          <article class="custody-step"><div class="step-num">I</div><div><h3>Acquisition</h3><p>The name arrives by rumor, relic, corpse-tag, scrap-vox, command notice, or battlefield recurrence.</p></div></article>
+          <article class="custody-step"><div class="step-num">II</div><div><h3>Comparison</h3><p>The name is weighed against the Annals, the War-Chronicles, and existing relic traces.</p></div></article>
+          <article class="custody-step"><div class="step-num">III</div><div><h3>Fermentation</h3><p>Contradictions remain sealed together until a pattern begins to breathe beneath them.</p></div></article>
+          <article class="custody-step"><div class="step-num">IV</div><div><h3>Custody</h3><p>Only then does the Dossier grant a chamber, and even then the subject may continue corrupting its own record.</p></div></article>
+        </div>
       </div>
     </section>
 
@@ -1523,6 +2234,24 @@
       </div>
     </section>
 
+
+    <section class="folder-rail" id="attached-rail" aria-labelledby="attachedRailTitle">
+      <div class="folder-rail-head">
+        <div>
+          <div class="kicker">Attached Subject Rail</div>
+          <h2 id="attachedRailTitle">Records orbit the visible names.</h2>
+        </div>
+        <div class="section-chip">Swipe / Scroll</div>
+      </div>
+      <div class="rail-track">
+        <a class="rail-folder" href="plaguebound-annals.html" style="--rail-img:url('Assets/Plaguebound-Dossier/dossier-vault.jpeg')"><span class="file-status">Master Archive</span><h3>The Plaguebound Annals</h3><p>The broader warband archive that now houses the Dossier as one dangerous chamber.</p></a>
+        <a class="rail-folder" href="mortivus-classarion.html" style="--rail-img:url('Assets/Plaguebound-Dossier/subject-index.jpeg')"><span class="file-status">Primary</span><h3>Mortivus Classarion</h3><p>The current central subject and clearest open chamber.</p></a>
+        <a class="rail-folder" href="the-mercy-sickle.html" style="--rail-img:url('Assets/Plaguebound-Dossier/dossier-vault.jpeg')"><span class="file-status">Relic</span><h3>The Mercy-Sickle</h3><p>The attached relic trace that helps explain the subject who bears it.</p></a>
+        <a class="rail-folder" href="the-mercy-he-gave.html" style="--rail-img:url('Assets/Plaguebound-Dossier/dossier-terminal.jpeg')"><span class="file-status">Atrocity</span><h3>The Mercy He Gave</h3><p>A blackbox-style record of corrupted compassion and violence remembered as deliverance.</p></a>
+        <a class="rail-folder" href="the-pallid-reversal.html" style="--rail-img:url('Assets/Plaguebound-Dossier/dossier-terminal-deep')"><span class="file-status">Wound</span><h3>The Pallid Reversal</h3><p>The battle wound that made Mortivus more legible and more dangerous.</p></a>
+      </div>
+    </section>
+
     <section class="section" id="files" aria-labelledby="filesTitle">
       <div class="section-head">
         <div>
@@ -1535,6 +2264,7 @@
 
       <div class="files-grid">
         <a class="file-link" href="index.html"><span class="file-main"><span class="file-title">Command Deck</span><span class="file-sub">Return to The Septicarium's main archive threshold.</span></span><span class="chip file-tag">Home</span></a>
+        <a class="file-link" href="plaguebound-annals.html"><span class="file-main"><span class="file-title">The Plaguebound Annals</span><span class="file-sub">Master archive for unit records, battle histories, relics, and war-form doctrine.</span></span><span class="chip file-tag">Master</span></a>
         <a class="file-link" href="mortivus-classarion.html"><span class="file-main"><span class="file-title">Mortivus Classarion</span><span class="file-sub">Primary subject file and command identity.</span></span><span class="chip file-tag">Open</span></a>
         <a class="file-link" href="the-mercy-sickle.html"><span class="file-main"><span class="file-title">The Mercy-Sickle</span><span class="file-sub">Relic examination and weapon doctrine.</span></span><span class="chip file-tag">Open</span></a>
         <a class="file-link" href="the-mercy-he-gave.html"><span class="file-main"><span class="file-title">The Mercy He Gave</span><span class="file-sub">Recovered atrocity record and witness account.</span></span><span class="chip file-tag">Open</span></a>
@@ -1548,6 +2278,12 @@
       <div>THE SEPTICARIUM // PLAGUEBOUND DOSSIER // SUBJECT PRESSURE STABLE</div>
     </footer>
   </main>
+
+
+  <aside class="floating-dossier" id="floatingDossier">
+    <div class="floating-dossier-head label"><span>Dossier Marginalia</span><button id="closeFloatingDossier" aria-label="Close dossier marginalia">×</button></div>
+    <div class="floating-dossier-body" id="floatingDossierText">A name is not admitted when it becomes famous. It is admitted when nearby records begin changing around it.</div>
+  </aside>
 
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -1563,14 +2299,14 @@
 
   <script>
     const bootLines = [
-      "Vault-breath equalized across subject registry...",
-      "Dossier hero image accepted as command threshold.",
-      "Scriptorium scribes counted: seven active, three muttering.",
-      "Name-Crypt seals flexing beneath public pressure.",
-      "Primary subject recovered: Mortivus Classarion.",
-      "Relic trace indexed: The Mercy-Sickle.",
-      "Battle wound linked: The Pallid Reversal.",
-      "Dossier opened. Certainty not guaranteed."
+      "Name-crypt drawers answering beneath plague-bell silence...",
+      "Subject fragments weighed against the Annals and war-chronicles.",
+      "Clean biography refused. Contradiction retained under glass.",
+      "Primary subject recognized: Mortivus Classarion.",
+      "Relic trace attached: The Mercy-Sickle.",
+      "Atrocity record chained: The Mercy He Gave.",
+      "Battle wound preserved: The Pallid Reversal.",
+      "Subject registry opened. Living names remain unstable."
     ];
 
     const boot = document.getElementById("boot");
@@ -1838,6 +2574,150 @@
     window.addEventListener("mousemove", event => { mouse.x = event.clientX; mouse.y = event.clientY; });
     resizeCanvas();
     animate();
+
+    /* ============================================================
+       ELITE EXPANSION JS
+       Adds Dossier pressure, redaction layers, thread canvas, drawer behavior.
+    ============================================================ */
+    const dossierPressureFill = document.getElementById("dossierPressureFill");
+    const dossierPressureNumber = document.getElementById("dossierPressureNumber");
+    const dossierPressureText = document.getElementById("dossierPressureText");
+    const floatingDossier = document.getElementById("floatingDossier");
+    const floatingDossierText = document.getElementById("floatingDossierText");
+
+    let dossierPressure = 26;
+
+    function setDossierPressure(value, text){
+      dossierPressure = Math.max(12, Math.min(100, value));
+      if(dossierPressureFill) dossierPressureFill.style.width = dossierPressure + "%";
+      if(dossierPressureNumber) dossierPressureNumber.textContent = String(Math.round(dossierPressure)).padStart(3,"0");
+      if(dossierPressureText && text) dossierPressureText.textContent = text;
+      if(floatingDossierText && text) floatingDossierText.textContent = text;
+    }
+
+    const pressureObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting) return;
+        const map = {
+          "subject-oath":[34,"The Dossier has distinguished itself from the Annals. Names are now being weighed as pressure points."],
+          "custody-wall":[48,"The subject drawers have warmed. Open records glow because sealed names remain withheld."],
+          "subject-scriptorium":[62,"The scriptorium is active. Biography is being rejected in favor of pattern and recurrence."],
+          "entries":[72,"Open chambers have surfaced. The registry permits movement, but not escape."],
+          "hierarchy":[80,"Command pressure has risen. Office, formation, and doctrine are now being compared."],
+          "name-crypt":[88,"The Name-Crypt is awake. Sealed drawers remain closed by choice, not absence."],
+          "engine":[94,"The Distillation Engine has begun converting contradiction into usable intelligence."],
+          "files":[100,"The Dossier has reached full visible pressure. Living names continue to corrupt their own records."]
+        };
+        const id = entry.target.id;
+        if(map[id]) setDossierPressure(map[id][0], map[id][1]);
+      });
+    }, {threshold:.32});
+
+    document.querySelectorAll("#subject-oath,#custody-wall,#subject-scriptorium,#entries,#hierarchy,#name-crypt,#engine,#files").forEach(el => pressureObserver.observe(el));
+
+    document.querySelectorAll(".dossier-drawer").forEach(drawer => {
+      drawer.addEventListener("click", () => {
+        openModal({
+          kicker:"Subject Drawer",
+          title:drawer.dataset.title,
+          copy:drawer.dataset.copy,
+          link:"#name-crypt",
+          linkText:"Inspect Name-Crypt"
+        });
+        setDossierPressure(Math.max(dossierPressure, 76), drawer.dataset.copy);
+      });
+    });
+
+    document.querySelectorAll(".custody-step").forEach(el => observer.observe(el));
+
+    if(document.getElementById("closeFloatingDossier")){
+      document.getElementById("closeFloatingDossier").addEventListener("click", () => floatingDossier.style.display = "none");
+    }
+
+    const dossierMarginalia = [
+      "A sealed drawer has shifted somewhere behind the visible wall.",
+      "The Dossier has preserved a contradiction instead of correcting it.",
+      "One future name has begun appearing in margins it has not earned yet.",
+      "The subject-scriptorium prefers names that damage the rooms around them.",
+      "The Annals keep the army. The Dossier keeps the faces the army begins orbiting."
+    ];
+
+    setInterval(() => {
+      if(document.hidden || !floatingDossierText) return;
+      if(Math.random() > .58){
+        floatingDossierText.textContent = dossierMarginalia[Math.floor(Math.random() * dossierMarginalia.length)];
+      }
+    }, 9000);
+
+    function buildLayer(canvasId, count, init, draw){
+      const canvas = document.getElementById(canvasId);
+      if(!canvas) return null;
+      const ctx = canvas.getContext("2d");
+      let items = [];
+      function resize(){
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + "px";
+        canvas.style.height = window.innerHeight + "px";
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        items = Array.from({length: typeof count === "function" ? count() : count}, init);
+      }
+      function render(){
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+        items.forEach(p => draw(ctx,p));
+      }
+      resize();
+      return {resize,render};
+    }
+
+    const redactionLayer = buildLayer("redactionCanvas", 30,
+      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,w:Math.random()*150+70,life:Math.random()*120,speed:Math.random()*1.1+.25}),
+      (ctx,p) => {
+        p.life += p.speed;
+        if(p.life > 150){ p.life = 0; p.x = Math.random()*innerWidth; p.y = Math.random()*innerHeight; }
+        const pulse = Math.sin(p.life/150*Math.PI);
+        if(pulse <= 0) return;
+        ctx.fillStyle = `rgba(6,10,6,${.26*pulse})`;
+        ctx.fillRect(p.x,p.y,p.w,5);
+        ctx.fillStyle = `rgba(200,220,98,${.05*pulse})`;
+        ctx.fillRect(p.x,p.y,p.w,1);
+      }
+    );
+
+    const threadLayer = buildLayer("threadCanvas", 38,
+      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,len:Math.random()*120+50,life:Math.random()*130,speed:Math.random()*1.0+.22,arc:Math.random()*28-14}),
+      (ctx,p) => {
+        p.life += p.speed;
+        if(p.life > 160){ p.life = 0; p.x = Math.random()*innerWidth; p.y = Math.random()*innerHeight; }
+        const pulse = Math.sin(p.life/160*Math.PI);
+        if(pulse <= 0) return;
+        const intensity = (dossierPressure/100) * pulse;
+        ctx.strokeStyle = `rgba(200,220,98,${.14*intensity})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.quadraticCurveTo(p.x + p.len/2, p.y + p.arc, p.x + p.len, p.y + Math.sin(p.life*.04)*18);
+        ctx.stroke();
+      }
+    );
+
+    function animateEliteLayers(){
+      if(!prefersReduced){
+        redactionLayer && redactionLayer.render();
+        threadLayer && threadLayer.render();
+      }
+      requestAnimationFrame(animateEliteLayers);
+    }
+
+    window.addEventListener("resize", () => {
+      redactionLayer && redactionLayer.resize();
+      threadLayer && threadLayer.resize();
+    });
+
+    animateEliteLayers();
+
+
   </script>
 </body>
 </html>
