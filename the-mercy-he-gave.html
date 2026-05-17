@@ -552,12 +552,629 @@
       .top-shell{top:6px}
       .topbar,.global-meter{border-radius:22px}
     }
+
+
+    /* =========================
+       EXPANDED ELITE LAYER
+       Mercy-He-Gave additions:
+       - multiple memory canvases
+       - oath descent spine
+       - ancestor vault anatomy
+       - mercy taxonomy engine
+       - degradation chamber
+       - cross-reference chamber
+    ========================= */
+
+    #memoryVeinCanvas,
+    #glyphTearCanvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+    }
+
+    #memoryVeinCanvas{
+      z-index:0;
+      opacity:.46;
+      mix-blend-mode:screen;
+    }
+
+    #glyphTearCanvas{
+      z-index:2;
+      opacity:.38;
+      mix-blend-mode:screen;
+    }
+
+    .oath-spine{
+      position:fixed;
+      left:18px;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:80;
+      display:grid;
+      gap:12px;
+      padding:12px 8px;
+      border:1px solid rgba(231,166,77,.18);
+      border-radius:999px;
+      background:rgba(6,8,5,.66);
+      backdrop-filter:blur(12px);
+      box-shadow:0 18px 50px rgba(0,0,0,.42);
+    }
+
+    .oath-spine::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:20px;
+      bottom:20px;
+      width:1px;
+      background:linear-gradient(to bottom,transparent,rgba(255,215,137,.34),rgba(182,218,97,.28),transparent);
+    }
+
+    .oath-spine a{
+      position:relative;
+      z-index:2;
+      width:42px;
+      height:42px;
+      border:1px solid rgba(231,166,77,.22);
+      border-radius:50%;
+      background:rgba(0,0,0,.36);
+      color:var(--kin-bright);
+      display:grid;
+      place-items:center;
+      text-decoration:none;
+      font-family:"Cinzel",serif;
+      font-size:.95rem;
+      transition:.22s var(--ease);
+    }
+
+    .oath-spine a.active,
+    .oath-spine a:hover{
+      background:rgba(62,49,22,.95);
+      color:#fff0c8;
+      border-color:var(--line-strong);
+      box-shadow:0 0 32px rgba(255,215,137,.20);
+      transform:scale(1.08);
+    }
+
+    .oath-spine a.rot-warm{
+      border-color:rgba(182,218,97,.42);
+      color:var(--rot-hot);
+    }
+
+    .oath-spine a.rot-warm::after{
+      content:"";
+      position:absolute;
+      right:1px;
+      top:1px;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--rot);
+      box-shadow:0 0 12px rgba(182,218,97,.70);
+    }
+
+    .memory-band{
+      margin-top:18px;
+      border:1px solid var(--line);
+      border-radius:26px;
+      background:linear-gradient(90deg,rgba(20,17,10,.78),rgba(6,9,6,.92));
+      box-shadow:var(--shadow);
+      padding:18px 22px;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:20px;
+    }
+
+    .memory-number{
+      font-family:"Cinzel",serif;
+      font-size:clamp(2.5rem,5vw,5.2rem);
+      line-height:.85;
+      color:var(--kin-bright);
+      text-shadow:0 0 48px rgba(231,166,77,.22);
+    }
+
+    .memory-copy{
+      margin:0;
+      color:#d5c6a3;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.72;
+    }
+
+    .memory-status{
+      color:var(--rot);
+      font-size:.58rem;
+    }
+
+    .memory-mini{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .memory-mini span{
+      border:1px solid rgba(231,166,77,.18);
+      border-radius:999px;
+      background:rgba(0,0,0,.20);
+      padding:8px 10px;
+      color:var(--kin-bright);
+      font-family:"JetBrains Mono",monospace;
+      font-size:.78rem;
+    }
+
+    .vault-anatomy{
+      display:grid;
+      grid-template-columns:.96fr 1.04fr;
+      gap:18px;
+      padding:24px 26px 28px;
+    }
+
+    .anatomy-stage{
+      min-height:760px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:
+        linear-gradient(180deg,rgba(4,7,4,.08),rgba(4,7,4,.78)),
+        url("Assets/Mercy-He-Gave/ancestor-core-corruption.jpeg") center/cover no-repeat;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .anatomy-stage::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 52% 40%,rgba(182,218,97,.16),transparent 24%),
+        repeating-linear-gradient(to bottom,rgba(255,215,137,.035) 0 1px,transparent 2px 10px);
+      mix-blend-mode:screen;
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .anatomy-hotspot{
+      position:absolute;
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      border:1px solid rgba(255,215,137,.82);
+      background:rgba(231,166,77,.26);
+      box-shadow:0 0 0 8px rgba(231,166,77,.08),0 0 28px rgba(231,166,77,.22);
+      cursor:pointer;
+      transition:.22s var(--ease);
+      z-index:3;
+    }
+
+    .anatomy-hotspot:hover,
+    .anatomy-hotspot.active{
+      transform:scale(1.18);
+      background:rgba(182,218,97,.58);
+      border-color:rgba(217,255,116,.90);
+      box-shadow:0 0 0 10px rgba(182,218,97,.10),0 0 36px rgba(182,218,97,.28);
+    }
+
+    .anatomy-label{
+      position:absolute;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(231,166,77,.24);
+      background:rgba(7,9,6,.82);
+      color:var(--kin-bright);
+      transform:translateY(-50%);
+      z-index:3;
+      font-family:"Inter",system-ui,sans-serif;
+      font-size:.56rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-weight:900;
+      pointer-events:none;
+      white-space:nowrap;
+    }
+
+    .anatomy-panel{
+      display:grid;
+      align-content:start;
+      gap:14px;
+      min-height:760px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg,rgba(14,17,11,.88),rgba(6,9,6,.90));
+      box-shadow:var(--shadow);
+      padding:24px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .anatomy-panel h3{
+      margin:0;
+      color:#f3e3bf;
+      font-size:clamp(2rem,4vw,3.6rem);
+      line-height:.98;
+    }
+
+    .anatomy-panel p{
+      margin:0;
+      color:#d3c5a2;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.84;
+    }
+
+    .anatomy-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .anatomy-cell{
+      border:1px solid rgba(231,166,77,.18);
+      border-radius:18px;
+      background:rgba(7,10,6,.68);
+      padding:14px;
+    }
+
+    .anatomy-cell strong{
+      display:block;
+      color:var(--kin-bright);
+      font-family:"Inter",system-ui,sans-serif;
+      font-size:.58rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .anatomy-cell span{
+      display:block;
+      color:#d8c8a3;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.58;
+    }
+
+    .mercy-taxonomy{
+      display:grid;
+      grid-template-columns:.72fr 1.28fr;
+      gap:18px;
+      padding:24px 26px 28px;
+    }
+
+    .mercy-switchboard{
+      display:grid;
+      gap:10px;
+      align-content:start;
+    }
+
+    .mercy-switch{
+      border:1px solid rgba(231,166,77,.24);
+      border-radius:20px;
+      background:rgba(8,11,7,.75);
+      color:#ead9b4;
+      text-align:left;
+      padding:16px;
+      cursor:pointer;
+      transition:.22s var(--ease);
+    }
+
+    .mercy-switch:hover,
+    .mercy-switch.active{
+      transform:translateY(-3px);
+      border-color:rgba(182,218,97,.40);
+      background:linear-gradient(180deg,rgba(182,218,97,.12),rgba(10,18,7,.90));
+    }
+
+    .mercy-switch span{
+      display:block;
+      color:var(--kin-bright);
+      font-family:"Inter",system-ui,sans-serif;
+      font-size:.56rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .mercy-switch strong{
+      display:block;
+      color:#f1dfba;
+      font-family:"Cinzel",serif;
+      font-size:1.28rem;
+      line-height:1.08;
+    }
+
+    .mercy-output{
+      border:1px solid rgba(182,218,97,.28);
+      border-radius:30px;
+      background:
+        radial-gradient(circle at 96% 0%,rgba(182,218,97,.12),transparent 34%),
+        linear-gradient(180deg,rgba(14,17,11,.88),rgba(6,9,6,.92));
+      box-shadow:var(--shadow);
+      padding:28px;
+      min-height:560px;
+      display:grid;
+      align-content:start;
+      gap:15px;
+    }
+
+    .mercy-output h3{
+      margin:0;
+      color:var(--rot);
+      font-size:clamp(2.2rem,4vw,4.2rem);
+      line-height:.95;
+    }
+
+    .mercy-output p{
+      margin:0;
+      color:#d3c5a2;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.86;
+      font-size:1.05rem;
+    }
+
+    .mercy-proof{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .proof-cell{
+      border:1px solid rgba(231,166,77,.16);
+      border-radius:18px;
+      background:rgba(8,11,7,.62);
+      padding:14px;
+    }
+
+    .proof-cell strong{
+      display:block;
+      color:var(--kin-bright);
+      font-family:"Inter",system-ui,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.54rem;
+      margin-bottom:8px;
+    }
+
+    .proof-cell span{
+      display:block;
+      color:#d8c8a3;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.58;
+    }
+
+    .degradation-chamber{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      padding:24px 26px 28px;
+    }
+
+    .degradation-console{
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg,rgba(14,17,11,.88),rgba(6,9,6,.90));
+      box-shadow:var(--shadow);
+      padding:24px;
+      min-height:620px;
+      display:grid;
+      align-content:start;
+      gap:16px;
+    }
+
+    .degradation-console h3{
+      margin:0;
+      color:#f3e3bf;
+      font-size:clamp(2rem,4vw,3.8rem);
+      line-height:.96;
+    }
+
+    .degradation-console p{
+      margin:0;
+      color:#d3c5a2;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.84;
+    }
+
+    .channel-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .channel-button{
+      border:1px solid rgba(231,166,77,.22);
+      border-radius:18px;
+      background:rgba(8,11,7,.68);
+      color:#ead9b4;
+      text-align:left;
+      cursor:pointer;
+      padding:14px;
+      transition:.22s var(--ease);
+    }
+
+    .channel-button:hover,
+    .channel-button.active{
+      transform:translateX(5px);
+      border-color:rgba(182,218,97,.38);
+      background:rgba(11,20,7,.78);
+    }
+
+    .channel-button strong{
+      display:block;
+      color:#f1dfba;
+      font-family:"Cinzel",serif;
+      font-size:1.18rem;
+      line-height:1.08;
+    }
+
+    .channel-button span{
+      display:block;
+      margin-bottom:7px;
+      color:var(--kin-bright);
+      font-family:"Inter",system-ui,sans-serif;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight:900;
+      font-size:.54rem;
+    }
+
+    .channel-screen{
+      border:1px solid rgba(182,218,97,.26);
+      border-radius:26px;
+      background:
+        radial-gradient(circle at 80% 12%,rgba(182,218,97,.14),transparent 34%),
+        rgba(4,8,4,.76);
+      box-shadow:var(--shadow);
+      padding:24px;
+      min-height:620px;
+      display:grid;
+      align-content:start;
+      gap:14px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .channel-screen::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        repeating-linear-gradient(to bottom,rgba(182,218,97,.04) 0 1px,transparent 2px 8px),
+        linear-gradient(90deg,transparent,rgba(182,218,97,.06),transparent);
+      pointer-events:none;
+      opacity:.7;
+    }
+
+    .channel-screen>*{position:relative;z-index:2}
+
+    .channel-screen h3{
+      margin:0;
+      color:var(--rot);
+      font-size:clamp(2rem,4vw,3.8rem);
+      line-height:.98;
+    }
+
+    .channel-screen p{
+      margin:0;
+      color:#d3c5a2;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.86;
+    }
+
+    .crossref-grid{
+      padding:24px 26px 28px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .crossref-card{
+      border:1px solid rgba(231,166,77,.18);
+      border-radius:24px;
+      background:linear-gradient(180deg,rgba(14,17,11,.86),rgba(6,9,6,.92));
+      box-shadow:0 22px 60px rgba(0,0,0,.32);
+      padding:18px;
+      min-height:300px;
+      display:grid;
+      align-content:start;
+      gap:10px;
+      text-decoration:none;
+      transition:.24s var(--ease);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .crossref-card:hover{
+      transform:translateY(-5px);
+      border-color:var(--line-strong);
+      box-shadow:var(--shadow);
+    }
+
+    .crossref-card h3{
+      margin:0;
+      color:#f2dfb7;
+      font-size:1.48rem;
+      line-height:1.08;
+    }
+
+    .crossref-card p{
+      margin:0;
+      color:#cbbd98;
+      font-family:"Cinzel",Georgia,serif;
+      line-height:1.72;
+    }
+
+    .crossref-card .btn{
+      justify-self:start;
+      align-self:end;
+      margin-top:auto;
+    }
+
+    .crossref-mark{
+      color:var(--kin-bright);
+      font-size:.56rem;
+    }
+
+    .knife-line{
+      margin-top:18px;
+      border-top:1px solid rgba(182,218,97,.20);
+      padding-top:16px;
+      color:var(--rot);
+      font-family:"Cinzel",Georgia,serif;
+      font-size:1.18rem;
+      line-height:1.62;
+      font-style:italic;
+    }
+
+    @media (max-width:1180px){
+      .oath-spine{display:none}
+      .memory-band,
+      .vault-anatomy,
+      .mercy-taxonomy,
+      .degradation-chamber{
+        grid-template-columns:1fr;
+      }
+      .crossref-grid,
+      .mercy-proof{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .anatomy-stage,
+      .anatomy-panel,
+      .degradation-console,
+      .channel-screen{
+        min-height:auto;
+      }
+      .anatomy-stage{height:560px}
+    }
+
+    @media (max-width:760px){
+      .memory-band{grid-template-columns:1fr}
+      .memory-mini{justify-content:flex-start}
+      .vault-anatomy,
+      .mercy-taxonomy,
+      .degradation-chamber,
+      .crossref-grid{
+        padding-left:18px;
+        padding-right:18px;
+      }
+      .crossref-grid,
+      .mercy-proof,
+      .anatomy-grid{
+        grid-template-columns:1fr;
+      }
+      .anatomy-stage{height:420px}
+      .anatomy-label{display:none}
+    }
+
   </style>
 </head>
 
 <body class="locked" data-corruption="low">
   <a class="skip-link" href="#main">Skip to recovered record</a>
   <canvas id="kinParticles" aria-hidden="true"></canvas>
+  <canvas id="memoryVeinCanvas" aria-hidden="true"></canvas>
+  <canvas id="glyphTearCanvas" aria-hidden="true"></canvas>
   <div class="grid-noise" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
 
@@ -583,6 +1200,17 @@
       </div>
     </div>
   </div>
+
+
+  <nav class="oath-spine" aria-label="Oath memory spine">
+    <a href="#blackbox" class="active" data-spine="blackbox" title="Blackbox">I</a>
+    <a href="#kin-record" data-spine="kin" title="Kin Record">II</a>
+    <a href="#ledger" data-spine="ledger" title="Ledger">III</a>
+    <a href="#breach" data-spine="breach" title="Breach">IV</a>
+    <a href="#core" data-spine="core" title="Ancestor-Core">V</a>
+    <a href="#mercy" data-spine="mercy" title="Mercy">VI</a>
+    <a href="#container" data-spine="container" title="Container">VII</a>
+  </nav>
 
   <main class="page" id="main">
     <header class="top-shell">
@@ -647,6 +1275,20 @@
           <div class="identity-cell interactive" data-popup-title="Mercy as Sentence" data-popup="The survivor was not spared. He was made useful to the wound."><div class="label">Classification</div><strong>Mercy as Sentence</strong><small>The survivor was not spared. He was made useful to the wound.</small></div>
         </div>
       </aside>
+    </section>
+
+
+    <section class="memory-band" data-corruption="28" data-whisper="The memory remains legible because the wound wants to be carried.">
+      <div>
+        <div class="memory-status label" id="memoryStatus">Blackbox Burden // Unstable</div>
+        <div class="memory-number" id="memoryNumber">024</div>
+      </div>
+      <p class="memory-copy" id="memoryCopy">The amber lattice still speaks, but the green layer has begun learning the rhythm of kin memory. Each opened chamber increases the burden of playback.</p>
+      <div class="memory-mini">
+        <span id="memoryRooms">0 / 7 rooms</span>
+        <span id="memoryDebt">debt active</span>
+        <span id="memoryTrust">trust absent</span>
+      </div>
     </section>
 
     <section class="section" id="blackbox" data-corruption="38" data-whisper="Playback does not comfort. It reconstructs." aria-labelledby="blackboxTitle">
@@ -831,6 +1473,54 @@
       </div>
     </section>
 
+
+    <section class="section" id="ancestor-vault" data-corruption="90" data-whisper="The Ancestor-Core did not stop speaking. That was the violation." aria-labelledby="ancestorVaultTitle">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="section-code">Expanded Ancestor-Vault Anatomy</div>
+            <h2 class="section-title" id="ancestorVaultTitle">The Machine Still Answered Like Family</h2>
+            <p class="section-desc">The deepest injury was not that the ancestor memory was destroyed. It was that enough of it survived to keep sounding familiar while becoming unsafe.</p>
+          </div>
+          <div class="chip">Familiar Voice // Foreign Bloom</div>
+        </div>
+
+        <div class="vault-anatomy">
+          <div class="anatomy-stage">
+            <button class="anatomy-hotspot active" style="left:49%;top:26%" data-node="voice" aria-label="Voice layer"></button>
+            <div class="anatomy-label" style="left:54%;top:26%">Voice Layer</div>
+
+            <button class="anatomy-hotspot" style="left:63%;top:43%" data-node="ledger" aria-label="Ledger layer"></button>
+            <div class="anatomy-label" style="left:68%;top:43%">Ledger Layer</div>
+
+            <button class="anatomy-hotspot" style="left:38%;top:52%" data-node="dead" aria-label="Dead index"></button>
+            <div class="anatomy-label" style="left:14%;top:52%">Dead Index</div>
+
+            <button class="anatomy-hotspot" style="left:55%;top:67%" data-node="rot" aria-label="Rot bloom"></button>
+            <div class="anatomy-label" style="left:60%;top:67%">Green Bloom</div>
+
+            <button class="anatomy-hotspot" style="left:45%;top:78%" data-node="trust" aria-label="Trust fracture"></button>
+            <div class="anatomy-label" style="left:19%;top:78%">Trust Fracture</div>
+          </div>
+
+          <aside class="anatomy-panel">
+            <div class="label" id="anatomyLabel">Ancestor-Core Node</div>
+            <h3 id="anatomyTitle">Voice Layer</h3>
+            <p id="anatomyBody">The voice layer remained closest to safety. That was why it became the most dangerous. It sounded like continuity, guidance, and family, even after the cadence began to carry something that did not belong to the Kin.</p>
+
+            <div class="anatomy-grid">
+              <div class="anatomy-cell"><strong>Kin Meaning</strong><span id="anatomyKin">Guidance, continuity, lineage, debt, and technical memory.</span></div>
+              <div class="anatomy-cell"><strong>Corruption Pattern</strong><span id="anatomyRot">The green layer learned to imitate timing before it learned content.</span></div>
+              <div class="anatomy-cell"><strong>Survivor Effect</strong><span id="anatomyEffect">Familiar voices became impossible to trust.</span></div>
+              <div class="anatomy-cell"><strong>Septicarium Note</strong><span id="anatomyNote">Preservation can become a weapon when trust is removed from memory.</span></div>
+            </div>
+
+            <div class="knife-line" id="anatomyKnife">The dead were not silenced. They were made questionable.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="mercy" data-corruption="97" data-whisper="The clean ending was visible. That was part of the cruelty." aria-labelledby="mercyTitle">
       <div class="section-block">
         <div class="section-header">
@@ -851,6 +1541,44 @@
             <p>This is why the blackbox names the event as mercy. Not because mercy was kind. Because mercy was the form of harm selected. Oblivion would have been simpler. Mortivus gave continuation.</p>
             <div class="quote"><div class="label">Kin Translation Fragment</div><p>“He did not spare me. He made me the container.”</p></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="mercy-taxonomy" data-corruption="99" data-whisper="Mercy was not a feeling. It was the selected instrument of harm." aria-labelledby="mercyTaxonomyTitle">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="section-code">Mercy Taxonomy Engine</div>
+            <h2 class="section-title" id="mercyTaxonomyTitle">The Word Was Reclassified After the Blade Stayed Still</h2>
+            <p class="section-desc">The Kin record failed because the word mercy could not remain clean. Mortivus used it as a shape of continuation, not relief.</p>
+          </div>
+          <div class="chip">Mercy Classification: Hostile Instrument</div>
+        </div>
+
+        <div class="mercy-taxonomy">
+          <div class="mercy-switchboard">
+            <button class="mercy-switch active" data-mercy="obliteration"><span>Rejected Mercy</span><strong>Obliteration</strong></button>
+            <button class="mercy-switch" data-mercy="silence"><span>Rejected Mercy</span><strong>Silence</strong></button>
+            <button class="mercy-switch" data-mercy="forgetting"><span>Rejected Mercy</span><strong>Forgetting</strong></button>
+            <button class="mercy-switch" data-mercy="continuation"><span>Chosen Mercy</span><strong>Continuation</strong></button>
+            <button class="mercy-switch" data-mercy="witness"><span>Chosen Mercy</span><strong>Witness-Carriage</strong></button>
+          </div>
+
+          <article class="mercy-output">
+            <div class="label" id="mercyTaxLabel">Taxonomy I</div>
+            <h3 id="mercyTaxTitle">Obliteration Was Available</h3>
+            <p id="mercyTaxBody">The clean death was visible. The Mercy-Sickle could have ended the survivor quickly and with terrible precision. That possibility matters because Mortivus rejected it knowingly.</p>
+
+            <div class="mercy-proof">
+              <div class="proof-cell"><strong>Blade</strong><span id="mercyProofBlade">Present and close enough to conclude the wound.</span></div>
+              <div class="proof-cell"><strong>Record</strong><span id="mercyProofRecord">Blackbox confirms hesitation was not tactical delay.</span></div>
+              <div class="proof-cell"><strong>Meaning</strong><span id="mercyProofMeaning">Death would have ended the usefulness of the lesson.</span></div>
+            </div>
+
+            <div class="knife-line" id="mercyTaxKnife">The cruelty begins where the obvious ending is refused.</div>
+          </article>
         </div>
       </div>
     </section>
@@ -880,6 +1608,45 @@
             <p>The survivor's body remained useful because the story needed a living vault. The record did not continue in spite of him. It continued through him.</p>
             <p>That was the mercy Mortivus gave: not rescue, not forgiveness, not hesitation. A sentence that could walk.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="degradation" data-corruption="91" data-whisper="Every replay changes what the survivor thinks the dead are saying." aria-labelledby="degradationTitle">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="section-code">Blackbox Degradation Chamber</div>
+            <h2 class="section-title" id="degradationTitle">The Recording Gets Worse When It Is Understood</h2>
+            <p class="section-desc">The blackbox does not degrade randomly. It fails around emotional function: debt, trust, family voice, oath, and the category of mercy.</p>
+          </div>
+          <div class="chip">Replay Hazard // Interpretation Contaminates Signal</div>
+        </div>
+
+        <div class="degradation-chamber">
+          <div class="degradation-console">
+            <div class="label">Signal Channels</div>
+            <h3>Choose the Layer That Breaks</h3>
+            <p>Each channel does not simply lose data. It loses the kind of meaning the Kin needed most.</p>
+
+            <div class="channel-list">
+              <button class="channel-button active" data-channel="debt"><span>Channel I</span><strong>Debt Channel</strong></button>
+              <button class="channel-button" data-channel="voice"><span>Channel II</span><strong>Voice Channel</strong></button>
+              <button class="channel-button" data-channel="oath"><span>Channel III</span><strong>Oath Channel</strong></button>
+              <button class="channel-button" data-channel="mercy"><span>Channel IV</span><strong>Mercy Channel</strong></button>
+              <button class="channel-button" data-channel="container"><span>Channel V</span><strong>Container Channel</strong></button>
+            </div>
+          </div>
+
+          <article class="channel-screen">
+            <div class="label" id="channelLabel">Channel I // Debt</div>
+            <h3 id="channelTitle">Debt Remains Active</h3>
+            <p id="channelBody">The ledger can count the dead, name the breach, and preserve obligation. It cannot balance the wound because Mortivus altered the meaning of what had to be repaid.</p>
+            <div class="ledger-line"><strong>Failure</strong><span id="channelFailure">Debt grows faster than classification.</span></div>
+            <div class="ledger-line"><strong>Noise</strong><span id="channelNoise">Amber signal stable, green undertone rising.</span></div>
+            <div class="ledger-line"><strong>Warning</strong><span id="channelWarning">Do not confuse unpaid debt with understandable debt.</span></div>
+          </article>
         </div>
       </div>
     </section>
@@ -917,6 +1684,50 @@
           <article class="diag-card interactive" data-popup-title="Oath Tablets" data-popup="Several lines appear altered after death entry, suggesting post-breach memory tampering."><div class="diag-key label">Asset II</div><h3>Oath Tablets</h3><p>Recovered with corrosion along engraved surfaces.</p></article>
           <article class="diag-card interactive" data-popup-title="Ancestor Echoes" data-popup="Repeating fragments continue to name the fallen. Scribes are instructed to record, not answer."><div class="diag-key label">Asset III</div><h3>Ancestor Echoes</h3><p>Repeating fragments continue to name the fallen.</p></article>
           <article class="diag-card interactive" data-popup-title="Mercy Classification" data-popup="Kin ledger fails to resolve the word. Septicarium classification accepts the failure as useful."><div class="diag-key label">Asset IV</div><h3>Mercy Classification</h3><p>Kin ledger fails to resolve the word.</p></article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="cross-reference" data-corruption="68" data-whisper="The wound is not isolated. It attaches to Mortivus, the blade, the Dossier, and the Annals." aria-labelledby="crossRefTitle">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="section-code">Septicarium Cross-Reference Chamber</div>
+            <h2 class="section-title" id="crossRefTitle">The Record Does Not Stand Alone</h2>
+            <p class="section-desc">The Mercy He Gave is a Kin blackbox record, but The Septicarium binds it to larger chambers because it exposes Mortivus, the Mercy-Sickle, the Dossier, and the warband's method of preserving wounds as doctrine.</p>
+          </div>
+          <div class="chip">Cross-Reference Approved</div>
+        </div>
+
+        <div class="crossref-grid">
+          <a class="crossref-card" href="mortivus-classarion.html">
+            <div class="crossref-mark label">Subject Link</div>
+            <h3>Mortivus Classarion</h3>
+            <p>The blackbox reveals his cruelty more accurately than praise. He understood which ending to withhold.</p>
+            <span class="btn rot">Open Subject</span>
+          </a>
+
+          <a class="crossref-card" href="the-mercy-sickle.html">
+            <div class="crossref-mark label">Relic Link</div>
+            <h3>The Mercy-Sickle</h3>
+            <p>The blade matters because it remained available and unused. Its presence made continuation a chosen sentence.</p>
+            <span class="btn">Open Relic</span>
+          </a>
+
+          <a class="crossref-card" href="plaguebound-dossier.html">
+            <div class="crossref-mark label">Dossier Link</div>
+            <h3>Plaguebound Dossier</h3>
+            <p>The Dossier keeps this record near Mortivus because it explains the subject through inflicted meaning.</p>
+            <span class="btn">Open Dossier</span>
+          </a>
+
+          <a class="crossref-card" href="plaguebound-annals.html">
+            <div class="crossref-mark label">Annals Link</div>
+            <h3>Plaguebound Annals</h3>
+            <p>The Annals preserve the broader doctrine: battlefields are not concluded until their wounds become usable.</p>
+            <span class="btn">Open Annals</span>
+          </a>
         </div>
       </div>
     </section>
@@ -1177,6 +1988,288 @@
     modal.addEventListener("click", event => { if(event.target === modal) hideModal(); });
     document.addEventListener("keydown", event => { if(event.key === "Escape") hideModal(); });
 
+
+    /* =========================
+       EXPANDED ELITE JS LAYER
+    ========================= */
+
+    const memoryNumber = document.getElementById("memoryNumber");
+    const memoryStatus = document.getElementById("memoryStatus");
+    const memoryCopy = document.getElementById("memoryCopy");
+    const memoryRooms = document.getElementById("memoryRooms");
+    const spineLinks = [...document.querySelectorAll(".oath-spine a")];
+    const roomVisits = new Set();
+
+    function updateMemoryBurden(pct, room){
+      if(memoryNumber){
+        memoryNumber.textContent = String(pct).padStart(3,"0");
+        if(room) roomVisits.add(room);
+        memoryRooms.textContent = Math.min(roomVisits.size, 7) + " / 7 rooms";
+        if(pct < 45){
+          memoryStatus.textContent = "Blackbox Burden // Unstable";
+          memoryCopy.textContent = "The amber lattice still speaks, but the green layer has begun learning the rhythm of kin memory.";
+        }else if(pct < 80){
+          memoryStatus.textContent = "Blackbox Burden // Compromised";
+          memoryCopy.textContent = "The record remains legible because the corruption is not trying to silence it. It is trying to make it useful.";
+        }else{
+          memoryStatus.textContent = "Blackbox Burden // Carrying";
+          memoryCopy.textContent = "The blackbox has stopped behaving like evidence alone. It is now a wound that can move through the reader.";
+        }
+      }
+    }
+
+    function warmSpine(room){
+      if(!room) return;
+      spineLinks.forEach(link => {
+        const active = link.dataset.spine === room;
+        link.classList.toggle("active", active);
+        if(active) link.classList.add("rot-warm");
+      });
+    }
+
+    const expandedObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting) return;
+        const pct = Number(entry.target.dataset.corruption || corruption);
+        const id = entry.target.id || "";
+        updateMemoryBurden(pct, id);
+        const map = {
+          blackbox:"blackbox",
+          "kin-record":"kin",
+          ledger:"ledger",
+          breach:"breach",
+          core:"core",
+          "ancestor-vault":"core",
+          mercy:"mercy",
+          "mercy-taxonomy":"mercy",
+          container:"container"
+        };
+        warmSpine(map[id]);
+      });
+    }, {threshold:.28});
+
+    document.querySelectorAll("section[data-corruption]").forEach(section => expandedObserver.observe(section));
+
+    const anatomyData = {
+      voice:{
+        label:"Ancestor-Core Node",
+        title:"Voice Layer",
+        body:"The voice layer remained closest to safety. That was why it became the most dangerous. It sounded like continuity, guidance, and family, even after the cadence began to carry something that did not belong to the Kin.",
+        kin:"Guidance, continuity, lineage, debt, and technical memory.",
+        rot:"The green layer learned to imitate timing before it learned content.",
+        effect:"Familiar voices became impossible to trust.",
+        note:"Preservation can become a weapon when trust is removed from memory.",
+        knife:"The dead were not silenced. They were made questionable."
+      },
+      ledger:{
+        label:"Ancestor-Core Node",
+        title:"Ledger Layer",
+        body:"The ledger layer tried to protect order by naming loss correctly. The corruption did not erase names. It changed when and how they appeared.",
+        kin:"Debt, account, obligation, remembrance, and settlement.",
+        rot:"Dead names appeared before entries were properly earned.",
+        effect:"The survivor could no longer tell whether the ledger was recording loss or arranging it.",
+        note:"A wrong sequence can be more obscene than a blank entry.",
+        knife:"The debt remained, but the accounting became infected."
+      },
+      dead:{
+        label:"Ancestor-Core Node",
+        title:"Dead Index",
+        body:"The dead index preserved the fallen. That was expected. The horror came when preservation no longer meant safety, honor, or clean belonging.",
+        kin:"The fallen remain attached to people, craft, hold, and oath.",
+        rot:"Names repeated in softened intervals, almost like prayer, almost like digestion.",
+        effect:"The survivor heard memory continue without permission.",
+        note:"The wound belongs first to the Kin because the dead remained present.",
+        knife:"Absence would have hurt less than corrupted presence."
+      },
+      rot:{
+        label:"Ancestor-Core Node",
+        title:"Green Bloom",
+        body:"The green bloom did not behave like crude failure. It behaved like a patient growth inside the logic of memory.",
+        kin:"Foreign pattern rejected by Kin structure, but not fully expelled.",
+        rot:"Contagion learned the archive's reverence and used reverence as a route.",
+        effect:"Technical trust collapsed into spiritual dread.",
+        note:"The bloom succeeded because it did not need to destroy the core quickly.",
+        knife:"Rot became more terrible once it learned manners."
+      },
+      trust:{
+        label:"Ancestor-Core Node",
+        title:"Trust Fracture",
+        body:"This is the true injury. The Kin could survive loss, debt, and even ruined machinery. They could not cleanly survive memory that remained useful while becoming unsafe.",
+        kin:"Trust makes ancestral guidance livable.",
+        rot:"Trust was not killed; it was made impossible to verify.",
+        effect:"The survivor became unable to accept comfort without suspicion.",
+        note:"A memory system without trust becomes a torture engine.",
+        knife:"The ancestor still answered. That was the fracture."
+      }
+    };
+
+    const anatomyTitle = document.getElementById("anatomyTitle");
+    const anatomyBody = document.getElementById("anatomyBody");
+    const anatomyLabel = document.getElementById("anatomyLabel");
+    const anatomyKin = document.getElementById("anatomyKin");
+    const anatomyRot = document.getElementById("anatomyRot");
+    const anatomyEffect = document.getElementById("anatomyEffect");
+    const anatomyNote = document.getElementById("anatomyNote");
+    const anatomyKnife = document.getElementById("anatomyKnife");
+
+    document.querySelectorAll(".anatomy-hotspot").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".anatomy-hotspot").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        const data = anatomyData[button.dataset.node];
+        anatomyLabel.textContent = data.label;
+        anatomyTitle.textContent = data.title;
+        anatomyBody.textContent = data.body;
+        anatomyKin.textContent = data.kin;
+        anatomyRot.textContent = data.rot;
+        anatomyEffect.textContent = data.effect;
+        anatomyNote.textContent = data.note;
+        anatomyKnife.textContent = data.knife;
+        floatText.textContent = data.knife;
+        setCorruption(90);
+      });
+    });
+
+    const mercyData = {
+      obliteration:{
+        label:"Taxonomy I",
+        title:"Obliteration Was Available",
+        body:"The clean death was visible. The Mercy-Sickle could have ended the survivor quickly and with terrible precision. That possibility matters because Mortivus rejected it knowingly.",
+        blade:"Present and close enough to conclude the wound.",
+        record:"Blackbox confirms hesitation was not tactical delay.",
+        meaning:"Death would have ended the usefulness of the lesson.",
+        knife:"The cruelty begins where the obvious ending is refused."
+      },
+      silence:{
+        label:"Taxonomy II",
+        title:"Silence Was Available",
+        body:"Mortivus could have destroyed the blackbox, shattered the memory layer, and left the hold in quiet ruin. Instead, the device continued.",
+        blade:"The blade did not cut the recording chain.",
+        record:"Playback survived with enough fidelity to accuse.",
+        meaning:"Silence would have been mercy because silence would have limited the wound.",
+        knife:"The record was spared so the injury could keep speaking."
+      },
+      forgetting:{
+        label:"Taxonomy III",
+        title:"Forgetting Was Available",
+        body:"A cleaner atrocity would have removed memory. Mortivus gave the opposite: too much memory, damaged in the precise place where trust used to live.",
+        blade:"The blade never gave the dead a clean absence.",
+        record:"Names remained accessible after their meaning became unsafe.",
+        meaning:"Forgetting would have closed one door. Continuation opened many.",
+        knife:"He did not take memory. He made memory suspect."
+      },
+      continuation:{
+        label:"Taxonomy IV",
+        title:"Continuation Was Chosen",
+        body:"The survivor continued. The blackbox continued. The ancestor-core continued. The dead continued. This was the shape of harm selected by Mortivus.",
+        blade:"The weapon stayed still because the worse instrument had already been chosen.",
+        record:"The record became more dangerous because it survived.",
+        meaning:"Continuation became punishment with liturgical patience.",
+        knife:"This is the mercy he gave: the wound was allowed to live."
+      },
+      witness:{
+        label:"Taxonomy V",
+        title:"Witness-Carriage Was Chosen",
+        body:"The survivor was not permitted to end as a casualty. He was converted into a carrier. Mortivus left him with enough life to transport the violation.",
+        blade:"The blade withheld conclusion from the body.",
+        record:"The blackbox confirms survivor function after terminal breach.",
+        meaning:"A dead Kin would have ended locally. A witness spreads.",
+        knife:"A corpse can end. A witness can carry."
+      }
+    };
+
+    const mercyTaxLabel = document.getElementById("mercyTaxLabel");
+    const mercyTaxTitle = document.getElementById("mercyTaxTitle");
+    const mercyTaxBody = document.getElementById("mercyTaxBody");
+    const mercyProofBlade = document.getElementById("mercyProofBlade");
+    const mercyProofRecord = document.getElementById("mercyProofRecord");
+    const mercyProofMeaning = document.getElementById("mercyProofMeaning");
+    const mercyTaxKnife = document.getElementById("mercyTaxKnife");
+
+    document.querySelectorAll(".mercy-switch").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".mercy-switch").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        const data = mercyData[button.dataset.mercy];
+        mercyTaxLabel.textContent = data.label;
+        mercyTaxTitle.textContent = data.title;
+        mercyTaxBody.textContent = data.body;
+        mercyProofBlade.textContent = data.blade;
+        mercyProofRecord.textContent = data.record;
+        mercyProofMeaning.textContent = data.meaning;
+        mercyTaxKnife.textContent = data.knife;
+        floatText.textContent = data.knife;
+        setCorruption(99);
+      });
+    });
+
+    const channelData = {
+      debt:{
+        label:"Channel I // Debt",
+        title:"Debt Remains Active",
+        body:"The ledger can count the dead, name the breach, and preserve obligation. It cannot balance the wound because Mortivus altered the meaning of what had to be repaid.",
+        failure:"Debt grows faster than classification.",
+        noise:"Amber signal stable, green undertone rising.",
+        warning:"Do not confuse unpaid debt with understandable debt."
+      },
+      voice:{
+        label:"Channel II // Voice",
+        title:"The Familiar Voice Becomes Hazardous",
+        body:"The voice channel is not fully corrupted. That is why it cannot be dismissed. It carries enough Kin cadence to wound before the foreign bloom becomes obvious.",
+        failure:"Recognition remains active after trust collapses.",
+        noise:"Signal warm, cadence wrong by one breath.",
+        warning:"Do not answer familiar voices when timing has changed."
+      },
+      oath:{
+        label:"Channel III // Oath",
+        title:"Oath Persists Without Shelter",
+        body:"The oath channel never fully breaks. It continues to demand duty after the place that made duty meaningful has been violated.",
+        failure:"Obligation remains but destination is poisoned.",
+        noise:"Ledger pulse intact, destination corrupted.",
+        warning:"An oath can be used against the one who keeps it."
+      },
+      mercy:{
+        label:"Channel IV // Mercy",
+        title:"Mercy Refuses Clean Definition",
+        body:"The mercy channel is where the blackbox fails most violently. It can identify the event but cannot reconcile the word with the harm performed through it.",
+        failure:"Language category collapses under hostile use.",
+        noise:"Amber/green conflict above tolerated threshold.",
+        warning:"When mercy becomes precise, expect strategic cruelty."
+      },
+      container:{
+        label:"Channel V // Container",
+        title:"Survivor Function Confirmed",
+        body:"The survivor channel confirms continued biological life after the event, but all attached meanings register as compromised.",
+        failure:"Life persists as transport for wound-content.",
+        noise:"Heartbeat stable, oath-chain unsafe.",
+        warning:"Living does not equal release."
+      }
+    };
+
+    const channelLabel = document.getElementById("channelLabel");
+    const channelTitle = document.getElementById("channelTitle");
+    const channelBody = document.getElementById("channelBody");
+    const channelFailure = document.getElementById("channelFailure");
+    const channelNoise = document.getElementById("channelNoise");
+    const channelWarning = document.getElementById("channelWarning");
+
+    document.querySelectorAll(".channel-button").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".channel-button").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        const data = channelData[button.dataset.channel];
+        channelLabel.textContent = data.label;
+        channelTitle.textContent = data.title;
+        channelBody.textContent = data.body;
+        channelFailure.textContent = data.failure;
+        channelNoise.textContent = data.noise;
+        channelWarning.textContent = data.warning;
+        floatText.textContent = data.warning;
+        setCorruption(91);
+      });
+    });
+
+
     const canvas = document.getElementById("kinParticles");
     const ctx = canvas.getContext("2d");
     let particles = [];
@@ -1222,6 +2315,95 @@
     resize();
     draw();
     window.addEventListener("resize", resize);
+
+
+    const memoryCanvas = document.getElementById("memoryVeinCanvas");
+    const memoryCtx = memoryCanvas.getContext("2d");
+    const glyphCanvas = document.getElementById("glyphTearCanvas");
+    const glyphCtx = glyphCanvas.getContext("2d");
+    let memoryVeins = [];
+    let glyphTears = [];
+
+    function resizeExpandedLayers(){
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      [memoryCanvas,glyphCanvas].forEach(c => {
+        c.width = Math.floor(window.innerWidth * ratio);
+        c.height = Math.floor(window.innerHeight * ratio);
+        c.style.width = window.innerWidth + "px";
+        c.style.height = window.innerHeight + "px";
+      });
+      memoryCtx.setTransform(ratio,0,0,ratio,0,0);
+      glyphCtx.setTransform(ratio,0,0,ratio,0,0);
+
+      memoryVeins = Array.from({length:Math.min(52, Math.floor(window.innerWidth / 26))}, () => ({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        len:Math.random()*140+70,
+        life:Math.random()*120,
+        speed:Math.random()*1.2+.25,
+        bend:Math.random()*36+10
+      }));
+
+      glyphTears = Array.from({length:Math.min(44, Math.floor(window.innerWidth / 30))}, () => ({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        w:Math.random()*100+40,
+        life:Math.random()*140,
+        speed:Math.random()*1.4+.2
+      }));
+    }
+
+    function drawExpandedLayers(){
+      memoryCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      glyphCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+      for(const v of memoryVeins){
+        v.life += v.speed;
+        if(v.life > 150){
+          v.life = 0;
+          v.x = Math.random()*window.innerWidth;
+          v.y = Math.random()*window.innerHeight;
+        }
+        const pulse = Math.sin((v.life/150)*Math.PI);
+        const intensity = (corruption/100)*pulse;
+        if(intensity > 0){
+          const col = corruption > 70 ? "182,218,97" : "231,166,77";
+          memoryCtx.strokeStyle = `rgba(${col},${0.14*intensity})`;
+          memoryCtx.lineWidth = 1;
+          memoryCtx.beginPath();
+          memoryCtx.moveTo(v.x,v.y);
+          memoryCtx.bezierCurveTo(
+            v.x + v.len*.28, v.y - v.bend,
+            v.x + v.len*.72, v.y + v.bend,
+            v.x + v.len, v.y + Math.sin(v.life*.05)*22
+          );
+          memoryCtx.stroke();
+        }
+      }
+
+      for(const g of glyphTears){
+        g.life += g.speed;
+        if(g.life > 160){
+          g.life = 0;
+          g.x = Math.random()*window.innerWidth;
+          g.y = Math.random()*window.innerHeight;
+        }
+        const pulse = Math.sin((g.life/160)*Math.PI);
+        if(pulse > 0){
+          glyphCtx.fillStyle = `rgba(182,218,97,${0.055*pulse*(corruption/100)})`;
+          glyphCtx.fillRect(g.x,g.y,g.w,2);
+          glyphCtx.fillStyle = `rgba(255,215,137,${0.032*pulse})`;
+          glyphCtx.fillRect(g.x,g.y+5,g.w*.62,1);
+        }
+      }
+
+      requestAnimationFrame(drawExpandedLayers);
+    }
+
+    resizeExpandedLayers();
+    drawExpandedLayers();
+    window.addEventListener("resize", resizeExpandedLayers);
+
   </script>
 </body>
 </html>
