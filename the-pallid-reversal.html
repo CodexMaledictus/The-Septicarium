@@ -138,6 +138,49 @@
     .floating{position:fixed;right:18px;bottom:18px;z-index:90;width:min(420px,calc(100% - 36px));border:1px solid rgba(185,228,94,.32);border-radius:22px;background:rgba(6,8,5,.90);backdrop-filter:blur(12px);box-shadow:var(--shadow);overflow:hidden}.floating-head{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid rgba(185,228,94,.18);padding:12px 14px;color:var(--ork-hot);font-size:.58rem}.floating button{border:0;background:transparent;color:#e6dcc0;cursor:pointer;font-size:1rem}.floating-body{padding:14px;color:#d8cfb0;line-height:1.72;font-size:.96rem}
     .modal{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:18px;background:rgba(2,4,2,.76);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-frame{width:min(760px,100%);border-color:var(--line2);background:linear-gradient(180deg,rgba(18,20,12,.98),rgba(6,8,5,.99));padding:24px;display:grid;gap:12px}.modal-frame h3{font-size:2rem;margin:0;color:#f0e8d1}.modal-frame p{color:#d2c8aa;line-height:1.78;margin:0}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
 
+
+    /* ELITE EXPANSION LAYER: keep the original page, add deeper Ork intelligence systems */
+    #glyphCanvas,#pressureCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    #glyphCanvas{opacity:.42;mix-blend-mode:screen}
+    #pressureCanvas{opacity:.36;mix-blend-mode:screen}
+    .thesis-grid,.boss-grid,.correction-grid,.trophy-grid{display:grid;gap:18px;padding:24px 26px 28px}
+    .thesis-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .boss-grid{grid-template-columns:.92fr 1.08fr;align-items:stretch}
+    .correction-grid{grid-template-columns:.42fr .58fr;align-items:start}
+    .trophy-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .thesis-card,.boss-command,.correction-output,.correction-btn,.trophy-card,.boss-output,.margin-strip,.scrap-rule{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(14,17,10,.88),rgba(6,8,5,.93));box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .thesis-card,.boss-command,.correction-btn,.trophy-card,.scrap-rule{cursor:pointer;transition:.24s var(--ease)}
+    .thesis-card:hover,.boss-command:hover,.boss-command.active,.correction-btn:hover,.correction-btn.active,.trophy-card:hover,.scrap-rule:hover{transform:translateY(-4px);border-color:var(--line2);background:linear-gradient(180deg,rgba(30,40,16,.88),rgba(6,8,5,.93))}
+    .thesis-card{min-height:260px;padding:18px;display:grid;align-content:end}
+    .thesis-card .big-num{font-family:"Cinzel",Georgia,serif;color:var(--ork-hot);font-size:clamp(2.6rem,5vw,5rem);line-height:.86;margin-bottom:14px;text-shadow:0 0 32px rgba(185,228,94,.16)}
+    .thesis-card h3,.boss-command h3,.correction-output h3,.correction-btn h3,.trophy-card h3,.boss-output h3,.scrap-rule h3{margin:8px 0 10px;color:#f0e8d1;line-height:1.06}
+    .thesis-card p,.boss-command p,.correction-output p,.correction-btn p,.trophy-card p,.boss-output p,.margin-strip p,.scrap-rule p{margin:0;color:var(--bone2);line-height:1.72}
+    .boss-portrait{min-height:720px}
+    .boss-column{display:grid;gap:12px;align-content:start}
+    .boss-command{padding:18px;min-height:150px;text-align:left;color:var(--bone)}
+    .boss-output{padding:22px;min-height:260px;display:grid;align-content:center}
+    .boss-output h3,.correction-output h3{font-size:clamp(1.8rem,3.4vw,3.6rem)}
+    .correction-console{display:grid;gap:10px}
+    .correction-btn{width:100%;text-align:left;color:var(--bone);padding:18px}
+    .correction-btn h3{font-size:1.25rem}
+    .correction-output{padding:24px;min-height:650px;display:grid;align-content:center;gap:14px}
+    .correction-meter{display:grid;gap:10px;margin-top:10px}
+    .correction-row{display:grid;grid-template-columns:150px 1fr 54px;gap:10px;align-items:center}
+    .correction-row span{font-family:"Inter",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.16em;font-weight:900;color:var(--ork-hot);font-size:.55rem}
+    .correction-shell{height:10px;border:1px solid rgba(214,227,123,.16);border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}
+    .correction-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust2),var(--ork),var(--ork-hot));transition:width .35s var(--ease)}
+    .margin-strip{margin:0 26px 28px;padding:18px;display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:center}
+    .margin-strip .label{color:var(--ork-hot);font-size:.56rem}
+    .trophy-card{min-height:330px;display:grid;grid-template-rows:1fr auto;text-decoration:none}
+    .trophy-card img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.74) contrast(1.08);transition:.6s var(--ease)}
+    .trophy-card:hover img{transform:scale(1.05);filter:brightness(.92) contrast(1.12)}
+    .trophy-copy{padding:16px}
+    .scrap-law-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:0 26px 28px}
+    .scrap-rule{padding:18px;min-height:220px}
+    .scrap-rule .label{color:var(--ork-hot);font-size:.55rem}
+    @media (max-width:1200px){.thesis-grid,.boss-grid,.correction-grid,.trophy-grid,.scrap-law-grid{grid-template-columns:1fr 1fr}.boss-portrait,.correction-output{min-height:460px}.margin-strip{grid-template-columns:1fr}}
+    @media (max-width:760px){.thesis-grid,.boss-grid,.correction-grid,.trophy-grid,.scrap-law-grid{grid-template-columns:1fr}.thesis-grid,.boss-grid,.correction-grid,.trophy-grid,.scrap-law-grid{padding-left:18px;padding-right:18px}.margin-strip{margin-left:18px;margin-right:18px}.correction-row{grid-template-columns:1fr;gap:6px}}
+
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
     @media (max-width:1200px){.topbar,.global-meter,.hero,.warhost-grid,.unique-feature,.map-layout,.battle-stage,.trap-layout{grid-template-columns:1fr}.evidence-grid{grid-template-columns:1fr}.phase-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-left,.hero-right{min-height:auto}.warhost-image,.stage-image,.map-panel,.map-output{min-height:440px}.map-svg{height:520px}}
     @media (max-width:760px){.page{width:min(100% - 18px,var(--max))}.boot-grid,.hero-grid,.data-grid,.stat-grid,.phase-strip{grid-template-columns:1fr}.section-header,.wide-pad,.warhost-grid,.unique-feature,.map-layout,.battle-grid,.chapters,.trap-layout,.evidence-grid{padding-left:18px;padding-right:18px}.hero{padding:22px;border-radius:28px}.hero h1{font-size:clamp(3rem,15vw,4.8rem)}.bar{grid-template-columns:1fr;gap:6px}.floating{left:10px;right:10px;width:auto}.top-shell{top:6px}}
@@ -146,6 +189,8 @@
 
 <body class="locked" data-heat="cold">
   <canvas id="scrapCanvas" aria-hidden="true"></canvas>
+  <canvas id="glyphCanvas" aria-hidden="true"></canvas>
+  <canvas id="pressureCanvas" aria-hidden="true"></canvas>
   <div class="noise" aria-hidden="true"></div><div class="grid" aria-hidden="true"></div><div class="scan" aria-hidden="true"></div>
 
   <div class="boot" id="boot">
@@ -200,6 +245,40 @@
       </div></aside>
     </section>
 
+
+    <section class="section" id="correction-doctrine" data-heat="bait" data-trap="24" data-ork="44" data-whisper="The lesson starts before the trap closes: crude is not the same as stupid.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker label">Septicarium Expansion // Correction Doctrine</div>
+            <h2 class="section-title">The Record Refuses to Make the Orks Smaller</h2>
+            <p class="section-desc">This chamber preserves the uncomfortable truth of the reversal: Gorzag Pallkrump did not defeat Mortivus by becoming clean, subtle, or civilized. He defeated him by making Ork violence behave with enough structure to be mistaken for accident.</p>
+          </div>
+          <div class="chip">Humiliation Preserved</div>
+        </div>
+
+        <div class="thesis-grid">
+          <article class="thesis-card interactive" data-title="Correction I" data-text="Mortivus read loudness as waste. Gorzag made loudness carry direction.">
+            <div class="label">Correction I</div><div class="big-num">I</div><h3>Noise Was the Camouflage</h3><p>The Orks hid planning inside the behavior Mortivus already expected from them.</p>
+          </article>
+          <article class="thesis-card interactive" data-title="Correction II" data-text="The retreat was not discipline pretending to be panic. It was panic-shaped discipline.">
+            <div class="label">Correction II</div><div class="big-num">II</div><h3>Retreat Became Bait</h3><p>The line moved backward in exactly the direction the basin needed.</p>
+          </article>
+          <article class="thesis-card interactive" data-title="Correction III" data-text="The kill-box succeeded because every piece of it looked like something Orks might accidentally do.">
+            <div class="label">Correction III</div><div class="big-num">III</div><h3>Accident Was Engineered</h3><p>The smoke, wreckage, fire, and shouting all had jobs.</p>
+          </article>
+          <article class="thesis-card interactive" data-title="Correction IV" data-text="Mortivus survived the defeat, which made the lesson worse. Annihilation ends a wound. Correction keeps it alive.">
+            <div class="label">Correction IV</div><div class="big-num">IV</div><h3>Survival Made It Rot</h3><p>The loss kept thinking inside him after the battlefield cooled.</p>
+          </article>
+        </div>
+
+        <div class="margin-strip">
+          <div class="label">Archive Law</div>
+          <p>The Pallid Reversal must not be cleaned into sober military language. The crude voice is evidence. The laughter is data. The embarrassment is the point.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="warhost" data-heat="bait" data-trap="26" data-ork="48" data-whisper="Da Iron-Gob Waaagh! did not run. It backed up with its teeth showing.">
       <div class="section-block"><div class="section-header"><div><div class="kicker label">Ork Warhost Identity</div><h2 class="section-title">Da Iron-Gob Waaagh!</h2><p class="section-desc">The warhost was not a single green mass. It was a brutal, layered organism of bait-lines, grot demolition crews, smoke-meks, elite krumpguard, gun-rim crews, trophy takers, and one warboss who knew exactly when to stop laughing and start closing the jaws.</p></div><div class="chip">Ork Perspective Preserved</div></div>
         <div class="warhost-grid">
@@ -210,6 +289,49 @@
             <article class="data-card" data-reveal="Mek crews controlled smoke vents, scrap gates, fuel drum timing, and the ugliest parts of the kill-box machinery."><img src="Assets/Pallid%20Reversal/mekboy-killbox-blueprint.jpeg" alt="Mekboy kill-box blueprint"><div class="data-body"><div class="label">Mek Layer</div><h3>Smoke-Meks</h3><p>Crude machinery, precise timing.</p><div class="reveal"></div></div></article>
             <article class="data-card" data-reveal="Gretchin crews survived by being ignored. They pulled chains, lit charges, and made themselves small until the basin opened its mouth."><img src="Assets/Pallid%20Reversal/mekboy-killbox-blueprint-alternate.jpeg" alt="Alternate kill-box blueprint"><div class="data-body"><div class="label">Grot Layer</div><h3>Da Boom-Grotz</h3><p>Small hands on big detonators.</p><div class="reveal"></div></div></article>
           </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="gorzag-command-logic" data-heat="bait" data-trap="32" data-ork="58" data-whisper="Gorzag did not stop being Ork to become clever. He became clever by being Ork correctly.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker label">Warboss Intelligence Ledger</div>
+            <h2 class="section-title">Da Boss Knew When Not to Krump</h2>
+            <p class="section-desc">The most dangerous part of Gorzag Pallkrump was not that he wanted violence. Every Ork wanted violence. The danger was that he delayed the violence long enough to let Mortivus walk deeper into it.</p>
+          </div>
+          <div class="chip">Gorzag Logic // Active</div>
+        </div>
+
+        <div class="boss-grid">
+          <figure class="image-card boss-portrait">
+            <img src="Assets/Pallid%20Reversal/gorzag-pallkrump.jpeg" alt="Warboss Gorzag Pallkrump command logic">
+            <figcaption class="caption"><div class="label">Gorzag Pallkrump</div><p>The warboss who treated appetite like a weapon with a trigger discipline problem.</p></figcaption>
+          </figure>
+          <div class="boss-column">
+            <button class="boss-command active" data-boss="delay"><div class="label">Command I</div><h3>Delay the Charge</h3><p>Gorzag wanted to attack early. The victory came because he did not.</p></button>
+            <button class="boss-command" data-boss="let"><div class="label">Command II</div><h3>Let the Pale Git Read It Wrong</h3><p>Mortivus was not denied information. He was given the wrong meaning.</p></button>
+            <button class="boss-command" data-boss="center"><div class="label">Command III</div><h3>Hit the Strong Point</h3><p>The Krumpguard pinned the center because that is where correction mattered.</p></button>
+            <article class="boss-output">
+              <div class="label">Boss Output</div>
+              <h3 id="bossTitle">Delay the Charge</h3>
+              <p id="bossText">The record preserves this as Gorzag's central command achievement: he allowed the bait to continue even when the immediate joy of impact was available.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="scrap-law-grid">
+          <article class="scrap-rule interactive" data-title="Ork Law I" data-text="The plan worked because it looked like Orks were failing in the exact way outsiders expect Orks to fail.">
+            <div class="label">Ork Law I</div><h3>Be What They Expect</h3><p>Then put teeth underneath it.</p>
+          </article>
+          <article class="scrap-rule interactive" data-title="Ork Law II" data-text="The ambush did not require quietness. It required timing.">
+            <div class="label">Ork Law II</div><h3>Loud Can Still Be Timed</h3><p>The gunz waited. The grots waited. The jaw waited.</p>
+          </article>
+          <article class="scrap-rule interactive" data-title="Ork Law III" data-text="A good trap does not hide every sign. It makes every sign look like something else.">
+            <div class="label">Ork Law III</div><h3>Make the Truth Ugly</h3><p>Mortivus saw the signs and named them wrong.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -225,6 +347,40 @@
             <figure class="image-card" style="min-height:300px"><img src="Assets/Pallid%20Reversal/Scrap-Vox-Console.png" alt="Ork scrap-vox console"><figcaption class="caption"><div class="label">Scrap-Vox Console</div><p>The machine keeps shouting even after disconnected.</p></figcaption></figure>
           </div>
           <article class="voice-output panel"><div class="label" id="voiceLabel">Ork Scrap-Vox</div><h3 id="voiceTitle">“Da pale git followed!”</h3><p id="voiceBody">We legged it loud, see? Not scared. Proper loud. Made it look like da ladz was breakin’. Da pale boss saw it and went all slow-thinky. So we kept runnin’ until he was right where da basin could bite him.</p><div class="translation-toggle"><button class="active" data-line="raw">Raw Line</button><button data-line="meaning">Meaning</button><button data-line="lesson">Lesson</button></div><p id="voiceExtra">The Ork account treats deception as a form of theater. The retreat had to be ugly enough to be believed.</p></article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="humiliation-engine" data-heat="closing" data-trap="52" data-ork="72" data-whisper="A clever enemy is easier to hate when he was supposed to be stupid.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker label">Humiliation Engine</div>
+            <h2 class="section-title">Why the Defeat Hurt More Than the Wound</h2>
+            <p class="section-desc">The Pallid Reversal is not preserved because Mortivus took losses. Death Guard commanders lose bodies all the time. It is preserved because the enemy identified a pattern in him, built a joke around it, and made the joke tactically true.</p>
+          </div>
+          <div class="chip">Psychological Kill-Box</div>
+        </div>
+
+        <div class="correction-grid">
+          <div class="correction-console">
+            <button class="correction-btn active" data-correct="assumption"><div class="label">Pressure I</div><h3>Assumption</h3><p>Mortivus assumes crude violence cannot carry layered intent.</p></button>
+            <button class="correction-btn" data-correct="overread"><div class="label">Pressure II</div><h3>Over-Reading</h3><p>He reads Ork panic as degradation because it matches prior victories.</p></button>
+            <button class="correction-btn" data-correct="commit"><div class="label">Pressure III</div><h3>Commitment</h3><p>The center advances too far to reverse cleanly.</p></button>
+            <button class="correction-btn" data-correct="teach"><div class="label">Pressure IV</div><h3>Correction</h3><p>Survival forces the lesson to remain inside him.</p></button>
+          </div>
+
+          <article class="correction-output">
+            <div class="label" id="correctionLabel">Pressure I</div>
+            <h3 id="correctionTitle">Assumption</h3>
+            <p id="correctionText">Mortivus does not underestimate Ork strength. He underestimates Ork structure. This distinction matters. He respects the force and misreads the intelligence hidden inside it.</p>
+            <div class="correction-meter">
+              <div class="correction-row"><span>Trap Mind</span><div class="correction-shell"><div class="correction-fill" id="mindFill" style="--w:28%"></div></div><strong id="mindNum">28%</strong></div>
+              <div class="correction-row"><span>Humiliation</span><div class="correction-shell"><div class="correction-fill" id="humFill" style="--w:36%"></div></div><strong id="humNum">36%</strong></div>
+              <div class="correction-row"><span>Lesson Rot</span><div class="correction-shell"><div class="correction-fill" id="lessonFill" style="--w:42%"></div></div><strong id="lessonNum">42%</strong></div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -456,6 +612,27 @@
       </div>
     </section>
 
+
+    <section class="section" id="trophy-aftertaste" data-heat="bait" data-trap="66" data-ork="89" data-whisper="The Orks turned the field into proof and then into parts.">
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <div class="kicker label">Aftermath Trophy Rail</div>
+            <h2 class="section-title">What the Battlefield Became After the Lesson</h2>
+            <p class="section-desc">The Orks did not preserve the event as solemn victory. They looted it. That made the record more honest. Trophies, scrap, Weirdboy visions, and broken Death Guard remains became a second archive, loud enough to resist correction.</p>
+          </div>
+          <div class="chip">Aftermath // Still Laughing</div>
+        </div>
+
+        <div class="trophy-grid">
+          <a class="trophy-card" href="#battle"><img src="Assets/Pallid%20Reversal/Ork-Victory-Aftermath.png" alt="Ork victory aftermath"><div class="trophy-copy"><div class="label">Trophy I</div><h3>Da Field Belongs to Da Loud</h3><p>Bells, armor, guns, and teeth become proof that the joke worked.</p></div></a>
+          <a class="trophy-card" href="#story"><img src="Assets/Pallid%20Reversal/Mortivus-Retreat.png" alt="Mortivus retreat"><div class="trophy-copy"><div class="label">Trophy II</div><h3>The Pale Boss Leaves</h3><p>Withdrawal becomes the cleanest possible proof of correction.</p></div></a>
+          <a class="trophy-card" href="#evidence"><img src="Assets/Pallid%20Reversal/Weirdboy-Vision.png" alt="Weirdboy vision"><div class="trophy-copy"><div class="label">Trophy III</div><h3>Da Green Seein'</h3><p>The Orks won and still saw something larger coming behind the smoke.</p></div></a>
+          <a class="trophy-card" href="#map"><img src="Assets/Pallid%20Reversal/mekboy-killbox-blueprint.jpeg" alt="Mekboy killbox blueprint"><div class="trophy-copy"><div class="label">Trophy IV</div><h3>The Plan That Should Have Been Too Crude</h3><p>The blueprint remains ugly because ugly was the delivery system.</p></div></a>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="evidence" data-heat="bait" data-trap="50" data-ork="70" data-whisper="Every object left behind got louder after the fight.">
       <div class="section-block"><div class="section-header"><div><div class="kicker label">Supplementary Evidence</div><h2 class="section-title">Relics of Da Reversal</h2><p class="section-desc">The remaining assets hold the aftertaste of the battle: console, vision, victory field, and the plan that should have been too crude to work.</p></div><div class="chip">Evidence Retained</div></div>
         <div class="evidence-grid">
@@ -493,9 +670,34 @@
 
     const trapStats={sus:22,close:18,grot:41,noise:76};const log=document.getElementById('trapLog');const buttons={bait:['Bait Ordered','Da Runnin’-But-Not-Runnin’ Boyz begin losing ground in the correct direction. Mortivus sees degradation, not invitation.',8,12,5,9],smoke:['Smoke Valves Open','Green-black smoke rolls low through the basin. The lanes become narrower than they look.',4,14,12,6],gunz:['Hidden Gunz Open','The rim speaks downward. Fire does not chase the Death Guard. It herds them.',10,18,8,13],grotz:['Boom-Grotz Pull Chains','Small hands do large violence. Detonator cables snap tight under the barricades.',6,16,22,4],iron:['Iron-Gob Jaw Released','Da Krumpguard hit the center and hold it in place. The trap stops pretending.',12,19,7,10],boom:['Basin Detonated','The ground becomes teeth. Mortivus chooses survival over pride.',18,26,18,20]};function updMeters(){susMeter.style.width=trapStats.sus+'%';closeMeter.style.width=trapStats.close+'%';grotMeter.style.width=trapStats.grot+'%';noiseMeter.style.width=trapStats.noise+'%';setState(Math.min(100,trapStats.close),Math.min(100,trapStats.noise),'closing')}document.querySelectorAll('.trap-btn').forEach(b=>b.onclick=()=>{const x=buttons[b.dataset.trapbtn];trapStats.sus=Math.min(100,trapStats.sus+x[2]);trapStats.close=Math.min(100,trapStats.close+x[3]);trapStats.grot=Math.min(100,trapStats.grot+x[4]);trapStats.noise=Math.min(100,trapStats.noise+x[5]);const e=document.createElement('div');e.className='log-entry';e.innerHTML=`<strong>${x[0]}</strong><p>${x[1]}</p>`;log.prepend(e);updMeters();whisperText.textContent=x[1]});
 
+
+    const bossData={
+      delay:{title:'Delay the Charge',text:"The record preserves this as Gorzag's central command achievement: he allowed the bait to continue even when the immediate joy of impact was available.",trap:36,ork:62,heat:'bait'},
+      let:{title:'Let the Pale Git Read It Wrong',text:'The Orks did not starve Mortivus of information. They fed him information shaped like the conclusion he already preferred.',trap:44,ork:70,heat:'closing'},
+      center:{title:'Hit the Strong Point',text:'Da Iron-Gob Krumpguard struck the center because the center was where Mortivus kept meaning. Breaking the flank would have killed bodies. Pinning the center corrected the commander.',trap:58,ork:78,heat:'closing'}
+    };
+    const bossTitle=document.getElementById('bossTitle'),bossText=document.getElementById('bossText');
+    document.querySelectorAll('.boss-command').forEach(b=>b.onclick=()=>{document.querySelectorAll('.boss-command').forEach(x=>x.classList.remove('active'));b.classList.add('active');const d=bossData[b.dataset.boss];bossTitle.textContent=d.title;bossText.textContent=d.text;whisperText.textContent=d.text;setState(d.trap,d.ork,d.heat)});
+
+    const correctionData={
+      assumption:{label:'Pressure I',title:'Assumption',text:'Mortivus does not underestimate Ork strength. He underestimates Ork structure. This distinction matters. He respects the force and misreads the intelligence hidden inside it.',mind:28,hum:36,lesson:42,trap:52,ork:72},
+      overread:{label:'Pressure II',title:'Over-Reading',text:'He has seen Orks break before. Gorzag builds the fake break out of things Mortivus has already survived, so the commander trusts the wrong memory.',mind:46,hum:52,lesson:58,trap:64,ork:78},
+      commit:{label:'Pressure III',title:'Commitment',text:'The line advances far enough that correction becomes expensive. A trap is strongest when leaving it requires admitting it exists.',mind:64,hum:70,lesson:74,trap:78,ork:86},
+      teach:{label:'Pressure IV',title:'Correction',text:'Mortivus survives. That makes the defeat useful to him and insulting forever. The Orks did not merely wound his force. They entered his future decisions.',mind:82,hum:88,lesson:96,trap:92,ork:98}
+    };
+    const cLabel=document.getElementById('correctionLabel'),cTitle=document.getElementById('correctionTitle'),cText=document.getElementById('correctionText'),mindFill=document.getElementById('mindFill'),humFill=document.getElementById('humFill'),lessonFill=document.getElementById('lessonFill'),mindNum=document.getElementById('mindNum'),humNum=document.getElementById('humNum'),lessonNum=document.getElementById('lessonNum');
+    document.querySelectorAll('.correction-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.correction-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');const d=correctionData[b.dataset.correct];cLabel.textContent=d.label;cTitle.textContent=d.title;cText.textContent=d.text;mindFill.style.width=d.mind+'%';humFill.style.width=d.hum+'%';lessonFill.style.width=d.lesson+'%';mindNum.textContent=d.mind+'%';humNum.textContent=d.hum+'%';lessonNum.textContent=d.lesson+'%';whisperText.textContent=d.text;setState(d.trap,d.ork,'closing')});
+
+
     const modal=document.getElementById('modal'),modalTitle=document.getElementById('modalTitle'),modalText=document.getElementById('modalText');document.querySelectorAll('.interactive').forEach(i=>i.onclick=()=>{modalTitle.textContent=i.dataset.title;modalText.textContent=i.dataset.text;modal.classList.add('show');modal.setAttribute('aria-hidden','false')});function closeModal(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}document.getElementById('closeModal').onclick=closeModal;modal.onclick=e=>{if(e.target===modal)closeModal()};document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});document.getElementById('closeFloat').onclick=()=>document.getElementById('floating').style.display='none';document.getElementById('whisperBtn').onclick=()=>{document.getElementById('floating').style.display='block';whisperText.textContent='The scrap-vox insists this was funny. The archive insists it was doctrine.'};
 
     const canvas=document.getElementById('scrapCanvas'),ctx=canvas.getContext('2d');let bits=[];function resize(){const r=Math.min(devicePixelRatio||1,2);canvas.width=innerWidth*r;canvas.height=innerHeight*r;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(r,0,0,r,0,0);bits=Array.from({length:Math.min(170,Math.floor(innerWidth/9))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2+.6,v:Math.random()*.35+.05,a:Math.random()*Math.PI*2,t:Math.random()>.7?'spark':'spore'}))}function draw(){ctx.clearRect(0,0,innerWidth,innerHeight);for(const p of bits){p.y-=p.v;p.x+=Math.sin(p.a)*.18;p.a+=.012;if(p.y<-12){p.y=innerHeight+12;p.x=Math.random()*innerWidth}const col=p.t==='spark'?'219,99,31':'185,228,94';const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.s*7);g.addColorStop(0,`rgba(${col},.22)`);g.addColorStop(.5,`rgba(${col},.05)`);g.addColorStop(1,`rgba(${col},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.s*5,0,Math.PI*2);ctx.fill()}requestAnimationFrame(draw)}resize();draw();addEventListener('resize',resize);
+
+    const glyphCanvas=document.getElementById('glyphCanvas'),pressureCanvas=document.getElementById('pressureCanvas'),glyphCtx=glyphCanvas.getContext('2d'),pressureCtx=pressureCanvas.getContext('2d');let glyphs=[],pressure=[];
+    function resizeExtra(){const r=Math.min(devicePixelRatio||1,2);for(const c of [glyphCanvas,pressureCanvas]){c.width=innerWidth*r;c.height=innerHeight*r;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px'}glyphCtx.setTransform(r,0,0,r,0,0);pressureCtx.setTransform(r,0,0,r,0,0);glyphs=Array.from({length:Math.min(44,Math.floor(innerWidth/32))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,t:Math.random()*120,s:Math.random()*.9+.25,mark:['WAAAGH','KRUMP','BAIT','BOOM','GIT','JAW'][Math.floor(Math.random()*6)]}));pressure=Array.from({length:Math.min(28,Math.floor(innerWidth/48))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,w:Math.random()*160+80,life:Math.random()*130,spd:Math.random()*1.1+.25}))}
+    function drawExtra(){glyphCtx.clearRect(0,0,innerWidth,innerHeight);pressureCtx.clearRect(0,0,innerWidth,innerHeight);for(const g of glyphs){g.t+=g.s;g.y-=.08*g.s;if(g.y<-30){g.y=innerHeight+30;g.x=Math.random()*innerWidth}const a=(Math.sin(g.t*.02)+1)/2*.10;glyphCtx.font='900 12px JetBrains Mono, monospace';glyphCtx.fillStyle=`rgba(185,228,94,${a})`;glyphCtx.save();glyphCtx.translate(g.x,g.y);glyphCtx.rotate(Math.sin(g.t*.01)*.08);glyphCtx.fillText(g.mark,0,0);glyphCtx.restore()}for(const p of pressure){p.life+=p.spd;if(p.life>140){p.life=0;p.x=Math.random()*innerWidth;p.y=Math.random()*innerHeight}const pulse=Math.sin(p.life/140*Math.PI);if(pulse<=0)continue;pressureCtx.fillStyle=`rgba(219,99,31,${.045*pulse})`;pressureCtx.fillRect(p.x,p.y,p.w,3);pressureCtx.fillStyle=`rgba(185,228,94,${.035*pulse})`;pressureCtx.fillRect(p.x,p.y+5,p.w*.6,2)}requestAnimationFrame(drawExtra)}
+    resizeExtra();drawExtra();addEventListener('resize',resizeExtra);
+
   </script>
 </body>
 </html>
