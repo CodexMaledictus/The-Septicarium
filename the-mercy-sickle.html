@@ -1010,6 +1010,7 @@
           <a href="#provenance">Provenance</a>
           <a href="#motions">Four Motions</a>
           <a href="#battle">Perfumed Refusal</a>
+          <button type="button" id="whisperButton">Whisper</button>
         </nav>
       </div>
 
@@ -1488,8 +1489,10 @@
     </section>
   </div>
 
-  <!-- Hidden reliquary state text used by the page scripts. No floating panel is rendered. -->
-  <div id="whisperText" hidden>The haft brings mercy close. The curved blade makes it personal.</div>
+  <aside class="whisper-box" id="whisperBox">
+    <div class="whisper-head label"><span>Reliquary Whisper</span><button id="whisperClose" aria-label="Close whisper box">×</button></div>
+    <div class="whisper-body" id="whisperText">The haft brings mercy close. The curved blade makes it personal.</div>
+  </aside>
 
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-frame" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -1735,6 +1738,15 @@
       whisperIndex = (whisperIndex + 1) % whisperMessages.length;
       whisperText.textContent = whisperMessages[whisperIndex];
     }, 5600);
+    document.getElementById("whisperClose").addEventListener("click", () => {
+      document.getElementById("whisperBox").style.display = "none";
+      clearInterval(whisperTimer);
+    });
+    document.getElementById("whisperButton").addEventListener("click", () => {
+      document.getElementById("whisperBox").style.display = "block";
+      whisperText.textContent = "The reliquary is not silent. It is choosing a safer sentence.";
+    });
+
     const modal = document.getElementById("modal");
     const modalTitle = document.getElementById("modalTitle");
     const modalText = document.getElementById("modalText");
