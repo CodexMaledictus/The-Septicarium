@@ -965,13 +965,6 @@
       .whisper-box{left:8px;right:8px;width:auto}
       .top-shell{top:6px}
     }
-  
-
-    /* Immersion fix: remove floating whisper panel so relic/background imagery stays unobstructed */
-    .whisper-box{
-      display:none !important;
-    }
-
   </style>
 </head>
 <body class="locked" data-risk="sealed">
@@ -1495,10 +1488,8 @@
     </section>
   </div>
 
-  <aside class="whisper-box" id="whisperBox">
-    <div class="whisper-head label"><span>Reliquary Whisper</span><button id="whisperClose" aria-label="Close whisper box">×</button></div>
-    <div class="whisper-body" id="whisperText">The haft brings mercy close. The curved blade makes it personal.</div>
-  </aside>
+  <!-- Hidden reliquary state text used by the page scripts. No floating panel is rendered. -->
+  <div id="whisperText" hidden>The haft brings mercy close. The curved blade makes it personal.</div>
 
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-frame" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -1744,15 +1735,6 @@
       whisperIndex = (whisperIndex + 1) % whisperMessages.length;
       whisperText.textContent = whisperMessages[whisperIndex];
     }, 5600);
-    document.getElementById("whisperClose").addEventListener("click", () => {
-      document.getElementById("whisperBox").style.display = "none";
-      clearInterval(whisperTimer);
-    });
-    document.getElementById("whisperButton").addEventListener("click", () => {
-      document.getElementById("whisperBox").style.display = "block";
-      whisperText.textContent = "The reliquary is not silent. It is choosing a safer sentence.";
-    });
-
     const modal = document.getElementById("modal");
     const modalTitle = document.getElementById("modalTitle");
     const modalText = document.getElementById("modalText");
