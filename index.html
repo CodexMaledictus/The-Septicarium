@@ -12,85 +12,76 @@
 
   <style>
     :root{
-      --void:#020302;
-      --black:#050604;
-      --ship:#070a06;
-      --deck:#0b0f08;
-      --panel:#10150c;
-      --panel-heavy:#060805;
-      --glass:rgba(9,13,8,.78);
-      --bone:#ede4c4;
-      --bone-hot:#fff1c9;
-      --parchment:#d8cba7;
-      --dim:#aaa081;
-      --ash:#7b735e;
-      --mold:#7f9e42;
-      --mold-hot:#b8d866;
-      --rot:#d8e797;
-      --brass:#a98d4e;
-      --brass-hot:#d6bd75;
-      --rust:#8d3f20;
-      --blood:#4a120d;
-      --blue:#334b54;
-      --ork:#6f8f3c;
-      --line:rgba(216,231,151,.18);
-      --line-strong:rgba(216,231,151,.46);
+      --void:#020302; --black:#050604; --ship:#070a06; --deck:#0b0f08;
+      --panel:#10150c; --panel-heavy:#060805; --glass:rgba(9,13,8,.78);
+      --bone:#ede4c4; --bone-hot:#fff1c9; --parchment:#d8cba7;
+      --dim:#aaa081; --ash:#7b735e;
+      --mold:#7f9e42; --mold-hot:#b8d866; --rot:#d8e797;
+      --brass:#a98d4e; --brass-hot:#d6bd75;
+      --rust:#8d3f20; --blood:#4a120d; --blue:#334b54; --ork:#6f8f3c;
+      --line:rgba(216,231,151,.18); --line-strong:rgba(216,231,151,.46);
       --shadow:0 34px 100px rgba(0,0,0,.66);
       --glow:0 0 55px rgba(184,216,102,.15);
       --glow-strong:0 0 75px rgba(184,216,102,.25);
-      --radius:30px;
-      --radius-sm:20px;
-      --max:1580px;
+      --radius:30px; --radius-sm:20px; --max:1580px;
       --ease:cubic-bezier(.2,.8,.2,1);
+      --chamber-accent:184,216,102;
+      --chamber-warm:216,231,151;
+      --chamber-deep:111,143,60;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
-      margin:0;
-      min-height:100vh;
-      color:var(--bone);
-      overflow-x:hidden;
-      font-family:"Spectral", Georgia, serif;
+      margin:0;min-height:100vh;color:var(--bone);overflow-x:hidden;
+      font-family:"Spectral",Georgia,serif;
       background:
-        radial-gradient(circle at 12% 4%, rgba(184,216,102,.15), transparent 32%),
-        radial-gradient(circle at 86% 12%, rgba(169,141,78,.12), transparent 30%),
-        radial-gradient(circle at 50% 92%, rgba(141,63,32,.14), transparent 44%),
+        radial-gradient(circle at 12% 4%,rgba(var(--chamber-accent),.15),transparent 32%),
+        radial-gradient(circle at 86% 12%,rgba(169,141,78,.12),transparent 30%),
+        radial-gradient(circle at 50% 92%,rgba(141,63,32,.14),transparent 44%),
         linear-gradient(135deg,#010201,#070906 48%,#020302);
-      transition:background .75s var(--ease), filter .75s var(--ease);
+      transition:background .75s var(--ease),filter .75s var(--ease);
     }
-
     body.locked{overflow:hidden}
-    body[data-chamber="command"]{background:radial-gradient(circle at 12% 4%,rgba(184,216,102,.15),transparent 32%),radial-gradient(circle at 86% 12%,rgba(169,141,78,.12),transparent 30%),linear-gradient(135deg,#010201,#070906 48%,#020302)}
-    body[data-chamber="annals"]{background:radial-gradient(circle at 15% 6%,rgba(214,189,117,.16),transparent 34%),radial-gradient(circle at 80% 14%,rgba(184,216,102,.13),transparent 30%),linear-gradient(135deg,#020302,#0b0a06 50%,#030402)}
-    body[data-chamber="dossier"]{background:radial-gradient(circle at 14% 7%,rgba(51,75,84,.22),transparent 34%),radial-gradient(circle at 82% 16%,rgba(184,216,102,.10),transparent 30%),linear-gradient(135deg,#010201,#050b0c 52%,#020302)}
-    body[data-chamber="relic"]{background:radial-gradient(circle at 14% 7%,rgba(169,141,78,.18),transparent 34%),radial-gradient(circle at 82% 16%,rgba(141,63,32,.18),transparent 30%),linear-gradient(135deg,#020302,#100805 52%,#030402)}
-    body[data-chamber="battle"]{background:radial-gradient(circle at 16% 8%,rgba(141,63,32,.24),transparent 36%),radial-gradient(circle at 80% 16%,rgba(111,143,60,.18),transparent 30%),linear-gradient(135deg,#020302,#120704 52%,#030402)}
-    body[data-chamber="blackbox"]{background:radial-gradient(circle at 16% 8%,rgba(65,82,86,.22),transparent 36%),radial-gradient(circle at 80% 16%,rgba(141,63,32,.13),transparent 30%),linear-gradient(135deg,#020302,#05090a 52%,#020302)}
+    body[data-chamber="command"]{--chamber-accent:184,216,102;--chamber-warm:216,231,151;--chamber-deep:111,143,60}
+    body[data-chamber="annals"]{--chamber-accent:214,189,117;--chamber-warm:230,205,140;--chamber-deep:169,141,78}
+    body[data-chamber="dossier"]{--chamber-accent:95,130,140;--chamber-warm:130,170,180;--chamber-deep:51,75,84}
+    body[data-chamber="relic"]{--chamber-accent:169,141,78;--chamber-warm:214,189,117;--chamber-deep:120,90,42}
+    body[data-chamber="battle"]{--chamber-accent:200,90,40;--chamber-warm:230,130,70;--chamber-deep:141,63,32}
+    body[data-chamber="blackbox"]{--chamber-accent:80,110,120;--chamber-warm:130,160,170;--chamber-deep:51,75,84}
+    body.high-pressure{filter:contrast(1.04) saturate(1.06)}
+    body.high-pressure .deck-grid{opacity:.13;animation:gridBreathe 5.5s ease-in-out infinite}
+    @keyframes gridBreathe{0%,100%{opacity:.10}50%{opacity:.18}}
+    body.idle{filter:saturate(.86) brightness(.94)}
 
-    ::selection{background:rgba(184,216,102,.26);color:var(--rot)}
+    ::selection{background:rgba(var(--chamber-accent),.26);color:var(--rot)}
     a{color:inherit}
     button{font:inherit}
-    h1,h2,h3,h4{font-family:"Cinzel", Georgia, serif}
+    h1,h2,h3,h4{font-family:"Cinzel",Georgia,serif}
 
-    .label,.kicker,.chip,.nav a,.nav button,.btn,.seal-label,.stat-label,.route-link,.file-tag,.smallcap,.boot-line span,.phase-label{
-      font-family:"Inter", system-ui, sans-serif;
-      font-weight:900;
-      letter-spacing:.17em;
-      text-transform:uppercase;
+    .label,.kicker,.chip,.nav a,.nav button,.btn,.seal-label,.stat-label,.route-link,.file-tag,.smallcap,.boot-line span,.phase-label,.wait-counter{
+      font-family:"Inter",system-ui,sans-serif;font-weight:900;letter-spacing:.17em;text-transform:uppercase;
     }
-
     .skip-link{position:absolute;left:16px;top:-90px;z-index:500;padding:12px 16px;border-radius:999px;background:var(--rot);color:#111607;font-family:"Inter",sans-serif;font-weight:900;transition:.2s ease}.skip-link:focus{top:16px}
 
     canvas.atmo{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
     #ashCanvas{z-index:0;opacity:.72}
     #smokeCanvas{z-index:1;opacity:.42;mix-blend-mode:screen}
-    #signalCanvas{z-index:4;opacity:.62;mix-blend-mode:screen}
+    #signalCanvas{z-index:4;opacity:0;mix-blend-mode:screen;transition:opacity .6s var(--ease)}
+    body.signal-active #signalCanvas{opacity:.62}
     .grain,.scan-veil,.vignette,.deck-grid{position:fixed;inset:0;pointer-events:none}
     .grain{z-index:2;opacity:.075;mix-blend-mode:screen;background-image:radial-gradient(circle at 20% 40%,rgba(255,255,255,.58) 0 1px,transparent 1px),radial-gradient(circle at 80% 20%,rgba(255,255,255,.36) 0 1px,transparent 1px),radial-gradient(circle at 50% 80%,rgba(255,255,255,.42) 0 1px,transparent 1px);background-size:170px 170px,230px 230px,310px 310px}
-    .deck-grid{z-index:3;opacity:.08;background-image:linear-gradient(rgba(216,231,151,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(216,231,151,.035) 1px,transparent 1px);background-size:90px 90px;mask-image:radial-gradient(circle at center,black 0%,transparent 84%)}
-    .scan-veil{z-index:5;opacity:.12;background:repeating-linear-gradient(to bottom,rgba(216,231,151,.036) 0 1px,transparent 2px 8px)}
+    .deck-grid{z-index:3;opacity:.08;background-image:linear-gradient(rgba(var(--chamber-warm),.05) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--chamber-warm),.035) 1px,transparent 1px);background-size:90px 90px;mask-image:radial-gradient(circle at center,black 0%,transparent 84%);transition:opacity .8s var(--ease)}
+    .scan-veil{z-index:5;opacity:.12;background:repeating-linear-gradient(to bottom,rgba(var(--chamber-warm),.036) 0 1px,transparent 2px 8px)}
     .vignette{z-index:6;background:radial-gradient(circle at center,transparent 35%,rgba(0,0,0,.78) 100%),linear-gradient(to bottom,rgba(0,0,0,.05),rgba(0,0,0,.55))}
+
+    /* DESCENT TRANSITION */
+    .descent-veil{position:fixed;inset:0;z-index:280;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(var(--chamber-accent),.18),rgba(0,0,0,.4) 40%,rgba(0,0,0,.98));opacity:0;transition:opacity .55s var(--ease)}
+    .descent-veil.active{opacity:1;pointer-events:auto}
+    .descent-veil::after{content:"DESCENDING";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Cinzel",serif;font-size:clamp(1.6rem,4vw,3.4rem);letter-spacing:.4em;color:rgba(var(--chamber-warm),.88);text-shadow:0 0 40px rgba(var(--chamber-accent),.6);opacity:0;transition:opacity .35s ease .2s}
+    .descent-veil.active::after{opacity:1}
+    .descent-veil::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,rgba(var(--chamber-warm),.8),transparent);transform:translateY(-50%) scaleX(0);transform-origin:center;transition:transform .65s var(--ease) .15s}
+    .descent-veil.active::before{transform:translateY(-50%) scaleX(1)}
 
     /* BOOT */
     .boot{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 42%,rgba(81,103,44,.38),transparent 28%),radial-gradient(circle at 50% 50%,rgba(0,0,0,.55),rgba(0,0,0,.98) 72%),linear-gradient(135deg,#020302,#090b07 55%,#010201);transition:opacity .9s var(--ease),visibility .9s var(--ease)}
@@ -101,40 +92,259 @@
     .boot-ring,.boot-ring::before,.boot-ring::after{position:absolute;border-radius:50%;border:1px dashed rgba(216,231,151,.24);animation:rotateRing linear infinite;content:""}
     .boot-ring{width:430px;height:430px;animation-duration:42s}.boot-ring::before{inset:42px;animation-duration:31s;animation-direction:reverse}.boot-ring::after{inset:92px;animation-duration:19s}@keyframes rotateRing{to{transform:rotate(360deg)}}
     .boot-seal{position:relative;z-index:2;width:min(330px,78%);aspect-ratio:1/1;object-fit:cover;border-radius:50%;border:1px solid var(--line-strong);box-shadow:0 0 60px rgba(184,216,102,.18);animation:sealPulse 3s ease-in-out infinite}@keyframes sealPulse{0%,100%{transform:scale(.985)}50%{transform:scale(1.018)}}
-    .boot-copy{position:relative;z-index:3;padding:34px;display:flex;flex-direction:column;justify-content:center}.boot-copy .kicker{color:var(--mold-hot);font-size:.68rem;margin-bottom:14px}.boot-copy h1{margin:0 0 16px;font-size:clamp(2.6rem,7vw,6.4rem);line-height:.86;letter-spacing:-.04em;color:#f0e5c4}.boot-copy p{margin:0 0 18px;color:var(--dim);line-height:1.78;font-size:1.05rem;max-width:78ch}
-    .boot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:4px 0 16px}.boot-cell{min-height:104px;border:1px solid rgba(216,231,151,.16);border-radius:18px;padding:13px;background:rgba(0,0,0,.22);position:relative;overflow:hidden}.boot-cell::after{content:"";position:absolute;left:-20%;right:-20%;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--mold-hot),transparent);transform:translateX(-100%);opacity:.6}.boot-cell.active::after{animation:scanAcross .7s var(--ease) forwards}@keyframes scanAcross{to{transform:translateX(100%)}}.boot-cell .label{color:var(--mold-hot);font-size:.52rem;margin-bottom:8px}.boot-cell strong{display:block;color:var(--bone);line-height:1.45;font-weight:600}
-    .boot-log{border:1px solid rgba(216,231,151,.16);border-radius:18px;background:rgba(0,0,0,.28);padding:14px;min-height:128px;font-family:"JetBrains Mono",monospace;color:#ddd0ab;font-size:.9rem;display:grid;gap:7px;margin-bottom:14px}.boot-line{opacity:0;transform:translateY(6px);animation:lineIn .26s var(--ease) forwards}.boot-line span{color:var(--mold-hot);margin-right:10px}.boot-line::before{content:"✠ ";color:var(--mold-hot)}@keyframes lineIn{to{opacity:1;transform:none}}
-    .boot-bar{height:10px;border:1px solid rgba(216,231,151,.18);border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden}.boot-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));box-shadow:0 0 36px rgba(184,216,102,.30);transition:width .28s ease}
+    .boot-copy{position:relative;z-index:3;padding:34px;display:flex;flex-direction:column;justify-content:center}
+    .boot-copy .kicker{color:var(--mold-hot);font-size:.68rem;margin-bottom:14px}
+    .boot-copy h1{margin:0 0 16px;font-size:clamp(2.6rem,7vw,6.4rem);line-height:.86;letter-spacing:-.04em;color:#f0e5c4}
+    .boot-copy p{margin:0 0 18px;color:var(--dim);line-height:1.78;font-size:1.05rem;max-width:78ch}
+    .boot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:4px 0 16px}
+    .boot-cell{min-height:104px;border:1px solid rgba(216,231,151,.16);border-radius:18px;padding:13px;background:rgba(0,0,0,.22);position:relative;overflow:hidden;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+    .boot-cell::after{content:"";position:absolute;left:-20%;right:-20%;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--mold-hot),transparent);transform:translateX(-100%);opacity:.6}
+    .boot-cell.active::after{animation:scanAcross .7s var(--ease) forwards}
+    @keyframes scanAcross{to{transform:translateX(100%)}}
+    .boot-cell .glyph{grid-row:span 2;width:26px;height:26px;border:1px solid rgba(var(--chamber-warm),.4);border-radius:6px;display:grid;place-items:center;color:var(--mold-hot)}
+    .boot-cell .glyph svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.4}
+    .boot-cell .label{color:var(--mold-hot);font-size:.52rem;margin-bottom:8px}
+    .boot-cell strong{display:block;color:var(--bone);line-height:1.45;font-weight:600}
+    .boot-log{border:1px solid rgba(216,231,151,.16);border-radius:18px;background:rgba(0,0,0,.28);padding:14px;min-height:128px;font-family:"JetBrains Mono",monospace;color:#ddd0ab;font-size:.9rem;display:grid;gap:7px;margin-bottom:14px}
+    .boot-line{opacity:0;transform:translateY(6px);animation:lineIn .26s var(--ease) forwards}
+    .boot-line span{color:var(--mold-hot);margin-right:10px}
+    .boot-line::before{content:"✠ ";color:var(--mold-hot)}
+    @keyframes lineIn{to{opacity:1;transform:none}}
+    .boot-bar{height:10px;border:1px solid rgba(216,231,151,.18);border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden}
+    .boot-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));box-shadow:0 0 36px rgba(184,216,102,.30);transition:width .28s ease}
 
-    .page{position:relative;z-index:10;width:min(var(--max),calc(100% - 28px));margin:0 auto;padding:14px 0 90px}.top-shell{position:sticky;top:10px;z-index:90;display:grid;gap:8px;margin-bottom:16px}.topbar,.command-meter{border:1px solid rgba(216,231,151,.22);border-radius:24px;background:rgba(7,9,5,.82);backdrop-filter:blur(14px);box-shadow:0 15px 44px rgba(0,0,0,.42)}.topbar{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:12px 14px}.brand{display:flex;align-items:center;gap:12px;min-width:0;text-decoration:none}.brand img{width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 24px rgba(184,216,102,.15)}.brand strong{display:block;font-family:"Cinzel",serif;letter-spacing:.05em;color:var(--bone-hot)}.brand span span{display:block;color:var(--ash);font-size:.86rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw}.nav{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:7px}.nav a,.nav button{color:#e7dec1;text-decoration:none;font-size:.56rem;border:1px solid rgba(216,231,151,.22);border-radius:999px;background:rgba(14,17,10,.70);padding:9px 10px;cursor:pointer;transition:.22s var(--ease)}.nav a:hover,.nav button:hover{transform:translateY(-2px);border-color:var(--line-strong);color:var(--rot);background:rgba(36,45,19,.85)}
-    .command-meter{display:grid;grid-template-columns:220px 1fr 230px;gap:12px;align-items:center;padding:10px 12px}.stat-label{color:var(--mold-hot);font-size:.54rem;margin-bottom:5px}.stat-text{color:var(--bone);font-size:.84rem;line-height:1.35}.meter-bars{display:grid;gap:8px}.meter-row{display:grid;grid-template-columns:145px 1fr 48px;gap:10px;align-items:center}.meter-row .label{font-size:.50rem;color:var(--mold-hot)}.bar-shell{height:10px;border:1px solid rgba(216,231,151,.16);border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}.bar-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));transition:width .42s var(--ease)}.bar-num{color:var(--dim);font-size:.72rem;text-align:right;font-family:"JetBrains Mono",monospace}
+    .page{position:relative;z-index:10;width:min(var(--max),calc(100% - 28px));margin:0 auto;padding:14px 0 90px}
+    .top-shell{position:sticky;top:10px;z-index:90;display:grid;gap:8px;margin-bottom:16px}
+    .topbar,.command-meter{border:1px solid rgba(var(--chamber-warm),.22);border-radius:24px;background:rgba(7,9,5,.82);backdrop-filter:blur(14px);box-shadow:0 15px 44px rgba(0,0,0,.42);transition:border-color .5s var(--ease)}
+    .topbar{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:12px 14px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0;text-decoration:none}
+    .brand img{width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 24px rgba(var(--chamber-accent),.18)}
+    .brand strong{display:block;font-family:"Cinzel",serif;letter-spacing:.05em;color:var(--bone-hot)}
+    .brand span span{display:block;color:var(--ash);font-size:.86rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw}
+    .nav{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:7px}
+    .nav a,.nav button{color:#e7dec1;text-decoration:none;font-size:.56rem;border:1px solid rgba(var(--chamber-warm),.22);border-radius:999px;background:rgba(14,17,10,.70);padding:9px 10px;cursor:pointer;transition:.22s var(--ease)}
+    .nav a:hover,.nav button:hover{transform:translateY(-2px);border-color:var(--line-strong);color:var(--rot);background:rgba(36,45,19,.85)}
 
-    .hero{min-height:88vh;position:relative;isolation:isolate;overflow:hidden;border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);display:grid;grid-template-columns:.98fr 1.02fr;gap:26px;padding:clamp(22px,4vw,54px);background:#030402}.hero::before{content:"";position:absolute;inset:0;z-index:-3;background:linear-gradient(100deg,rgba(2,3,2,.96) 0%,rgba(5,7,4,.84) 38%,rgba(6,8,5,.42) 72%,rgba(2,3,2,.88) 100%),url("Assets/Index/index-hero.jpeg") center/cover no-repeat;transform:scale(1.035);filter:contrast(1.08) saturate(.94);transition:transform .9s var(--ease),filter .9s var(--ease)}.hero:hover::before{transform:scale(1.06);filter:contrast(1.12) saturate(1.02)}.hero::after{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(circle at 18% 42%,rgba(184,216,102,.16),transparent 28%),radial-gradient(circle at 78% 38%,rgba(214,189,117,.10),transparent 30%),linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.80))}.hero-left,.hero-right{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(88vh - 110px)}.eyebrow{color:var(--mold-hot);font-size:.70rem;line-height:1.6;margin-bottom:14px}.hero h1{margin:0 0 16px;color:#f3e8c5;font-size:clamp(3.4rem,8.4vw,8rem);line-height:.82;letter-spacing:-.055em;text-shadow:0 14px 44px rgba(0,0,0,.70)}.hero-sub{margin:0 0 16px;color:var(--rot);font-family:"Cinzel",Georgia,serif;font-style:italic;font-size:clamp(1.35rem,2.5vw,2.3rem);line-height:1.15;max-width:38ch}.hero-copy{margin:0 0 14px;color:#ddd0ae;line-height:1.86;font-size:1.08rem;max-width:82ch}.hero-copy strong{color:#f1e7c5}.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.btn{border:1px solid rgba(216,231,151,.32);border-radius:999px;background:linear-gradient(180deg,rgba(111,143,60,.13),rgba(8,10,6,.86));color:#efe5c5;padding:13px 15px;font-size:.62rem;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.22s var(--ease)}.btn:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:0 18px 40px rgba(0,0,0,.35),var(--glow);color:var(--rot)}.btn.brass{background:linear-gradient(180deg,rgba(169,141,78,.18),rgba(12,10,5,.88));border-color:rgba(214,189,117,.35)}.btn.rust{background:linear-gradient(180deg,rgba(141,63,32,.18),rgba(16,8,5,.88));border-color:rgba(177,84,40,.42)}
+    /* INSTRUMENT-PANEL METER */
+    .command-meter{display:grid;grid-template-columns:230px 1fr 240px;gap:14px;align-items:center;padding:14px 16px;position:relative}
+    .command-meter::before{content:"";position:absolute;inset:4px;border:1px solid rgba(var(--chamber-warm),.08);border-radius:20px;pointer-events:none}
+    .stat-label{color:var(--mold-hot);font-size:.54rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+    .stat-label::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;animation:dotPulse 2.2s ease-in-out infinite}
+    @keyframes dotPulse{0%,100%{opacity:.5}50%{opacity:1}}
+    .stat-text{color:var(--bone);font-size:.84rem;line-height:1.35}
+    .meter-bars{display:grid;gap:10px}
+    .meter-row{display:grid;grid-template-columns:150px 1fr 52px;gap:10px;align-items:center}
+    .meter-row .label{font-size:.50rem;color:var(--mold-hot)}
+    .bar-shell{height:12px;border:1px solid rgba(var(--chamber-warm),.20);border-radius:999px;background:rgba(0,0,0,.45);overflow:hidden;position:relative;box-shadow:inset 0 1px 2px rgba(0,0,0,.6),inset 0 -1px 0 rgba(255,255,255,.04)}
+    .bar-shell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),transparent 38%,transparent 62%,rgba(0,0,0,.18));pointer-events:none;border-radius:999px}
+    .bar-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),rgb(var(--chamber-warm)));transition:width .42s var(--ease);position:relative}
+    .bar-fill::after{content:"";position:absolute;right:0;top:-2px;bottom:-2px;width:2px;background:rgba(var(--chamber-warm),.9);box-shadow:0 0 10px rgba(var(--chamber-accent),.8)}
+    .bar-num{color:var(--dim);font-size:.72rem;text-align:right;font-family:"JetBrains Mono",monospace}
 
-    .command-dial{position:relative;min-height:520px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at center,rgba(184,216,102,.11),transparent 42%),linear-gradient(180deg,rgba(12,15,9,.86),rgba(4,6,4,.96));box-shadow:var(--shadow);overflow:hidden;display:grid;place-items:center;padding:20px}.command-dial::before,.command-dial::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(216,231,151,.22);animation:rotateRing linear infinite}.command-dial::before{width:420px;height:420px;animation-duration:54s}.command-dial::after{width:280px;height:280px;animation-duration:34s;animation-direction:reverse}.dial-seal{position:relative;z-index:2;width:min(250px,52%);aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 48px rgba(184,216,102,.18)}.dial-node{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-226px) rotate(calc(-1 * var(--angle)));width:118px;min-height:46px;border:1px solid rgba(216,231,151,.20);border-radius:999px;background:rgba(5,7,4,.78);color:var(--parchment);display:grid;place-items:center;text-align:center;padding:8px;font-size:.50rem;cursor:pointer;transition:.22s var(--ease)}.dial-node:hover,.dial-node.active{background:rgba(58,72,28,.92);color:var(--rot);border-color:var(--line-strong);box-shadow:var(--glow)}
+    /* HERO with depth layers */
+    .hero{min-height:88vh;position:relative;isolation:isolate;overflow:hidden;border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);display:grid;grid-template-columns:.98fr 1.02fr;gap:26px;padding:clamp(22px,4vw,54px);background:#030402}
+    .hero-bg-far,.hero-bg-mid,.hero-bg-glow{position:absolute;inset:0;z-index:-3;pointer-events:none;transition:transform .8s var(--ease)}
+    .hero-bg-far{background:linear-gradient(100deg,rgba(2,3,2,.96) 0%,rgba(5,7,4,.84) 38%,rgba(6,8,5,.42) 72%,rgba(2,3,2,.88) 100%),url("Assets/Index/index-hero.jpeg") center/cover no-repeat;filter:contrast(1.08) saturate(.94);will-change:transform;z-index:-4}
+    .hero-bg-mid{background:radial-gradient(circle at 50% 60%,rgba(var(--chamber-deep),.18),transparent 42%),radial-gradient(circle at 20% 30%,rgba(var(--chamber-accent),.10),transparent 36%);z-index:-3}
+    .hero-bg-glow{background:radial-gradient(circle at 18% 42%,rgba(var(--chamber-accent),.16),transparent 28%),radial-gradient(circle at 78% 38%,rgba(214,189,117,.10),transparent 30%),linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.80));z-index:-2}
+    .hero:hover .hero-bg-far{transform:scale(1.04)}
+    .hero:hover .hero-bg-mid{transform:scale(1.06) translateY(-4px)}
+    .hero-left,.hero-right{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(88vh - 110px);position:relative;z-index:2}
+    .eyebrow{color:var(--mold-hot);font-size:.70rem;line-height:1.6;margin-bottom:14px}
+    .hero h1{margin:0 0 16px;color:#f3e8c5;font-size:clamp(3.4rem,8.4vw,8rem);line-height:.82;letter-spacing:-.055em;text-shadow:0 14px 44px rgba(0,0,0,.70)}
+    .hero-sub{margin:0 0 16px;color:var(--rot);font-family:"Cinzel",Georgia,serif;font-style:italic;font-size:clamp(1.35rem,2.5vw,2.3rem);line-height:1.15;max-width:38ch}
+    .hero-copy{margin:0 0 14px;color:#ddd0ae;line-height:1.86;font-size:1.08rem;max-width:82ch}
+    .hero-copy strong{color:#f1e7c5}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .btn{border:1px solid rgba(var(--chamber-warm),.32);border-radius:999px;background:linear-gradient(180deg,rgba(var(--chamber-deep),.13),rgba(8,10,6,.86));color:#efe5c5;padding:13px 15px;font-size:.62rem;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.22s var(--ease)}
+    .btn:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:0 18px 40px rgba(0,0,0,.35),var(--glow);color:var(--rot)}
+    .btn.brass{background:linear-gradient(180deg,rgba(169,141,78,.18),rgba(12,10,5,.88));border-color:rgba(214,189,117,.35)}
+    .btn.rust{background:linear-gradient(180deg,rgba(141,63,32,.18),rgba(16,8,5,.88));border-color:rgba(177,84,40,.42)}
 
-    .lore-inscription{padding-top:38px}.inscription-frame{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:32px;background:linear-gradient(135deg,rgba(10,12,7,.88),rgba(4,6,4,.96)),radial-gradient(circle at 12% 0%,rgba(184,216,102,.08),transparent 30%);box-shadow:var(--shadow);padding:clamp(24px,4vw,42px);display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.38fr);gap:22px;isolation:isolate}.inscription-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(216,231,151,.04),transparent),repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0 1px,transparent 1px 8px);pointer-events:none;z-index:-1}.inscription-kicker{color:var(--mold-hot);font-family:"Inter",system-ui,sans-serif;font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px}.inscription-title{margin:0 0 16px;color:#f1e6c3;font-size:clamp(2.1rem,4.5vw,4.8rem);line-height:.92;letter-spacing:-.035em}.inscription-copy{display:grid;gap:14px}.inscription-copy p{margin:0;color:#d2c6a7;line-height:1.86;font-size:1.07rem;max-width:96ch}.inscription-copy strong{color:var(--bone-hot)}.inscription-side{border:1px solid rgba(216,231,151,.15);border-radius:24px;background:rgba(0,0,0,.24);padding:18px;display:grid;align-content:center;gap:12px}.inscription-side .seal-label{color:var(--mold-hot);font-size:.54rem}.inscription-side p{margin:0;color:#cfc3a0;line-height:1.72}.oath-line{font-family:"JetBrains Mono",monospace;border-left:2px solid rgba(184,216,102,.42);padding-left:12px;color:#dfd3b1}.lore-inscription.alt .inscription-frame{background:linear-gradient(135deg,rgba(12,10,6,.88),rgba(4,6,4,.96)),radial-gradient(circle at 85% 0%,rgba(214,189,117,.08),transparent 34%)}.lore-inscription.battle .inscription-frame{background:linear-gradient(135deg,rgba(14,7,5,.88),rgba(4,6,4,.96)),radial-gradient(circle at 85% 0%,rgba(141,63,32,.12),transparent 34%)}
+    .command-dial{position:relative;min-height:520px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at center,rgba(var(--chamber-accent),.11),transparent 42%),linear-gradient(180deg,rgba(12,15,9,.86),rgba(4,6,4,.96));box-shadow:var(--shadow);overflow:hidden;display:grid;place-items:center;padding:20px}
+    .command-dial::before,.command-dial::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(var(--chamber-warm),.22);animation:rotateRing linear infinite}
+    .command-dial::before{width:420px;height:420px;animation-duration:54s}
+    .command-dial::after{width:280px;height:280px;animation-duration:34s;animation-direction:reverse}
+    .dial-seal{position:relative;z-index:2;width:min(250px,52%);aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:1px solid var(--line-strong);box-shadow:0 0 48px rgba(var(--chamber-accent),.18)}
+    .dial-node{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-226px) rotate(calc(-1 * var(--angle)));width:118px;min-height:46px;border:1px solid rgba(var(--chamber-warm),.20);border-radius:999px;background:rgba(5,7,4,.78);color:var(--parchment);display:grid;place-items:center;text-align:center;padding:8px;font-size:.50rem;cursor:pointer;transition:.22s var(--ease)}
+    .dial-node:hover,.dial-node.active{background:rgba(58,72,28,.92);color:var(--rot);border-color:var(--line-strong);box-shadow:var(--glow)}
 
-    .section{padding-top:38px}.section-block{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(10,12,7,.78),rgba(4,6,4,.94));box-shadow:var(--shadow);overflow:hidden}.section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;padding:26px 26px 0;margin-bottom:18px}.section-title{margin:0;color:#f1e6c3;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.94;letter-spacing:-.025em}.section-desc{margin:11px 0 0;max-width:98ch;color:#bdb18d;line-height:1.82;font-size:1.03rem}.kicker{color:var(--mold-hot);font-size:.64rem;margin-bottom:10px}.chip{color:var(--mold-hot);border:1px solid rgba(184,216,102,.28);border-radius:999px;background:rgba(10,18,7,.66);padding:10px 12px;font-size:.54rem;white-space:nowrap}.wide-pad{padding:24px 26px 28px}
+    /* MOBILE CHAIN SELECTOR */
+    .chain-selector{display:none;position:relative;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at 50% 0%,rgba(var(--chamber-accent),.10),transparent 42%),linear-gradient(180deg,rgba(12,15,9,.86),rgba(4,6,4,.96));box-shadow:var(--shadow);padding:24px 18px 26px;flex-direction:column;align-items:center;gap:14px}
+    .chain-selector::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:repeating-linear-gradient(to bottom,rgba(var(--chamber-warm),.4) 0 6px,transparent 6px 14px);transform:translateX(-50%);opacity:.55}
+    .chain-link{position:relative;z-index:2;width:min(280px,100%);min-height:54px;border:1px solid rgba(var(--chamber-warm),.20);border-radius:14px;background:rgba(5,7,4,.85);color:var(--parchment);text-align:center;padding:10px 14px;cursor:pointer;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;font-family:"Inter",sans-serif;font-weight:900;transition:.22s var(--ease);display:grid;place-items:center;gap:2px}
+    .chain-link small{font-family:"Cinzel",serif;font-weight:600;letter-spacing:.05em;text-transform:none;font-size:.72rem;color:var(--dim);display:block}
+    .chain-link:hover,.chain-link.active{background:rgba(58,72,28,.92);color:var(--rot);border-color:var(--line-strong);box-shadow:var(--glow)}
+    .chain-link.active small{color:var(--rot)}
 
-    .route-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding:24px 26px 28px}.route-door{position:relative;min-height:470px;border:1px solid rgba(216,231,151,.15);border-radius:26px;background:#050604;overflow:hidden;text-decoration:none;color:inherit;display:flex;align-items:flex-end;padding:16px;transition:.28s var(--ease);box-shadow:var(--shadow);isolation:isolate}.route-door::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.55) 48%,rgba(0,0,0,.96)),var(--img) center/cover no-repeat;filter:brightness(.78) contrast(1.08) saturate(.95);transform:scale(1.02);transition:.7s var(--ease)}.route-door::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 12%,var(--accent),transparent 30%),linear-gradient(135deg,rgba(216,231,151,.06),transparent 42%);opacity:.82}.route-door:hover,.route-door.active{transform:translateY(-8px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow-strong)}.route-door:hover::before,.route-door.active::before{transform:scale(1.08);filter:brightness(.9) contrast(1.14) saturate(1.05)}.route-door.inspected{border-color:rgba(214,189,117,.46)}.route-door.inspected .seal-state::after{content:" // WARMED";color:var(--brass-hot)}.door-body{display:grid;gap:10px;position:relative;z-index:2}.seal-state{font-family:"JetBrains Mono",monospace;color:var(--mold-hot);font-size:.72rem;line-height:1.4}.route-door h3{margin:0;color:#f2e7c5;font-size:clamp(1.5rem,2vw,2.2rem);line-height:.96}.route-door p{margin:0;color:#d2c6a4;line-height:1.65}.route-meta{display:flex;flex-wrap:wrap;gap:7px}.tag{font-family:"Inter",sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--mold-hot);border:1px solid rgba(184,216,102,.22);border-radius:999px;background:rgba(0,0,0,.26);padding:6px 8px;font-size:.48rem;font-weight:900}
+    /* SECTION SEAMS */
+    .seam{display:block;width:100%;height:48px;margin:0;color:rgba(var(--chamber-warm),.55);overflow:visible}
+    .seam svg{width:100%;height:100%;display:block}
 
-    .spine-layout{display:grid;grid-template-columns:.86fr 1.14fr;gap:18px;padding:24px 26px 28px}.spine-panel,.oath-panel,.future-card,.file-link,.modal-frame{border:1px solid rgba(216,231,151,.15);border-radius:24px;background:linear-gradient(180deg,rgba(14,17,10,.82),rgba(5,7,4,.95));box-shadow:var(--shadow);position:relative;overflow:hidden}.spine-panel::before,.oath-panel::before,.future-card::before,.file-link::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 0%,rgba(184,216,102,.07),transparent 30%),linear-gradient(90deg,transparent,rgba(216,231,151,.035),transparent);pointer-events:none}.spine-panel{padding:24px;display:grid;align-content:start;gap:16px}.spine-panel h3{margin:0;color:#f2e7c5;font-size:2.35rem;line-height:1.03}.spine-panel p{margin:0;color:#d2c6a7;line-height:1.82;font-size:1.04rem}.spine-panel strong{color:var(--bone-hot)}.spine-map{display:grid;gap:10px}.spine-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid rgba(216,231,151,.13);border-radius:16px;background:rgba(0,0,0,.20);padding:12px}.spine-row span:first-child{color:#e6dabb}.spine-row span:last-child{color:var(--mold-hot);font-family:"Cinzel",serif;white-space:nowrap}.oath-panel{padding:24px;min-height:520px;display:grid;align-content:center;gap:14px}.oath-panel .terminal{border:1px solid rgba(216,231,151,.16);border-radius:18px;background:rgba(0,0,0,.27);padding:16px;color:#dfd3b1;line-height:1.72;font-family:"JetBrains Mono",monospace}.terminal strong{color:var(--mold-hot)}
+    .lore-inscription{padding-top:38px}
+    .inscription-frame{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:32px;background:linear-gradient(135deg,rgba(10,12,7,.88),rgba(4,6,4,.96)),radial-gradient(circle at 12% 0%,rgba(var(--chamber-accent),.08),transparent 30%);box-shadow:var(--shadow);padding:clamp(24px,4vw,42px);display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.38fr);gap:22px;isolation:isolate}
+    .inscription-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(var(--chamber-warm),.04),transparent),repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0 1px,transparent 1px 8px);pointer-events:none;z-index:-1}
+    .inscription-kicker{color:var(--mold-hot);font-family:"Inter",system-ui,sans-serif;font-size:.64rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px}
+    .inscription-title{margin:0 0 16px;color:#f1e6c3;font-size:clamp(2.1rem,4.5vw,4.8rem);line-height:.92;letter-spacing:-.035em}
+    .inscription-copy{display:grid;gap:14px}
+    .inscription-copy p{margin:0;color:#d2c6a7;line-height:1.86;font-size:1.07rem;max-width:96ch}
+    .inscription-copy strong{color:var(--bone-hot)}
+    .inscription-side{border:1px solid rgba(var(--chamber-warm),.15);border-radius:24px;background:rgba(0,0,0,.24);padding:18px;display:grid;align-content:center;gap:12px}
+    .inscription-side .seal-label{color:var(--mold-hot);font-size:.54rem}
+    .inscription-side p{margin:0;color:#cfc3a0;line-height:1.72}
+    .oath-line{font-family:"JetBrains Mono",monospace;border-left:2px solid rgba(var(--chamber-accent),.42);padding-left:12px;color:#dfd3b1}
+    .lore-inscription.alt .inscription-frame{background:linear-gradient(135deg,rgba(12,10,6,.88),rgba(4,6,4,.96)),radial-gradient(circle at 85% 0%,rgba(214,189,117,.08),transparent 34%)}
+    .lore-inscription.battle .inscription-frame{background:linear-gradient(135deg,rgba(14,7,5,.88),rgba(4,6,4,.96)),radial-gradient(circle at 85% 0%,rgba(141,63,32,.12),transparent 34%)}
 
-    .ship-layout{display:grid;grid-template-columns:minmax(300px,.42fr) minmax(0,1fr);gap:22px;padding:24px 26px 30px;align-items:start}.ship-image{position:sticky;top:122px;min-height:560px;border:1px solid rgba(216,231,151,.14);border-radius:28px;overflow:hidden;background:#050604;box-shadow:var(--shadow)}.ship-image::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.05),rgba(4,7,4,.82)),url("Assets/Index/command-sanctum.jpeg") center/cover no-repeat;filter:saturate(1.02) brightness(.82);transform:scale(1.04)}.ship-image::after{content:"THE SHIP BENEATH THE ARCHIVE";position:absolute;left:18px;right:18px;bottom:18px;color:var(--mold-hot);font-size:.78rem;font-weight:900;letter-spacing:.22em;line-height:1.6}.ship-fragments{display:grid;gap:16px}.fragment-card{border:1px solid rgba(216,231,151,.13);border-radius:24px;background:rgba(7,11,7,.68);padding:22px;transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease);box-shadow:var(--shadow)}.fragment-card.revealed{opacity:1;transform:none}.fragment-card:hover{border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}.fragment-card h3{margin:8px 0 0;color:#f2e7c5;font-size:1.68rem;line-height:1.08}.fragment-card p{margin:12px 0 0;color:#d2c6a7;line-height:1.82;font-size:1.02rem}
+    .section{padding-top:38px}
+    .section-block{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(10,12,7,.78),rgba(4,6,4,.94));box-shadow:var(--shadow);overflow:hidden}
+    .section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;padding:26px 26px 0;margin-bottom:18px}
+    .section-title{margin:0;color:#f1e6c3;font-size:clamp(2.2rem,5vw,4.6rem);line-height:.94;letter-spacing:-.025em}
+    .section-desc{margin:11px 0 0;max-width:98ch;color:#bdb18d;line-height:1.82;font-size:1.03rem}
+    .kicker{color:var(--mold-hot);font-size:.64rem;margin-bottom:10px}
+    .chip{color:var(--mold-hot);border:1px solid rgba(var(--chamber-accent),.28);border-radius:999px;background:rgba(10,18,7,.66);padding:10px 12px;font-size:.54rem;white-space:nowrap}
+    .wide-pad{padding:24px 26px 28px}
 
-    .future-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:24px 26px 28px}.future-card{padding:20px;min-height:270px;display:grid;align-content:space-between;gap:16px;transition:.26s var(--ease)}.future-card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}.phase-label{color:var(--mold-hot);font-size:.55rem}.future-card h3{margin:0;color:#f2e7c5;font-size:1.6rem;line-height:1.05}.future-card p{margin:10px 0 0;color:#cfc3a0;line-height:1.72}.future-card .seal-state{margin-top:14px}
+    /* ROUTE DOORS — five distinct chamber treatments */
+    .route-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding:24px 26px 28px}
+    .route-door{position:relative;min-height:470px;border:1px solid rgba(var(--chamber-warm),.15);border-radius:26px;background:#050604;overflow:hidden;text-decoration:none;color:inherit;display:flex;align-items:flex-end;padding:16px;transition:.28s var(--ease);box-shadow:var(--shadow);isolation:isolate;cursor:pointer}
+    .route-door::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.55) 48%,rgba(0,0,0,.96)),var(--img) center/cover no-repeat;filter:brightness(.78) contrast(1.08) saturate(.95);transform:scale(1.02);transition:.7s var(--ease)}
+    .route-door::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 12%,var(--accent),transparent 30%),linear-gradient(135deg,rgba(216,231,151,.06),transparent 42%);opacity:.82}
+    .route-door:hover,.route-door.active{transform:translateY(-8px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow-strong)}
+    .route-door:hover::before,.route-door.active::before{transform:scale(1.08);filter:brightness(.9) contrast(1.14) saturate(1.05)}
+    .route-door.inspected{border-color:rgba(214,189,117,.46)}
+    .route-door.inspected .seal-state::after{content:" // WARMED";color:var(--brass-hot)}
+    .route-door.returned .seal-state::after{content:" // YOU RETURNED FROM THIS WOUND";color:var(--brass-hot)}
+    .door-body{display:grid;gap:10px;position:relative;z-index:2}
+    .seal-state{font-family:"JetBrains Mono",monospace;color:var(--mold-hot);font-size:.72rem;line-height:1.4}
+    .route-door h3{margin:0;color:#f2e7c5;font-size:clamp(1.5rem,2vw,2.2rem);line-height:.96}
+    .route-door p{margin:0;color:#d2c6a4;line-height:1.65}
+    .route-meta{display:flex;flex-wrap:wrap;gap:7px}
+    .tag{font-family:"Inter",sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--mold-hot);border:1px solid rgba(var(--chamber-accent),.22);border-radius:999px;background:rgba(0,0,0,.26);padding:6px 8px;font-size:.48rem;font-weight:900}
 
-    .file-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.file-link{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;padding:16px;transition:.25s var(--ease)}.file-link:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}.file-main{display:grid;gap:5px;position:relative;z-index:2}.file-title{font-family:"Cinzel",serif;font-size:1.22rem;color:var(--bone-hot);line-height:1.08}.file-sub{color:var(--dim);line-height:1.5;font-size:.94rem}.file-tag{position:relative;z-index:2;flex:0 0 auto;color:var(--mold-hot);border:1px solid rgba(184,216,102,.22);border-radius:999px;padding:8px 10px;background:rgba(4,7,4,.58);font-size:.56rem}
+    /* Door treatment: ANNALS — rotating brass ring + wax seal */
+    .route-door[data-route="annals"] .door-deco{position:absolute;right:-30px;top:-30px;width:160px;height:160px;z-index:1;pointer-events:none;opacity:.46;transition:opacity .4s var(--ease),transform .8s var(--ease)}
+    .route-door[data-route="annals"] .door-deco svg{width:100%;height:100%;animation:rotateRing 38s linear infinite}
+    .route-door[data-route="annals"]:hover .door-deco{opacity:.85;transform:scale(1.1)}
 
-    .footer{margin-top:38px;border:1px solid var(--line);border-radius:26px;background:rgba(7,11,7,.72);padding:18px 20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--dim);line-height:1.6}.footer a{color:var(--rot);text-decoration:none;border-bottom:1px solid transparent}.footer a:hover{border-color:var(--rot)}
+    /* Door treatment: DOSSIER — blue-black glass with name-fragments */
+    .route-door[data-route="dossier"]::before{filter:brightness(.7) contrast(1.12) saturate(.7) hue-rotate(180deg)}
+    .route-door[data-route="dossier"] .door-deco{position:absolute;inset:12px;border:1px solid rgba(95,130,140,.32);border-radius:20px;z-index:1;pointer-events:none;background:linear-gradient(135deg,rgba(40,55,68,.22),transparent 50%,rgba(40,55,68,.18));backdrop-filter:blur(0px);transition:backdrop-filter .5s var(--ease),background .5s var(--ease)}
+    .route-door[data-route="dossier"]:hover .door-deco{backdrop-filter:blur(2px);background:linear-gradient(135deg,rgba(40,55,68,.08),transparent 50%,rgba(40,55,68,.06))}
+    .route-door[data-route="dossier"] .name-fragments{position:absolute;top:18px;right:18px;z-index:2;font-family:"JetBrains Mono",monospace;color:rgba(180,200,210,.42);font-size:.62rem;line-height:1.6;letter-spacing:.1em;text-align:right;pointer-events:none;opacity:.5;transition:opacity .4s var(--ease)}
+    .route-door[data-route="dossier"]:hover .name-fragments{opacity:.85}
 
-    .floating{position:fixed;right:18px;bottom:18px;z-index:120;width:min(440px,calc(100% - 36px));border:1px solid rgba(216,231,151,.28);border-radius:22px;background:rgba(6,8,5,.90);backdrop-filter:blur(12px);box-shadow:var(--shadow),var(--glow);overflow:hidden}.floating-head{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid rgba(216,231,151,.16);padding:12px 14px;color:var(--mold-hot);font-size:.56rem}.floating-head button{border:0;background:transparent;color:var(--bone);cursor:pointer;font-size:1rem}.floating-body{padding:14px;color:#d6caab;line-height:1.72;font-size:.96rem}.floating-meter{height:5px;background:rgba(255,255,255,.05);overflow:hidden}.floating-meter span{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),var(--mold-hot));transition:width .4s var(--ease)}
+    /* Door treatment: RELIC — hanging chain */
+    .route-door[data-route="relic"] .door-deco{position:absolute;left:50%;top:-2px;transform:translateX(-50%);width:32px;height:140px;z-index:1;pointer-events:none;opacity:.6;transition:opacity .4s var(--ease)}
+    .route-door[data-route="relic"] .door-deco svg{width:100%;height:100%}
+    .route-door[data-route="relic"]:hover .door-deco{opacity:1;animation:chainSway 3s ease-in-out infinite}
+    @keyframes chainSway{0%,100%{transform:translateX(calc(-50% - 4px)) rotate(-1deg)}50%{transform:translateX(calc(-50% + 4px)) rotate(1.5deg)}}
 
-    .modal{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:18px;background:rgba(2,3,2,.76);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-frame{width:min(780px,100%);border-color:var(--line-strong);background:linear-gradient(180deg,rgba(18,21,12,.98),rgba(5,7,4,.99));padding:24px;display:grid;gap:12px}.modal-frame h3{margin:0;color:#f2e7c5;font-size:2rem;line-height:1.05}.modal-frame p{margin:0;color:#d2c6a7;line-height:1.78}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+    /* Door treatment: BATTLE — field-burn edges + flicker */
+    .route-door[data-route="battle"]{box-shadow:var(--shadow),inset 0 0 0 1px rgba(141,63,32,.18)}
+    .route-door[data-route="battle"]::after{background:radial-gradient(circle at 80% 12%,rgba(141,63,32,.30),transparent 30%),radial-gradient(circle at 20% 90%,rgba(216,106,44,.22),transparent 35%),linear-gradient(135deg,rgba(216,231,151,.04),transparent 42%)}
+    .route-door[data-route="battle"] .door-deco{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.6;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(216,106,44,.05) 8px 9px),repeating-linear-gradient(0deg,transparent 0 10px,rgba(141,63,32,.04) 10px 11px);mix-blend-mode:screen}
+    .route-door[data-route="battle"]:hover .door-deco{animation:battleFlicker .8s steps(4,end) infinite}
+    @keyframes battleFlicker{0%,100%{opacity:.4}40%{opacity:.85}70%{opacity:.6}}
+
+    /* Door treatment: BLACKBOX — signal bars + scan line */
+    .route-door[data-route="blackbox"]::before{filter:brightness(.62) contrast(1.20) saturate(.5)}
+    .route-door[data-route="blackbox"] .door-deco{position:absolute;left:16px;top:16px;z-index:2;pointer-events:none;display:flex;gap:3px;align-items:flex-end;height:24px}
+    .route-door[data-route="blackbox"] .door-deco i{display:block;width:3px;background:rgba(130,160,170,.7);border-radius:1px}
+    .route-door[data-route="blackbox"] .door-deco i:nth-child(1){height:10px;animation:bar 1.1s ease-in-out infinite}
+    .route-door[data-route="blackbox"] .door-deco i:nth-child(2){height:18px;animation:bar 1.1s ease-in-out infinite .15s}
+    .route-door[data-route="blackbox"] .door-deco i:nth-child(3){height:6px;animation:bar 1.1s ease-in-out infinite .3s}
+    .route-door[data-route="blackbox"] .door-deco i:nth-child(4){height:22px;animation:bar 1.1s ease-in-out infinite .45s}
+    .route-door[data-route="blackbox"] .door-deco i:nth-child(5){height:14px;animation:bar 1.1s ease-in-out infinite .6s}
+    @keyframes bar{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1.15)}}
+    .route-door[data-route="blackbox"] .scan{position:absolute;left:0;right:0;top:30%;height:1px;background:linear-gradient(90deg,transparent,rgba(180,210,220,.7),transparent);z-index:1;pointer-events:none;animation:scanRoll 4s linear infinite}
+    @keyframes scanRoll{0%{top:0%;opacity:0}10%{opacity:.7}90%{opacity:.7}100%{top:100%;opacity:0}}
+
+    /* SPINE SECTION — SVG diagram */
+    .spine-layout{display:grid;grid-template-columns:.42fr .58fr;gap:18px;padding:24px 26px 28px}
+    .spine-panel,.oath-panel,.future-card,.file-link,.modal-frame{border:1px solid rgba(var(--chamber-warm),.15);border-radius:24px;background:linear-gradient(180deg,rgba(14,17,10,.82),rgba(5,7,4,.95));box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .spine-panel::before,.oath-panel::before,.future-card::before,.file-link::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 0%,rgba(var(--chamber-accent),.07),transparent 30%),linear-gradient(90deg,transparent,rgba(var(--chamber-warm),.035),transparent);pointer-events:none}
+    .spine-panel{padding:24px;display:grid;align-content:start;gap:16px}
+    .spine-panel h3{margin:0;color:#f2e7c5;font-size:2.35rem;line-height:1.03}
+    .spine-panel p{margin:0;color:#d2c6a7;line-height:1.82;font-size:1.04rem}
+    .spine-panel strong{color:var(--bone-hot)}
+    .spine-diagram{padding:18px;display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center}
+    .spine-svg{width:140px;height:520px}
+    .spine-svg .col{stroke:rgba(var(--chamber-warm),.4);stroke-width:6;fill:none;stroke-linecap:round}
+    .spine-svg .vert{fill:rgba(var(--chamber-accent),.08);stroke:rgba(var(--chamber-warm),.55);stroke-width:1.5;transition:fill .3s var(--ease),stroke .3s var(--ease)}
+    .spine-svg .vert.active{fill:rgba(var(--chamber-accent),.42);stroke:rgba(var(--chamber-warm),1)}
+    .spine-svg .branch{stroke:rgba(var(--chamber-warm),.32);stroke-width:1.4;fill:none;stroke-dasharray:4 4}
+    .spine-svg .breathe{animation:spineBreathe 6s ease-in-out infinite}
+    @keyframes spineBreathe{0%,100%{opacity:.7}50%{opacity:1}}
+    .spine-rows{display:grid;gap:10px}
+    .spine-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid rgba(var(--chamber-warm),.13);border-radius:16px;background:rgba(0,0,0,.20);padding:12px;cursor:pointer;transition:.25s var(--ease)}
+    .spine-row:hover,.spine-row.active{border-color:var(--line-strong);background:rgba(var(--chamber-deep),.15);transform:translateX(4px)}
+    .spine-row span:first-child{color:#e6dabb}
+    .spine-row span:last-child{color:var(--mold-hot);font-family:"Cinzel",serif;white-space:nowrap}
+    .oath-panel{padding:24px;min-height:520px;display:grid;align-content:center;gap:14px}
+    .oath-panel .terminal{border:1px solid rgba(var(--chamber-warm),.16);border-radius:18px;background:rgba(0,0,0,.27);padding:16px;color:#dfd3b1;line-height:1.72;font-family:"JetBrains Mono",monospace}
+    .terminal strong{color:var(--mold-hot)}
+
+    .ship-layout{display:grid;grid-template-columns:minmax(300px,.42fr) minmax(0,1fr);gap:22px;padding:24px 26px 30px;align-items:start}
+    .ship-image{position:sticky;top:122px;min-height:560px;border:1px solid rgba(var(--chamber-warm),.14);border-radius:28px;overflow:hidden;background:#050604;box-shadow:var(--shadow)}
+    .ship-image::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,4,.05),rgba(4,7,4,.82)),url("Assets/Index/command-sanctum.jpeg") center/cover no-repeat;filter:saturate(1.02) brightness(.82);transform:scale(1.04)}
+    .ship-image::after{content:"THE SHIP BENEATH THE ARCHIVE";position:absolute;left:18px;right:18px;bottom:18px;color:var(--mold-hot);font-size:.78rem;font-weight:900;letter-spacing:.22em;line-height:1.6}
+    .ship-fragments{display:grid;gap:16px}
+    .fragment-card{border:1px solid rgba(var(--chamber-warm),.13);border-radius:24px;background:rgba(7,11,7,.68);padding:22px;transform:translateY(18px);opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .25s var(--ease);box-shadow:var(--shadow)}
+    .fragment-card.revealed{opacity:1;transform:none}
+    .fragment-card:hover{border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}
+    .fragment-card h3{margin:8px 0 0;color:#f2e7c5;font-size:1.68rem;line-height:1.08}
+    .fragment-card p{margin:12px 0 0;color:#d2c6a7;line-height:1.82;font-size:1.02rem}
+
+    .future-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:24px 26px 28px}
+    .future-card{padding:20px;min-height:270px;display:grid;align-content:space-between;gap:16px;transition:.26s var(--ease)}
+    .future-card:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}
+    .phase-label{color:var(--mold-hot);font-size:.55rem}
+    .future-card h3{margin:0;color:#f2e7c5;font-size:1.6rem;line-height:1.05}
+    .future-card p{margin:10px 0 0;color:#cfc3a0;line-height:1.72}
+    .future-card .seal-state{margin-top:14px}
+    .wait-counter{display:inline-block;margin-top:10px;color:var(--brass-hot);font-size:.58rem;font-family:"JetBrains Mono",monospace;letter-spacing:.18em;border-top:1px solid rgba(var(--chamber-warm),.12);padding-top:10px;width:100%}
+
+    .file-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .file-link{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;padding:16px;transition:.25s var(--ease)}
+    .file-link:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:var(--shadow),var(--glow)}
+    .file-main{display:grid;gap:5px;position:relative;z-index:2}
+    .file-title{font-family:"Cinzel",serif;font-size:1.22rem;color:var(--bone-hot);line-height:1.08}
+    .file-sub{color:var(--dim);line-height:1.5;font-size:.94rem}
+    .file-tag{position:relative;z-index:2;flex:0 0 auto;color:var(--mold-hot);border:1px solid rgba(var(--chamber-accent),.22);border-radius:999px;padding:8px 10px;background:rgba(4,7,4,.58);font-size:.56rem}
+
+    .footer{margin-top:38px;border:1px solid var(--line);border-radius:26px;background:rgba(7,11,7,.72);padding:18px 20px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--dim);line-height:1.6}
+    .footer a{color:var(--rot);text-decoration:none;border-bottom:1px solid transparent}
+    .footer a:hover{border-color:var(--rot)}
+
+    /* FLOATING VOX with typing + transmission indicator */
+    .floating{position:fixed;right:18px;bottom:18px;z-index:120;width:min(440px,calc(100% - 36px));border:1px solid rgba(var(--chamber-warm),.28);border-radius:22px;background:rgba(6,8,5,.92);backdrop-filter:blur(12px);box-shadow:var(--shadow),var(--glow);overflow:hidden;transition:transform .35s var(--ease),opacity .3s var(--ease)}
+    .floating.hidden{transform:translateY(20px);opacity:0;pointer-events:none}
+    .floating-head{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid rgba(var(--chamber-warm),.16);padding:12px 14px;color:var(--mold-hot);font-size:.56rem;position:relative}
+    .floating-head::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--chamber-warm),.4),transparent);animation:transHead 4s linear infinite}
+    @keyframes transHead{0%{transform:translateX(-30%)}100%{transform:translateX(30%)}}
+    .floating-head .live{display:inline-flex;align-items:center;gap:6px}
+    .floating-head .live::before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(var(--chamber-warm),1);box-shadow:0 0 10px rgba(var(--chamber-accent),.9);animation:dotPulse 1.4s ease-in-out infinite}
+    .floating-head button{border:0;background:transparent;color:var(--bone);cursor:pointer;font-size:1rem}
+    .floating-body{padding:14px;color:#d6caab;line-height:1.72;font-size:.96rem;font-family:"JetBrains Mono",monospace;min-height:90px;position:relative}
+    .floating-body::after{content:"▮";color:var(--mold-hot);margin-left:2px;animation:caret 1s steps(2,end) infinite}
+    @keyframes caret{0%,50%{opacity:1}51%,100%{opacity:0}}
+    .floating-body.no-caret::after{content:""}
+    .floating-meter{height:5px;background:rgba(255,255,255,.05);overflow:hidden;position:relative}
+    .floating-meter span{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--brass),rgb(var(--chamber-warm)));transition:width .4s var(--ease)}
+
+    .modal{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:18px;background:rgba(2,3,2,.76);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}
+    .modal.show{opacity:1;visibility:visible;pointer-events:auto}
+    .modal-frame{width:min(780px,100%);border-color:var(--line-strong);background:linear-gradient(180deg,rgba(18,21,12,.98),rgba(5,7,4,.99));padding:24px;display:grid;gap:12px}
+    .modal-frame h3{margin:0;color:#f2e7c5;font-size:2rem;line-height:1.05}
+    .modal-frame p{margin:0;color:#d2c6a7;line-height:1.78}
+    .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+    .witness-mark{display:inline-block;margin-left:.25em;color:var(--mold-hot);cursor:help;border-bottom:1px dotted rgba(var(--chamber-warm),.45);font-style:normal}
+    .witness-mark:hover{color:var(--rot)}
 
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}canvas.atmo{display:none!important}}
-    @media (max-width:1320px){.inscription-frame{grid-template-columns:1fr}.route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.boot-shell,.hero,.spine-layout,.ship-layout{grid-template-columns:1fr}.boot-seal-wrap{min-height:420px;border-right:0;border-bottom:1px solid rgba(216,231,151,.14)}.boot-shell{min-height:auto}.hero-left,.hero-right{min-height:auto}.command-meter{grid-template-columns:1fr}.ship-image{position:relative;top:auto}.future-grid{grid-template-columns:1fr 1fr}.command-dial{min-height:420px}.dial-node{display:none}}
+    @media (max-width:1320px){.inscription-frame{grid-template-columns:1fr}.route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.boot-shell,.hero,.spine-layout,.ship-layout{grid-template-columns:1fr}.boot-seal-wrap{min-height:420px;border-right:0;border-bottom:1px solid rgba(216,231,151,.14)}.boot-shell{min-height:auto}.hero-left,.hero-right{min-height:auto}.command-meter{grid-template-columns:1fr}.ship-image{position:relative;top:auto}.future-grid{grid-template-columns:1fr 1fr}.command-dial{display:none}.chain-selector{display:flex}.spine-diagram{grid-template-columns:1fr}.spine-svg{display:none}}
     @media (max-width:760px){.page{width:min(100% - 18px,var(--max))}.top-shell{top:6px}.topbar{grid-template-columns:1fr}.brand span span{max-width:78vw}.nav{justify-content:flex-start}.route-grid,.future-grid,.file-grid,.boot-grid{grid-template-columns:1fr}.section-header,.wide-pad,.route-grid,.spine-layout,.ship-layout,.future-grid,.file-grid{padding-left:18px;padding-right:18px}.hero{padding:22px;border-radius:28px}.hero h1{font-size:clamp(3rem,15vw,5rem)}.meter-row{grid-template-columns:1fr;gap:6px}.floating{left:10px;right:10px;width:auto}.boot-copy{padding:22px}.boot-seal{width:min(240px,72%)}}
   </style>
 </head>
@@ -149,22 +359,39 @@
   <div class="deck-grid" aria-hidden="true"></div>
   <div class="scan-veil" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
+  <div class="descent-veil" id="descentVeil" aria-hidden="true"></div>
 
   <div class="boot" id="boot">
     <div class="boot-shell">
       <div class="boot-seal-wrap">
         <div class="boot-ring" aria-hidden="true"></div>
-        <img class="boot-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
+        <img class="boot-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal" fetchpriority="high">
       </div>
       <div class="boot-copy">
         <div class="kicker">The Rotfather's Mercy // Command Deck Oath-Rite</div>
         <h1>The Septicarium</h1>
         <p>The Command Deck does not wake for visitors. It wakes for witnesses. Speak beneath the rusted nave. Let the seals taste the breath. Let the ship decide which wound is heavy enough to descend.</p>
         <div class="boot-grid">
-          <div class="boot-cell"><div class="label">First Seal</div><strong>Command nave breathing through old brass.</strong></div>
-          <div class="boot-cell"><div class="label">Second Seal</div><strong>Annals chain lowering beneath the deck.</strong></div>
-          <div class="boot-cell"><div class="label">Third Seal</div><strong>Subject-script sealed behind blue-black glass.</strong></div>
-          <div class="boot-cell"><div class="label">Fourth Seal</div><strong>War-chronicle hooks warming in the dark.</strong></div>
+          <div class="boot-cell">
+            <div class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg></div>
+            <div class="label">First Seal</div>
+            <strong>Command nave breathing through old brass.</strong>
+          </div>
+          <div class="boot-cell">
+            <div class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="8" rx="4"/><rect x="5" y="13" width="14" height="8" rx="4"/></svg></div>
+            <div class="label">Second Seal</div>
+            <strong>Annals chain lowering beneath the deck.</strong>
+          </div>
+          <div class="boot-cell">
+            <div class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+            <div class="label">Third Seal</div>
+            <strong>Subject-script sealed behind blue-black glass.</strong>
+          </div>
+          <div class="boot-cell">
+            <div class="glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 15.6 7.1 18.2 8 12.7 4 8.8l5.5-.8z"/></svg></div>
+            <div class="label">Fourth Seal</div>
+            <strong>War-chronicle hooks warming in the dark.</strong>
+          </div>
         </div>
         <div class="boot-log" id="bootLog"></div>
         <div class="boot-bar"><span id="bootBar"></span></div>
@@ -190,16 +417,19 @@
         </nav>
       </div>
       <div class="command-meter">
-        <div><div class="stat-label">Deck Pulse</div><div class="stat-text" id="deckPulse">The nave is breathing at low pressure.</div></div>
+        <div><div class="stat-label">Deck Pulse</div><div class="stat-text" id="deckPulse" aria-live="polite">The nave is breathing at low pressure.</div></div>
         <div class="meter-bars">
-          <div class="meter-row"><div class="label">Seal Pressure</div><div class="bar-shell"><div class="bar-fill" id="pressureFill" style="--w:18%"></div></div><div class="bar-num" id="pressureNum">XVIII</div></div>
-          <div class="meter-row"><div class="label">Memory Heat</div><div class="bar-shell"><div class="bar-fill" id="memoryFill" style="--w:22%"></div></div><div class="bar-num" id="memoryNum">XXII</div></div>
+          <div class="meter-row"><div class="label">Seal Pressure</div><div class="bar-shell" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="18" aria-label="Seal pressure"><div class="bar-fill" id="pressureFill" style="--w:18%"></div></div><div class="bar-num" id="pressureNum">XVIII</div></div>
+          <div class="meter-row"><div class="label">Memory Heat</div><div class="bar-shell" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="22" aria-label="Memory heat"><div class="bar-fill" id="memoryFill" style="--w:22%"></div></div><div class="bar-num" id="memoryNum">XXII</div></div>
         </div>
-        <div><div class="stat-label">Active Chamber</div><div class="stat-text" id="activeChamber">Command Deck // awaiting witness.</div></div>
+        <div><div class="stat-label">Active Chamber</div><div class="stat-text" id="activeChamber" aria-live="polite">Command Deck // awaiting witness.</div></div>
       </div>
     </header>
 
     <section class="hero" id="descent" data-chamber="command" data-pressure="18" data-memory="22" data-channel="command" data-whisper="The Command Deck is not the archive. It is the wound that decides where every other wound descends.">
+      <div class="hero-bg-far" aria-hidden="true"></div>
+      <div class="hero-bg-mid" aria-hidden="true"></div>
+      <div class="hero-bg-glow" aria-hidden="true"></div>
       <div class="hero-left">
         <div class="eyebrow label">The Rotfather's Mercy // Command Routing Nave // Oath-Control</div>
         <h1>The Septicarium</h1>
@@ -208,22 +438,31 @@
         <p class="hero-copy">No record enters clean. The Command Deck listens for weight. If the wound is large enough, the ship lowers it into the Annals. If the face is dangerous enough, it is caged in the Subject-Scriptorium. If the object remembers touch, the Reliquary receives it. If the field still speaks, the War-Chronicles keep it warm.</p>
         <p class="hero-copy">This is not a map. This is the nave where the ship chooses which door opens.</p>
         <div class="hero-actions">
-          <a class="btn brass" href="plaguebound-annals.html" data-route-click="annals">Descend to the Annals</a>
-          <a class="btn" href="plaguebound-dossier.html" data-route-click="dossier">Open the Subject-Scriptorium</a>
-          <a class="btn rust" href="the-pallid-reversal.html" data-route-click="battle">Enter a War-Chronicle</a>
+          <a class="btn brass" href="plaguebound-annals.html" data-descend="annals" data-route-click="annals">Descend to the Annals</a>
+          <a class="btn" href="plaguebound-dossier.html" data-descend="dossier" data-route-click="dossier">Open the Subject-Scriptorium</a>
+          <a class="btn rust" href="the-pallid-reversal.html" data-descend="battle" data-route-click="battle">Enter a War-Chronicle</a>
         </div>
       </div>
       <aside class="hero-right">
         <div class="command-dial" aria-label="Command Deck chamber dial">
-          <img class="dial-seal" src="Assets/Index/septicarium-seal.jpeg" alt="The Septicarium seal">
-          <button class="dial-node active" style="--angle:0deg" data-dial="command">Command</button>
-          <button class="dial-node" style="--angle:72deg" data-dial="annals">Annals</button>
-          <button class="dial-node" style="--angle:144deg" data-dial="dossier">Scriptorium</button>
-          <button class="dial-node" style="--angle:216deg" data-dial="relic">Reliquary</button>
-          <button class="dial-node" style="--angle:288deg" data-dial="battle">Chronicles</button>
+          <img class="dial-seal" src="Assets/Index/septicarium-seal.jpeg" alt="">
+          <button class="dial-node active" style="--angle:0deg" data-dial="command" aria-pressed="true">Command</button>
+          <button class="dial-node" style="--angle:72deg" data-dial="annals" aria-pressed="false">Annals</button>
+          <button class="dial-node" style="--angle:144deg" data-dial="dossier" aria-pressed="false">Scriptorium</button>
+          <button class="dial-node" style="--angle:216deg" data-dial="relic" aria-pressed="false">Reliquary</button>
+          <button class="dial-node" style="--angle:288deg" data-dial="battle" aria-pressed="false">Chronicles</button>
+        </div>
+        <div class="chain-selector" aria-label="Chamber chain selector">
+          <button class="chain-link active" data-dial="command" aria-pressed="true">Command<small>Nave</small></button>
+          <button class="chain-link" data-dial="annals" aria-pressed="false">Annals<small>Master Vault</small></button>
+          <button class="chain-link" data-dial="dossier" aria-pressed="false">Scriptorium<small>Subject Cage</small></button>
+          <button class="chain-link" data-dial="relic" aria-pressed="false">Reliquary<small>Object Memory</small></button>
+          <button class="chain-link" data-dial="battle" aria-pressed="false">Chronicles<small>Field Warmth</small></button>
         </div>
       </aside>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L720 24 M860 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="790" cy="24" r="14" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="790" cy="24" r="4" fill="currentColor" opacity=".6"/></svg></div>
 
     <section class="lore-inscription" id="command-inscription" data-chamber="command" data-pressure="36" data-memory="34" data-channel="command" data-whisper="The Command Deck is not a map. It is a judge made of brass, rot, and remembered pressure.">
       <div class="inscription-frame">
@@ -244,6 +483,8 @@
       </div>
     </section>
 
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L760 24" stroke="currentColor" stroke-width="1" fill="none"/><path d="M820 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none"/><path d="M770 14 L770 34 M790 8 L790 40 M810 14 L810 34" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></div>
+
     <section class="section" id="routes" data-chamber="annals" data-pressure="56" data-memory="48" data-channel="annals" data-whisper="The sealed doors are not choices. They are judgments. Each opens only when the wound matches the chamber.">
       <div class="section-block">
         <div class="section-header">
@@ -255,24 +496,33 @@
           <div class="chip">Hover to Warm the Seal</div>
         </div>
         <div class="route-grid">
-          <a class="route-door" href="plaguebound-annals.html" style="--img:url('Assets/Plaguebound%20Annals/plaguebound-annals-hero.png');--accent:rgba(214,189,117,.20)" data-route="annals" data-pressure="78" data-memory="74" data-whisper="The Annals do not open upward. They pull the sworn down.">
+          <a class="route-door" href="plaguebound-annals.html" data-descend="annals" style="--img:url('Assets/Plaguebound%20Annals/plaguebound-annals-hero.png');--accent:rgba(214,189,117,.20)" data-route="annals" data-pressure="78" data-memory="74" data-whisper="The Annals do not open upward. They pull the sworn down.">
+            <span class="door-deco" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(214,189,117,.7)" stroke-width="1" stroke-dasharray="3 6"/><circle cx="50" cy="50" r="32" fill="none" stroke="rgba(214,189,117,.5)" stroke-width="1"/><circle cx="50" cy="50" r="14" fill="rgba(141,63,32,.5)" stroke="rgba(214,189,117,.8)" stroke-width="1.5"/><path d="M50 36 L50 64 M36 50 L64 50" stroke="rgba(255,241,201,.7)" stroke-width="1.2"/></svg></span>
             <div class="door-body"><div class="seal-state">LOWER VAULT BREATHING</div><h3>The Plaguebound Annals</h3><p>The master descent: subject-script, mustered formations, relic systems, engines, war-patterns, and battle-chronicles chained into one living memory.</p><div class="route-meta"><span class="tag">Master Archive</span><span class="tag">All Records</span></div></div>
           </a>
-          <a class="route-door" href="plaguebound-dossier.html" style="--img:url('Assets/Index/plaguebound-dossier.jpeg');--accent:rgba(51,75,84,.22)" data-route="dossier" data-pressure="62" data-memory="58" data-whisper="The blue-black scriptorium cages faces that make nearby records unstable.">
+          <a class="route-door" href="plaguebound-dossier.html" data-descend="dossier" style="--img:url('Assets/Index/plaguebound-dossier.jpeg');--accent:rgba(51,75,84,.22)" data-route="dossier" data-pressure="62" data-memory="58" data-whisper="The blue-black scriptorium cages faces that make nearby records unstable.">
+            <span class="door-deco" aria-hidden="true"></span>
+            <span class="name-fragments" aria-hidden="true">N-A-M-E<br>// CLASS<br>// REDACT<br>+++++++</span>
             <div class="door-body"><div class="seal-state">FACE-CONTAINMENT ACTIVE</div><h3>The Plaguebound Dossier</h3><p>The Subject-Scriptorium chamber where command entities, rivals, specialists, and dangerous faces are pressed into sealed script.</p><div class="route-meta"><span class="tag">Subject Files</span><span class="tag">Containment</span></div></div>
           </a>
-          <a class="route-door" href="the-mercy-sickle.html" style="--img:url('Assets/Index/relic-vault.jpeg');--accent:rgba(169,141,78,.22)" data-route="relic" data-pressure="69" data-memory="63" data-whisper="The Reliquary keeps objects that remember touch and weapons that learned to choose witnesses.">
+          <a class="route-door" href="the-mercy-sickle.html" data-descend="relic" style="--img:url('Assets/Index/relic-vault.jpeg');--accent:rgba(169,141,78,.22)" data-route="relic" data-pressure="69" data-memory="63" data-whisper="The Reliquary keeps objects that remember touch and weapons that learned to choose witnesses.">
+            <span class="door-deco" aria-hidden="true"><svg viewBox="0 0 32 140"><g fill="none" stroke="rgba(214,189,117,.8)" stroke-width="1.5"><ellipse cx="16" cy="10" rx="7" ry="4"/><ellipse cx="16" cy="22" rx="5" ry="7"/><ellipse cx="16" cy="38" rx="7" ry="4"/><ellipse cx="16" cy="50" rx="5" ry="7"/><ellipse cx="16" cy="66" rx="7" ry="4"/><ellipse cx="16" cy="78" rx="5" ry="7"/><ellipse cx="16" cy="94" rx="7" ry="4"/><ellipse cx="16" cy="106" rx="5" ry="7"/><ellipse cx="16" cy="122" rx="7" ry="4"/></g></svg></span>
             <div class="door-body"><div class="seal-state">RELIQUARY PRESSURE RISING</div><h3>The Mercy-Sickle</h3><p>A relic record of edge, doctrine, omen, and wound-memory. Mortivus' weapon is not stored. It is restrained.</p><div class="route-meta"><span class="tag">Relic</span><span class="tag">Weapon-Rite</span></div></div>
           </a>
-          <a class="route-door" href="the-pallid-reversal.html" style="--img:url('Assets/Pallid%20Reversal/pallid-reversal-hero.jpeg');--accent:rgba(141,63,32,.24)" data-route="battle" data-pressure="84" data-memory="88" data-whisper="The basin still burns in the archive. Scrap remembers impact better than flesh.">
+          <a class="route-door" href="the-pallid-reversal.html" data-descend="battle" style="--img:url('Assets/Pallid%20Reversal/pallid-reversal-hero.jpeg');--accent:rgba(141,63,32,.24)" data-route="battle" data-pressure="84" data-memory="88" data-whisper="The basin still burns in the archive. Scrap remembers impact better than flesh.">
+            <span class="door-deco" aria-hidden="true"></span>
             <div class="door-body"><div class="seal-state">FIELD EVIDENCE STILL WARM</div><h3>The Pallid Reversal</h3><p>An Ork-origin scrap-vox chronicle of ambush, detonation, controlled retreat, and the humiliation that survived.</p><div class="route-meta"><span class="tag">Battle</span><span class="tag">Scrap-Vox</span></div></div>
           </a>
-          <a class="route-door" href="the-mercy-he-gave.html" style="--img:url('Assets/Index/rot-scriptures.jpeg');--accent:rgba(65,82,86,.22)" data-route="blackbox" data-pressure="58" data-memory="71" data-whisper="The blackbox record is not damaged. It is still confessing.">
+          <a class="route-door" href="the-mercy-he-gave.html" data-descend="blackbox" style="--img:url('Assets/Index/rot-scriptures.jpeg');--accent:rgba(65,82,86,.22)" data-route="blackbox" data-pressure="58" data-memory="71" data-whisper="The blackbox record is not damaged. It is still confessing.">
+            <span class="door-deco" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="scan" aria-hidden="true"></span>
             <div class="door-body"><div class="seal-state">BLACKBOX HUMOUR LEAKING</div><h3>The Mercy He Gave</h3><p>A corrupted transmission where mercy became plague, signal became confession, and damage learned to speak.</p><div class="route-meta"><span class="tag">Blackbox</span><span class="tag">Recovered Signal</span></div></div>
           </a>
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L740 24 M840 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none"/><path d="M790 12 L790 36 M770 24 L810 24" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="790" cy="24" r="3" fill="currentColor"/></svg></div>
 
     <section class="lore-inscription alt" id="wound-selection" data-chamber="annals" data-pressure="62" data-memory="66" data-channel="annals" data-whisper="The ship chooses the wound by what refuses to stop speaking.">
       <div class="inscription-frame">
@@ -293,6 +543,8 @@
       </div>
     </section>
 
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="2 8"/></svg></div>
+
     <section class="section" id="spine" data-chamber="dossier" data-pressure="68" data-memory="70" data-channel="dossier" data-whisper="The spine beneath the deck holds the lesser chambers in place. A door is only a surface wound.">
       <div class="section-block">
         <div class="section-header">
@@ -311,19 +563,48 @@
             <p><strong>The Septicarium</strong> grows by evidence. A unit must earn descent. A face must become dangerous. A relic must remember touch. A battle must leave proof.</p>
           </article>
           <aside class="oath-panel">
-            <div class="spine-map">
-              <div class="spine-row"><span>Command Nave</span><span>The Septicarium</span></div>
-              <div class="spine-row"><span>Master Descent</span><span>Annals</span></div>
-              <div class="spine-row"><span>Dangerous Faces</span><span>Scriptorium</span></div>
-              <div class="spine-row"><span>Mustered Bodies</span><span>Vaults</span></div>
-              <div class="spine-row"><span>Objects with Memory</span><span>Reliquary</span></div>
-              <div class="spine-row"><span>Fields that Speak</span><span>Chronicles</span></div>
+            <div class="spine-diagram">
+              <svg class="spine-svg breathe" viewBox="0 0 140 520" aria-hidden="true">
+                <line class="col" x1="70" y1="20" x2="70" y2="500"/>
+                <g data-spine="command">
+                  <line class="branch" x1="70" y1="60" x2="130" y2="60"/>
+                  <ellipse class="vert" cx="70" cy="60" rx="22" ry="10"/>
+                </g>
+                <g data-spine="annals">
+                  <line class="branch" x1="70" y1="150" x2="10" y2="150"/>
+                  <ellipse class="vert" cx="70" cy="150" rx="26" ry="11"/>
+                </g>
+                <g data-spine="dossier">
+                  <line class="branch" x1="70" y1="240" x2="130" y2="240"/>
+                  <ellipse class="vert" cx="70" cy="240" rx="22" ry="10"/>
+                </g>
+                <g data-spine="relic">
+                  <line class="branch" x1="70" y1="330" x2="10" y2="330"/>
+                  <ellipse class="vert" cx="70" cy="330" rx="22" ry="10"/>
+                </g>
+                <g data-spine="battle">
+                  <line class="branch" x1="70" y1="420" x2="130" y2="420"/>
+                  <ellipse class="vert" cx="70" cy="420" rx="22" ry="10"/>
+                </g>
+                <circle cx="70" cy="20" r="4" fill="rgba(216,231,151,.6)"/>
+                <circle cx="70" cy="500" r="4" fill="rgba(216,231,151,.6)"/>
+              </svg>
+              <div class="spine-rows">
+                <div class="spine-row" data-spine-row="command"><span>Command Nave</span><span>The Septicarium</span></div>
+                <div class="spine-row" data-spine-row="annals"><span>Master Descent</span><span>Annals</span></div>
+                <div class="spine-row" data-spine-row="dossier"><span>Dangerous Faces</span><span>Scriptorium</span></div>
+                <div class="spine-row" data-spine-row="relic"><span>Mustered Bodies</span><span>Vaults</span></div>
+                <div class="spine-row" data-spine-row="relic"><span>Objects with Memory</span><span>Reliquary</span></div>
+                <div class="spine-row" data-spine-row="battle"><span>Fields that Speak</span><span>Chronicles</span></div>
+              </div>
             </div>
             <div class="terminal"><strong>SEPTICARIUM OATH:</strong><br>I enter beneath plague-bell silence. I offer breath to rust, witness to rot, and memory to the ship that keeps what should have died.</div>
           </aside>
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L780 24 M800 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none"/><rect x="780" y="14" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(45 790 24)"/></svg></div>
 
     <section class="lore-inscription" id="dangerous-records" data-chamber="dossier" data-pressure="70" data-memory="74" data-channel="dossier" data-whisper="A record becomes dangerous when the archive starts changing around it.">
       <div class="inscription-frame">
@@ -343,6 +624,8 @@
         </aside>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="6 6"/></svg></div>
 
     <section class="section" id="ship" data-chamber="command" data-pressure="50" data-memory="66" data-channel="command" data-whisper="The ship is not backdrop. The ship is the archive's body.">
       <div class="section-block">
@@ -365,6 +648,8 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L760 24 M820 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none"/><path d="M780 16 L800 32 M780 32 L800 16" stroke="currentColor" stroke-width="1.5"/></svg></div>
 
     <section class="lore-inscription battle" id="unwritten-inscription" data-chamber="battle" data-pressure="74" data-memory="80" data-channel="battle" data-whisper="The unwritten hooks are patient because the future always arrives wounded.">
       <div class="inscription-frame">
@@ -396,12 +681,23 @@
           <div class="chip">Unwritten Hooks Warm</div>
         </div>
         <div class="future-grid">
-          <article class="future-card" data-whisper="The Annals accept no list. A unit must become a moving wound before the vault will keep it."><div><div class="phase-label">First Chain</div><h3>One War-Form Must Earn Descent</h3><p>The next unit record should begin as a living battlefield presence, not a profile. It must move, kill, endure, fail, and leave doctrine behind.</p></div><div class="seal-state">AWAITING FIRST FULL UNIT RECORD</div></article>
-          <article class="future-card" data-whisper="No battle is lowered into the Annals until wreckage, testimony, failure, and consequence remain warm enough to speak."><div><div class="phase-label">Second Chain</div><h3>A Field Must Leave Proof</h3><p>Future battles enter only when enough evidence remains: wreckage, testimony, reversals, grudges, strange survival, or failure worth preserving.</p></div><div class="seal-state">AWAITING FIELD EVIDENCE</div></article>
-          <article class="future-card" data-whisper="The Subject-Scriptorium does not preserve faces for vanity. It cages those that alter the records around them."><div><div class="phase-label">Third Chain</div><h3>A Face Must Become Dangerous</h3><p>The next subject file should be earned through command weight, rivalry, mutation, failure, office, or recurring threat.</p></div><div class="seal-state">AWAITING DANGEROUS FACE</div></article>
+          <article class="future-card" data-whisper="The Annals accept no list. A unit must become a moving wound before the vault will keep it." data-wait-base="47">
+            <div><div class="phase-label">First Chain</div><h3>One War-Form Must Earn Descent</h3><p>The next unit record should begin as a living battlefield presence, not a profile. It must move, kill, endure, fail, and leave doctrine behind.</p></div>
+            <div><div class="seal-state">AWAITING FIRST FULL UNIT RECORD</div><div class="wait-counter" data-counter>WAIT: XLVII ROTATIONS</div></div>
+          </article>
+          <article class="future-card" data-whisper="No battle is lowered into the Annals until wreckage, testimony, failure, and consequence remain warm enough to speak." data-wait-base="63">
+            <div><div class="phase-label">Second Chain</div><h3>A Field Must Leave Proof</h3><p>Future battles enter only when enough evidence remains: wreckage, testimony, reversals, grudges, strange survival, or failure worth preserving.</p></div>
+            <div><div class="seal-state">AWAITING FIELD EVIDENCE</div><div class="wait-counter" data-counter>WAIT: LXIII ROTATIONS</div></div>
+          </article>
+          <article class="future-card" data-whisper="The Subject-Scriptorium does not preserve faces for vanity. It cages those that alter the records around them." data-wait-base="29">
+            <div><div class="phase-label">Third Chain</div><h3>A Face Must Become Dangerous</h3><p>The next subject file should be earned through command weight, rivalry, mutation, failure, office, or recurring threat.</p></div>
+            <div><div class="seal-state">AWAITING DANGEROUS FACE</div><div class="wait-counter" data-counter>WAIT: XXIX ROTATIONS</div></div>
+          </article>
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 48" preserveAspectRatio="none"><path d="M0 24 L1580 24" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="790" cy="24" r="6" fill="currentColor" opacity=".4"/></svg></div>
 
     <section class="section" id="files" data-chamber="annals" data-pressure="64" data-memory="72" data-channel="annals" data-whisper="The passageways are simple only because the chambers behind them are not.">
       <div class="section-block">
@@ -414,12 +710,12 @@
           <div class="chip">Direct Descent</div>
         </div>
         <div class="file-grid">
-          <a class="file-link" href="plaguebound-annals.html"><div class="file-main"><div class="file-title">The Plaguebound Annals</div><div class="file-sub">The master archive descent for subject files, war-forms, relic systems, and battle chronicles.</div></div><div class="file-tag">Annals</div></a>
-          <a class="file-link" href="plaguebound-dossier.html"><div class="file-main"><div class="file-title">The Plaguebound Dossier</div><div class="file-sub">The Subject-Scriptorium chamber for command entities, rivals, specialists, and dangerous faces.</div></div><div class="file-tag">Dossier</div></a>
-          <a class="file-link" href="mortivus-classarion.html"><div class="file-main"><div class="file-title">Mortivus Classarion</div><div class="file-sub">Primary command subject file for The Rotfather's Vanguard.</div></div><div class="file-tag">Subject</div></a>
-          <a class="file-link" href="the-mercy-sickle.html"><div class="file-main"><div class="file-title">The Mercy-Sickle</div><div class="file-sub">Relic weapon record and sacred instrument of war.</div></div><div class="file-tag">Relic</div></a>
-          <a class="file-link" href="the-mercy-he-gave.html"><div class="file-main"><div class="file-title">The Mercy He Gave</div><div class="file-sub">Recovered blackbox transmission and corrupted mercy record.</div></div><div class="file-tag">Blackbox</div></a>
-          <a class="file-link" href="the-pallid-reversal.html"><div class="file-main"><div class="file-title">The Pallid Reversal</div><div class="file-sub">Ork-origin battle chronicle and scrap-vox reversal record.</div></div><div class="file-tag">Chronicle</div></a>
+          <a class="file-link" href="plaguebound-annals.html" data-descend="annals"><div class="file-main"><div class="file-title">The Plaguebound Annals</div><div class="file-sub">The master archive descent for subject files, war-forms, relic systems, and battle chronicles.</div></div><div class="file-tag">Annals</div></a>
+          <a class="file-link" href="plaguebound-dossier.html" data-descend="dossier"><div class="file-main"><div class="file-title">The Plaguebound Dossier</div><div class="file-sub">The Subject-Scriptorium chamber for command entities, rivals, specialists, and dangerous faces.</div></div><div class="file-tag">Dossier</div></a>
+          <a class="file-link" href="mortivus-classarion.html" data-descend="dossier"><div class="file-main"><div class="file-title">Mortivus Classarion<span class="witness-mark" title="Appears 7 times across the Annals">✠</span></div><div class="file-sub">Primary command subject file for The Rotfather's Vanguard.</div></div><div class="file-tag">Subject</div></a>
+          <a class="file-link" href="the-mercy-sickle.html" data-descend="relic"><div class="file-main"><div class="file-title">The Mercy-Sickle</div><div class="file-sub">Relic weapon record and sacred instrument of war.</div></div><div class="file-tag">Relic</div></a>
+          <a class="file-link" href="the-mercy-he-gave.html" data-descend="blackbox"><div class="file-main"><div class="file-title">The Mercy He Gave</div><div class="file-sub">Recovered blackbox transmission and corrupted mercy record.</div></div><div class="file-tag">Blackbox</div></a>
+          <a class="file-link" href="the-pallid-reversal.html" data-descend="battle"><div class="file-main"><div class="file-title">The Pallid Reversal</div><div class="file-sub">Ork-origin battle chronicle and scrap-vox reversal record.</div></div><div class="file-tag">Chronicle</div></a>
         </div>
       </div>
     </section>
@@ -431,13 +727,13 @@
   </main>
 
   <aside class="floating" id="floating">
-    <div class="floating-head label"><span>Command Vox</span><button type="button" id="closeVox">×</button></div>
+    <div class="floating-head label"><span class="live">Command Vox // Transmission Active</span><button type="button" id="closeVox" aria-label="Close vox">×</button></div>
     <div class="floating-meter"><span id="voxMeter" style="--w:18%"></span></div>
-    <div class="floating-body" id="voxText">The Command Deck is not the archive. It is the wound that decides where every other wound descends.</div>
+    <div class="floating-body" id="voxText" aria-live="polite">The Command Deck is not the archive. It is the wound that decides where every other wound descends.</div>
   </aside>
 
   <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-frame" role="dialog" aria-modal="true">
+    <div class="modal-frame" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="label" id="modalLabel">Command Deck Annotation</div>
       <h3 id="modalTitle">Record</h3>
       <p id="modalText">The ship answers.</p>
@@ -455,43 +751,69 @@
       memory: 22,
       activeRoute: null,
       inspected: new Set(),
-      ticks: 0
+      ticks: 0,
+      whisperTier: 0,
+      idle: false,
+      keyBuffer: '',
+      scrollPressure: 0,
+      booted: false
     };
 
+    // Three-tier whisper state machine per channel
     const whispers = {
       command: [
-        'The Command Deck is not the archive. It is the wound that decides where every other wound descends.',
-        'The ship has noticed your pause.',
-        'Do not touch a seal unless you intend descent.',
-        'The nave is listening through rust and old breath.'
+        ['The Command Deck is not the archive. It is the wound that decides where every other wound descends.','The ship has noticed your pause.','The nave is listening through rust and old breath.'],
+        ['Do not touch a seal unless you intend descent.','The bell-metal beneath the deck has tasted your shadow.','You are not a witness yet. You are a candidate.'],
+        ['The nave will not ask again. Choose a wound or be remembered as one.','Your pulse has entered the ship\'s log.','You stand where five chambers can hear you at once.']
       ],
       annals: [
-        'The Annals do not open upward. They pull the sworn down.',
-        'The master vault does not keep lists. It keeps what survived being useful.',
-        'The lower chains are warmer than they should be.'
+        ['The Annals do not open upward. They pull the sworn down.','The master vault does not keep lists. It keeps what survived being useful.','The lower chains are warmer than they should be.'],
+        ['You have been logged at the descent door.','The vault remembers names better than the names remember themselves.','Subject-script is rising to meet you.'],
+        ['The Annals have begun arranging themselves around your weight.','Something below has stopped sleeping.','The chain has chosen the direction. You only choose the speed.']
       ],
       dossier: [
-        'The blue-black scriptorium cages faces that make nearby records unstable.',
-        'A face becomes dangerous when the archive begins correcting itself around the name.',
-        'Subject-script should not be read aloud without a witness.'
+        ['The blue-black scriptorium cages faces that make nearby records unstable.','A face becomes dangerous when the archive begins correcting itself around the name.','Subject-script should not be read aloud without a witness.'],
+        ['One of the caged faces has turned toward the glass.','The scriptorium does not need to be visited. It needs to be remembered.','Names in this chamber rewrite the nouns around them.'],
+        ['You have been added to the margin of a file you have not yet read.','The face behind the glass is now using your tense.','The Scriptorium has accepted you as a footnote.']
       ],
       relic: [
-        'The Reliquary keeps objects that remember touch.',
-        'A weapon is not complete until the enemy learns its name too late.',
-        'Something in the vault has shifted against its chain.'
+        ['The Reliquary keeps objects that remember touch.','A weapon is not complete until the enemy learns its name too late.','Something in the vault has shifted against its chain.'],
+        ['The Mercy-Sickle is listening for a familiar grip.','Objects in this chamber do not rest. They wait.','A relic has tasted your interest.'],
+        ['The chain has gone slack. The relic has chosen you as a possibility.','You are not the first to be measured by this edge.','The Reliquary does not lend. It assigns.']
       ],
       battle: [
-        'A field that leaves evidence is never finished.',
-        'Scrap remembers impact better than flesh.',
-        'The dead do not testify cleanly.'
+        ['A field that leaves evidence is never finished.','Scrap remembers impact better than flesh.','The dead do not testify cleanly.'],
+        ['The basin is still burning in the lower archive.','Smoke is finding its way back into a record that was supposed to close.','Wreckage is repositioning itself around your attention.'],
+        ['The chronicle has begun rewriting itself in your reading order.','A casualty count has updated. It did not move down.','The battlefield has stopped pretending to be past tense.']
       ],
       blackbox: [
-        'The blackbox record is not damaged. It is still confessing.',
-        'Signal rot is still a kind of prayer.',
-        'The transmission repeats because the wound has not closed.'
+        ['The blackbox record is not damaged. It is still confessing.','Signal rot is still a kind of prayer.','The transmission repeats because the wound has not closed.'],
+        ['The carrier wave is louder when you face it directly.','A voice in the static has learned the shape of your name.','The blackbox is not asking for help. It is offering it.'],
+        ['The signal has begun answering questions you have not asked aloud.','You are now part of the transmission\'s second hand.','The confession has rerouted itself toward your channel.']
+      ],
+      idle: [
+        'The nave has stopped expecting you.',
+        'Silence is the ship\'s default sermon.',
+        'The Command Deck has gone back to listening for someone else.',
+        'You have grown light in the archive\'s estimation.'
+      ],
+      confession: [
+        'You have crossed the threshold the visitors do not cross.',
+        'The ship is listening to you instead of for you.',
+        'A vow has been spoken in your shape without your permission.',
+        'The deck has stopped weighing you. It has started keeping you.'
       ]
     };
 
+    function pickWhisper(channel, tier) {
+      if (channel === 'confession') return whispers.confession[Math.floor(Math.random() * whispers.confession.length)];
+      const pool = whispers[channel] || whispers.command;
+      const safeTier = Array.isArray(pool[0]) ? Math.min(tier, pool.length - 1) : 0;
+      const bank = Array.isArray(pool[0]) ? pool[safeTier] : pool;
+      return bank[Math.floor(Math.random() * bank.length)];
+    }
+
+    // ===== Boot
     const boot = document.getElementById('boot');
     const bootLog = document.getElementById('bootLog');
     const bootBar = document.getElementById('bootBar');
@@ -505,9 +827,17 @@
       ['VI','I am received by The Rotfather\'s Mercy. The Command Deck opens.']
     ];
     let bootIndex = 0;
-    function finishBoot(){ boot.classList.add('hidden'); document.body.classList.remove('locked'); setTimeout(()=>boot.remove(),950); }
+
+    function finishBoot() {
+      boot.classList.add('hidden');
+      document.body.classList.remove('locked');
+      state.booted = true;
+      restoreInspected();
+      setTimeout(() => boot.remove(), 950);
+    }
+
     const bootTimer = setInterval(() => {
-      if(bootIndex < bootLines.length){
+      if (bootIndex < bootLines.length) {
         const line = document.createElement('div');
         line.className = 'boot-line';
         line.innerHTML = `<span>${bootLines[bootIndex][0]}</span>${bootLines[bootIndex][1]}`;
@@ -515,10 +845,18 @@
         bootBar.style.width = ((bootIndex + 1) / bootLines.length * 100) + '%';
         bootCells.forEach((cell, idx) => cell.classList.toggle('active', idx === bootIndex % bootCells.length));
         bootIndex++;
-      } else { clearInterval(bootTimer); setTimeout(finishBoot, 620); }
+      } else {
+        clearInterval(bootTimer);
+        setTimeout(finishBoot, 620);
+      }
     }, 320);
-    document.getElementById('skipBoot').addEventListener('click', () => { clearInterval(bootTimer); bootBar.style.width = '100%'; finishBoot(); });
+    document.getElementById('skipBoot').addEventListener('click', () => {
+      clearInterval(bootTimer);
+      bootBar.style.width = '100%';
+      finishBoot();
+    });
 
+    // ===== DOM refs
     const pressureFill = document.getElementById('pressureFill');
     const memoryFill = document.getElementById('memoryFill');
     const pressureNum = document.getElementById('pressureNum');
@@ -527,107 +865,315 @@
     const activeChamber = document.getElementById('activeChamber');
     const voxText = document.getElementById('voxText');
     const voxMeter = document.getElementById('voxMeter');
+    const descentVeil = document.getElementById('descentVeil');
 
-    function roman(value){
-      if(value < 25) return 'XVIII';
-      if(value < 50) return 'XLII';
-      if(value < 70) return 'LXIV';
-      if(value < 86) return 'LXXVIII';
-      return 'XCII';
+    function roman(value) {
+      const n = Math.max(0, Math.min(100, Math.round(value)));
+      const map = [[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+      let r = '', v = n;
+      for (const [num,sym] of map) { while (v >= num) { r += sym; v -= num; } }
+      return r || 'O';
     }
 
-    function randomWhisper(channel){
-      const list = whispers[channel] || whispers.command;
-      return list[Math.floor(Math.random() * list.length)];
-    }
-
-    function updateState(next = {}){
+    // ===== Single applyState mutator
+    function applyState(next = {}) {
       Object.assign(state, next);
+      // Pressure caps from scroll + inspections
+      const inspectBoost = state.inspected.size * 5;
+      const effectivePressure = Math.min(100, state.pressure + state.scrollPressure + inspectBoost);
+      const effectiveMemory = Math.min(100, state.memory + (state.inspected.size * 4));
       document.body.dataset.chamber = state.chamber;
-      pressureFill.style.width = state.pressure + '%';
-      memoryFill.style.width = state.memory + '%';
-      voxMeter.style.width = state.pressure + '%';
-      pressureNum.textContent = roman(state.pressure);
-      memoryNum.textContent = roman(state.memory);
+      pressureFill.style.width = effectivePressure + '%';
+      memoryFill.style.width = effectiveMemory + '%';
+      voxMeter.style.width = effectivePressure + '%';
+      pressureNum.textContent = roman(effectivePressure);
+      memoryNum.textContent = roman(effectiveMemory);
+      pressureFill.parentElement.setAttribute('aria-valuenow', effectivePressure);
+      memoryFill.parentElement.setAttribute('aria-valuenow', effectiveMemory);
       activeChamber.textContent = `${state.chamber.toUpperCase()} // ${state.inspected.size} seals warmed`;
-      if(state.pressure < 40) deckPulse.textContent = 'The nave is breathing at low pressure.';
-      else if(state.pressure < 75) deckPulse.textContent = 'The Command Deck is weighing the witness.';
+      if (effectivePressure < 40) deckPulse.textContent = 'The nave is breathing at low pressure.';
+      else if (effectivePressure < 75) deckPulse.textContent = 'The Command Deck is weighing the witness.';
       else deckPulse.textContent = 'Seal pressure high. The ship expects descent.';
-      document.querySelectorAll('.route-door').forEach(card => card.classList.toggle('active', card.dataset.route === state.activeRoute));
+
+      // High pressure unlocks
+      document.body.classList.toggle('high-pressure', effectivePressure >= 75);
+      document.body.classList.toggle('signal-active', effectivePressure >= 50);
+
+      // Whisper tier scales with pressure
+      state.whisperTier = effectivePressure >= 80 ? 2 : effectivePressure >= 50 ? 1 : 0;
+
+      // Confession unlocks at very high pressure + many inspections
+      if (effectivePressure >= 90 && state.inspected.size >= 4 && state.channel !== 'confession') {
+        state.channel = 'confession';
+      }
+
+      // Doors
+      document.querySelectorAll('.route-door').forEach(card =>
+        card.classList.toggle('active', card.dataset.route === state.activeRoute));
+      // Dial + chain
+      document.querySelectorAll('.dial-node, .chain-link').forEach(b => {
+        const on = b.dataset.dial === state.chamber;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      // Spine vertebra highlight
+      document.querySelectorAll('.spine-svg .vert').forEach(v => v.classList.remove('active'));
+      const activeVert = document.querySelector(`.spine-svg [data-spine="${state.chamber}"] .vert`);
+      if (activeVert) activeVert.classList.add('active');
+      document.querySelectorAll('.spine-row').forEach(r =>
+        r.classList.toggle('active', r.dataset.spineRow === state.chamber));
     }
 
-    function speak(text, channel){
-      voxText.textContent = text || randomWhisper(channel || state.channel);
+    // ===== Typing Vox
+    let typeQueue = '';
+    let typeTimer = null;
+    function speak(text, channel) {
+      const finalText = text || pickWhisper(channel || state.channel, state.whisperTier);
+      typeQueue = finalText;
+      if (typeTimer) clearInterval(typeTimer);
+      voxText.classList.remove('no-caret');
+      voxText.textContent = '';
+      let i = 0;
+      typeTimer = setInterval(() => {
+        if (i >= typeQueue.length) {
+          clearInterval(typeTimer);
+          typeTimer = null;
+          setTimeout(() => voxText.classList.add('no-caret'), 1500);
+          return;
+        }
+        voxText.textContent = typeQueue.slice(0, i + 2);
+        i += 2;
+      }, 22);
     }
 
-    function inspectRoute(route, pressure, memory, whisper){
+    // ===== Route inspection
+    function inspectRoute(route, pressure, memory, whisper) {
       state.inspected.add(route);
+      saveInspected();
       const card = document.querySelector(`.route-door[data-route="${route}"]`);
-      if(card) card.classList.add('inspected');
-      updateState({ chamber: route, channel: route, activeRoute: route, pressure, memory });
+      if (card) card.classList.add('inspected');
+      applyState({ chamber: route, channel: route, activeRoute: route, pressure, memory });
       speak(whisper, route);
     }
 
-    const routeCards = document.querySelectorAll('.route-door');
-    routeCards.forEach(card => {
-      card.addEventListener('mouseenter', () => inspectRoute(card.dataset.route, Number(card.dataset.pressure || 50), Number(card.dataset.memory || 50), card.dataset.whisper));
-      card.addEventListener('focus', () => inspectRoute(card.dataset.route, Number(card.dataset.pressure || 50), Number(card.dataset.memory || 50), card.dataset.whisper));
+    document.querySelectorAll('.route-door').forEach(card => {
+      card.addEventListener('mouseenter', () =>
+        inspectRoute(card.dataset.route, Number(card.dataset.pressure || 50), Number(card.dataset.memory || 50), card.dataset.whisper));
+      card.addEventListener('focus', () =>
+        inspectRoute(card.dataset.route, Number(card.dataset.pressure || 50), Number(card.dataset.memory || 50), card.dataset.whisper));
     });
 
-    document.querySelectorAll('[data-route-click]').forEach(link => {
+    // ===== Descent transition (intercepts link clicks)
+    function descend(url, route) {
+      descentVeil.dataset.route = route || 'command';
+      descentVeil.classList.add('active');
+      speak(`The ship is lowering you into ${(route || 'the chamber').toUpperCase()}.`, route);
+      setTimeout(() => { window.location.href = url; }, 900);
+    }
+
+    document.querySelectorAll('[data-descend]').forEach(link => {
+      link.addEventListener('click', e => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        const route = link.dataset.descend;
+        if (document.startViewTransition) {
+          document.startViewTransition(() => descend(href, route));
+        } else {
+          descend(href, route);
+        }
+      });
       link.addEventListener('mouseenter', () => {
-        const route = link.dataset.routeClick;
-        updateState({ chamber: route, channel: route, activeRoute: route, pressure: 66, memory: 62 });
+        const route = link.dataset.descend;
+        applyState({ chamber: route, channel: route, activeRoute: route, pressure: 66, memory: 62 });
         speak(null, route);
       });
     });
 
-    document.querySelectorAll('.dial-node').forEach(btn => {
+    // ===== Dial + Chain
+    document.querySelectorAll('.dial-node, .chain-link').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.dial-node').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
         const chamber = btn.dataset.dial;
-        updateState({ chamber, channel: chamber, activeRoute: chamber, pressure: chamber === 'command' ? 28 : 70, memory: chamber === 'battle' ? 86 : 64 });
+        applyState({
+          chamber, channel: chamber, activeRoute: chamber,
+          pressure: chamber === 'command' ? 28 : 70,
+          memory: chamber === 'battle' ? 86 : 64
+        });
         speak(null, chamber);
       });
     });
 
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(!entry.isIntersecting) return;
-        const d = entry.target.dataset;
-        updateState({ chamber: d.chamber || 'command', channel: d.channel || d.chamber || 'command', pressure: Number(d.pressure || 30), memory: Number(d.memory || 30), activeRoute: d.chamber || null });
-        if(d.whisper) speak(d.whisper, d.channel || d.chamber);
+    // ===== Spine row hover
+    document.querySelectorAll('.spine-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        const ch = row.dataset.spineRow;
+        applyState({ chamber: ch, channel: ch, activeRoute: ch });
+        speak(null, ch);
       });
-    }, { threshold:.34 });
-    document.querySelectorAll('section[data-chamber]').forEach(sec => sectionObserver.observe(sec));
-
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('revealed'); });
-    }, { threshold:.16 });
-    document.querySelectorAll('.fragment-card').forEach(el => revealObserver.observe(el));
-
-    document.querySelectorAll('[data-whisper]').forEach(el => {
-      el.addEventListener('mouseenter', () => { if(el.dataset.whisper) speak(el.dataset.whisper, state.channel); });
     });
 
-    const floating = document.getElementById('floating');
-    document.getElementById('closeVox').addEventListener('click', () => floating.style.display = 'none');
-    document.getElementById('voxToggle').addEventListener('click', () => { floating.style.display = 'block'; speak(null, state.channel); });
+    // ===== Section observer + scroll pressure
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const d = entry.target.dataset;
+        applyState({
+          chamber: d.chamber || 'command',
+          channel: d.channel || d.chamber || 'command',
+          pressure: Number(d.pressure || 30),
+          memory: Number(d.memory || 30),
+          activeRoute: d.chamber || null
+        });
+        if (d.whisper) speak(d.whisper, d.channel || d.chamber);
+      });
+    }, { threshold: .34 });
+    document.querySelectorAll('section[data-chamber]').forEach(sec => sectionObserver.observe(sec));
 
+    let scrollTick = false;
+    function onScroll() {
+      if (scrollTick) return;
+      scrollTick = true;
+      requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? (window.scrollY / max) : 0;
+        state.scrollPressure = Math.round(pct * 20);
+        applyState({});
+        scrollTick = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ===== Fragment reveal
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('revealed'); });
+    }, { threshold: .16 });
+    document.querySelectorAll('.fragment-card').forEach(el => revealObserver.observe(el));
+
+    // ===== Whisper on hover
+    document.querySelectorAll('[data-whisper]').forEach(el => {
+      el.addEventListener('mouseenter', () => { if (el.dataset.whisper) speak(el.dataset.whisper, state.channel); });
+    });
+
+    // ===== Floating Vox
+    const floating = document.getElementById('floating');
+    document.getElementById('closeVox').addEventListener('click', () => floating.classList.add('hidden'));
+    document.getElementById('voxToggle').addEventListener('click', () => {
+      floating.classList.remove('hidden');
+      speak(null, state.channel);
+    });
+
+    // ===== Modal
     const modal = document.getElementById('modal');
     const modalTitle = document.getElementById('modalTitle');
     const modalText = document.getElementById('modalText');
     const modalLabel = document.getElementById('modalLabel');
-    function openModal(label, title, text){ modalLabel.textContent = label; modalTitle.textContent = title; modalText.textContent = text; modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
-    function closeModal(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
+    let lastFocused = null;
+    function openModal(label, title, text) {
+      lastFocused = document.activeElement;
+      modalLabel.textContent = label;
+      modalTitle.textContent = title;
+      modalText.textContent = text;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+      document.getElementById('closeModal').focus();
+    }
+    function closeModal() {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      if (lastFocused) lastFocused.focus();
+    }
     document.getElementById('closeModal').addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    // Layered atmosphere engine
+    // ===== sessionStorage for warmed seals
+    function saveInspected() {
+      try { sessionStorage.setItem('septicarium.inspected', JSON.stringify([...state.inspected])); } catch (_) {}
+    }
+    function restoreInspected() {
+      try {
+        const raw = sessionStorage.getItem('septicarium.inspected');
+        if (!raw) return;
+        JSON.parse(raw).forEach(r => {
+          state.inspected.add(r);
+          const card = document.querySelector(`.route-door[data-route="${r}"]`);
+          if (card) card.classList.add('inspected', 'returned');
+        });
+        applyState({});
+      } catch (_) {}
+    }
+
+    // ===== Keyboard: 1-5 for seals, r-o-t combo
+    const sealMap = { '1':'annals','2':'dossier','3':'relic','4':'battle','5':'blackbox' };
+    document.addEventListener('keydown', e => {
+      if (e.target.matches('input, textarea')) return;
+      if (sealMap[e.key]) {
+        const ch = sealMap[e.key];
+        applyState({ chamber: ch, channel: ch, activeRoute: ch, pressure: 72, memory: 70 });
+        speak(null, ch);
+        const card = document.querySelector(`.route-door[data-route="${ch}"]`);
+        if (card) { card.focus(); card.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      }
+      state.keyBuffer = (state.keyBuffer + e.key.toLowerCase()).slice(-4);
+      if (state.keyBuffer.includes('rot')) {
+        state.keyBuffer = '';
+        openModal('True Pressure // Hidden Channel', 'The Ship Recognizes the Cipher', 'You have spoken the syllable beneath the deck. Pressure ceiling lifted. The Septicarium has marked your reading.');
+        applyState({ pressure: 100, memory: 100, channel: 'confession' });
+        speak(null, 'confession');
+      }
+    });
+
+    // ===== Idle detection
+    let idleTimer = null;
+    function resetIdle() {
+      if (state.idle) {
+        state.idle = false;
+        document.body.classList.remove('idle');
+        applyState({});
+      }
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        state.idle = true;
+        document.body.classList.add('idle');
+        deckPulse.textContent = 'The nave has stopped expecting you.';
+        speak(whispers.idle[Math.floor(Math.random() * whispers.idle.length)], 'command');
+      }, 25000);
+    }
+    ['mousemove','keydown','scroll','touchstart'].forEach(ev => window.addEventListener(ev, resetIdle, { passive: true }));
+    resetIdle();
+
+    // ===== Wait counters tick
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      const card = el.closest('[data-wait-base]');
+      let base = Number(card?.dataset.waitBase || 30);
+      setInterval(() => {
+        if (document.hidden) return;
+        base += Math.random() > .7 ? 1 : 0;
+        el.textContent = `WAIT: ${roman(base)} ROTATIONS`;
+      }, 14000);
+    });
+
+    // ===== Hero parallax
+    const hero = document.getElementById('descent');
+    const heroFar = hero.querySelector('.hero-bg-far');
+    const heroMid = hero.querySelector('.hero-bg-mid');
+    if (!prefersReduced) {
+      hero.addEventListener('mousemove', e => {
+        const r = hero.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5;
+        const y = (e.clientY - r.top) / r.height - .5;
+        heroFar.style.transform = `translate(${x * 6}px, ${y * 4}px) scale(1.035)`;
+        heroMid.style.transform = `translate(${x * 12}px, ${y * 8}px)`;
+      });
+      hero.addEventListener('mouseleave', () => {
+        heroFar.style.transform = '';
+        heroMid.style.transform = '';
+      });
+    }
+
+    // ===== Atmospheric canvases — gated until boot done
     class Layer {
-      constructor(id, count, init, draw){
+      constructor(id, count, init, draw) {
         this.canvas = document.getElementById(id);
         this.ctx = this.canvas.getContext('2d');
         this.count = count;
@@ -635,75 +1181,132 @@
         this.drawParticle = draw;
         this.items = [];
       }
-      resize(){
+      resize() {
         const r = Math.min(devicePixelRatio || 1, 2);
         this.canvas.width = innerWidth * r;
         this.canvas.height = innerHeight * r;
         this.canvas.style.width = innerWidth + 'px';
         this.canvas.style.height = innerHeight + 'px';
-        this.ctx.setTransform(r,0,0,r,0,0);
-        this.items = Array.from({length: typeof this.count === 'function' ? this.count() : this.count}, () => this.init());
+        this.ctx.setTransform(r, 0, 0, r, 0, 0);
+        this.items = Array.from({ length: typeof this.count === 'function' ? this.count() : this.count }, () => this.init());
       }
-      draw(){
-        this.ctx.clearRect(0,0,innerWidth,innerHeight);
+      draw() {
+        this.ctx.clearRect(0, 0, innerWidth, innerHeight);
         this.items.forEach(p => this.drawParticle(this.ctx, p, state));
       }
     }
 
-    const ashLayer = new Layer('ashCanvas', () => Math.min(180, Math.floor(innerWidth / 8)),
-      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2.6+.5,v:Math.random()*.34+.04,d:Math.random()*.42-.21,a:Math.random()*Math.PI*2,type:Math.random()>.72?'spark':Math.random()>.48?'spore':'ash'}),
-      (ctx,p,s) => {
+    const ashLayer = new Layer('ashCanvas',
+      () => Math.min(180, Math.floor(innerWidth / 8)),
+      () => ({
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        s: Math.random() * 2.6 + .5, v: Math.random() * .34 + .04,
+        d: Math.random() * .42 - .21, a: Math.random() * Math.PI * 2,
+        type: Math.random() > .85 ? 'heavy' : Math.random() > .72 ? 'spark' : Math.random() > .48 ? 'spore' : 'ash'
+      }),
+      (ctx, p, s) => {
         const boost = s.chamber === 'battle' ? 1.8 : s.chamber === 'relic' ? 1.25 : 1;
-        p.y -= p.v * boost; p.x += Math.sin(p.a)*.16 + p.d; p.a += .01;
-        if(p.y < -20){p.y = innerHeight + 20; p.x = Math.random()*innerWidth;}
-        if(p.x < -20) p.x = innerWidth + 20; if(p.x > innerWidth + 20) p.x = -20;
-        const col = p.type === 'spark' ? (s.chamber === 'battle' ? '216,106,44' : '214,189,117') : p.type === 'spore' ? '184,216,102' : '167,155,121';
-        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.s*8);
-        g.addColorStop(0,`rgba(${col},.18)`); g.addColorStop(.48,`rgba(${col},.045)`); g.addColorStop(1,`rgba(${col},0)`);
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x,p.y,p.s*6,0,Math.PI*2); ctx.fill();
+        if (p.type === 'heavy') { p.y += p.v * .6; p.x += p.d * 1.4; }
+        else { p.y -= p.v * boost; p.x += Math.sin(p.a) * .16 + p.d; }
+        p.a += .01;
+        if (p.y < -20 || p.y > innerHeight + 20) { p.y = p.type === 'heavy' ? -20 : innerHeight + 20; p.x = Math.random() * innerWidth; }
+        if (p.x < -20) p.x = innerWidth + 20;
+        if (p.x > innerWidth + 20) p.x = -20;
+        const col = p.type === 'spark' ? (s.chamber === 'battle' ? '216,106,44' : '214,189,117')
+                  : p.type === 'spore' ? '184,216,102'
+                  : p.type === 'heavy' ? '130,118,88'
+                  : '167,155,121';
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s * 8);
+        g.addColorStop(0, `rgba(${col},.18)`);
+        g.addColorStop(.48, `rgba(${col},.045)`);
+        g.addColorStop(1, `rgba(${col},0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.s * 6, 0, Math.PI * 2);
+        ctx.fill();
       }
     );
 
-    const smokeLayer = new Layer('smokeCanvas', () => Math.min(26, Math.floor(innerWidth / 54)),
-      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*110+80,v:Math.random()*.08+.025,d:Math.random()*.18-.09,a:Math.random()*Math.PI*2}),
-      (ctx,p,s) => {
-        p.y -= p.v; p.x += Math.sin(p.a)*.10 + p.d; p.a += .003;
-        if(p.y < -p.r){p.y = innerHeight + p.r; p.x = Math.random()*innerWidth;}
+    const smokeLayer = new Layer('smokeCanvas',
+      () => Math.min(26, Math.floor(innerWidth / 54)),
+      () => ({
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        r: Math.random() * 110 + 80, v: Math.random() * .08 + .025,
+        d: Math.random() * .18 - .09, a: Math.random() * Math.PI * 2
+      }),
+      (ctx, p, s) => {
+        p.y -= p.v;
+        p.x += Math.sin(p.a) * .10 + p.d;
+        p.a += .003;
+        if (p.y < -p.r) { p.y = innerHeight + p.r; p.x = Math.random() * innerWidth; }
         const alpha = s.chamber === 'battle' ? .075 : s.chamber === 'blackbox' ? .055 : .04;
-        const col = s.chamber === 'dossier' ? '70,95,102' : s.chamber === 'battle' ? '120,70,42' : '120,135,92';
-        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
-        g.addColorStop(0,`rgba(${col},${alpha})`); g.addColorStop(1,`rgba(${col},0)`);
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        const col = s.chamber === 'dossier' ? '70,95,102'
+                  : s.chamber === 'battle' ? '120,70,42'
+                  : '120,135,92';
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        g.addColorStop(0, `rgba(${col},${alpha})`);
+        g.addColorStop(1, `rgba(${col},0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
       }
     );
 
     const signalLayer = new Layer('signalCanvas', 34,
-      () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,len:Math.random()*90+40,life:Math.random()*100,spd:Math.random()*1.2+.3}),
-      (ctx,p,s) => {
+      () => ({
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        len: Math.random() * 90 + 40, life: Math.random() * 100,
+        spd: Math.random() * 1.2 + .3
+      }),
+      (ctx, p, s) => {
         p.life += p.spd;
-        if(p.life > 130){p.life = 0; p.x = Math.random()*innerWidth; p.y = Math.random()*innerHeight;}
-        const pulse = Math.sin(p.life/130*Math.PI);
-        const intensity = (s.pressure/100) * pulse;
-        if(intensity <= 0) return;
-        const col = s.chamber === 'battle' ? '216,106,44' : s.chamber === 'dossier' ? '95,130,140' : s.chamber === 'relic' ? '214,189,117' : '184,216,102';
-        ctx.strokeStyle = `rgba(${col},${0.16*intensity})`;
+        if (p.life > 130) { p.life = 0; p.x = Math.random() * innerWidth; p.y = Math.random() * innerHeight; }
+        const pulse = Math.sin(p.life / 130 * Math.PI);
+        const intensity = (s.pressure / 100) * pulse;
+        if (intensity <= 0) return;
+        const col = s.chamber === 'battle' ? '216,106,44'
+                  : s.chamber === 'dossier' ? '95,130,140'
+                  : s.chamber === 'relic' ? '214,189,117'
+                  : '184,216,102';
+        ctx.strokeStyle = `rgba(${col},${0.16 * intensity})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(p.x,p.y);
-        ctx.lineTo(p.x + p.len, p.y + Math.sin(p.life*.04)*18);
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x + p.len, p.y + Math.sin(p.life * .04) * 18);
         ctx.stroke();
       }
     );
 
     const layers = [ashLayer, smokeLayer, signalLayer];
-    function resizeLayers(){ layers.forEach(l => l.resize()); }
-    function animate(){ if(!prefersReduced){ layers.forEach(l => l.draw()); } state.ticks++; requestAnimationFrame(animate); }
-    resizeLayers(); animate(); addEventListener('resize', resizeLayers);
+    function resizeLayers() { layers.forEach(l => l.resize()); }
 
+    let lastFrame = 0;
+    function animate(ts) {
+      if (!prefersReduced && state.booted && !document.hidden) {
+        if (ts - lastFrame > 1000 / 45) {
+          ashLayer.draw();
+          smokeLayer.draw();
+          if (document.body.classList.contains('signal-active')) signalLayer.draw();
+          else signalLayer.ctx.clearRect(0, 0, innerWidth, innerHeight);
+          lastFrame = ts;
+        }
+      }
+      state.ticks++;
+      requestAnimationFrame(animate);
+    }
+    resizeLayers();
+    requestAnimationFrame(animate);
+    addEventListener('resize', resizeLayers);
+
+    // ===== Periodic vox refresh
     setInterval(() => {
-      if(document.hidden) return;
-      if(Math.random() > .58) speak(null, state.channel);
+      if (document.hidden || state.idle) return;
+      if (Math.random() > .58) speak(null, state.channel);
     }, 9000);
+
+    // Initial state
+    applyState({});
   </script>
 </body>
 </html>
