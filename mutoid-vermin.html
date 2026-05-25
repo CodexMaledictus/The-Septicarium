@@ -18,7 +18,7 @@
       --max:1580px;--ease:cubic-bezier(.2,.8,.2,1);
     }
     *{box-sizing:border-box;}html{scroll-behavior:smooth;}
-    body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--bone);font-family:"Eczar",Georgia,serif;background:radial-gradient(circle at 14% 8%,rgba(182,217,107,.14),transparent 28%),radial-gradient(circle at 84% 12%,rgba(163,83,45,.14),transparent 25%),radial-gradient(circle at 50% 84%,rgba(95,78,114,.10),transparent 42%),linear-gradient(180deg,#020301 0%,#070904 44%,#020301 100%);transition:background .8s var(--ease);}
+    body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--bone);font-family:"Eczar",Georgia,serif;background:radial-gradient(circle at 14% 8%,rgba(182,217,107,.14),transparent 28%),radial-gradient(circle at 84% 12%,rgba(163,83,45,.14),transparent 25%),radial-gradient(circle at 50% 84%,rgba(95,78,114,.10),transparent 42%),linear-gradient(180deg,#020301 0%,#070904 44%,#020301 100%);transition:background .8s var(--ease),filter .8s var(--ease);}
     body.locked{overflow:hidden;}
     body[data-tone="all"]{background:radial-gradient(circle at 14% 8%,rgba(182,217,107,.14),transparent 28%),radial-gradient(circle at 84% 12%,rgba(163,83,45,.14),transparent 25%),linear-gradient(180deg,#020301,#070904 44%,#020301);}
     body[data-tone="cursemite"]{background:radial-gradient(circle at 18% 8%,rgba(217,242,125,.18),transparent 28%),radial-gradient(circle at 80% 18%,rgba(99,33,23,.16),transparent 28%),linear-gradient(180deg,#020301,#090705 50%,#020301);}
@@ -26,23 +26,35 @@
     body[data-tone="eyestinger"]{background:radial-gradient(circle at 22% 8%,rgba(217,242,125,.18),transparent 26%),radial-gradient(circle at 82% 16%,rgba(95,124,125,.16),transparent 32%),linear-gradient(180deg,#020301,#06100c 50%,#020301);}
     body[data-tone="glitchling"]{background:radial-gradient(circle at 16% 8%,rgba(93,124,125,.20),transparent 30%),radial-gradient(circle at 86% 22%,rgba(182,217,107,.12),transparent 28%),linear-gradient(180deg,#020301,#061011 52%,#020301);}
     body[data-tone="omega"]{background:radial-gradient(circle at 20% 8%,rgba(99,33,23,.25),transparent 32%),radial-gradient(circle at 76% 22%,rgba(217,242,125,.20),transparent 30%),linear-gradient(180deg,#010201,#100403 56%,#010201);}
+    body.omega-witnessed{filter:contrast(1.06) saturate(.92);}
+    body.omega-witnessed .vignette{background:radial-gradient(circle at center,transparent 30%,rgba(40,8,4,.86) 100%);}
     ::selection{background:rgba(217,242,125,.28);color:var(--bone-hot);}
     a{color:inherit;}button{font:inherit;}h1,h2,h3,h4{font-family:"Cinzel",Georgia,serif;}
-    .label,.kicker,.chip,.btn,.small-btn,.nav a,.nav button,.meter-label,.sigil,.data-key{font-family:"Inter",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-weight:900;}
+    .label,.kicker,.chip,.btn,.small-btn,.nav a,.nav button,.meter-label,.sigil,.data-key,.benediction-label{font-family:"Inter",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-weight:900;}
 
-    #sporeCanvas,#swarmCanvas,#glitchCanvas,#infectionCanvas,#verminsCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;}
-    #sporeCanvas{z-index:0;opacity:.75;}
-    #swarmCanvas{z-index:1;opacity:.38;mix-blend-mode:screen;}
+    #sporeSwarmCanvas,#glitchCanvas,#infectionCanvas,#verminsCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;}
+    #sporeSwarmCanvas{z-index:0;opacity:.78;}
     #glitchCanvas{z-index:2;opacity:.22;mix-blend-mode:screen;}
     #infectionCanvas{z-index:3;opacity:.26;mix-blend-mode:screen;}
-    #verminsCanvas{z-index:11;opacity:.55;mix-blend-mode:screen;}
+    #verminsCanvas{z-index:11;opacity:0;mix-blend-mode:screen;transition:opacity .8s var(--ease);}
+    body.vermin-on #verminsCanvas{opacity:.55;}
+    body.vermin-frozen #verminsCanvas{opacity:.18;filter:hue-rotate(-15deg) saturate(.7);}
     .grain,.scan,.vignette{position:fixed;inset:0;pointer-events:none;}
     .grain{z-index:4;opacity:.075;mix-blend-mode:screen;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.50) 0 1px,transparent 1px),radial-gradient(circle at 80% 10%,rgba(255,255,255,.34) 0 1px,transparent 1px);background-size:170px 170px,230px 230px;}
     .scan{z-index:5;opacity:.10;background:repeating-linear-gradient(to bottom,rgba(217,242,125,.035) 0px,rgba(217,242,125,.035) 1px,transparent 2px,transparent 7px);}
-    .vignette{z-index:6;background:radial-gradient(circle at center,transparent 45%,rgba(0,0,0,.76) 100%);}
+    .vignette{z-index:6;background:radial-gradient(circle at center,transparent 45%,rgba(0,0,0,.76) 100%);transition:background .8s var(--ease);}
     .skip-link{position:absolute;left:16px;top:-80px;z-index:400;background:var(--rot-hot);color:#101506;padding:12px 16px;border-radius:999px;font-family:"Inter",sans-serif;font-weight:900;text-decoration:none;transition:.2s ease;}
     .skip-link:focus{top:16px;}
 
+    /* DESCENT */
+    .descent-veil{position:fixed;inset:0;z-index:280;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(217,242,125,.18),rgba(0,0,0,.4) 40%,rgba(0,0,0,.98));opacity:0;transition:opacity .55s var(--ease);}
+    .descent-veil.active{opacity:1;pointer-events:auto;}
+    .descent-veil::after{content:"ASCENDING";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Cinzel",serif;font-size:clamp(1.6rem,4vw,3.4rem);letter-spacing:.4em;color:rgba(255,241,204,.92);text-shadow:0 0 40px rgba(217,242,125,.6);opacity:0;transition:opacity .35s ease .2s;}
+    .descent-veil.active::after{opacity:1;}
+    .descent-veil::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,rgba(255,241,204,.8),transparent);transform:translateY(-50%) scaleX(0);transform-origin:center;transition:transform .65s var(--ease) .15s;}
+    .descent-veil.active::before{transform:translateY(-50%) scaleX(1);}
+
+    /* BOOT */
     .boot{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 46%,rgba(182,217,107,.18),transparent 35%),linear-gradient(180deg,rgba(2,3,1,.98),rgba(0,0,0,.995));transition:opacity .9s var(--ease),visibility .9s var(--ease);}
     .boot.hidden{opacity:0;visibility:hidden;pointer-events:none;}
     .seal-vault{width:min(1180px,100%);min-height:700px;border:1px solid var(--line);border-radius:40px;overflow:hidden;box-shadow:var(--shadow),0 0 110px rgba(182,217,107,.13);display:grid;grid-template-columns:.92fr 1.08fr;background:linear-gradient(135deg,rgba(12,16,8,.96),rgba(4,6,3,.99));position:relative;}
@@ -54,7 +66,8 @@
     .bio-seal::before{inset:14%;animation:spin 38s linear infinite reverse;}
     .bio-seal::after{inset:29%;border-style:dotted;animation:spin 25s linear infinite;}
     .bio-seal-core{width:46%;aspect-ratio:1/1;border-radius:34px;border:1px solid var(--line-hot);background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.76)),url("Assets/Mutoid%20Vermin/mutoid-vermin-terminal-symbiosis.png") center/cover no-repeat;box-shadow:0 0 54px rgba(217,242,125,.24);animation:breathe 3.8s ease-in-out infinite;}
-    @keyframes spin{to{transform:rotate(360deg);}}@keyframes breathe{0%,100%{transform:scale(.98);}50%{transform:scale(1.04);}}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes breathe{0%,100%{transform:scale(.98);}50%{transform:scale(1.04);}}
     .boot-copy{position:relative;z-index:2;padding:42px;display:flex;flex-direction:column;justify-content:center;}
     .boot-copy h1{margin:0 0 18px;color:var(--bone-hot);font-size:clamp(3rem,7vw,6.8rem);line-height:.84;letter-spacing:-.045em;}
     .boot-copy p{margin:0 0 18px;color:var(--muted);line-height:1.78;font-size:1.05rem;}
@@ -62,13 +75,18 @@
     .boot-line{position:relative;border:1px solid rgba(214,242,125,.14);border-radius:18px;background:rgba(0,0,0,.25);padding:14px 14px 14px 48px;color:#d9d0ad;opacity:.42;transform:translateY(8px);transition:.34s var(--ease);}
     .boot-line::before{content:attr(data-mark);position:absolute;left:15px;top:13px;color:var(--rot-hot);font-family:"Cinzel",serif;font-weight:900;}
     .boot-line.live{opacity:1;transform:none;border-color:rgba(217,242,125,.34);}
+    .boot-line.terminal{border-color:rgba(240,72,42,.34);background:rgba(20,6,4,.42);}
+    .boot-line.terminal::before{color:#ff9966;}
     .boot-progress{height:10px;border:1px solid rgba(214,242,125,.18);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.05);}
     .boot-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--blood),var(--rust),var(--sump),var(--rot-hot));transition:width .25s linear;box-shadow:0 0 26px rgba(217,242,125,.28);}
 
     .page{position:relative;z-index:10;width:min(var(--max),calc(100% - 28px));margin:0 auto;padding:14px 0 90px;}
-    .topbar{position:sticky;top:10px;z-index:100;border:1px solid var(--line);border-radius:24px;background:rgba(5,8,4,.78);backdrop-filter:blur(16px);box-shadow:0 14px 44px rgba(0,0,0,.44);display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:12px 14px;margin-bottom:10px;}
+
+    /* CONSOLIDATED STICKY: topbar + meter combine on scroll */
+    .sticky-stack{position:sticky;top:10px;z-index:100;margin-bottom:14px;}
+    .topbar{border:1px solid var(--line);border-radius:24px;background:rgba(5,8,4,.78);backdrop-filter:blur(16px);box-shadow:0 14px 44px rgba(0,0,0,.44);display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:12px 14px;margin-bottom:8px;transition:padding .3s var(--ease);}
     .brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0;}
-    .brand-mark{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-hot);background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.76)),url("Assets/Mutoid%20Vermin/mutoid-vermin-hero.png") center/cover no-repeat;box-shadow:0 0 22px rgba(217,242,125,.14);flex:0 0 auto;}
+    .brand-mark{width:48px;height:48px;border-radius:50%;border:1px solid var(--line-hot);background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.76)),url("Assets/Mutoid%20Vermin/mutoid-vermin-hero.png") center/cover no-repeat;box-shadow:0 0 22px rgba(217,242,125,.14);flex:0 0 auto;transition:width .3s var(--ease),height .3s var(--ease);}
     .brand strong{display:block;font-family:"Cinzel",serif;color:var(--bone-hot);letter-spacing:.03em;line-height:1;}
     .brand span span{display:block;color:var(--muted);font-family:"Inter",sans-serif;font-size:.8rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw;}
     .nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px;}
@@ -76,14 +94,27 @@
     .btn{padding:13px 16px;font-size:.64rem;}
     .small-btn.primary,.btn.primary{background:linear-gradient(180deg,var(--rot-hot),var(--rot));color:#101506;border-color:rgba(255,255,255,.38);box-shadow:0 18px 36px rgba(182,217,107,.15);}
     .nav a:hover,.nav button:hover,.btn:hover,.small-btn:hover{transform:translateY(-2px);border-color:var(--line-hot);background:rgba(22,30,13,.92);box-shadow:0 18px 44px rgba(0,0,0,.30);}
-    .infection-meter{position:sticky;top:92px;z-index:95;border:1px solid var(--line);border-radius:22px;background:rgba(5,8,4,.72);backdrop-filter:blur(12px);padding:10px 14px;margin-bottom:16px;box-shadow:0 14px 44px rgba(0,0,0,.34);display:grid;grid-template-columns:180px 1fr 220px;gap:14px;align-items:center;}
-    .meter-label{color:var(--rot-hot);font-size:.55rem;margin-bottom:5px;}.meter-value{color:#e5d9b9;font-size:.84rem;line-height:1.35;}
+    .infection-meter{border:1px solid var(--line);border-radius:22px;background:rgba(5,8,4,.72);backdrop-filter:blur(12px);padding:10px 14px;box-shadow:0 14px 44px rgba(0,0,0,.34);display:grid;grid-template-columns:180px 1fr 220px;gap:14px;align-items:center;transition:padding .3s var(--ease),grid-template-columns .3s var(--ease);}
+    /* Slim mode when scrolled */
+    .sticky-stack.scrolled .topbar{padding:6px 12px;}
+    .sticky-stack.scrolled .brand-mark{width:32px;height:32px;}
+    .sticky-stack.scrolled .brand span span{display:none;}
+    .sticky-stack.scrolled .infection-meter{padding:6px 12px;grid-template-columns:1fr;}
+    .sticky-stack.scrolled .infection-meter > div:first-child,
+    .sticky-stack.scrolled .infection-meter > div:last-child{display:none;}
+    .meter-label{color:var(--rot-hot);font-size:.55rem;margin-bottom:5px;}
+    .meter-value{color:#e5d9b9;font-size:.84rem;line-height:1.35;}
     .meter-bars{display:grid;gap:7px;}
     .meter-row{display:grid;grid-template-columns:130px 1fr 46px;gap:10px;align-items:center;}
     .meter-row .label{font-size:.52rem;color:var(--rot-hot);}
-    .bar-shell{height:10px;border:1px solid rgba(214,242,125,.18);border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden;}
+    .bar-shell{height:10px;border:1px solid rgba(214,242,125,.18);border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden;position:relative;}
     .bar-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--blood),var(--rust),var(--rot));transition:width .45s var(--ease);}
     .bar-num{color:#d9d0ad;font-family:"JetBrains Mono",monospace;font-size:.75rem;text-align:right;}
+    .bar-shell.overflow{box-shadow:0 0 0 1px rgba(240,72,42,.6),0 0 22px rgba(240,72,42,.5);animation:overflowPulse 1s ease-in-out infinite;}
+    @keyframes overflowPulse{0%,100%{box-shadow:0 0 0 1px rgba(240,72,42,.6),0 0 22px rgba(240,72,42,.4);}50%{box-shadow:0 0 0 1px rgba(255,150,80,.85),0 0 36px rgba(240,72,42,.78);}}
+    .containment-tag{display:none;color:#ff9966;font-family:"Inter",sans-serif;font-weight:900;font-size:.5rem;letter-spacing:.22em;margin-top:6px;animation:tagBlink 1.4s steps(2,end) infinite;}
+    @keyframes tagBlink{0%,49%{opacity:1;}50%,100%{opacity:.35;}}
+    body.omega-witnessed .containment-tag{display:block;}
 
     .hero{position:relative;min-height:92vh;border:1px solid var(--line);border-radius:40px;overflow:hidden;box-shadow:var(--shadow);isolation:isolate;display:grid;align-items:end;padding:clamp(26px,5vw,70px);background:#030402;}
     .hero::before{content:"";position:absolute;inset:0;z-index:-3;background:linear-gradient(100deg,rgba(2,3,1,.96) 0%,rgba(5,8,4,.77) 48%,rgba(5,8,4,.86) 100%),url("Assets/Mutoid%20Vermin/mutoid-vermin-hero.png") center/cover no-repeat;transform:scale(1.035);filter:contrast(1.1) saturate(.95);transition:.9s var(--ease);}
@@ -98,7 +129,11 @@
     .hero-text strong{color:var(--bone-hot);}
     .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
 
-    .section{margin-top:82px;}
+    /* SECTION SEAMS */
+    .seam{display:block;width:100%;height:42px;margin:24px 0 0;color:rgba(214,242,125,.55);overflow:visible;}
+    .seam svg{width:100%;height:100%;display:block;}
+
+    .section{margin-top:46px;}
     .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:24px;padding:0 8px;}
     .section-title{margin:0;color:var(--bone-hot);font-size:clamp(2.4rem,5.4vw,5.4rem);line-height:.9;letter-spacing:-.045em;}
     .section-desc{margin:14px 0 0;max-width:105ch;color:var(--muted);line-height:1.86;font-size:1.05rem;}
@@ -110,7 +145,7 @@
     .statement-seal{position:sticky;top:180px;min-height:520px;border:1px solid var(--line);border-radius:30px;overflow:hidden;background:#030402;margin:0;box-shadow:var(--shadow-small);}
     .statement-seal img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.08) saturate(.96);}
     .statement-copy p{margin:0 0 18px;color:#d9cfad;line-height:1.9;font-size:1.06rem;}
-    .scripture-call{margin:22px 0;padding:22px;border-left:4px solid var(--rot);background:rgba(0,0,0,.24);color:var(--bone-hot);font-family:"Cinzel",serif;font-size:1.35rem;line-height:1.35;box-shadow:inset 0 0 40px rgba(182,217,107,.04);}
+    .scripture-call{margin:22px 0;padding:22px;border-left:4px solid var(--rot);background:rgba(0,0,0,.24);color:var(--bone-hot);font-family:"Cinzel",serif;font-size:1.35rem;line-height:1.35;box-shadow:inset 0 0 40px rgba(182,217,125,.04);}
 
     .registry-grid{padding:clamp(22px,4vw,44px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
     .registry-card{min-height:220px;border:1px solid rgba(214,242,125,.16);border-radius:26px;background:radial-gradient(circle at 20% 0%,rgba(217,242,125,.07),transparent 30%),rgba(5,8,4,.70);padding:20px;display:grid;align-content:end;position:relative;overflow:hidden;transition:.25s var(--ease);}
@@ -120,17 +155,50 @@
     .registry-card h3{margin:10px 0;color:var(--bone-hot);font-size:1.25rem;line-height:1.08;}
     .registry-card p{margin:0;color:var(--muted);line-height:1.62;font-size:.95rem;}
 
+    /* STRAIN CARDS — differentiated per strain */
     .strain-grid{display:grid;gap:26px;padding:clamp(22px,4vw,44px);}
-    .strain-card{position:relative;min-height:580px;border:1px solid var(--line);border-radius:34px;background:rgba(5,8,4,.78);overflow:hidden;display:grid;grid-template-columns:.92fr 1.08fr;box-shadow:0 22px 76px rgba(0,0,0,.42);transition:.32s var(--ease);}
+    .strain-card{position:relative;min-height:580px;border:1px solid var(--line);border-radius:34px;background:rgba(5,8,4,.78);overflow:hidden;display:grid;grid-template-columns:.92fr 1.08fr;box-shadow:0 22px 76px rgba(0,0,0,.42);transition:.32s var(--ease);isolation:isolate;}
     .strain-card:hover{transform:translateY(-5px);border-color:var(--line-hot);}
-    .strain-card[data-strain="cursemite"]{background:radial-gradient(circle at 80% 12%,rgba(99,33,23,.16),transparent 32%),rgba(5,8,4,.78);}
-    .strain-card[data-strain="sludge"]{background:radial-gradient(circle at 70% 18%,rgba(118,137,58,.20),transparent 34%),rgba(5,8,4,.78);}
-    .strain-card[data-strain="eyestinger"]{background:radial-gradient(circle at 78% 20%,rgba(93,124,125,.16),transparent 34%),rgba(5,8,4,.78);}
-    .strain-card[data-strain="glitchling"]{background:radial-gradient(circle at 78% 20%,rgba(93,124,125,.22),transparent 34%),rgba(5,8,4,.78);}
-    .strain-image{min-height:580px;background:#030402;overflow:hidden;}
+    .strain-image{min-height:580px;background:#030402;overflow:hidden;position:relative;}
     .strain-image img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.1) saturate(.96);transition:.75s var(--ease);}
     .strain-card:hover .strain-image img{transform:scale(1.045);filter:contrast(1.13) saturate(1.04);}
     .strain-copy{padding:clamp(26px,4vw,50px);display:grid;align-content:center;gap:14px;position:relative;z-index:2;}
+    .strain-deco{position:absolute;pointer-events:none;}
+
+    /* CURSEMITE — chitin plate border, wound-seam crack on hover */
+    .strain-card[data-strain="cursemite"]{background:radial-gradient(circle at 80% 12%,rgba(99,33,23,.16),transparent 32%),rgba(5,8,4,.78);}
+    .strain-card[data-strain="cursemite"]::before{content:"";position:absolute;inset:8px;border-radius:28px;border:1px solid rgba(217,242,125,.18);background-image:repeating-linear-gradient(135deg,transparent 0 14px,rgba(217,242,125,.05) 14px 15px),repeating-linear-gradient(45deg,transparent 0 18px,rgba(217,242,125,.04) 18px 19px);pointer-events:none;z-index:1;opacity:.6;transition:opacity .4s var(--ease);}
+    .strain-card[data-strain="cursemite"]:hover::before{opacity:1;}
+    .strain-card[data-strain="cursemite"] .strain-deco.seam{left:0;right:0;top:50%;height:80px;transform:translateY(-50%);z-index:1;opacity:0;transition:opacity .5s var(--ease);}
+    .strain-card[data-strain="cursemite"]:hover .strain-deco.seam{opacity:.85;}
+    .strain-card[data-strain="cursemite"] .strain-deco.seam svg{width:100%;height:100%;}
+
+    /* SLUDGE-GRUB — sump glow at bottom edge, viscous shimmer */
+    .strain-card[data-strain="sludge"]{background:radial-gradient(circle at 70% 18%,rgba(118,137,58,.20),transparent 34%),rgba(5,8,4,.78);}
+    .strain-card[data-strain="sludge"]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 100%,rgba(118,137,58,.34),transparent 70%);animation:sumpPulse 5.5s ease-in-out infinite;}
+    @keyframes sumpPulse{0%,100%{opacity:.5;}50%{opacity:.85;}}
+    .strain-card[data-strain="sludge"] .strain-deco.viscous{left:0;right:0;bottom:0;height:46%;background:repeating-linear-gradient(90deg,transparent 0 30px,rgba(214,242,100,.06) 30px 31px,transparent 31px 60px);pointer-events:none;z-index:1;animation:viscFlow 9s linear infinite;}
+    @keyframes viscFlow{from{transform:translateX(0);}to{transform:translateX(60px);}}
+
+    /* EYESTINGER — wing fragments + buzz scanlines */
+    .strain-card[data-strain="eyestinger"]{background:radial-gradient(circle at 78% 20%,rgba(93,124,125,.16),transparent 34%),rgba(5,8,4,.78);}
+    .strain-card[data-strain="eyestinger"]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(217,242,125,.025) 3px 4px);opacity:.7;}
+    .strain-card[data-strain="eyestinger"] .strain-deco.wings{inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+    .strain-card[data-strain="eyestinger"] .strain-deco.wings i{position:absolute;width:14px;height:5px;border-radius:50%;background:rgba(217,242,125,.5);box-shadow:0 0 6px rgba(217,242,125,.4);animation:wingFloat 8s linear infinite;}
+    .strain-card[data-strain="eyestinger"] .strain-deco.wings i:nth-child(1){left:14%;top:22%;animation-delay:0s;animation-duration:7s;}
+    .strain-card[data-strain="eyestinger"] .strain-deco.wings i:nth-child(2){left:78%;top:62%;animation-delay:1.4s;animation-duration:9s;}
+    .strain-card[data-strain="eyestinger"] .strain-deco.wings i:nth-child(3){left:42%;top:84%;animation-delay:2.6s;animation-duration:8s;}
+    .strain-card[data-strain="eyestinger"] .strain-deco.wings i:nth-child(4){left:68%;top:18%;animation-delay:3.8s;animation-duration:10s;}
+    @keyframes wingFloat{0%{transform:translate(0,0) rotate(0deg);opacity:0;}10%,90%{opacity:.7;}100%{transform:translate(-180px,-40px) rotate(360deg);opacity:0;}}
+
+    /* GLITCHLING — chromatic aberration glitch frames */
+    .strain-card[data-strain="glitchling"]{background:radial-gradient(circle at 78% 20%,rgba(93,124,125,.22),transparent 34%),rgba(5,8,4,.78);}
+    .strain-card[data-strain="glitchling"]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(217,242,125,.08),transparent 30%,transparent 70%,rgba(93,124,125,.08));mix-blend-mode:screen;opacity:.4;}
+    .strain-card[data-strain="glitchling"]:hover{animation:glitchHover .42s steps(3,end);}
+    @keyframes glitchHover{0%{transform:translate(0,0);}25%{transform:translate(-3px,1px);}50%{transform:translate(2px,-1px);}75%{transform:translate(-1px,2px);}100%{transform:translate(0,0);}}
+    .strain-card[data-strain="glitchling"] .strain-deco.glitchbar{position:absolute;left:0;right:0;height:2px;background:rgba(217,242,125,.5);pointer-events:none;z-index:1;animation:glitchScan 5s ease-in-out infinite;mix-blend-mode:screen;}
+    @keyframes glitchScan{0%{top:0;opacity:0;}10%{opacity:.8;}90%{opacity:.8;}100%{top:100%;opacity:0;}}
+
     .sigil{color:var(--rot-hot);font-size:.58rem;}
     .strain-copy h3{margin:0;color:var(--bone-hot);font-size:clamp(2.2rem,4vw,4.4rem);line-height:.9;letter-spacing:-.035em;}
     .office{color:var(--pus)!important;font-family:"Cinzel",serif;font-size:1.15rem;}
@@ -160,6 +228,7 @@
     .stage-body h3{margin:8px 0;color:var(--bone-hot);font-size:1.4rem;line-height:1.08;}
     .stage-body p{margin:0;color:var(--muted);line-height:1.65;font-size:.95rem;}
 
+    /* OUTBREAK vs ADDENDA — distinct treatments */
     .outbreak-list,.addenda-list{padding:clamp(22px,4vw,44px);display:grid;gap:14px;}
     details.record{border:1px solid rgba(214,242,125,.17);border-radius:24px;background:rgba(0,0,0,.22);overflow:hidden;}
     details.record summary{cursor:pointer;padding:18px 20px;color:var(--bone-hot);font-family:"Cinzel",serif;font-weight:800;font-size:1.18rem;list-style:none;display:flex;justify-content:space-between;gap:16px;}
@@ -169,6 +238,15 @@
     .record-body{padding:0 20px 20px;color:#d9cfad;line-height:1.78;font-size:.98rem;}
     .record-body p{margin:0 0 12px;}.record-body p:last-child{margin:0;}
 
+    details.record.outbreak{border-color:rgba(214,242,125,.2);background:rgba(8,12,6,.36);}
+    details.record.outbreak summary{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.04rem;letter-spacing:.02em;}
+    details.record.outbreak summary::before{content:"FIELD //";font-family:"Inter",sans-serif;font-weight:900;font-size:.5rem;letter-spacing:.22em;color:var(--rot-hot);margin-right:10px;align-self:center;}
+
+    details.record.addenda{border-color:rgba(163,83,45,.35);background:linear-gradient(180deg,rgba(20,12,8,.42),rgba(8,6,4,.36));}
+    details.record.addenda summary{font-style:italic;font-weight:700;}
+    details.record.addenda summary::before{content:"MARGIN //";font-family:"Inter",sans-serif;font-style:normal;font-weight:900;font-size:.5rem;letter-spacing:.22em;color:#d8b06a;margin-right:10px;align-self:center;}
+    details.record.addenda .record-body{font-style:italic;color:#decab0;}
+
     .evidence-grid{padding:clamp(22px,4vw,44px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
     .evidence-card{border:1px solid var(--line);border-radius:26px;overflow:hidden;background:rgba(5,8,4,.78);transition:.24s var(--ease);}
     .evidence-card:hover{transform:translateY(-6px);border-color:var(--line-hot);box-shadow:0 28px 70px rgba(0,0,0,.34);}
@@ -177,19 +255,31 @@
     .evidence-card h3{margin:8px 0;color:var(--bone-hot);font-size:1.12rem;line-height:1.08;}
     .evidence-card p{margin:0;color:var(--muted);line-height:1.58;font-size:.92rem;}
 
+    /* FOUR BENEDICTIONS RITUAL BLOCK */
+    .benedictions-grid{padding:clamp(22px,4vw,44px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+    .benediction-card{border:1px solid rgba(214,242,125,.18);border-radius:24px;background:linear-gradient(180deg,rgba(10,14,8,.6),rgba(4,6,3,.7));padding:22px;position:relative;overflow:hidden;}
+    .benediction-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--rot-hot),var(--rot),var(--sump));}
+    .benediction-label{color:var(--rot-hot);font-size:.55rem;margin-bottom:10px;}
+    .benediction-card h4{margin:0 0 12px;color:var(--bone-hot);font-family:"Cinzel",serif;font-size:1.2rem;line-height:1.1;}
+    .benediction-card p{margin:0;font-family:"Cinzel",serif;font-style:italic;color:#decab0;line-height:1.6;font-size:.98rem;}
+
     .omega{position:relative;min-height:720px;border-color:rgba(240,72,42,.34)!important;background:#030101;display:grid;align-items:end;padding:clamp(26px,5vw,70px);overflow:hidden;}
     .omega::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(3,1,1,.98),rgba(6,3,2,.68),rgba(3,1,1,.94)),url("Assets/Mutoid%20Vermin/mutoid-vermin-terminal-symbiosis.png") center/cover no-repeat;filter:contrast(1.12) saturate(.92);transform:scale(1.035);}
     .omega-copy{position:relative;z-index:2;max-width:1040px;}
     .omega h2{margin:0;color:#ffe6bf;font-size:clamp(3rem,7vw,7rem);line-height:.84;letter-spacing:-.05em;}
     .omega p{color:#decfad;line-height:1.85;font-size:1.06rem;}
     .redacted{display:inline-block;background:#090301;color:#090301;border:1px solid rgba(240,72,42,.34);padding:0 .4em;border-radius:3px;transition:.25s var(--ease);}
-    .omega:hover .redacted{color:#ffbb7a;text-shadow:0 0 16px rgba(255,80,42,.65);}
+    .omega:hover .redacted,body.omega-witnessed .redacted{color:#ffbb7a;text-shadow:0 0 16px rgba(255,80,42,.65);}
 
     .research-vault{padding:clamp(20px,3vw,34px);}
     .research-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
     .research-search{flex:1 1 300px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.26);color:var(--bone);padding:13px 16px;font-family:"JetBrains Mono",monospace;outline:none;font-size:.88rem;}
     .research-search:focus{border-color:var(--line-hot);box-shadow:0 0 0 4px rgba(217,242,125,.08);}
     .research-text{max-height:640px;overflow:auto;border:1px solid rgba(214,242,125,.13);border-radius:24px;background:rgba(0,0,0,.32);padding:20px;color:#d7ceb0;white-space:pre-wrap;line-height:1.62;font-family:"JetBrains Mono",monospace;font-size:.83rem;margin-top:12px;}
+    .vault-index-summary{padding:14px 20px;color:var(--bone-hot);font-family:"Inter",sans-serif;font-weight:900;letter-spacing:.18em;text-transform:uppercase;font-size:.7rem;list-style:none;display:flex;justify-content:space-between;gap:16px;cursor:pointer;}
+    .vault-index-summary::-webkit-details-marker{display:none;}
+    .vault-index-summary::after{content:"OPEN";font-size:.58rem;color:var(--rot-hot);align-self:center;}
+    details[open] > .vault-index-summary::after{content:"SEAL";}
     mark{background:rgba(217,242,125,.26);color:var(--bone-hot);border-radius:4px;padding:0 .1em;}
 
     .modal{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:18px;background:rgba(2,3,1,.78);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease;}
@@ -200,29 +290,32 @@
     .modal-card p{margin:0;color:#d9cfad;line-height:1.80;}
     .modal-img{width:100%;height:280px;object-fit:cover;border-radius:22px;border:1px solid var(--line);}
     .modal-close-row{display:flex;justify-content:flex-end;}
+    .modal-close-row.bottom{justify-content:center;padding-top:8px;border-top:1px solid rgba(214,242,125,.12);}
     .modal-close{border:1px solid rgba(214,242,125,.22);border-radius:999px;background:rgba(0,0,0,.40);color:var(--muted);padding:10px 16px;font-family:"Inter",sans-serif;font-size:.56rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:.2s var(--ease);}
     .modal-close:hover{border-color:var(--line-hot);color:var(--bone-hot);}
 
-    .footer{margin-top:82px;padding:clamp(24px,4vw,52px);border:1px solid var(--line);border-radius:38px;background:linear-gradient(180deg,rgba(10,14,8,.78),rgba(4,6,3,.94));box-shadow:var(--shadow);}
+    .footer{margin-top:64px;padding:clamp(24px,4vw,52px);border:1px solid var(--line);border-radius:38px;background:linear-gradient(180deg,rgba(10,14,8,.78),rgba(4,6,3,.94));box-shadow:var(--shadow);}
     .footer .kicker{color:var(--rot-hot);margin-bottom:20px;}
     .footer h2{margin:0;color:var(--bone-hot);font-size:clamp(2.5rem,5.5vw,5.5rem);line-height:.9;letter-spacing:-.045em;}
     .footer p{max-width:110ch;color:#d9cfad;line-height:1.85;font-size:1.04rem;}
 
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}canvas{display:none!important;}}
-    @media(max-width:1240px){.seal-vault,.archive-statement,.strain-card,.split-section{grid-template-columns:1fr;}.seal-specimen{min-height:440px;border-right:0;border-bottom:1px solid rgba(214,242,125,.14);}.registry-grid,.evidence-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.escalation{grid-template-columns:1fr;}.statement-seal{position:relative;top:auto;}.infection-meter,.topbar{grid-template-columns:1fr;}.nav{justify-content:flex-start;}.split-image,.strain-image{min-height:420px;}}
-    @media(max-width:760px){.page{width:min(100% - 18px,var(--max));}.boot-copy{padding:24px;}.seal-specimen{display:none;}.hero{min-height:720px;padding:22px;border-radius:28px;}.hero h1{font-size:clamp(3rem,15vw,5rem);}.registry-grid,.evidence-grid,.mini-grid{grid-template-columns:1fr;}.section{margin-top:54px;}.section-head{display:block;}.meter-row{grid-template-columns:1fr;}.infection-meter{top:6px;}.research-text{font-size:.78rem;}}
+    @media(max-width:1240px){.seal-vault,.archive-statement,.strain-card,.split-section{grid-template-columns:1fr;}.seal-specimen{min-height:440px;border-right:0;border-bottom:1px solid rgba(214,242,125,.14);}.registry-grid,.evidence-grid,.benedictions-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.escalation{grid-template-columns:1fr;}.statement-seal{position:relative;top:auto;}.infection-meter,.topbar{grid-template-columns:1fr;}.nav{justify-content:flex-start;}.split-image,.strain-image{min-height:420px;}}
+    @media(max-width:760px){.page{width:min(100% - 18px,var(--max));}.boot-copy{padding:24px;}.seal-specimen{display:none;}.hero{min-height:720px;padding:22px;border-radius:28px;}.hero h1{font-size:clamp(3rem,15vw,5rem);}.registry-grid,.evidence-grid,.mini-grid,.benedictions-grid{grid-template-columns:1fr;}.section{margin-top:36px;}.section-head{display:block;}.meter-row{grid-template-columns:1fr;}.research-text{font-size:.78rem;}.sticky-stack{top:6px;}}
   </style>
 </head>
 <body class="locked" data-tone="all">
   <a class="skip-link" href="#main">Skip to infestation record</a>
-  <canvas id="sporeCanvas" aria-hidden="true"></canvas>
-  <canvas id="swarmCanvas" aria-hidden="true"></canvas>
+
+  <canvas id="sporeSwarmCanvas" aria-hidden="true"></canvas>
   <canvas id="glitchCanvas" aria-hidden="true"></canvas>
   <canvas id="infectionCanvas" aria-hidden="true"></canvas>
   <canvas id="verminsCanvas" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
   <div class="scan" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
+  <div class="descent-veil" id="descentVeil" aria-hidden="true"></div>
+
   <div class="boot" id="boot" role="dialog" aria-label="Quarantine seal loading">
     <div class="seal-vault">
       <div class="seal-specimen" aria-hidden="true"><div class="bio-seal"><div class="bio-seal-core"></div></div></div>
@@ -236,33 +329,39 @@
           <div class="boot-line" data-mark="III">Sludge-Grub sump rites stirred beneath the floor.</div>
           <div class="boot-line" data-mark="IV">Eyestinger wing-density accepted as scripture.</div>
           <div class="boot-line" data-mark="V">Glitchling scrap-code permitted to spoil the margins.</div>
+          <div class="boot-line terminal" data-mark="VI">Terminal Symbiosis seal warming beneath the others.</div>
         </div>
         <div class="boot-progress"><span id="bootBar"></span></div>
         <div style="margin-top:16px;"><button class="small-btn primary" id="skipBoot" type="button">Break Quarantine Seal</button></div>
       </div>
     </div>
   </div>
+
   <main class="page" id="main">
-    <header class="topbar">
-      <a class="brand" href="index.html" aria-label="The Septicarium">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <span><strong>Mutoid Vermin</strong><span>Infestation Registry / Blessed Lesser Mouths / The Rotfather's Vanguard</span></span>
-      </a>
-      <nav class="nav">
-        <a href="index.html">Command Deck</a><a href="plaguebound-annals.html">Annals</a>
-        <a href="#strains">Strains</a><a href="#pathogenesis">Origin</a><a href="#war-role">War Role</a>
-        <a href="#defenses">Defenses</a><a href="#escalation">Escalation</a><a href="#outbreaks">Outbreaks</a>
-        <a href="#eradication">Eradication</a><a href="#addenda">Addenda</a><a href="#omega">Omega</a><a href="#research-vault">Research</a>
-      </nav>
-    </header>
-    <aside class="infection-meter">
-      <div><div class="meter-label">Archive Mode</div><div class="meter-value" id="modeText">Quarantine liturgy active.</div></div>
-      <div class="meter-bars">
-        <div class="meter-row"><div class="label">Infestation</div><div class="bar-shell"><div class="bar-fill" id="pressureFill" style="--w:18%"></div></div><div class="bar-num" id="pressureNum">18%</div></div>
-        <div class="meter-row"><div class="label">Sanctity</div><div class="bar-shell"><div class="bar-fill" id="sanctityFill" style="--w:82%"></div></div><div class="bar-num" id="sanctityNum">82%</div></div>
-      </div>
-      <div><div class="meter-label">Current Benediction</div><div class="meter-value" id="benedictionText">The smallest hunger is still holy.</div></div>
-    </aside>
+    <div class="sticky-stack" id="stickyStack">
+      <header class="topbar">
+        <a class="brand" href="index.html" data-descend="command" aria-label="The Septicarium">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <span><strong>Mutoid Vermin</strong><span>Infestation Registry / Blessed Lesser Mouths / The Rotfather's Vanguard</span></span>
+        </a>
+        <nav class="nav">
+          <a href="index.html" data-descend="command">Command Deck</a><a href="plaguebound-annals.html" data-descend="annals">Annals</a>
+          <a href="#strains">Strains</a><a href="#pathogenesis">Origin</a><a href="#war-role">War Role</a>
+          <a href="#defenses">Defenses</a><a href="#escalation">Escalation</a><a href="#outbreaks">Outbreaks</a>
+          <a href="#eradication">Eradication</a><a href="#addenda">Addenda</a><a href="#omega">Omega</a><a href="#research-vault">Research</a>
+        </nav>
+      </header>
+      <aside class="infection-meter">
+        <div><div class="meter-label">Archive Mode</div><div class="meter-value" id="modeText">Quarantine liturgy active.</div></div>
+        <div class="meter-bars">
+          <div class="meter-row"><div class="label">Infestation</div><div class="bar-shell" id="pressureShell" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="18"><div class="bar-fill" id="pressureFill" style="--w:18%"></div></div><div class="bar-num" id="pressureNum">18%</div></div>
+          <div class="meter-row"><div class="label">Sanctity</div><div class="bar-shell" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="82"><div class="bar-fill" id="sanctityFill" style="--w:82%"></div></div><div class="bar-num" id="sanctityNum">82%</div></div>
+          <div class="containment-tag">▼ CONTAINMENT FAILURE</div>
+        </div>
+        <div><div class="meter-label">Current Benediction</div><div class="meter-value" id="benedictionText" aria-live="polite">The smallest hunger is still holy.</div></div>
+      </aside>
+    </div>
+
     <section class="hero watched" data-pressure="18" data-tone="all" data-mode="Infestation registry waking." data-benediction="The smallest hunger is still holy.">
       <div class="hero-copy">
         <div class="tag-row"><span class="chip">Part Record</span><span class="chip">Part Scripture</span><span class="chip">Four Canonical Strains</span><span class="chip">Blessed by The Rotfather's Vanguard</span></div>
@@ -273,6 +372,9 @@
         <div class="hero-actions"><a class="btn primary" href="#strains">Open Strain Registry</a><a class="btn" href="#pathogenesis">Read Pathogenesis</a><a class="btn" href="#research-vault">Full Research Vault</a></div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L740 21 M840 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="790" cy="21" r="14" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="790" cy="21" r="3" fill="currentColor"/></svg></div>
+
     <section class="section watched" id="archive-statement" data-pressure="24" data-tone="all" data-mode="Record-scripture harmonized." data-benediction="Let the small inherit the wound.">
       <div class="section-head"><div><div class="kicker">Opening Archive Statement</div><h2 class="section-title">The Vermin Are a Gospel Written Below the Boot.</h2><p class="section-desc">The Imperial record calls them mutant pests. The Vanguard knows better. Vermin endure beneath empires. Vermin survive where banners fall. Vermin enter sealed places by routes pride never bothers to guard.</p></div><span class="chip">Record / Scripture Interface</span></div>
       <div class="slab archive-statement">
@@ -285,6 +387,9 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="2 8"/></svg></div>
+
     <section class="section watched" id="record-scope" data-pressure="30" data-tone="all" data-mode="Registry anatomy visible." data-benediction="Every lesser form has its office.">
       <div class="section-head"><div><div class="kicker">Archive Anatomy</div><h2 class="section-title">What This Page Preserves</h2></div><span class="chip">Full Research Vault Below</span></div>
       <div class="slab"><div class="registry-grid">
@@ -294,27 +399,37 @@
         <article class="registry-card"><div class="data-key">IV</div><h3>Forbidden Addenda</h3><p>Xenos rejection, culinary horror, black market exploitation, trench folklore, Omega-Black terminal material.</p></article>
       </div></div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L740 21 M820 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none"/><path d="M770 14 L770 28 M790 8 L790 34 M810 14 L810 28" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></div>
+
     <section class="section watched" id="strains" data-pressure="44" data-tone="cursemite" data-mode="Primary strain registry open." data-benediction="The four lesser mouths answer.">
       <div class="section-head"><div><div class="kicker">Primary Strain Registry</div><h2 class="section-title">Four Forms. One Rot.</h2><p class="section-desc">The Mutoid Vermin host is made of distinct blessed organisms, each with its own battlefield office and sacred infestation function.</p></div><span class="chip">Canon Strains</span></div>
       <div class="slab"><div class="strain-grid">
         <article class="strain-card watched" data-strain="cursemite" data-pressure="46" data-tone="cursemite">
+          <div class="strain-deco seam" aria-hidden="true"><svg viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 Q120 12 240 40 T480 40 T600 40" fill="none" stroke="rgba(217,242,125,.45)" stroke-width="1.6"/><path d="M0 40 Q120 70 240 40 T480 40 T600 40" fill="none" stroke="rgba(99,33,23,.55)" stroke-width="1.2"/></svg></div>
           <div class="strain-image"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-cursemite.png" alt="Cursemite"></div>
           <div class="strain-copy"><div class="sigil">Siphonaptera Mutatis</div><h3>Cursemites</h3><p class="office">Latching parasite, blood-drainer, wound-installer.</p><p>The Cursemite does not seek the whole body first. It seeks the seam, the pressure point, the exposed cable, the oath-gap in armor. Once attached, it turns the victim into a warm reliquary of rot.</p><blockquote>Blessed is the smallest mouth, for it enters where pride forgets to seal itself.</blockquote><button class="small-btn strain-open" type="button" data-open="cursemite">Open Strain Rite</button></div>
         </article>
         <article class="strain-card watched" data-strain="sludge" data-pressure="50" data-tone="sludge">
+          <div class="strain-deco viscous" aria-hidden="true"></div>
           <div class="strain-image"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-sludge-grub.png" alt="Sludge-Grub"></div>
           <div class="strain-copy"><div class="sigil">Vermes Putrefactio</div><h3>Sludge-Grubs</h3><p class="office">Carrion processor, sump-breeder, acid-bellied pollutant.</p><p>The Sludge-Grub is the stomach of the host. It turns corpses, runoff, ration waste, machinery grease, and battlefield dead into a moving altar of digestion.</p><blockquote>Blessed is the slow hunger, for it makes every floor into a feeding table.</blockquote><button class="small-btn strain-open" type="button" data-open="sludge">Open Strain Rite</button></div>
         </article>
         <article class="strain-card watched" data-strain="eyestinger" data-pressure="54" data-tone="eyestinger">
+          <div class="strain-deco wings" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
           <div class="strain-image"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-eyestinger-swarm.png" alt="Eyestinger Swarm"></div>
           <div class="strain-copy"><div class="sigil">Diptera Empyrea</div><h3>Eyestinger Swarms</h3><p class="office">Airborne panic engine, blinding swarm, soft-tissue hunter.</p><p>The Eyestinger is terror with wings. It does not need to kill first. It blinds, stings, clogs respirators, fills optics, and teaches infantry that the air itself has chosen sides.</p><blockquote>Blessed are the little wings, for they make the brave strike at empty air.</blockquote><button class="small-btn strain-open" type="button" data-open="eyestinger">Open Strain Rite</button></div>
         </article>
         <article class="strain-card watched" data-strain="glitchling" data-pressure="58" data-tone="glitchling">
+          <div class="strain-deco glitchbar" aria-hidden="true"></div>
           <div class="strain-image"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-glitchling.png" alt="Glitchling"></div>
           <div class="strain-copy"><div class="sigil">Daemonicus Mechanica</div><h3>Glitchlings</h3><p class="office">Machine-spoiler, scrap-code carrier, shrine-cogitator parasite.</p><p>The Glitchling is the vermin host's blasphemy against the machine. It nests in signals, teethes on cables, corrupts lenses, and makes a weapon doubt the hand that holds it.</p><blockquote>Blessed is the rust in the circuit, for even iron dreams of decay.</blockquote><button class="small-btn strain-open" type="button" data-open="glitchling">Open Strain Rite</button></div>
         </article>
       </div></div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L760 21 M820 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none"/><rect x="772" y="11" width="36" height="20" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></div>
+
     <section class="section watched" id="pathogenesis" data-pressure="52" data-tone="sludge" data-mode="Pathogenesis chamber active." data-benediction="The first mutation is a door opening inward.">
       <div class="section-head"><div><div class="kicker">Origin and Pathogenesis</div><h2 class="section-title">The Blessing Begins Where the Ship Forgets to Look.</h2><p class="section-desc">Ordinary shipboard parasites and bilge-life transformed by Geller field failure, warp exposure, and plague corruption into hyper-mutated, contagious organisms.</p></div><span class="chip">Metamorphosis Maleficum</span></div>
       <div class="slab split-section">
@@ -333,6 +448,9 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="6 6"/></svg></div>
+
     <section class="section watched" id="war-role" data-pressure="62" data-tone="eyestinger" data-mode="Bio-war doctrine active." data-benediction="Before the plague marine arrives, the air has already betrayed you.">
       <div class="section-head"><div><div class="kicker">Bio-War Role in the Plague Host</div><h2 class="section-title">They Are the Groundwork of Invasion.</h2><p class="section-desc">Mutoid Vermin act as vanguard shock organisms, biological screens, plague vectors, machine-spoilers, and panic engines used alongside Death Guard and Gellerpox forces.</p></div><span class="chip">Death Guard / Gellerpox Synergy</span></div>
       <div class="slab split-section">
@@ -361,6 +479,9 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L750 21 M810 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none"/><path d="M760 14 L800 14 M760 28 L800 28 M780 8 L780 34" stroke="currentColor" stroke-width="1.2"/></svg></div>
+
     <section class="section watched" id="defenses" data-pressure="68" data-tone="sludge" data-mode="Defensive anatomy exposed." data-benediction="Cut them and the wound becomes another mouth.">
       <div class="section-head"><div><div class="kicker">Biological and Warp Traits</div><h2 class="section-title">They Are Hard to Kill Because Death Is Part of Their Function.</h2><p class="section-desc">Necrotic tissue redundancy, infectious auras, scrap-code disruption, warp-calcified chitin, necrotic blubber, acid spit, and caustic post-mortem rupture.</p></div><span class="chip">Trait Translation</span></div>
       <div class="slab"><div class="registry-grid">
@@ -374,6 +495,9 @@
         <article class="registry-card"><div class="data-key">Weapon II</div><h3>Acid and Feeding Organs</h3><p>Sludge-Grub digestion and Eyestinger venom make bodies, armor, and command structures vulnerable.</p></article>
       </div></div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="790" cy="21" r="8" fill="currentColor" opacity=".4"/></svg></div>
+
     <section class="section watched" id="escalation" data-pressure="74" data-tone="all" data-mode="Infestation escalation registered." data-benediction="The host matures by becoming harder to call an animal.">
       <div class="section-head"><div><div class="kicker">Developmental and Threat Classifications</div><h2 class="section-title">The Infestation Has Stages.</h2><p class="section-desc">Novitius Parasitica, Praetorian Mutatus, and Apex Empyrea: outbreak, stabilization, and territorial conversion.</p></div><span class="chip">Three-Stage Threat Escalation</span></div>
       <div class="slab"><div class="escalation">
@@ -382,20 +506,26 @@
         <article class="stage-card watched" data-pressure="92" data-tone="omega"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-apex-empyrea.png" alt="Apex Empyrea"><div class="stage-body"><div class="data-key">Stage III</div><h3>Apex Empyrea</h3><p>Mythic severity. Not a single monster, but an environment overtaken by all four strains until infestation becomes territory.</p></div></article>
       </div></div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="3 12"/></svg></div>
+
     <section class="section watched" id="outbreaks" data-pressure="82" data-tone="eyestinger" data-mode="Outbreak drawer active." data-benediction="Every failed quarantine becomes a nursery.">
       <div class="section-head"><div><div class="kicker">Documented Outbreak Case Studies</div><h2 class="section-title">When the Vermin Become the Building.</h2><p class="section-desc">The outbreak records preserve the point where Mutoid Vermin stop being creatures inside a space and become the logic of the space itself.</p></div><span class="chip">Expandable Case Files</span></div>
       <div class="slab split-section">
         <figure class="split-image"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-outbreak-case-study.png" alt="Outbreak case study"></figure>
         <div class="outbreak-list">
-          <details class="record" open><summary>Voidship Lower Deck Infestation</summary><div class="record-body"><p>A Geller field instability turns bilge life into a multi-strain infestation. Cursemites attach to crew, Eyestingers seize the air, Sludge-Grubs colonize waste channels, and Glitchlings spoil doors, vox relays, and cogitators until the ship's own systems begin defending the outbreak. By the time the first quarantine order is issued, the lower decks are no longer crew territory. They are a warm digestive organ.</p></div></details>
-          <details class="record"><summary>Corpse-Starch Contamination Incident</summary><div class="record-body"><p>Sludge-Grub remains contaminate industrial food processing. Rations appear visually normal while carrying dormant empyric resonance. Consumption results in synchronized nightmares, delayed plague onset, and internal vermin birth across locked hab-units. The horror is not that hunger led to corruption. It is that corruption learned to look like food.</p></div></details>
-          <details class="record"><summary>The Putrid Feast of Hive Secundus</summary><div class="record-body"><p>Starving underhivers attempt to trap and cook Novitius-stage vermin. Boiling releases toxic vapors; consumption converts the digestive tract into a daemonic nursery, forcing living infant variants through the host's throat. The Vanguard records this not as punishment, but as an inverted communion: the desperate eating the blessed, and the blessed being born from within them.</p></div></details>
-          <details class="record"><summary>Venom Cartels and Corpse-Milking</summary><div class="record-body"><p>Underhive cartels extract Sludge-Grub acids and Eyestinger venom using disposable servitors. Every vial is unstable. Every buyer believes they have acquired a weapon. Most have acquired an egg.</p></div></details>
-          <details class="record"><summary>Mechanicus Folly at Forge World Morax</summary><div class="record-body"><p>Attempts to harvest Sludge-Grub digestive acids for industrial exploitation end with scrap-code accumulation, containment field reversal, Skitarii trapped in darkness, and a research sector melting into the planet's mantle. The Machine Cult called it a failure of containment. The Glitchlings called it access.</p></div></details>
-          <details class="record"><summary>The Chitin-Armor Initiative</summary><div class="record-body"><p>Tech-priests attempt to forge armor from Cursemite chitin. Initial ballistic trials succeed. Body-heat activation follows. The armor begins to parasitize the wearer, driving barbs inward and fusing itself to bone. The lesson: anything taken from the vermin still remembers how to feed.</p></div></details>
+          <details class="record outbreak" open><summary>Voidship Lower Deck Infestation</summary><div class="record-body"><p>A Geller field instability turns bilge life into a multi-strain infestation. Cursemites attach to crew, Eyestingers seize the air, Sludge-Grubs colonize waste channels, and Glitchlings spoil doors, vox relays, and cogitators until the ship's own systems begin defending the outbreak. By the time the first quarantine order is issued, the lower decks are no longer crew territory. They are a warm digestive organ.</p></div></details>
+          <details class="record outbreak"><summary>Corpse-Starch Contamination Incident</summary><div class="record-body"><p>Sludge-Grub remains contaminate industrial food processing. Rations appear visually normal while carrying dormant empyric resonance. Consumption results in synchronized nightmares, delayed plague onset, and internal vermin birth across locked hab-units. The horror is not that hunger led to corruption. It is that corruption learned to look like food.</p></div></details>
+          <details class="record outbreak"><summary>The Putrid Feast of Hive Secundus</summary><div class="record-body"><p>Starving underhivers attempt to trap and cook Novitius-stage vermin. Boiling releases toxic vapors; consumption converts the digestive tract into a daemonic nursery, forcing living infant variants through the host's throat. The Vanguard records this not as punishment, but as an inverted communion: the desperate eating the blessed, and the blessed being born from within them.</p></div></details>
+          <details class="record outbreak"><summary>Venom Cartels and Corpse-Milking</summary><div class="record-body"><p>Underhive cartels extract Sludge-Grub acids and Eyestinger venom using disposable servitors. Every vial is unstable. Every buyer believes they have acquired a weapon. Most have acquired an egg.</p></div></details>
+          <details class="record outbreak"><summary>Mechanicus Folly at Forge World Morax</summary><div class="record-body"><p>Attempts to harvest Sludge-Grub digestive acids for industrial exploitation end with scrap-code accumulation, containment field reversal, Skitarii trapped in darkness, and a research sector melting into the planet's mantle. The Machine Cult called it a failure of containment. The Glitchlings called it access.</p></div></details>
+          <details class="record outbreak"><summary>The Chitin-Armor Initiative</summary><div class="record-body"><p>Tech-priests attempt to forge armor from Cursemite chitin. Initial ballistic trials succeed. Body-heat activation follows. The armor begins to parasitize the wearer, driving barbs inward and fusing itself to bone. The lesson: anything taken from the vermin still remembers how to feed.</p></div></details>
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L760 21 M820 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none"/><path d="M775 12 L795 30 M775 30 L795 12" stroke="currentColor" stroke-width="1.4"/></svg></div>
+
     <section class="section watched" id="eradication" data-pressure="76" data-tone="glitchling" data-mode="Eradication protocol under stress." data-benediction="Fire buys time. Rot buys tomorrow.">
       <div class="section-head"><div><div class="kicker">Strategic Eradication Protocols</div><h2 class="section-title">Purge Is Never Clean.</h2><p class="section-desc">The Imperium answers with flame, chemical purge, pressure venting, quarantine, and orbital denial. The Vermin answer by hiding in seams, bursting after death, and teaching machines to fail.</p></div><span class="chip">Containment Difficulty: Extreme</span></div>
       <div class="slab split-section">
@@ -414,6 +544,9 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="1 5"/></svg></div>
+
     <section class="section watched" id="addenda" data-pressure="88" data-tone="omega" data-mode="Forbidden addenda bleeding through." data-benediction="Curiosity opens more doors than keys.">
       <div class="section-head"><div><div class="kicker">Fringe Interactions and Forbidden Addenda</div><h2 class="section-title">The Rot Does Not Stop at the Battlefield.</h2><p class="section-desc">Beyond combat: xenos bio-rejection, underhive horror, black market cultivation, trench superstition, Mechanicus exploitation, and anomalous strain sightings.</p></div><span class="chip">Supplemental Research Preserved</span></div>
       <div class="slab">
@@ -424,18 +557,19 @@
           <article class="evidence-card"><img src="Assets/Mutoid%20Vermin/mutoid-vermin-eyestinger-attack-event.png" alt="Eyestinger attack event"><div><div class="data-key">Airborne Panic</div><h3>Eyestinger Attack Event</h3><p>Swarm-density overwhelming defenders through eyes, lenses, and respirators.</p></div></article>
         </div>
         <div class="addenda-list">
-          <details class="record" open><summary>Tyranid Biomass Paradox</summary><div class="record-body"><p>Tyranid avoidance and catastrophic rejection: one of the most important fringe observations. Vermin biomass functions as spiritual-biological poison to the Hive Mind. In Vanguard scripture, this is proof that rot is not merely biomass. It is meaning.</p></div></details>
-          <details class="record"><summary>Greenskin Ecology and Bad Squigs</summary><div class="record-body"><p>Orkoid fungal ecology fouled by vermin waste creates malformed grots, volatile Rot-Gobbers, and failed attempts to graft warp-calcified chitin onto Ork Nobz. The Orks laugh at monsters until the soil beneath their boots starts birthing mistakes.</p></div></details>
-          <details class="record"><summary>Aeldari Revulsion</summary><div class="record-body"><p>Aeldari forces avoid melee contamination and prefer molecular-level eradication. Drukhari experiments with Novitius-stage specimens end in multiplication, reality instability, and forced abandonment. Even the most depraved flesh-sculptors of Commorragh find little profit in a thing that refuses to stay owned.</p></div></details>
-          <details class="record"><summary>Desperate Consumption and Culinary Horror</summary><div class="record-body"><p>Starvation produces a special category of blasphemy. Attempts to cook, boil, render, butcher, or consume Mutoid Vermin produce vapors, blindness, hallucination, internal mutation, and living infestation-birth. The body becomes a larder that screams.</p></div></details>
-          <details class="record"><summary>Cultist Pit-Fighting and Blood Sports</summary><div class="record-body"><p>Cults use captured specimens as spectacle and recruitment. Spectators who cheer at a Cursemite opening a veteran gladiator are marked by the cult, not for what they know, but for what they enjoyed. The rot enters first through appetite.</p></div></details>
-          <details class="record"><summary>Trench Folklore</summary><div class="record-body"><p>Guardsmen invent rituals around clicks, salt, iron, smiling medics, and corpse-candle myths. Some are tactically disastrous. Others are merely the shape terror takes when command cannot explain the truth. The soldiers understood the inevitability. The rest was incorrect biology around a correct theology.</p></div></details>
-          <details class="record"><summary>Anomalous Strain Sightings — Vox-Mimics, Rust-Weavers, Chrono-Ticks</summary><div class="record-body"><p>Unconfirmed organisms that replicate crew voices, grow crystalline across bulkheads, or induce temporal confusion. Each shows a different way vermin logic can violate voice, metal, or time. The taxonomy is not finished.</p></div></details>
+          <details class="record addenda" open><summary>Tyranid Biomass Paradox</summary><div class="record-body"><p>Tyranid avoidance and catastrophic rejection: one of the most important fringe observations. Vermin biomass functions as spiritual-biological poison to the Hive Mind. In Vanguard scripture, this is proof that rot is not merely biomass. It is meaning.</p></div></details>
+          <details class="record addenda"><summary>Greenskin Ecology and Bad Squigs</summary><div class="record-body"><p>Orkoid fungal ecology fouled by vermin waste creates malformed grots, volatile Rot-Gobbers, and failed attempts to graft warp-calcified chitin onto Ork Nobz. The Orks laugh at monsters until the soil beneath their boots starts birthing mistakes.</p></div></details>
+          <details class="record addenda"><summary>Aeldari Revulsion</summary><div class="record-body"><p>Aeldari forces avoid melee contamination and prefer molecular-level eradication. Drukhari experiments with Novitius-stage specimens end in multiplication, reality instability, and forced abandonment. Even the most depraved flesh-sculptors of Commorragh find little profit in a thing that refuses to stay owned.</p></div></details>
+          <details class="record addenda"><summary>Desperate Consumption and Culinary Horror</summary><div class="record-body"><p>Starvation produces a special category of blasphemy. Attempts to cook, boil, render, butcher, or consume Mutoid Vermin produce vapors, blindness, hallucination, internal mutation, and living infestation-birth. The body becomes a larder that screams.</p></div></details>
+          <details class="record addenda"><summary>Cultist Pit-Fighting and Blood Sports</summary><div class="record-body"><p>Cults use captured specimens as spectacle and recruitment. Spectators who cheer at a Cursemite opening a veteran gladiator are marked by the cult, not for what they know, but for what they enjoyed. The rot enters first through appetite.</p></div></details>
+          <details class="record addenda"><summary>Trench Folklore</summary><div class="record-body"><p>Guardsmen invent rituals around clicks, salt, iron, smiling medics, and corpse-candle myths. Some are tactically disastrous. Others are merely the shape terror takes when command cannot explain the truth. The soldiers understood the inevitability. The rest was incorrect biology around a correct theology.</p></div></details>
+          <details class="record addenda"><summary>Anomalous Strain Sightings — Vox-Mimics, Rust-Weavers, Chrono-Ticks</summary><div class="record-body"><p>Unconfirmed organisms that replicate crew voices, grow crystalline across bulkheads, or induce temporal confusion. Each shows a different way vermin logic can violate voice, metal, or time. The taxonomy is not finished.</p></div></details>
         </div>
       </div>
     </section>
+
     <section class="section watched" id="omega" data-pressure="100" data-tone="omega" data-mode="OMEGA-BLACK seal compromised." data-benediction="When all four mouths feed together, the room becomes a body.">
-      <div class="slab omega">
+      <div class="slab omega" id="omegaSlab">
         <div class="omega-copy">
           <div class="kicker" style="color:rgba(240,140,80,.9);">$$REDACTED$$ / OMEGA-BLACK / Inquisitorial Eyes Only</div>
           <h2>The Terminal Symbiosis</h2>
@@ -447,6 +581,19 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1580 42" preserveAspectRatio="none"><path d="M0 21 L1580 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="4 4"/></svg></div>
+
+    <section class="section watched" id="benedictions" data-pressure="76" data-tone="all" data-mode="The Four Benedictions surfaced." data-benediction="The blessings are direct address. The vermin listen.">
+      <div class="section-head"><div><div class="kicker">The Four Benedictions</div><h2 class="section-title">Spoken Directly to the Lesser Mouths.</h2><p class="section-desc">These benedictions are understood as direct communications to the organisms, which are considered capable of receiving blessing.</p></div><span class="chip">Liturgical Ritual Block</span></div>
+      <div class="slab"><div class="benedictions-grid">
+        <article class="benediction-card"><div class="benediction-label">For the Cursemite</div><h4>The Smallest Mouth</h4><p>"Blessed is the smallest mouth, for it enters where pride forgets to seal itself. Let the seam be your door. Let the wound stay open."</p></article>
+        <article class="benediction-card"><div class="benediction-label">For the Sludge-Grub</div><h4>The Slow Hunger</h4><p>"Blessed is the slow hunger, for it makes every floor into a feeding table. Let nothing be wasted. Let the dead become the living colony."</p></article>
+        <article class="benediction-card"><div class="benediction-label">For the Eyestinger</div><h4>The Little Wings</h4><p>"Blessed are the little wings, for they make the brave strike at empty air. Let the eye that would aim become the eye that weeps."</p></article>
+        <article class="benediction-card"><div class="benediction-label">For the Glitchling</div><h4>The Rust in the Circuit</h4><p>"Blessed is the rust in the circuit, for even iron dreams of decay. Let the machine that would kill become the machine that hesitates."</p></article>
+      </div></div>
+    </section>
+
     <section class="section watched" id="research-vault" data-pressure="70" data-tone="all" data-mode="Full research vault open." data-benediction="Nothing is discarded. Everything rots into use.">
       <div class="section-head"><div><div class="kicker">Full Research Vault / Documentum Biologis</div><h2 class="section-title">The Complete Record.</h2><p class="section-desc">The raw research preserved in full — searchable across the main Documentum and Research Supplement.</p></div><span class="chip">Main Index + Research Supplement</span></div>
       <div class="slab research-vault">
@@ -454,17 +601,19 @@
           <input class="research-search" id="researchSearch" placeholder="Search: Cursemite, Morax, Gellerpox, Chitin-Armor, Tyranid, Omega-Black..." aria-label="Search research">
           <button class="small-btn primary" id="clearSearch" type="button">Clear Search</button>
         </div>
-        <details class="record" open><summary>ARCHIVAL INDEX: DOCUMENTUM BIOLOGIS — MUTOID VERMIN MAIN</summary><div class="research-text" id="mainResearch"></div></details>
-        <details class="record" style="margin-top:16px;"><summary>ARCHIVAL INDEX: MUTOID VERMIN RESEARCH SUPPLEMENT</summary><div class="research-text" id="suppResearch"></div></details>
+        <details open><summary class="vault-index-summary">Archival Index — Documentum Biologis (Mutoid Vermin Main)</summary><div class="research-text" id="mainResearch"></div></details>
+        <details style="margin-top:16px;"><summary class="vault-index-summary">Archival Index — Mutoid Vermin Research Supplement</summary><div class="research-text" id="suppResearch"></div></details>
       </div>
     </section>
+
     <footer class="footer watched" data-pressure="84" data-tone="all" data-mode="Record resealing." data-benediction="The last click is never the last.">
       <div class="kicker">Closing Edict</div>
       <h2>No infestation is ever gone. It is only beneath the next floor.</h2>
       <p>Mutoid Vermin are sacred to The Rotfather's Vanguard because they reveal the truth beneath power: every empire sheds, every machine rusts, every body leaks, every sealed chamber has seams, and every seam is a chapel waiting for the smallest mouth.</p>
-      <div class="hero-actions"><a class="btn primary" href="plaguebound-annals.html">Return to Annals</a><a class="btn" href="plaguebound-dossier.html">Open Dossier</a><a class="btn" href="index.html">Command Deck</a></div>
+      <div class="hero-actions"><a class="btn primary" href="plaguebound-annals.html" data-descend="annals">Return to Annals</a><a class="btn" href="plaguebound-dossier.html" data-descend="dossier">Open Dossier</a><a class="btn" href="index.html" data-descend="command">Command Deck</a></div>
     </footer>
   </main>
+
   <!-- CURSEMITE MODAL -->
   <div class="modal" id="modal-cursemite" role="dialog" aria-modal="true" aria-label="Cursemite strain rite" aria-hidden="true">
     <div class="modal-card">
@@ -477,6 +626,7 @@
       <p>The proboscis is the defining organ: a hollow drilling appendage tipped with a micro-serrated bore that penetrates soft tissue and begins immediately secreting a cocktail of anticoagulant, low-grade Gellerpox trace-compound, and what Plague Surgeons classify as a "wound-keeping agent" — a biological compound that actively prevents the body's healing response from closing the entry point.</p>
       <p>In doctrine, the Cursemite is the installation specialist. It does not cause death directly. It prepares the body to receive further rot. Every Cursemite bite is an open door. The Sludge-Grub, the Eyestinger toxin, and the Gellerpox virus all find Cursemite-prepared wounds significantly more receptive. The Cursemite bites first, and everything else enters through what it has opened.</p>
       <div class="scripture-call" style="margin:0;">The door does not open from the inside. The Cursemite opens it from the outside, and it stays open forever.</div>
+      <div class="modal-close-row bottom"><button class="modal-close" data-close="cursemite" type="button">Reseal Strain Rite</button></div>
     </div>
   </div>
 
@@ -492,6 +642,7 @@
       <p>The digestive system is the defining apparatus. The Sludge-Grub maintains three stomach chambers operating in sequence: the first breaks down organic matter without discrimination; the second processes the result with a concentrated acid capable of dissolving light metals, most polymers, and ceramite bonding agents over extended exposure; the third converts the resultant slurry into a nutrient-dense secretion that feeds colony offspring and, when released into the environment, creates conditions favorable to further infestation.</p>
       <p>The Vanguard uses Sludge-Grubs as the colony's logistical heart. While Cursemites wound and Eyestingers disrupt, the Sludge-Grubs process everything that falls — turning the battlefield's dead into fuel for the living infestation. Nothing is wasted. Nothing is clean. Every corpse becomes colony infrastructure. The battlefield is always, eventually, a feeding table. The food supply of an extermination operation includes the extermination team.</p>
       <div class="scripture-call" style="margin:0;">Blessed is the slow stomach, for it wastes nothing. All who fall become something better than what they were.</div>
+      <div class="modal-close-row bottom"><button class="modal-close" data-close="sludge" type="button">Reseal Strain Rite</button></div>
     </div>
   </div>
 
@@ -507,6 +658,7 @@
       <p>Each individual Eyestinger carries venom sacs capable of producing a neuro-inflammatory compound targeted specifically at ocular tissue and respiratory mucosa. The primary weapon is not death — it is blinding, respiratory distress, and the sensation, when a swarm is encountered, that the air itself has become an opponent. Troops facing Eyestinger Swarms without adequate respirator equipment report complete combat ineffectiveness within four minutes of contact.</p>
       <p>The swarm demonstrates a targeting preference for exposed sensory equipment — optic lenses, vox-grilles, respirator filters, scope apertures. It does not attack these components randomly. It prioritizes them. Whether this represents a form of tactical intelligence or an evolutionary attractor toward the most destructive available targets remains a subject of debate among Plague Surgeons who are not concerned enough about the answer to stop the swarms from doing it.</p>
       <div class="scripture-call" style="margin:0;">Blessed are those who make the enemy blind, for the blind warrior swings at saints and shadows with equal certainty.</div>
+      <div class="modal-close-row bottom"><button class="modal-close" data-close="eyestinger" type="button">Reseal Strain Rite</button></div>
     </div>
   </div>
 
@@ -522,12 +674,22 @@
       <p>The creature nests in cable runs, data-conduits, and shrine-cogitator housing. It does not eat the cable. It sleeps against it. The proximity of its warp-saturated body is sufficient to introduce what Mechanicus engineers document as "systemic data-corruption," "spontaneous function inversion," and "machine-spirit agitation." In plainer language: the machine begins to fail, and fails in ways that resist standard diagnosis because the cause is biological rather than mechanical. Cogitator arrays produce corrupted output. Weapon systems develop unpredictable cycling. Optical feeds corrupt. Communication arrays invert signals. Power systems become inconsistent.</p>
       <p>A weapon held by a soldier operating in Glitchling-infested territory may misfire. It may fail to fire. It may fire at the wrong moment. The soldier cannot know which will happen. This uncertainty is the Glitchling's primary weapon — not the malfunction itself, but the mistrust it installs between the warrior and every tool they depend on. The working Mechanicus classification is "Unclassified Warp-Adjacent Biological Anomaly, Mechanically Interactive." This classification satisfies no one, which the Plague Surgeons find correctly humbling for an institution that believes all things can be categorized.</p>
       <div class="scripture-call" style="margin:0;">Blessed is the rust that makes the trigger hesitate. In that hesitation, the Rotfather enters.</div>
+      <div class="modal-close-row bottom"><button class="modal-close" data-close="glitchling" type="button">Reseal Strain Rite</button></div>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
   (function(){
     'use strict';
-    /* strain tone map — used to update pressure meter when a modal opens */
-    const strainTone={cursemite:{tone:'cursemite',pressure:66,benediction:'Blessed is the smallest mouth, for it enters where pride forgets to seal itself.'},sludge:{tone:'sludge',pressure:70,benediction:'Blessed is the slow hunger, for it makes every floor into a feeding table.'},eyestinger:{tone:'eyestinger',pressure:74,benediction:'Blessed are the little wings, for they make the brave strike at empty air.'},glitchling:{tone:'glitchling',pressure:78,benediction:'Blessed is the rust in the circuit, for even iron dreams of decay.'}};
+    const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const state={booted:false,currentPressure:18,verminFrozen:false,keyBuffer:''};
+
+    const strainTone={
+      cursemite:{tone:'cursemite',pressure:66,benediction:'Blessed is the smallest mouth, for it enters where pride forgets to seal itself.'},
+      sludge:{tone:'sludge',pressure:70,benediction:'Blessed is the slow hunger, for it makes every floor into a feeding table.'},
+      eyestinger:{tone:'eyestinger',pressure:74,benediction:'Blessed are the little wings, for they make the brave strike at empty air.'},
+      glitchling:{tone:'glitchling',pressure:78,benediction:'Blessed is the rust in the circuit, for even iron dreams of decay.'}
+    };
 
     const MAIN_RESEARCH=`DOCUMENTUM BIOLOGIS — MUTOID VERMIN (MAIN RECORD)
 Compiled: The Septicarium Archive / The Rotfather's Vanguard
@@ -612,41 +774,121 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
     const boot=document.getElementById('boot'),bootBar=document.getElementById('bootBar');
     const lines=[...document.querySelectorAll('.boot-line')];
     const skipBtn=document.getElementById('skipBoot');
-    function dismissBoot(){boot.classList.add('hidden');document.body.classList.remove('locked');}
+
+    function dismissBoot(){
+      boot.classList.add('hidden');
+      document.body.classList.remove('locked');
+      state.booted=true;
+      document.body.classList.add('vermin-on');
+    }
+
     let bi=0;
     const bt=setInterval(()=>{
       if(bi<lines.length){lines[bi].classList.add('live');bootBar.style.width=((bi+1)/lines.length*100)+'%';bi++;}
       else{clearInterval(bt);setTimeout(dismissBoot,680);}
     },420);
+
     skipBtn.addEventListener('click',()=>{clearInterval(bt);lines.forEach(l=>l.classList.add('live'));bootBar.style.width='100%';dismissBoot();});
 
-    /* PRESSURE / TONE */
-    const modeEl=document.getElementById('modeText'),benedEl=document.getElementById('benedictionText');
-    const pFill=document.getElementById('pressureFill'),pNum=document.getElementById('pressureNum');
+    /* TYPED BENEDICTION */
+    const modeEl=document.getElementById('modeText');
+    const benedEl=document.getElementById('benedictionText');
+    const pFill=document.getElementById('pressureFill'),pNum=document.getElementById('pressureNum'),pShell=document.getElementById('pressureShell');
     const sFill=document.getElementById('sanctityFill'),sNum=document.getElementById('sanctityNum');
-    let currentPressure=18;
-    function setPressure(p,tone,mode,benediction){
-      currentPressure=Math.max(0,Math.min(100,Number(p)||currentPressure));
-      if(tone)document.body.dataset.tone=tone;
-      const san=100-currentPressure;
-      pFill.style.setProperty('--w',currentPressure+'%');pNum.textContent=currentPressure+'%';
-      sFill.style.setProperty('--w',san+'%');sNum.textContent=san+'%';
-      if(mode)modeEl.textContent=mode;if(benediction)benedEl.textContent=benediction;
+    let typeTimer=null;
+
+    function typeBenediction(text){
+      if(typeTimer)clearInterval(typeTimer);
+      benedEl.textContent='';
+      let i=0;
+      typeTimer=setInterval(()=>{
+        if(i>=text.length){clearInterval(typeTimer);typeTimer=null;return;}
+        benedEl.textContent=text.slice(0,i+2);
+        i+=2;
+      },22);
     }
+
+    function setPressure(p,tone,mode,benediction){
+      state.currentPressure=Math.max(0,Math.min(100,Number(p)||state.currentPressure));
+      if(tone)document.body.dataset.tone=tone;
+      const san=100-state.currentPressure;
+      pFill.style.setProperty('--w',state.currentPressure+'%');
+      pNum.textContent=state.currentPressure+'%';
+      pShell.setAttribute('aria-valuenow',state.currentPressure);
+      sFill.style.setProperty('--w',san+'%');
+      sNum.textContent=san+'%';
+      if(mode)modeEl.textContent=mode;
+      if(benediction)typeBenediction(benediction);
+    }
+
+    /* SECTION WATCHER */
     const watcher=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{if(!e.isIntersecting)return;const d=e.target.dataset;setPressure(d.pressure,d.tone,d.mode,d.benediction);});
+      entries.forEach(e=>{
+        if(!e.isIntersecting)return;
+        const d=e.target.dataset;
+        setPressure(d.pressure,d.tone,d.mode,d.benediction);
+        if(e.target.id==='omega')triggerOmegaWitnessed();
+      });
     },{threshold:0.28});
     document.querySelectorAll('.watched').forEach(el=>watcher.observe(el));
 
-    /* STRAIN MODALS — individual open/close per strain */
+    /* OMEGA FLINCH EVENT */
+    function triggerOmegaWitnessed(){
+      if(document.body.classList.contains('omega-witnessed'))return;
+      document.body.classList.add('omega-witnessed');
+      document.body.classList.add('vermin-frozen');
+      pShell.classList.add('overflow');
+      sFill.parentElement.classList.add('overflow');
+      state.verminFrozen=true;
+      setTimeout(()=>{
+        pShell.classList.remove('overflow');
+        sFill.parentElement.classList.remove('overflow');
+      },3200);
+      setTimeout(()=>{
+        document.body.classList.remove('vermin-frozen');
+        state.verminFrozen=false;
+      },4200);
+    }
+
+    /* STICKY SCROLL COMPACT */
+    const stickyStack=document.getElementById('stickyStack');
+    let scrollTick=false;
+    function onScroll(){
+      if(scrollTick)return;
+      scrollTick=true;
+      requestAnimationFrame(()=>{
+        stickyStack.classList.toggle('scrolled',window.scrollY>120);
+        scrollTick=false;
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+
+    /* DESCENT TRANSITION */
+    const descentVeil=document.getElementById('descentVeil');
+    function descend(url){
+      descentVeil.classList.add('active');
+      setTimeout(()=>{window.location.href=url;},900);
+    }
+    document.querySelectorAll('[data-descend]').forEach(link=>{
+      link.addEventListener('click',e=>{
+        const href=link.getAttribute('href');
+        if(!href||href.startsWith('#')||e.metaKey||e.ctrlKey||e.shiftKey||e.button===1)return;
+        e.preventDefault();
+        if(document.startViewTransition){document.startViewTransition(()=>descend(href));}
+        else{descend(href);}
+      });
+    });
+
+    /* STRAIN MODALS */
     function openModal(key){
       const modal=document.getElementById('modal-'+key);
       if(!modal)return;
-      modal.classList.add('show');modal.setAttribute('aria-hidden','false');
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
       document.body.classList.add('locked');
       modal.querySelector('.modal-close')?.focus();
       const t=strainTone[key];
-      if(t) setPressure(t.pressure,t.tone,'Strain rite active.',t.benediction);
+      if(t)setPressure(t.pressure,t.tone,'Strain rite active.',t.benediction);
     }
     function closeAllModals(){
       document.querySelectorAll('.modal.show').forEach(m=>{m.classList.remove('show');m.setAttribute('aria-hidden','true');});
@@ -655,12 +897,25 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
     document.querySelectorAll('.strain-open').forEach(btn=>btn.addEventListener('click',()=>openModal(btn.dataset.open)));
     document.querySelectorAll('.modal-close').forEach(btn=>btn.addEventListener('click',closeAllModals));
     document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeAllModals();}));
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAllModals();});
+
+    /* KEYBOARD */
+    const strainKeys={'1':'cursemite','2':'sludge','3':'eyestinger','4':'glitchling'};
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape')closeAllModals();
+      if(e.target.matches('input, textarea'))return;
+      if(strainKeys[e.key])openModal(strainKeys[e.key]);
+      state.keyBuffer=(state.keyBuffer+e.key.toLowerCase()).slice(-6);
+      if(state.keyBuffer.includes('swarm')){
+        state.keyBuffer='';
+        triggerOmegaWitnessed();
+        document.getElementById('omega').scrollIntoView({behavior:'smooth',block:'center'});
+        typeBenediction('Swarm cipher accepted. The terminal seal has noticed you.');
+      }
+    });
 
     /* RESEARCH VAULT */
     const mainEl=document.getElementById('mainResearch'),suppEl=document.getElementById('suppResearch');
     mainEl.textContent=MAIN_RESEARCH;suppEl.textContent=SUPP_RESEARCH;
-    const rawMain=MAIN_RESEARCH,rawSupp=SUPP_RESEARCH;
     function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
     function highlight(el,raw,term){
       if(!term||term.length<2){el.textContent=raw;return;}
@@ -669,13 +924,109 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
     }
     let stimer;
     document.getElementById('researchSearch').addEventListener('input',function(){
-      clearTimeout(stimer);stimer=setTimeout(()=>{const t=this.value.trim();highlight(mainEl,rawMain,t);highlight(suppEl,rawSupp,t);},220);
+      clearTimeout(stimer);
+      stimer=setTimeout(()=>{
+        const t=this.value.trim();
+        highlight(mainEl,MAIN_RESEARCH,t);
+        highlight(suppEl,SUPP_RESEARCH,t);
+      },220);
     });
     document.getElementById('clearSearch').addEventListener('click',()=>{
-      document.getElementById('researchSearch').value='';mainEl.textContent=rawMain;suppEl.textContent=rawSupp;
+      document.getElementById('researchSearch').value='';
+      mainEl.textContent=MAIN_RESEARCH;
+      suppEl.textContent=SUPP_RESEARCH;
     });
 
-    /* VERMIN CANVAS — 16 creatures, 4 groups of 4 */
+    /* MERGED SPORE + SWARM CANVAS */
+    (function sporeSwarmSystem(){
+      const cv=document.getElementById('sporeSwarmCanvas'),c=cv.getContext('2d');
+      let W=cv.width=innerWidth,H=cv.height=innerHeight;
+      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
+      const spores=Array.from({length:Math.min(140,Math.floor(innerWidth/10))},()=>({
+        x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+        r:Math.random()*2.2+.4,s:Math.random()*.32+.04,
+        a:Math.random()*Math.PI*2,drift:Math.random()*.28-.14,
+        type:Math.random()>.7?'hot':'rot'
+      }));
+      const flies=Array.from({length:Math.min(70,Math.floor(innerWidth/16))},()=>({
+        x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+        vx:(Math.random()-.5)*.7,vy:(Math.random()-.5)*.7,
+        sz:Math.random()*1.8+.8,life:Math.random()*100
+      }));
+      let lastFrame=0;
+      function tick(ts){
+        if(!prefersReduced&&state.booted&&!document.hidden&&ts-lastFrame>1000/45){
+          c.clearRect(0,0,W,H);
+          spores.forEach(s=>{
+            s.y-=s.s+state.currentPressure/700;s.x+=Math.sin(s.a)*.16+s.drift;s.a+=.011;
+            if(s.y<-18){s.y=H+18;s.x=Math.random()*W;}
+            if(s.x<-18)s.x=W+18;if(s.x>W+18)s.x=-18;
+            const col=s.type==='hot'?'217,242,125':'118,137,58';
+            const g=c.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*7);
+            g.addColorStop(0,`rgba(${col},${.09+s.r/40})`);
+            g.addColorStop(.5,`rgba(${col},.03)`);
+            g.addColorStop(1,`rgba(${col},0)`);
+            c.fillStyle=g;c.beginPath();c.arc(s.x,s.y,s.r*6,0,Math.PI*2);c.fill();
+          });
+          flies.forEach(f=>{
+            f.x+=f.vx+Math.sin(f.life*.04)*.45;f.y+=f.vy+Math.cos(f.life*.05)*.22;f.life+=1+state.currentPressure/130;
+            if(f.x<0)f.x=W;if(f.x>W)f.x=0;if(f.y<0)f.y=H;if(f.y>H)f.y=0;
+            c.strokeStyle=`rgba(217,242,125,${.07+state.currentPressure/1400})`;c.lineWidth=1;
+            c.beginPath();c.moveTo(f.x,f.y);c.lineTo(f.x+f.sz*5,f.y+Math.sin(f.life)*f.sz*2);c.stroke();
+          });
+          lastFrame=ts;
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+
+    /* GLITCH SYSTEM */
+    (function glitchSystem(){
+      const cv=document.getElementById('glitchCanvas'),c=cv.getContext('2d');
+      let W=cv.width=innerWidth,H=cv.height=innerHeight;
+      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
+      const gl=Array.from({length:40},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,w:Math.random()*180+40,life:Math.random()*120,sp:Math.random()*1.1+.2}));
+      function tick(){
+        if(!prefersReduced&&state.booted&&!document.hidden){
+          c.clearRect(0,0,W,H);
+          gl.forEach(g=>{
+            g.life+=g.sp;if(g.life>120){g.life=0;g.x=Math.random()*W;g.y=Math.random()*H;}
+            const a=Math.sin(g.life/120*Math.PI)*(state.currentPressure/110);if(a<=0)return;
+            c.fillStyle=`rgba(93,124,125,${.15*a})`;c.fillRect(g.x,g.y,g.w,2);
+            c.fillStyle=`rgba(217,242,125,${.07*a})`;c.fillRect(g.x+7,g.y+4,g.w*.5,1);
+          });
+        }
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+
+    /* INFECTION BLOOM */
+    (function infectionSystem(){
+      const cv=document.getElementById('infectionCanvas'),c=cv.getContext('2d');
+      let W=cv.width=innerWidth,H=cv.height=innerHeight;
+      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
+      let bl=Array.from({length:20},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*150+65,a:Math.random()*Math.PI*2,s:Math.random()*.004+.001}));
+      setInterval(()=>{if(bl.length<24)bl.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*150+65,a:Math.random()*Math.PI*2,s:Math.random()*.004+.001});},3200);
+      function tick(){
+        if(!prefersReduced&&state.booted&&!document.hidden){
+          c.clearRect(0,0,W,H);
+          bl.forEach(b=>{
+            b.a+=b.s;const x=b.x+Math.sin(b.a)*16,y=b.y+Math.cos(b.a*.7)*12;
+            const g=c.createRadialGradient(x,y,0,x,y,b.r);
+            g.addColorStop(0,`rgba(163,83,45,${.032+state.currentPressure/3000})`);
+            g.addColorStop(.5,`rgba(217,242,125,${.016+state.currentPressure/5500})`);
+            g.addColorStop(1,'rgba(0,0,0,0)');
+            c.fillStyle=g;c.beginPath();c.arc(x,y,b.r,0,Math.PI*2);c.fill();
+          });
+        }
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+
+    /* VERMIN — 16 creatures, gated until boot completes, freezes during omega event */
     (function verminsSystem(){
       const cv=document.getElementById('verminsCanvas'),ctx=cv.getContext('2d');
       let W=cv.width=innerWidth,H=cv.height=innerHeight;
@@ -697,7 +1048,6 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
         }
         ctx.restore();
       }
-
       function drawSludgeGrub(x,y,ang,sz,al){
         ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.rotate(ang);
         [{ox:-sz*2.0,r:sz*0.52,c:'#6d8030'},{ox:-sz*0.98,r:sz*0.72,c:'#8aad3e'},{ox:sz*0.06,r:sz*0.80,c:'#76893a'},{ox:sz*1.0,r:sz*0.65,c:'#8aad3e'},{ox:sz*1.8,r:sz*0.44,c:'#6d8030'}].forEach(s=>{
@@ -708,7 +1058,6 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
         ctx.beginPath();ctx.arc(-sz*2.12,sz*0.22,sz*0.15,0,Math.PI*2);ctx.fill();
         ctx.restore();
       }
-
       function drawEyestinger(x,y,ang,sz,al){
         ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.rotate(ang);
         ctx.fillStyle='rgba(217,242,125,.18)';ctx.strokeStyle='rgba(217,242,125,.38)';ctx.lineWidth=sz*0.07;
@@ -724,7 +1073,6 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
         ctx.fillStyle='#a3532d';ctx.beginPath();ctx.moveTo(-sz*1.18,0);ctx.lineTo(-sz*2.05,-sz*0.16);ctx.lineTo(-sz*2.35,0);ctx.lineTo(-sz*2.05,sz*0.16);ctx.closePath();ctx.fill();
         ctx.restore();
       }
-
       function drawGlitchling(x,y,ang,sz,al){
         ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.rotate(ang);
         ctx.fillStyle='#5d7c7d';ctx.fillRect(-sz*1.15,-sz*0.52,sz*2.3,sz*1.04);
@@ -775,82 +1123,17 @@ DOCUMENT STATUS: OPEN. CLASSIFICATION: SUPPLEMENTAL / FORBIDDEN. INFESTATION: ON
           if(m.x<-25)m.x=W+25;if(m.x>W+25)m.x=-25;if(m.y<-25)m.y=H+25;if(m.y>H+25)m.y=-25;
         });
       }
-      function tickVermin(){ctx.clearRect(0,0,W,H);groups.forEach(g=>{updateGroup(g);g.members.forEach(m=>drawFns[g.type](m.x,m.y,m.ang,m.sz,m.al));});requestAnimationFrame(tickVermin);}
+      function tickVermin(){
+        if(!prefersReduced&&state.booted&&!document.hidden){
+          ctx.clearRect(0,0,W,H);
+          groups.forEach(g=>{
+            if(!state.verminFrozen)updateGroup(g);
+            g.members.forEach(m=>drawFns[g.type](m.x,m.y,m.ang,m.sz,m.al));
+          });
+        }
+        requestAnimationFrame(tickVermin);
+      }
       tickVermin();
-    })();
-
-    /* ATMOSPHERE CANVASES */
-    (function sporeSystem(){
-      const cv=document.getElementById('sporeCanvas'),c=cv.getContext('2d');
-      let W=cv.width=innerWidth,H=cv.height=innerHeight;
-      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
-      const sp=Array.from({length:Math.min(140,Math.floor(innerWidth/10))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2.2+.4,s:Math.random()*.32+.04,a:Math.random()*Math.PI*2,drift:Math.random()*.28-.14,type:Math.random()>.7?'hot':'rot'}));
-      function tick(){
-        c.clearRect(0,0,W,H);
-        sp.forEach(s=>{
-          s.y-=s.s+currentPressure/700;s.x+=Math.sin(s.a)*.16+s.drift;s.a+=.011;
-          if(s.y<-18){s.y=H+18;s.x=Math.random()*W;}
-          if(s.x<-18)s.x=W+18;if(s.x>W+18)s.x=-18;
-          const col=s.type==='hot'?'217,242,125':'118,137,58';
-          const g=c.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*7);
-          g.addColorStop(0,`rgba(${col},${.09+s.r/40})`);g.addColorStop(.5,`rgba(${col},.03)`);g.addColorStop(1,`rgba(${col},0)`);
-          c.fillStyle=g;c.beginPath();c.arc(s.x,s.y,s.r*6,0,Math.PI*2);c.fill();
-        });
-        requestAnimationFrame(tick);
-      }
-      tick();
-    })();
-    (function swarmSystem(){
-      const cv=document.getElementById('swarmCanvas'),c=cv.getContext('2d');
-      let W=cv.width=innerWidth,H=cv.height=innerHeight;
-      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
-      const fl=Array.from({length:Math.min(70,Math.floor(innerWidth/16))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.7,vy:(Math.random()-.5)*.7,sz:Math.random()*1.8+.8,life:Math.random()*100}));
-      function tick(){
-        c.clearRect(0,0,W,H);
-        fl.forEach(f=>{
-          f.x+=f.vx+Math.sin(f.life*.04)*.45;f.y+=f.vy+Math.cos(f.life*.05)*.22;f.life+=1+currentPressure/130;
-          if(f.x<0)f.x=W;if(f.x>W)f.x=0;if(f.y<0)f.y=H;if(f.y>H)f.y=0;
-          c.strokeStyle=`rgba(217,242,125,${.07+currentPressure/1400})`;c.lineWidth=1;
-          c.beginPath();c.moveTo(f.x,f.y);c.lineTo(f.x+f.sz*5,f.y+Math.sin(f.life)*f.sz*2);c.stroke();
-        });
-        requestAnimationFrame(tick);
-      }
-      tick();
-    })();
-    (function glitchSystem(){
-      const cv=document.getElementById('glitchCanvas'),c=cv.getContext('2d');
-      let W=cv.width=innerWidth,H=cv.height=innerHeight;
-      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
-      const gl=Array.from({length:40},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,w:Math.random()*180+40,life:Math.random()*120,sp:Math.random()*1.1+.2}));
-      function tick(){
-        c.clearRect(0,0,W,H);
-        gl.forEach(g=>{
-          g.life+=g.sp;if(g.life>120){g.life=0;g.x=Math.random()*W;g.y=Math.random()*H;}
-          const a=Math.sin(g.life/120*Math.PI)*(currentPressure/110);if(a<=0)return;
-          c.fillStyle=`rgba(93,124,125,${.15*a})`;c.fillRect(g.x,g.y,g.w,2);
-          c.fillStyle=`rgba(217,242,125,${.07*a})`;c.fillRect(g.x+7,g.y+4,g.w*.5,1);
-        });
-        requestAnimationFrame(tick);
-      }
-      tick();
-    })();
-    (function infectionSystem(){
-      const cv=document.getElementById('infectionCanvas'),c=cv.getContext('2d');
-      let W=cv.width=innerWidth,H=cv.height=innerHeight;
-      window.addEventListener('resize',()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;});
-      let bl=Array.from({length:20},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*150+65,a:Math.random()*Math.PI*2,s:Math.random()*.004+.001}));
-      setInterval(()=>{if(bl.length<24)bl.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*150+65,a:Math.random()*Math.PI*2,s:Math.random()*.004+.001});},3200);
-      function tick(){
-        c.clearRect(0,0,W,H);
-        bl.forEach(b=>{
-          b.a+=b.s;const x=b.x+Math.sin(b.a)*16,y=b.y+Math.cos(b.a*.7)*12;
-          const g=c.createRadialGradient(x,y,0,x,y,b.r);
-          g.addColorStop(0,`rgba(163,83,45,${.032+currentPressure/3000})`);g.addColorStop(.5,`rgba(217,242,125,${.016+currentPressure/5500})`);g.addColorStop(1,'rgba(0,0,0,0)');
-          c.fillStyle=g;c.beginPath();c.arc(x,y,b.r,0,Math.PI*2);c.fill();
-        });
-        requestAnimationFrame(tick);
-      }
-      tick();
     })();
   })();
   </script>
