@@ -8,719 +8,178 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --void:#020302;
-      --bg:#050704;
-      --bg2:#0b100a;
-      --bg3:#10150d;
-      --panel:rgba(10,14,9,.78);
-      --panel-heavy:rgba(7,10,7,.92);
-      --panel-soft:rgba(14,18,12,.72);
-      --line:rgba(198,216,112,.16);
-      --line-strong:rgba(218,235,128,.36);
-      --text:#ece3c8;
-      --text-strong:#fff5d6;
-      --muted:#b7ae90;
-      --muted-2:#8a8f74;
-      --acid:#c8dc62;
-      --acid-hot:#ecff99;
-      --rot:#7fa64d;
-      --rot-deep:#4a6132;
-      --rust:#9b6339;
-      --blood:#7a2e29;
-      --blue:#405159;
+      --void:#020302; --bg:#050704; --bg2:#0b100a; --bg3:#10150d;
+      --panel:rgba(10,14,9,.78); --panel-heavy:rgba(7,10,7,.92); --panel-soft:rgba(14,18,12,.72);
+      --line:rgba(198,216,112,.16); --line-strong:rgba(218,235,128,.36);
+      --text:#ece3c8; --text-strong:#fff5d6;
+      --muted:#b7ae90; --muted-2:#8a8f74;
+      --acid:#c8dc62; --acid-hot:#ecff99;
+      --rot:#7fa64d; --rot-deep:#4a6132;
+      --rust:#9b6339; --blood:#7a2e29; --blue:#405159;
       --shadow:0 30px 90px rgba(0,0,0,.55);
       --shadow-soft:0 16px 40px rgba(0,0,0,.28);
-      --radius:34px;
-      --radius-sm:22px;
-      --max:1520px;
+      --radius:34px; --radius-sm:22px; --max:1520px;
       --ease:cubic-bezier(.2,.8,.2,1);
+      --seal:1;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
-      margin:0;
-      min-height:100vh;
-      color:var(--text);
-      font-family:"Spectral", Georgia, serif;
+      margin:0;min-height:100vh;color:var(--text);
+      font-family:"Spectral",Georgia,serif;
       background:
-        radial-gradient(circle at 16% 2%, rgba(200,220,98,.12), transparent 26%),
-        radial-gradient(circle at 84% 12%, rgba(151,99,57,.10), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(64,81,89,.10), transparent 34%),
+        radial-gradient(circle at 16% 2%,rgba(200,220,98,.12),transparent 26%),
+        radial-gradient(circle at 84% 12%,rgba(151,99,57,.10),transparent 28%),
+        radial-gradient(circle at 50% 100%,rgba(64,81,89,.10),transparent 34%),
         linear-gradient(180deg,#030402 0%,#091008 42%,#040503 100%);
       overflow-x:hidden;
+      transition:filter .9s var(--ease),background .9s var(--ease);
     }
-
     body.locked{overflow:hidden}
     body.subject-aware{
       background:
-        radial-gradient(circle at 16% 2%, rgba(200,220,98,.14), transparent 28%),
-        radial-gradient(circle at 84% 12%, rgba(151,99,57,.14), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(122,46,41,.14), transparent 36%),
-        linear-gradient(180deg,#030402 0%,#0d0f08 44%,#090403 100%);
+        radial-gradient(circle at 16% 2%,rgba(200,220,98,.14),transparent 28%),
+        radial-gradient(circle at 84% 12%,rgba(151,99,57,.18),transparent 28%),
+        radial-gradient(circle at 50% 100%,rgba(122,46,41,.22),transparent 36%),
+        linear-gradient(180deg,#030402 0%,#100a06 44%,#0b0403 100%);
+      filter:contrast(1.06) saturate(1.04);
     }
+    body.idle{filter:saturate(.88) brightness(.95)}
 
     ::selection{background:rgba(200,220,98,.28);color:#111607}
     a{color:inherit}
     button{font:inherit}
-    h1,h2,h3,h4,.value,.seal-number,.class-title{font-family:"Cinzel", serif}
-    .kicker,.label,.tag,.chip,.nav a,.nav button,.btn,.small-btn,.vox-head,.section-index button{
+    h1,h2,h3,h4,.value,.seal-number,.class-title{font-family:"Cinzel",serif}
+    .kicker,.label,.tag,.chip,.nav a,.nav button,.btn,.small-btn,.vox-head,.section-index button,.witness-mark{
       font-family:"Inter",system-ui,sans-serif;
       text-transform:uppercase;
       letter-spacing:.16em;
       font-weight:900;
     }
 
-    .skip-link{
-      position:absolute;
-      left:16px;
-      top:-70px;
-      z-index:300;
-      padding:12px 15px;
-      border-radius:999px;
-      background:var(--acid);
-      color:#111607;
-      transition:.2s ease;
-      font-family:"Inter",sans-serif;
-      font-weight:900;
-    }
+    .skip-link{position:absolute;left:16px;top:-70px;z-index:300;padding:12px 15px;border-radius:999px;background:var(--acid);color:#111607;transition:.2s ease;font-family:"Inter",sans-serif;font-weight:900}
     .skip-link:focus{top:16px}
 
-    canvas.fx{
-      position:fixed;
-      inset:0;
-      width:100%;
-      height:100%;
-      pointer-events:none;
-    }
+    canvas.fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
     #sporeCanvas{z-index:0;opacity:.85}
     #ashCanvas{z-index:1;opacity:.35}
-    #sealCanvas{z-index:2;opacity:.55;mix-blend-mode:screen}
+    #sealCanvas{z-index:2;opacity:0;mix-blend-mode:screen;transition:opacity .8s var(--ease)}
+    body.seal-canvas-on #sealCanvas{opacity:.55}
 
-    .grain,.scanlines,.vignette{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-    }
-    .grain{
-      z-index:3;
-      opacity:.075;
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,.6) 0 1px, transparent 1px),
-        radial-gradient(circle at 80% 50%, rgba(255,255,255,.35) 0 1px, transparent 1px),
-        radial-gradient(circle at 50% 80%, rgba(255,255,255,.25) 0 1px, transparent 1px);
-      background-size:180px 180px,240px 240px,320px 320px;
-      mix-blend-mode:screen;
-    }
-    .scanlines{
-      z-index:4;
-      opacity:.07;
-      background:repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.12) 0 1px,
-        transparent 2px 8px
-      );
-    }
-    .vignette{
-      z-index:5;
-      background:
-        radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.78) 100%),
-        linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.55));
-    }
+    .grain,.scanlines,.vignette,.rust-veil{position:fixed;inset:0;pointer-events:none}
+    .grain{z-index:3;opacity:.075;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.6) 0 1px,transparent 1px),radial-gradient(circle at 80% 50%,rgba(255,255,255,.35) 0 1px,transparent 1px),radial-gradient(circle at 50% 80%,rgba(255,255,255,.25) 0 1px,transparent 1px);background-size:180px 180px,240px 240px,320px 320px;mix-blend-mode:screen}
+    .scanlines{z-index:4;opacity:.07;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.12) 0 1px,transparent 2px 8px)}
+    .vignette{z-index:5;background:radial-gradient(circle at center,transparent 40%,rgba(0,0,0,.78) 100%),linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.55))}
+    /* Seal-driven rust veil — scales 0→1 inversely to seal integrity */
+    .rust-veil{z-index:6;opacity:calc(1 - var(--seal));mix-blend-mode:multiply;background:radial-gradient(circle at 12% 8%,rgba(122,46,41,.55),transparent 30%),radial-gradient(circle at 88% 78%,rgba(155,99,57,.42),transparent 34%),radial-gradient(circle at 50% 50%,transparent 38%,rgba(60,20,12,.55) 92%);transition:opacity .8s var(--ease)}
 
-    /* BOOT / UNSEALING */
-    .boot{
-      position:fixed;
-      inset:0;
-      z-index:220;
-      display:grid;
-      place-items:center;
-      padding:18px;
-      background:
-        radial-gradient(circle at center, rgba(200,220,98,.10), transparent 24%),
-        radial-gradient(circle at center, rgba(0,0,0,.36), rgba(0,0,0,.96) 70%);
-      transition:opacity .85s var(--ease), visibility .85s var(--ease);
-    }
+    /* DESCENT TRANSITION */
+    .descent-veil{position:fixed;inset:0;z-index:240;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(200,220,98,.18),rgba(0,0,0,.4) 40%,rgba(0,0,0,.98));opacity:0;transition:opacity .55s var(--ease)}
+    .descent-veil.active{opacity:1;pointer-events:auto}
+    .descent-veil::after{content:"DESCENDING";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Cinzel",serif;font-size:clamp(1.6rem,4vw,3.4rem);letter-spacing:.4em;color:rgba(236,255,153,.92);text-shadow:0 0 40px rgba(200,220,98,.6);opacity:0;transition:opacity .35s ease .2s}
+    .descent-veil.active::after{opacity:1}
+    .descent-veil::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,rgba(236,255,153,.8),transparent);transform:translateY(-50%) scaleX(0);transform-origin:center;transition:transform .65s var(--ease) .15s}
+    .descent-veil.active::before{transform:translateY(-50%) scaleX(1)}
+
+    /* BOOT */
+    .boot{position:fixed;inset:0;z-index:220;display:grid;place-items:center;padding:18px;background:radial-gradient(circle at center,rgba(200,220,98,.10),transparent 24%),radial-gradient(circle at center,rgba(0,0,0,.36),rgba(0,0,0,.96) 70%);transition:opacity .85s var(--ease),visibility .85s var(--ease)}
     .boot.hide{opacity:0;visibility:hidden;pointer-events:none}
-
-    .boot-shell{
-      width:min(1180px,100%);
-      min-height:720px;
-      border:1px solid var(--line);
-      border-radius:38px;
-      background:
-        linear-gradient(135deg, rgba(8,12,8,.96), rgba(12,16,11,.88)),
-        radial-gradient(circle at 14% 18%, rgba(200,220,98,.08), transparent 24%),
-        radial-gradient(circle at 86% 82%, rgba(122,46,41,.08), transparent 28%);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      display:grid;
-      grid-template-columns:.95fr 1.05fr;
-      position:relative;
-      isolation:isolate;
-    }
-    .boot-shell::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at center, rgba(255,255,255,.02), transparent 62%),
-        linear-gradient(90deg, transparent, rgba(218,235,128,.04), transparent);
-      pointer-events:none;
-    }
-
-    .boot-left{
-      position:relative;
-      display:grid;
-      place-items:center;
-      min-height:720px;
-      border-right:1px solid rgba(198,216,112,.10);
-      overflow:hidden;
-    }
-
-    .seal-orbit{
-      position:relative;
-      width:min(450px,78%);
-      aspect-ratio:1/1;
-      display:grid;
-      place-items:center;
-    }
-
-    .seal-ring,
-    .seal-ring-2,
-    .seal-ring-3{
-      position:absolute;
-      border-radius:50%;
-      inset:0;
-      border:1px dashed rgba(218,235,128,.20);
-      animation:spin 42s linear infinite;
-    }
-    .seal-ring-2{
-      inset:12%;
-      border-style:solid;
-      border-color:rgba(218,235,128,.10);
-      animation-duration:28s;
-      animation-direction:reverse;
-    }
-    .seal-ring-3{
-      inset:24%;
-      border-style:dotted;
-      border-color:rgba(151,99,57,.22);
-      animation-duration:20s;
-    }
-
+    .boot-shell{width:min(1180px,100%);min-height:720px;border:1px solid var(--line);border-radius:38px;background:linear-gradient(135deg,rgba(8,12,8,.96),rgba(12,16,11,.88)),radial-gradient(circle at 14% 18%,rgba(200,220,98,.08),transparent 24%),radial-gradient(circle at 86% 82%,rgba(122,46,41,.08),transparent 28%);box-shadow:var(--shadow);overflow:hidden;display:grid;grid-template-columns:.95fr 1.05fr;position:relative;isolation:isolate}
+    .boot-shell::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(255,255,255,.02),transparent 62%),linear-gradient(90deg,transparent,rgba(218,235,128,.04),transparent);pointer-events:none}
+    .boot-left{position:relative;display:grid;place-items:center;min-height:720px;border-right:1px solid rgba(198,216,112,.10);overflow:hidden}
+    .seal-orbit{position:relative;width:min(450px,78%);aspect-ratio:1/1;display:grid;place-items:center}
+    .seal-ring,.seal-ring-2,.seal-ring-3{position:absolute;border-radius:50%;inset:0;border:1px dashed rgba(218,235,128,.20);animation:spin 42s linear infinite}
+    .seal-ring-2{inset:12%;border-style:solid;border-color:rgba(218,235,128,.10);animation-duration:28s;animation-direction:reverse}
+    .seal-ring-3{inset:24%;border-style:dotted;border-color:rgba(151,99,57,.22);animation-duration:20s}
     @keyframes spin{to{transform:rotate(360deg)}}
     @keyframes bootPulse{0%,100%{transform:scale(.985)}50%{transform:scale(1.015)}}
-    @keyframes riseIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    .seal-core{position:relative;width:46%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;border:1px solid rgba(218,235,128,.26);box-shadow:0 0 44px rgba(200,220,98,.16),inset 0 0 36px rgba(0,0,0,.34);animation:bootPulse 3.4s ease-in-out infinite;background:linear-gradient(180deg,rgba(6,10,7,.12),rgba(6,10,7,.72)),url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat}
+    .seal-node{position:absolute;left:50%;top:50%;width:122px;padding:10px 8px;border-radius:999px;border:1px solid rgba(218,235,128,.16);background:rgba(7,10,7,.80);color:#d8d0b4;font-family:"Inter",sans-serif;font-size:.56rem;font-weight:900;text-align:center;text-transform:uppercase;letter-spacing:.14em;transform:translate(-50%,-50%) rotate(var(--a)) translateY(-220px) rotate(calc(-1 * var(--a)));transition:.3s var(--ease)}
+    .seal-node.live{color:#101607;background:linear-gradient(180deg,var(--acid-hot),var(--acid));border-color:rgba(255,255,255,.55);box-shadow:0 0 36px rgba(200,220,98,.24)}
+    .boot-right{display:flex;flex-direction:column;justify-content:center;padding:34px;gap:16px}
+    .boot-kicker{color:var(--acid);font-family:"Inter",sans-serif;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:900}
+    .boot-title{margin:0;color:var(--text-strong);font-size:clamp(2.8rem,7vw,6.2rem);line-height:.86;letter-spacing:-.02em}
+    .boot-copy{margin:0;color:var(--muted);line-height:1.8;font-size:1.04rem;max-width:74ch}
+    .boot-litany{display:grid;gap:10px;margin-top:4px}
+    .boot-line{border:1px solid rgba(198,216,112,.10);border-radius:18px;background:rgba(6,9,6,.46);padding:14px 16px;color:#d8d0b4;line-height:1.6;opacity:.48;transform:translateY(8px);transition:.28s var(--ease)}
+    .boot-line.live{opacity:1;transform:none;border-color:rgba(218,235,128,.26);box-shadow:inset 0 0 24px rgba(200,220,98,.03)}
+    .boot-progress{margin-top:4px;height:12px;border-radius:999px;border:1px solid rgba(198,216,112,.12);background:rgba(255,255,255,.04);overflow:hidden}
+    .boot-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--blood),var(--rust),var(--acid),var(--acid-hot));box-shadow:0 0 24px rgba(200,220,98,.28);transition:width .24s linear}
+    .boot-actions{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+    .boot-note{color:var(--muted-2);font-size:.96rem;line-height:1.6}
 
-    .seal-core{
-      position:relative;
-      width:46%;
-      aspect-ratio:1/1;
-      border-radius:50%;
-      overflow:hidden;
-      border:1px solid rgba(218,235,128,.26);
-      box-shadow:0 0 44px rgba(200,220,98,.16), inset 0 0 36px rgba(0,0,0,.34);
-      animation:bootPulse 3.4s ease-in-out infinite;
-      background:
-        linear-gradient(180deg, rgba(6,10,7,.12), rgba(6,10,7,.72)),
-        url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;
-    }
+    .page{position:relative;z-index:10;width:min(var(--max),calc(100vw - 28px));margin:0 auto;padding:16px 0 62px}
 
-    .seal-node{
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:122px;
-      padding:10px 8px;
-      border-radius:999px;
-      border:1px solid rgba(218,235,128,.16);
-      background:rgba(7,10,7,.80);
-      color:#d8d0b4;
-      font-family:"Inter",sans-serif;
-      font-size:.56rem;
-      font-weight:900;
-      text-align:center;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      transform:
-        translate(-50%,-50%)
-        rotate(var(--a))
-        translateY(-220px)
-        rotate(calc(-1 * var(--a)));
-      transition:.3s var(--ease);
-    }
-    .seal-node.live{
-      color:#101607;
-      background:linear-gradient(180deg,var(--acid-hot),var(--acid));
-      border-color:rgba(255,255,255,.55);
-      box-shadow:0 0 36px rgba(200,220,98,.24);
-    }
-
-    .boot-right{
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      padding:34px;
-      gap:16px;
-    }
-    .boot-kicker{
-      color:var(--acid);
-      font-family:"Inter",sans-serif;
-      font-size:.68rem;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      font-weight:900;
-    }
-    .boot-title{
-      margin:0;
-      color:var(--text-strong);
-      font-size:clamp(2.8rem,7vw,6.2rem);
-      line-height:.86;
-      letter-spacing:-.02em;
-    }
-    .boot-copy{
-      margin:0;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:1.04rem;
-      max-width:74ch;
-    }
-
-    .boot-litany{
-      display:grid;
-      gap:10px;
-      margin-top:4px;
-    }
-    .boot-line{
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:18px;
-      background:rgba(6,9,6,.46);
-      padding:14px 16px;
-      color:#d8d0b4;
-      line-height:1.6;
-      opacity:.48;
-      transform:translateY(8px);
-      transition:.28s var(--ease);
-    }
-    .boot-line.live{
-      opacity:1;
-      transform:none;
-      border-color:rgba(218,235,128,.26);
-      box-shadow:inset 0 0 24px rgba(200,220,98,.03);
-    }
-
-    .boot-progress{
-      margin-top:4px;
-      height:12px;
-      border-radius:999px;
-      border:1px solid rgba(198,216,112,.12);
-      background:rgba(255,255,255,.04);
-      overflow:hidden;
-    }
-    .boot-progress span{
-      display:block;
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg, var(--blood), var(--rust), var(--acid), var(--acid-hot));
-      box-shadow:0 0 24px rgba(200,220,98,.28);
-      transition:width .24s linear;
-    }
-
-    .boot-actions{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-    .boot-note{
-      color:var(--muted-2);
-      font-size:.96rem;
-      line-height:1.6;
-    }
-
-    /* PAGE */
-    .page{
-      position:relative;
-      z-index:10;
-      width:min(var(--max),calc(100vw - 28px));
-      margin:0 auto;
-      padding:16px 0 62px;
-    }
-
-    .topbar{
-      position:sticky;
-      top:12px;
-      z-index:80;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      margin-bottom:18px;
-      padding:12px 14px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(7,10,7,.72);
-      backdrop-filter:blur(16px);
-      box-shadow:var(--shadow-soft);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      min-width:0;
-    }
-    .brand-mark{
-      width:48px;
-      height:48px;
-      flex:0 0 auto;
-      border-radius:50%;
-      border:1px solid var(--line-strong);
-      background:
-        linear-gradient(180deg, rgba(7,10,7,.08), rgba(7,10,7,.68)),
-        url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;
-      box-shadow:0 0 24px rgba(200,220,98,.14);
-    }
-    .brand strong{
-      display:block;
-      font-family:"Cinzel",serif;
-      letter-spacing:.04em;
-      line-height:1;
-    }
-    .brand span span{
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-size:.84rem;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width:58vw;
-      font-family:"Inter",sans-serif;
-    }
-
-    .nav{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:flex-end;
-    }
-
-    .btn,
-    .small-btn,
-    .nav a,
-    .nav button{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      border:1px solid rgba(198,216,112,.14);
-      border-radius:999px;
-      padding:11px 14px;
-      background:rgba(10,14,9,.65);
-      color:var(--text);
-      text-decoration:none;
-      cursor:pointer;
-      font-size:.70rem;
-      transition:transform .22s var(--ease), border-color .22s var(--ease), background .22s var(--ease), box-shadow .22s var(--ease);
-    }
-    .btn:hover,
-    .small-btn:hover,
-    .nav a:hover,
-    .nav button:hover{
-      transform:translateY(-2px);
-      border-color:var(--line-strong);
-      background:rgba(19,26,17,.90);
-      box-shadow:0 14px 28px rgba(0,0,0,.24);
-    }
-    .btn.primary,
-    .small-btn.primary{
-      background:linear-gradient(180deg, var(--acid-hot), var(--acid));
-      color:#0f150a;
-      border-color:rgba(255,255,255,.45);
-    }
+    .topbar{position:sticky;top:12px;z-index:80;display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;padding:12px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(7,10,7,.72);backdrop-filter:blur(16px);box-shadow:var(--shadow-soft)}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+    .brand-mark{width:48px;height:48px;flex:0 0 auto;border-radius:50%;border:1px solid var(--line-strong);background:linear-gradient(180deg,rgba(7,10,7,.08),rgba(7,10,7,.68)),url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;box-shadow:0 0 24px rgba(200,220,98,.14)}
+    .brand strong{display:block;font-family:"Cinzel",serif;letter-spacing:.04em;line-height:1}
+    .brand span span{display:block;margin-top:4px;color:var(--muted);font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw;font-family:"Inter",sans-serif}
+    .nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .btn,.small-btn,.nav a,.nav button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(198,216,112,.14);border-radius:999px;padding:11px 14px;background:rgba(10,14,9,.65);color:var(--text);text-decoration:none;cursor:pointer;font-size:.70rem;transition:transform .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease),box-shadow .22s var(--ease)}
+    .btn:hover,.small-btn:hover,.nav a:hover,.nav button:hover{transform:translateY(-2px);border-color:var(--line-strong);background:rgba(19,26,17,.90);box-shadow:0 14px 28px rgba(0,0,0,.24)}
+    .btn.primary,.small-btn.primary{background:linear-gradient(180deg,var(--acid-hot),var(--acid));color:#0f150a;border-color:rgba(255,255,255,.45)}
+    .btn.danger{background:linear-gradient(180deg,rgba(155,99,57,.6),rgba(122,46,41,.7));color:#fff1d8;border-color:rgba(255,200,160,.4)}
 
     /* HERO */
-    .hero{
-      position:relative;
-      min-height:740px;
-      border:1px solid var(--line);
-      border-radius:36px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:1.06fr .62fr;
-      gap:28px;
-      padding:30px;
-      isolation:isolate;
-    }
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-2;
-      background:
-        linear-gradient(100deg, rgba(3,6,3,.95) 0%, rgba(5,8,5,.78) 48%, rgba(5,8,5,.92) 100%),
-        linear-gradient(180deg, rgba(4,6,4,.05), rgba(2,3,2,.72)),
-        url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;
-      transform:scale(1.03);
-      transition:transform .8s var(--ease), filter .8s var(--ease);
-    }
-    .hero:hover::before{
-      transform:scale(1.06);
-      filter:saturate(1.05) contrast(1.05);
-    }
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-1;
-      background:
-        radial-gradient(circle at 82% 20%, rgba(200,220,98,.14), transparent 22%),
-        radial-gradient(circle at 10% 82%, rgba(151,99,57,.18), transparent 28%);
-    }
+    .hero{position:relative;min-height:740px;border:1px solid var(--line);border-radius:36px;overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:1.06fr .62fr;gap:28px;padding:30px;isolation:isolate}
+    .hero::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(100deg,rgba(3,6,3,.95) 0%,rgba(5,8,5,.78) 48%,rgba(5,8,5,.92) 100%),linear-gradient(180deg,rgba(4,6,4,.05),rgba(2,3,2,.72)),url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;transform:scale(1.03);transition:transform .8s var(--ease),filter .8s var(--ease)}
+    .hero:hover::before{transform:scale(1.06);filter:saturate(1.05) contrast(1.05)}
+    .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 82% 20%,rgba(200,220,98,.14),transparent 22%),radial-gradient(circle at 10% 82%,rgba(151,99,57,.18),transparent 28%)}
+    /* Rust-creep at hero corners as seal degrades */
+    .hero-rust{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:calc(1 - var(--seal));mix-blend-mode:multiply;background:radial-gradient(circle at 0% 0%,rgba(122,46,41,.55),transparent 28%),radial-gradient(circle at 100% 0%,rgba(155,99,57,.42),transparent 28%),radial-gradient(circle at 100% 100%,rgba(122,46,41,.5),transparent 30%),radial-gradient(circle at 0% 100%,rgba(155,99,57,.4),transparent 30%);transition:opacity .8s var(--ease)}
 
-    .hero-copy{
-      display:grid;
-      align-content:center;
-      min-height:660px;
-      max-width:930px;
-    }
-    .tag-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:18px;
-    }
-    .tag{
-      border:1px solid rgba(198,216,112,.14);
-      border-radius:999px;
-      background:rgba(7,11,6,.64);
-      padding:9px 12px;
-      color:var(--acid);
-      font-size:.64rem;
-    }
-
-    .hero h1{
-      margin:0;
-      max-width:10ch;
-      font-size:clamp(3.2rem,7vw,7rem);
-      line-height:.84;
-      letter-spacing:.01em;
-      color:var(--text-strong);
-      text-shadow:0 12px 44px rgba(0,0,0,.65);
-    }
-    .subtitle{
-      margin:16px 0 0;
-      font-family:"Cinzel",serif;
-      font-style:italic;
-      font-size:clamp(1.24rem,2vw,2rem);
-      color:var(--acid-hot);
-    }
-    .hook{
-      margin:18px 0 0;
-      max-width:820px;
-      color:#d9d0b4;
-      line-height:1.86;
-      font-size:1.08rem;
-    }
+    .hero-copy{display:grid;align-content:center;min-height:660px;max-width:930px}
+    .tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+    .tag{border:1px solid rgba(198,216,112,.14);border-radius:999px;background:rgba(7,11,6,.64);padding:9px 12px;color:var(--acid);font-size:.64rem}
+    .hero h1{margin:0;max-width:10ch;font-size:clamp(3.2rem,7vw,7rem);line-height:.84;letter-spacing:.01em;color:var(--text-strong);text-shadow:0 12px 44px rgba(0,0,0,.65)}
+    .subtitle{margin:16px 0 0;font-family:"Cinzel",serif;font-style:italic;font-size:clamp(1.24rem,2vw,2rem);color:var(--acid-hot)}
+    .hook{margin:18px 0 0;max-width:820px;color:#d9d0b4;line-height:1.86;font-size:1.08rem}
     .hook strong{color:var(--text-strong)}
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:24px;
-    }
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 
-    .subject-slate{
-      align-self:center;
-      display:grid;
-      gap:16px;
-      padding:18px;
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:rgba(8,11,8,.68);
-      backdrop-filter:blur(14px);
-      box-shadow:0 24px 44px rgba(0,0,0,.34);
-    }
-    .portrait{
-      position:relative;
-      min-height:360px;
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:26px;
-      overflow:hidden;
-      background:
-        linear-gradient(180deg, rgba(4,7,4,.08), rgba(4,7,4,.82)),
-        url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;
-    }
-    .portrait::before,
-    .portrait::after{
-      content:"";
-      position:absolute;
-      border-radius:50%;
-      inset:13%;
-      border:1px dashed rgba(218,235,128,.16);
-      animation:spin 40s linear infinite;
-    }
-    .portrait::after{
-      inset:26%;
-      border-style:solid;
-      border-color:rgba(218,235,128,.08);
-      animation-duration:58s;
-      animation-direction:reverse;
-    }
+    .subject-slate{align-self:center;display:grid;gap:16px;padding:18px;border:1px solid var(--line);border-radius:28px;background:rgba(8,11,8,.68);backdrop-filter:blur(14px);box-shadow:0 24px 44px rgba(0,0,0,.34);position:relative}
+    .subject-slate::after{content:"";position:absolute;right:-14px;top:-14px;width:90px;height:90px;background:radial-gradient(circle at 50% 50%,rgba(155,99,57,.7),rgba(122,46,41,.78) 56%,rgba(0,0,0,0) 70%);border-radius:50%;box-shadow:inset 0 0 18px rgba(0,0,0,.5),0 4px 18px rgba(0,0,0,.55);pointer-events:none;opacity:.85}
+    .subject-slate::before{content:"CONFIDENTIAL";position:absolute;right:0px;top:24px;width:96px;text-align:center;color:#fff1d8;font-family:"Inter",sans-serif;font-weight:900;font-size:.46rem;letter-spacing:.22em;transform:rotate(8deg);pointer-events:none;text-shadow:0 1px 0 rgba(0,0,0,.6);z-index:1}
+    .portrait{position:relative;min-height:360px;border:1px solid rgba(198,216,112,.10);border-radius:26px;overflow:hidden;background:linear-gradient(180deg,rgba(4,7,4,.08),rgba(4,7,4,.82)),url("Assets/Mortivus/mortivus-recovered-pict.jpeg") center/cover no-repeat;background-position:calc(50% + var(--track-x,0px)) calc(50% + var(--track-y,0px));transition:filter .35s var(--ease)}
+    body.subject-aware .portrait{filter:contrast(1.12) saturate(1.08) hue-rotate(-4deg)}
+    .portrait.glitch{filter:invert(.18) contrast(1.4) hue-rotate(20deg) saturate(.7)}
+    .portrait::before,.portrait::after{content:"";position:absolute;border-radius:50%;inset:13%;border:1px dashed rgba(218,235,128,.16);animation:spin 40s linear infinite}
+    .portrait::after{inset:26%;border-style:solid;border-color:rgba(218,235,128,.08);animation-duration:58s;animation-direction:reverse}
 
-    .slate-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-    .readout,.seal-box,.floating-note,.panel-card,.contradiction,.method-step,.wound-card,.hotspot-panel,.instrument-shell,.class-shell,.vox-card,.record-card,.note{
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:22px;
-      background:rgba(8,11,8,.60);
-      padding:16px;
-      position:relative;
-      overflow:hidden;
-    }
-    .readout .label,
-    .seal-box .label,
-    .panel-card .label,
-    .method-step .label,
-    .wound-card .label,
-    .record-card .label{
-      color:var(--acid);
-      font-size:.60rem;
-      margin-bottom:8px;
-    }
-    .value{
-      color:var(--text-strong);
-      line-height:1.16;
-      font-size:1.05rem;
-    }
+    .slate-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .readout,.seal-box,.floating-note,.panel-card,.contradiction,.method-step,.wound-card,.hotspot-panel,.instrument-shell,.class-shell,.vox-card,.record-card,.note{border:1px solid rgba(198,216,112,.10);border-radius:22px;background:rgba(8,11,8,.60);padding:16px;position:relative;overflow:hidden}
+    .readout .label,.seal-box .label,.panel-card .label,.method-step .label,.wound-card .label,.record-card .label{color:var(--acid);font-size:.60rem;margin-bottom:8px}
+    .value{color:var(--text-strong);line-height:1.16;font-size:1.05rem}
 
-    .seal-box{
-      grid-column:1/-1;
-      display:grid;
-      gap:10px;
-    }
-    .seal-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-    }
-    .seal-number{
-      color:var(--text-strong);
-      font-size:1.05rem;
-    }
-    .seal-bar{
-      height:14px;
-      border-radius:999px;
-      border:1px solid rgba(198,216,112,.12);
-      background:rgba(255,255,255,.04);
-      overflow:hidden;
-    }
-    .seal-fill{
-      height:100%;
-      width:100%;
-      background:linear-gradient(90deg,var(--acid),var(--rot),var(--rust),var(--blood));
-      box-shadow:0 0 22px rgba(218,235,128,.22);
-      transition:width .4s var(--ease);
-    }
-    .seal-warning{
-      color:var(--muted);
-      font-size:.92rem;
-      line-height:1.6;
-    }
+    .seal-box{grid-column:1/-1;display:grid;gap:10px}
+    .seal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .seal-number{color:var(--text-strong);font-size:1.05rem;font-family:"JetBrains Mono",monospace}
+    .seal-bar{height:14px;border-radius:999px;border:1px solid rgba(198,216,112,.12);background:rgba(255,255,255,.04);overflow:hidden;position:relative;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+    .seal-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--acid),var(--rot),var(--rust),var(--blood));box-shadow:0 0 22px rgba(218,235,128,.22);transition:width .5s var(--ease)}
+    .seal-fill::after{content:"";position:absolute;right:0;top:-2px;bottom:-2px;width:2px;background:rgba(255,241,201,.85);box-shadow:0 0 10px rgba(236,255,153,.7)}
+    .seal-warning{color:var(--muted);font-size:.92rem;line-height:1.6}
+    .reapply-btn{display:none;align-self:flex-start;margin-top:6px}
+    body.seal-low .reapply-btn{display:inline-flex}
 
     /* SECTIONS */
-    .section{
-      margin-top:22px;
-      border:1px solid var(--line);
-      border-radius:34px;
-      overflow:hidden;
-      background:linear-gradient(180deg, rgba(10,14,9,.76), rgba(5,8,5,.92));
-      box-shadow:var(--shadow);
-    }
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:18px;
-      flex-wrap:wrap;
-      padding:26px 26px 0;
-    }
-    .section-head h2{
-      margin:8px 0 0;
-      font-size:clamp(2rem,3.7vw,3.55rem);
-      line-height:.94;
-      color:var(--text-strong);
-    }
-    .section-head p{
-      margin:12px 0 0;
-      color:var(--muted);
-      line-height:1.8;
-      max-width:840px;
-    }
-    .section-chip{
-      border:1px solid rgba(198,216,112,.16);
-      border-radius:999px;
-      background:rgba(8,11,8,.62);
-      color:var(--acid);
-      padding:10px 14px;
-      font-size:.68rem;
-      white-space:nowrap;
-      font-family:"Inter",sans-serif;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-    }
+    .section{margin-top:22px;border:1px solid var(--line);border-radius:34px;overflow:hidden;background:linear-gradient(180deg,rgba(10,14,9,.76),rgba(5,8,5,.92));box-shadow:var(--shadow);position:relative}
+    .section.read::before{content:"READ";position:absolute;top:18px;right:24px;font-family:"Inter",sans-serif;font-weight:900;font-size:.5rem;letter-spacing:.22em;color:rgba(155,99,57,.7);border:1px solid rgba(155,99,57,.5);padding:5px 9px;border-radius:6px;transform:rotate(4deg);z-index:3;pointer-events:none}
+    .section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;padding:26px 26px 0}
+    .section-head h2{margin:8px 0 0;font-size:clamp(2rem,3.7vw,3.55rem);line-height:.94;color:var(--text-strong)}
+    .section-head p{margin:12px 0 0;color:var(--muted);line-height:1.8;max-width:840px}
+    .section-chip{border:1px solid rgba(198,216,112,.16);border-radius:999px;background:rgba(8,11,8,.62);color:var(--acid);padding:10px 14px;font-size:.68rem;white-space:nowrap;font-family:"Inter",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.18em}
 
-    .section-index{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      padding:20px 26px 0;
-    }
-    .section-index button{
-      border:1px solid rgba(198,216,112,.14);
-      border-radius:999px;
-      background:rgba(8,11,8,.44);
-      color:#ddd6ba;
-      padding:10px 12px;
-      cursor:pointer;
-      font-size:.58rem;
-      transition:.22s var(--ease);
-    }
-    .section-index button:hover,
-    .section-index button.active{
-      border-color:var(--line-strong);
-      background:rgba(24,31,19,.90);
-      color:var(--acid-hot);
-      transform:translateY(-2px);
-    }
+    /* SECTION SEAMS */
+    .seam{display:block;width:100%;height:42px;margin:0;color:rgba(198,216,112,.50);overflow:visible}
+    .seam svg{width:100%;height:100%;display:block}
 
-    .identity-grid,
-    .reliquary-grid,
-    .method-grid,
-    .panoply-grid,
-    .weapons-grid,
-    .campaign-grid,
-    .naming-grid,
-    .records-grid{
-      padding:24px 26px 28px;
-      display:grid;
-      gap:18px;
-    }
-
+    .identity-grid,.reliquary-grid,.method-grid,.panoply-grid,.weapons-grid,.campaign-grid,.naming-grid,.records-grid{padding:24px 26px 28px;display:grid;gap:18px}
     .identity-grid{grid-template-columns:.96fr 1.04fr}
     .reliquary-grid{grid-template-columns:1.06fr .94fr}
     .method-grid{grid-template-columns:.70fr 1fr}
@@ -729,537 +188,150 @@
     .naming-grid{grid-template-columns:.80fr 1.20fr}
     .records-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 
-    .image-stage{
-      position:relative;
-      min-height:540px;
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:28px;
-      overflow:hidden;
-      background:#080b08;
-    }
-    .image-stage img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      filter:saturate(1.02) contrast(1.02);
-      transition:transform .7s var(--ease), filter .7s var(--ease);
-    }
-    .image-stage:hover img{
-      transform:scale(1.04);
-      filter:saturate(1.05) contrast(1.06);
-    }
-    .image-label{
-      position:absolute;
-      left:18px;
-      right:18px;
-      bottom:18px;
-      color:var(--acid);
-      font-size:.75rem;
-      line-height:1.6;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-family:"Inter",sans-serif;
-      font-weight:900;
-    }
+    .image-stage{position:relative;min-height:540px;border:1px solid rgba(198,216,112,.10);border-radius:28px;overflow:hidden;background:#080b08}
+    .image-stage img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.02) contrast(1.02);transition:transform .7s var(--ease),filter .7s var(--ease)}
+    .image-stage:hover img{transform:scale(1.04);filter:saturate(1.05) contrast(1.06)}
+    .image-label{position:absolute;left:18px;right:18px;bottom:18px;color:var(--acid);font-size:.75rem;line-height:1.6;text-transform:uppercase;letter-spacing:.18em;font-family:"Inter",sans-serif;font-weight:900}
 
-    .panel-stack{
-      display:grid;
-      gap:14px;
-      align-content:start;
-    }
-    .panel-card h3,
-    .contradiction h3,
-    .method-step h3,
-    .wound-card h3,
-    .vox-card h3,
-    .record-card h3,
-    .class-title{
-      margin:8px 0 10px;
-      color:var(--text-strong);
-      font-size:1.45rem;
-      line-height:1.08;
-    }
-    .panel-card p,
-    .contradiction p,
-    .method-step p,
-    .wound-card p,
-    .vox-card p,
-    .record-card p,
-    .class-copy p,
-    .hotspot-panel p,
-    .instrument-copy p,
-    .note p{
-      margin:0;
-      color:#d5ccb0;
-      line-height:1.8;
-    }
+    .panel-stack{display:grid;gap:14px;align-content:start}
+    .panel-card h3,.contradiction h3,.method-step h3,.wound-card h3,.vox-card h3,.record-card h3,.class-title{margin:8px 0 10px;color:var(--text-strong);font-size:1.45rem;line-height:1.08}
+    .panel-card p,.contradiction p,.method-step p,.wound-card p,.vox-card p,.record-card p,.class-copy p,.hotspot-panel p,.instrument-copy p,.note p{margin:0;color:#d5ccb0;line-height:1.8}
 
-    .pressure-grid{
-      display:grid;
-      gap:10px;
-      margin-top:4px;
-    }
-    .pressure-row{
-      display:grid;
-      grid-template-columns:170px 1fr 54px;
-      gap:10px;
-      align-items:center;
-    }
-    .pressure-name{
-      color:var(--acid);
-      font-family:"Inter",sans-serif;
-      font-size:.62rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-weight:900;
-    }
-    .pressure-bar{
-      height:12px;
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
-      overflow:hidden;
-    }
-    .pressure-fill{
-      height:100%;
-      width:var(--w);
-      background:linear-gradient(90deg,var(--rot),var(--acid),var(--rust));
-      box-shadow:0 0 16px rgba(200,220,98,.16);
-    }
-    .pressure-num{
-      color:var(--text-strong);
-      font-family:"Cinzel",serif;
-      font-size:.95rem;
-      text-align:right;
-    }
+    .pressure-grid{display:grid;gap:10px;margin-top:4px}
+    .pressure-row{display:grid;grid-template-columns:170px 1fr 54px;gap:10px;align-items:center}
+    .pressure-name{color:var(--acid);font-family:"Inter",sans-serif;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:900}
+    .pressure-bar{height:12px;border:1px solid rgba(198,216,112,.10);border-radius:999px;background:rgba(255,255,255,.04);overflow:hidden}
+    .pressure-fill{height:100%;width:var(--w);background:linear-gradient(90deg,var(--rot),var(--acid),var(--rust));box-shadow:0 0 16px rgba(200,220,98,.16)}
+    .pressure-num{color:var(--text-strong);font-family:"Cinzel",serif;font-size:.95rem;text-align:right}
 
     /* RELIQUARY */
-    .reliquary-stage{
-      position:relative;
-      min-height:790px;
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:28px;
-      overflow:hidden;
-      background:#080b08;
-    }
-    .reliquary-stage img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+    .reliquary-stage{position:relative;min-height:790px;border:1px solid rgba(198,216,112,.10);border-radius:28px;overflow:hidden;background:#080b08}
+    .reliquary-stage img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .4s var(--ease)}
+    .reliquary-stage.focused img{filter:saturate(.6) brightness(.7) contrast(1.05)}
+    .hotspot{position:absolute;width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.78);background:rgba(200,220,98,.22);box-shadow:0 0 0 8px rgba(200,220,98,.08),0 0 24px rgba(200,220,98,.18);cursor:pointer;transition:.22s var(--ease);z-index:2;animation:hotspotPulse 2.4s ease-in-out infinite}
+    .hotspot:nth-of-type(2){animation-delay:.3s}.hotspot:nth-of-type(3){animation-delay:.6s}.hotspot:nth-of-type(4){animation-delay:.9s}.hotspot:nth-of-type(5){animation-delay:1.2s}.hotspot:nth-of-type(6){animation-delay:1.5s}
+    @keyframes hotspotPulse{0%,100%{box-shadow:0 0 0 8px rgba(200,220,98,.08),0 0 24px rgba(200,220,98,.18)}50%{box-shadow:0 0 0 14px rgba(200,220,98,.14),0 0 36px rgba(200,220,98,.32)}}
+    .hotspot:hover,.hotspot.active{transform:scale(1.18);background:rgba(200,220,98,.64);filter:saturate(1) brightness(1.2)}
+    .hotspot.active::after{content:"";position:absolute;left:50%;top:50%;width:96px;height:96px;border-radius:50%;border:1px solid rgba(236,255,153,.6);transform:translate(-50%,-50%);pointer-events:none;animation:focusRing .6s var(--ease)}
+    @keyframes focusRing{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:.8;transform:translate(-50%,-50%) scale(1)}}
+    .hotspot-label{position:absolute;padding:7px 10px;border-radius:999px;background:rgba(7,10,7,.86);border:1px solid rgba(198,216,112,.18);color:#e9dfc3;font-family:"Inter",sans-serif;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;transform:translateY(-50%);pointer-events:none;z-index:2}
+    .hotspot-panel{display:grid;gap:14px;align-content:start;min-height:790px}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .mini-card{border:1px solid rgba(198,216,112,.10);border-radius:16px;background:rgba(7,10,7,.56);padding:13px;color:#d5ccb0;line-height:1.6}
+    .mini-card strong{display:block;color:var(--acid);font-family:"Inter",sans-serif;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
 
-    .hotspot{
-      position:absolute;
-      width:28px;
-      height:28px;
-      border-radius:50%;
-      border:1px solid rgba(255,255,255,.78);
-      background:rgba(200,220,98,.22);
-      box-shadow:0 0 0 8px rgba(200,220,98,.08), 0 0 24px rgba(200,220,98,.18);
-      cursor:pointer;
-      transition:.22s var(--ease);
-      z-index:2;
-    }
-    .hotspot:hover,.hotspot.active{
-      transform:scale(1.18);
-      background:rgba(200,220,98,.64);
-    }
-    .hotspot-label{
-      position:absolute;
-      padding:7px 10px;
-      border-radius:999px;
-      background:rgba(7,10,7,.86);
-      border:1px solid rgba(198,216,112,.18);
-      color:#e9dfc3;
-      font-family:"Inter",sans-serif;
-      font-size:.66rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      white-space:nowrap;
-      transform:translateY(-50%);
-      pointer-events:none;
-      z-index:2;
-    }
-
-    .hotspot-panel{
-      display:grid;
-      gap:14px;
-      align-content:start;
-      min-height:790px;
-    }
-    .mini-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-    }
-    .mini-card{
-      border:1px solid rgba(198,216,112,.10);
-      border-radius:16px;
-      background:rgba(7,10,7,.56);
-      padding:13px;
-      color:#d5ccb0;
-      line-height:1.6;
-    }
-    .mini-card strong{
-      display:block;
-      color:var(--acid);
-      font-family:"Inter",sans-serif;
-      font-size:.64rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      margin-bottom:8px;
-    }
-
-    /* CONTRADICTIONS */
-    .contradictions{
-      padding:24px 26px 28px;
-      display:grid;
-      grid-template-columns:repeat(7,minmax(0,1fr));
-      gap:12px;
-    }
-    .contradiction{
-      min-height:246px;
-      padding:16px;
-      opacity:0;
-      transform:translateY(18px);
-      transition:opacity .65s var(--ease), transform .65s var(--ease), border-color .24s var(--ease);
-    }
-    .contradiction.reveal{
-      opacity:1;
-      transform:none;
-    }
-    .contradiction:hover{
-      border-color:rgba(218,235,128,.30);
-      transform:translateY(-2px);
-    }
-    .contradiction .num{
-      color:var(--acid-hot);
-      font-family:"Cinzel",serif;
-      font-size:2rem;
-      line-height:1;
-    }
+    /* CONTRADICTIONS — with rib armature */
+    .contradictions-wrap{position:relative;padding:24px 26px 28px}
+    .rib-svg{position:absolute;inset:24px 26px 28px 26px;pointer-events:none;z-index:0;opacity:.35}
+    .contradictions{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px}
+    .contradiction{min-height:246px;padding:16px;opacity:0;transform:translateY(18px);transition:opacity .65s var(--ease),transform .65s var(--ease),border-color .24s var(--ease),box-shadow .3s var(--ease);background:rgba(8,11,8,.72)}
+    .contradiction.reveal{opacity:1;transform:none}
+    .contradiction:hover{border-color:rgba(218,235,128,.30);transform:translateY(-2px);box-shadow:0 0 24px rgba(200,220,98,.18)}
+    .contradictions:hover .contradiction:not(:hover){transform:scale(.985);opacity:.84}
+    .contradiction .num{color:var(--acid-hot);font-family:"Cinzel",serif;font-size:2rem;line-height:1}
     .contradiction h3{font-size:1.08rem}
     .contradiction p{font-size:.92rem;line-height:1.65}
 
     /* METHOD */
-    .method-list{
-      display:grid;
-      gap:12px;
-      align-content:start;
-    }
-    .method-step{
-      display:grid;
-      grid-template-columns:54px 1fr;
-      gap:14px;
-      align-items:start;
-      opacity:0;
-      transform:translateY(18px);
-      transition:opacity .65s var(--ease), transform .65s var(--ease), border-color .24s var(--ease);
-    }
-    .method-step.reveal{
-      opacity:1;
-      transform:none;
-    }
-    .step-num{
-      width:44px;
-      height:44px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      border:1px solid var(--line-strong);
-      background:rgba(7,10,7,.70);
-      color:var(--acid-hot);
-      font-family:"Cinzel",serif;
-      font-weight:900;
-    }
+    .method-list{display:grid;gap:12px;align-content:start;position:relative}
+    .method-list::before{content:"";position:absolute;left:21px;top:54px;bottom:54px;width:1px;background:repeating-linear-gradient(to bottom,rgba(198,216,112,.4) 0 4px,transparent 4px 10px);z-index:0}
+    .method-step{display:grid;grid-template-columns:54px 1fr;gap:14px;align-items:start;opacity:0;transform:translateY(18px);transition:opacity .65s var(--ease),transform .65s var(--ease),border-color .24s var(--ease);position:relative;z-index:1}
+    .method-step.reveal{opacity:1;transform:none}
+    .step-num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-strong);background:rgba(7,10,7,.92);color:var(--acid-hot);font-family:"Cinzel",serif;font-weight:900;position:relative;z-index:2}
 
     /* PANOPLY */
-    .ability-grid{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:12px;
-      margin-top:14px;
-    }
+    .ability-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
 
     /* WEAPONS */
-    .instrument-list{
-      display:grid;
-      gap:12px;
-    }
-    .instrument-btn{
-      border:1px solid rgba(198,216,112,.12);
-      border-radius:20px;
-      background:rgba(8,11,8,.62);
-      color:var(--text);
-      padding:16px;
-      text-align:left;
-      cursor:pointer;
-      transition:.24s var(--ease);
-    }
-    .instrument-btn:hover,
-    .instrument-btn.active{
-      transform:translateY(-3px);
-      border-color:rgba(218,235,128,.30);
-      background:rgba(18,25,16,.92);
-    }
-    .instrument-btn strong{
-      display:block;
-      margin-top:8px;
-      color:var(--text-strong);
-      font-family:"Cinzel",serif;
-      font-size:1.26rem;
-    }
-    .instrument-btn span:last-child{
-      display:block;
-      margin-top:8px;
-      color:var(--muted);
-      line-height:1.55;
-    }
+    .instrument-list{display:grid;gap:12px}
+    .instrument-btn{border:1px solid rgba(198,216,112,.12);border-radius:20px;background:rgba(8,11,8,.62);color:var(--text);padding:16px;text-align:left;cursor:pointer;transition:.24s var(--ease)}
+    .instrument-btn:hover,.instrument-btn.active{transform:translateY(-3px);border-color:rgba(218,235,128,.30);background:rgba(18,25,16,.92)}
+    .instrument-btn strong{display:block;margin-top:8px;color:var(--text-strong);font-family:"Cinzel",serif;font-size:1.26rem}
+    .instrument-btn span:last-child{display:block;margin-top:8px;color:var(--muted);line-height:1.55}
+    .instrument-shell{padding:0;min-height:690px;display:grid;grid-template-rows:430px auto}
+    .instrument-shell img{width:100%;height:100%;object-fit:cover;display:block}
+    .instrument-copy{padding:20px;display:grid;gap:10px}
+    .instrument-copy h3{margin:0;color:var(--text-strong);font-size:2rem;line-height:1.02}
 
-    .instrument-shell{
-      padding:0;
-      min-height:690px;
-      display:grid;
-      grid-template-rows:430px auto;
-    }
-    .instrument-shell img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .instrument-copy{
-      padding:20px;
-      display:grid;
-      gap:10px;
-    }
-    .instrument-copy h3{
-      margin:0;
-      color:var(--text-strong);
-      font-size:2rem;
-      line-height:1.02;
-    }
+    /* CAMPAIGNS — three distinct treatments */
+    .campaign-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}
+    .wound-card{min-height:420px;display:grid;align-content:start;gap:10px;position:relative;overflow:hidden}
+    .wound-card.victory{box-shadow:0 0 0 1px rgba(218,235,128,.42) inset;background:linear-gradient(180deg,rgba(28,34,18,.78),rgba(8,11,8,.72))}
+    .wound-card.victory::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 92% 8%,rgba(218,235,128,.18),transparent 38%);pointer-events:none}
+    .wound-card.tragedy{box-shadow:0 0 0 1px rgba(122,46,41,.62) inset;background:linear-gradient(180deg,rgba(36,12,10,.82),rgba(8,5,5,.78))}
+    .wound-card.tragedy::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 8% 100%,rgba(122,46,41,.32),transparent 42%),linear-gradient(180deg,transparent 70%,rgba(122,46,41,.18));pointer-events:none}
+    .wound-card.pyrrhic{box-shadow:0 0 0 1px rgba(155,99,57,.52) inset;background:linear-gradient(180deg,rgba(34,22,12,.78),rgba(8,7,5,.78))}
+    .wound-card.pyrrhic::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 110%,rgba(155,99,57,.28),transparent 50%);pointer-events:none}
 
-    /* CAMPAIGNS */
-    .campaign-cards{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:16px;
-      margin-top:18px;
-    }
-    .wound-card{
-      min-height:420px;
-      display:grid;
-      align-content:start;
-      gap:10px;
-    }
-    .wound-card.tragedy{
-      box-shadow:0 0 0 1px rgba(122,46,41,.42) inset;
-    }
-
-    /* NAMING */
-    .class-buttons{
-      display:grid;
-      gap:10px;
-    }
-    .class-btn{
-      border:1px solid rgba(198,216,112,.12);
-      border-radius:18px;
-      background:rgba(8,11,8,.62);
-      color:var(--text);
-      padding:15px 16px;
-      text-align:left;
-      cursor:pointer;
-      transition:.22s var(--ease);
-      font-family:"Inter",sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      font-size:.80rem;
-      font-weight:900;
-    }
-    .class-btn:hover,
-    .class-btn.active{
-      transform:translateY(-2px);
-      border-color:rgba(218,235,128,.30);
-      background:rgba(18,25,16,.92);
-      color:var(--acid-hot);
-    }
-
-    .class-shell{
-      padding:0;
-      min-height:670px;
-      display:grid;
-      grid-template-rows:360px auto;
-    }
-    .class-shell img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .class-copy{
-      padding:20px;
-      display:grid;
-      gap:12px;
-    }
+    /* NAMING — wax stamp */
+    .class-buttons{display:grid;gap:10px}
+    .class-btn{border:1px solid rgba(198,216,112,.12);border-radius:18px;background:rgba(8,11,8,.62);color:var(--text);padding:15px 16px;text-align:left;cursor:pointer;transition:.22s var(--ease);font-family:"Inter",sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:.80rem;font-weight:900}
+    .class-btn:hover,.class-btn.active{transform:translateY(-2px);border-color:rgba(218,235,128,.30);background:rgba(18,25,16,.92);color:var(--acid-hot)}
+    .class-shell{padding:0;min-height:670px;display:grid;grid-template-rows:360px auto;position:relative;overflow:hidden}
+    .class-shell img{width:100%;height:100%;object-fit:cover;display:block}
+    .class-copy{padding:20px;display:grid;gap:12px;position:relative}
+    .stamp{position:absolute;right:18px;top:-44px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(180,70,50,.95),rgba(122,46,41,.92) 60%,rgba(60,20,12,.95));display:grid;place-items:center;text-align:center;color:#fff1d8;font-family:"Inter",sans-serif;font-weight:900;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;padding:12px;line-height:1.2;transform:rotate(-12deg) scale(.4);opacity:0;box-shadow:inset 0 0 22px rgba(0,0,0,.5),0 8px 26px rgba(0,0,0,.55);transition:transform .4s var(--ease),opacity .3s var(--ease);pointer-events:none;border:2px solid rgba(255,180,140,.4)}
+    .stamp.stamped{transform:rotate(-12deg) scale(1);opacity:.92}
+    .stamp.rotting{animation:stampRot 4s ease-in forwards}
+    @keyframes stampRot{0%{filter:none}50%{filter:blur(.4px) contrast(.9)}100%{filter:blur(1.2px) contrast(.7) saturate(.5);opacity:.32}}
 
     /* TESTIMONY / NOTES / RELATED */
-    .testimony-grid,
-    .notes-grid{
-      padding:24px 26px 28px;
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:16px;
-    }
-    .vox-card{
-      min-height:246px;
-      display:grid;
-      align-content:start;
-      gap:10px;
-      font-style:italic;
-    }
+    .testimony-grid,.notes-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .vox-card{min-height:246px;display:grid;align-content:start;gap:10px;font-style:italic}
     .vox-card p{font-size:1.04rem}
+    .notes-grid{grid-template-columns:1fr}
+    .note.hidden{max-height:0;opacity:0;overflow:hidden;padding-top:0;padding-bottom:0;border-width:0;transition:max-height .55s var(--ease),opacity .35s var(--ease),padding .35s var(--ease),border-width .35s var(--ease)}
+    .note.hidden.open{max-height:380px;opacity:1;padding:16px;border-width:1px}
+    .terminal-failure{display:none;border:1px solid rgba(122,46,41,.48);border-radius:22px;background:rgba(35,10,8,.62);padding:18px;color:#f0d7c8;line-height:1.75;font-family:"Inter",sans-serif}
+    .terminal-failure.show{display:block;animation:failurePulse 2.4s ease-in-out infinite}
+    @keyframes failurePulse{0%,100%{box-shadow:0 0 0 1px rgba(122,46,41,.5),0 0 0 rgba(122,46,41,0)}50%{box-shadow:0 0 0 1px rgba(122,46,41,.5),0 0 36px rgba(122,46,41,.34)}}
 
-    .notes-grid{
-      grid-template-columns:1fr;
-    }
-    .note.hidden{
-      max-height:0;
-      opacity:0;
-      overflow:hidden;
-      padding-top:0;
-      padding-bottom:0;
-      border-width:0;
-      transition:max-height .55s var(--ease), opacity .35s var(--ease), padding .35s var(--ease), border-width .35s var(--ease);
-    }
-    .note.hidden.open{
-      max-height:330px;
-      opacity:1;
-      padding:16px;
-      border-width:1px;
-    }
-    .terminal-failure{
-      display:none;
-      border:1px solid rgba(122,46,41,.48);
-      border-radius:22px;
-      background:rgba(35,10,8,.62);
-      padding:18px;
-      color:#f0d7c8;
-      line-height:1.75;
-      font-family:"Inter",sans-serif;
-    }
-    .terminal-failure.show{display:block}
+    .record-card{display:flex;flex-direction:column;gap:12px;min-height:320px}
+    .record-card .btn{align-self:flex-start;margin-top:auto}
 
-    .record-card{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      min-height:320px;
-    }
-    .record-card .btn{
-      align-self:flex-start;
-      margin-top:auto;
-    }
-
-    .footer-note{
-      margin-top:22px;
-      border:1px solid var(--line);
-      border-radius:26px;
-      background:rgba(8,11,8,.74);
-      padding:22px 24px;
-      color:var(--muted);
-      line-height:1.8;
-    }
-    .footer-note h3{
-      margin:8px 0 12px;
-      color:var(--text-strong);
-      font-size:clamp(2rem,4vw,3.2rem);
-      line-height:.96;
-    }
-    .footer-actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:18px;
-    }
+    .footer-note{margin-top:22px;border:1px solid var(--line);border-radius:26px;background:rgba(8,11,8,.74);padding:22px 24px;color:var(--muted);line-height:1.8}
+    .footer-note h3{margin:8px 0 12px;color:var(--text-strong);font-size:clamp(2rem,4vw,3.2rem);line-height:.96}
+    .footer-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 
     /* VOX */
-    .vox-panel{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      width:min(400px,calc(100vw - 32px));
-      z-index:90;
-      border:1px solid rgba(198,216,112,.18);
-      border-radius:22px;
-      overflow:hidden;
-      background:rgba(8,11,9,.86);
-      backdrop-filter:blur(12px);
-      box-shadow:var(--shadow);
-    }
-    .vox-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      padding:12px 14px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      color:var(--acid);
-      font-size:.68rem;
-    }
-    .vox-body{
-      padding:14px;
-      min-height:86px;
-      color:#ddd5ba;
-      line-height:1.72;
-      font-size:.95rem;
-    }
-    .vox-close{
-      background:none;
-      border:none;
-      color:#d9d2b7;
-      cursor:pointer;
-      font-size:1rem;
-      padding:0;
-    }
+    .vox-panel{position:fixed;right:16px;bottom:16px;width:min(400px,calc(100vw - 32px));z-index:90;border:1px solid rgba(198,216,112,.18);border-radius:22px;overflow:hidden;background:rgba(8,11,9,.92);backdrop-filter:blur(12px);box-shadow:var(--shadow);transition:transform .35s var(--ease),opacity .3s var(--ease)}
+    .vox-panel.hidden{transform:translateY(20px);opacity:0;pointer-events:none}
+    .vox-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--acid);font-size:.68rem;position:relative}
+    .vox-head::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(218,235,128,.4),transparent);animation:transHead 4s linear infinite}
+    @keyframes transHead{0%{transform:translateX(-30%)}100%{transform:translateX(30%)}}
+    .vox-head .live{display:inline-flex;align-items:center;gap:6px}
+    .vox-head .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acid-hot);box-shadow:0 0 10px var(--acid);animation:dotPulse 1.4s ease-in-out infinite}
+    @keyframes dotPulse{0%,100%{opacity:.5}50%{opacity:1}}
+    .vox-body{padding:14px;min-height:86px;color:#ddd5ba;line-height:1.72;font-size:.95rem;font-family:"JetBrains Mono",monospace}
+    .vox-body::after{content:"▮";color:var(--acid);margin-left:2px;animation:caret 1s steps(2,end) infinite}
+    @keyframes caret{0%,50%{opacity:1}51%,100%{opacity:0}}
+    .vox-body.no-caret::after{content:""}
+    .vox-close{background:none;border:none;color:#d9d2b7;cursor:pointer;font-size:1rem;padding:0}
 
-    @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{
-        animation:none !important;
-        transition:none !important;
-        scroll-behavior:auto !important;
-      }
-      canvas.fx{display:none !important}
-    }
+    .witness-mark{display:inline-block;margin-left:.25em;color:var(--acid);cursor:help;border-bottom:1px dotted rgba(218,235,128,.5);font-style:normal}
+    .witness-mark:hover{color:var(--acid-hot)}
+
+    /* MODAL */
+    .modal{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:18px;background:rgba(2,3,2,.76);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}
+    .modal.show{opacity:1;visibility:visible;pointer-events:auto}
+    .modal-frame{width:min(720px,100%);border:1px solid var(--line-strong);border-radius:24px;background:linear-gradient(180deg,rgba(18,21,12,.98),rgba(5,7,4,.99));padding:24px;display:grid;gap:12px}
+    .modal-frame h3{margin:0;color:var(--text-strong);font-size:1.7rem;line-height:1.05}
+    .modal-frame p{margin:0;color:#d5ccb0;line-height:1.78}
+    .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}canvas.fx{display:none !important}}
 
     @media (max-width:1280px){
-      .boot-shell,
-      .hero,
-      .identity-grid,
-      .reliquary-grid,
-      .method-grid,
-      .panoply-grid,
-      .weapons-grid,
-      .naming-grid{
-        grid-template-columns:1fr;
-      }
+      .boot-shell,.hero,.identity-grid,.reliquary-grid,.method-grid,.panoply-grid,.weapons-grid,.naming-grid{grid-template-columns:1fr}
       .boot-shell{min-height:auto}
       .boot-left{min-height:420px;border-right:0;border-bottom:1px solid rgba(198,216,112,.10)}
       .hero{min-height:auto}
       .hero-copy{min-height:auto;padding:44px 0 16px}
       .subject-slate{max-width:760px}
       .contradictions{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .campaign-cards,
-      .records-grid,
-      .testimony-grid{
-        grid-template-columns:1fr;
-      }
-      .reliquary-stage,
-      .hotspot-panel{min-height:auto}
+      .campaign-cards,.records-grid,.testimony-grid{grid-template-columns:1fr}
+      .reliquary-stage,.hotspot-panel{min-height:auto}
     }
-
     @media (max-width:820px){
       .page{width:min(100vw - 16px,var(--max));padding-top:10px}
       .topbar{flex-direction:column;align-items:flex-start;border-radius:24px}
@@ -1268,49 +340,17 @@
       .hero h1{font-size:clamp(3rem,15vw,5rem)}
       .hero-actions .btn{width:100%}
       .subject-slate{display:none}
-      .section,
-      .boot-shell{border-radius:28px}
-      .section-head,
-      .section-index,
-      .identity-grid,
-      .reliquary-grid,
-      .contradictions,
-      .method-grid,
-      .panoply-grid,
-      .weapons-grid,
-      .campaign-grid,
-      .naming-grid,
-      .testimony-grid,
-      .notes-grid,
-      .records-grid{
-        padding-left:18px;
-        padding-right:18px;
-      }
+      .section,.boot-shell{border-radius:28px}
+      .section-head,.identity-grid,.reliquary-grid,.contradictions-wrap,.method-grid,.panoply-grid,.weapons-grid,.campaign-grid,.naming-grid,.testimony-grid,.notes-grid,.records-grid{padding-left:18px;padding-right:18px}
       .reliquary-stage{min-height:520px}
-      .mini-grid,
-      .ability-grid,
-      .slate-grid{
-        grid-template-columns:1fr;
-      }
-      .pressure-row{
-        grid-template-columns:1fr;
-        gap:6px;
-      }
+      .mini-grid,.ability-grid,.slate-grid{grid-template-columns:1fr}
+      .pressure-row{grid-template-columns:1fr;gap:6px}
       .hotspot-label{display:none}
-      .instrument-shell,
-      .class-shell{
-        grid-template-rows:260px auto;
-        min-height:auto;
-      }
+      .instrument-shell,.class-shell{grid-template-rows:260px auto;min-height:auto}
       .boot-right{padding:22px}
       .seal-node{display:none}
-      .campaign-cards,
-      .records-grid,
-      .testimony-grid,
-      .contradictions,
-      .ability-grid{
-        grid-template-columns:1fr;
-      }
+      .campaign-cards,.records-grid,.testimony-grid,.contradictions,.ability-grid{grid-template-columns:1fr}
+      .rib-svg{display:none}
     }
   </style>
 </head>
@@ -1323,6 +363,8 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="scanlines" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
+  <div class="rust-veil" aria-hidden="true"></div>
+  <div class="descent-veil" id="descentVeil" aria-hidden="true"></div>
 
   <div class="boot" id="boot" role="dialog" aria-modal="true" aria-label="Mortivus Classarion file unsealing">
     <div class="boot-shell">
@@ -1332,7 +374,6 @@
           <div class="seal-ring-2"></div>
           <div class="seal-ring-3"></div>
           <div class="seal-core"></div>
-
           <div class="seal-node" style="--a:0deg">Name</div>
           <div class="seal-node" style="--a:60deg">Office</div>
           <div class="seal-node" style="--a:120deg">Method</div>
@@ -1341,14 +382,10 @@
           <div class="seal-node" style="--a:300deg">Becoming</div>
         </div>
       </div>
-
       <div class="boot-right">
         <div class="boot-kicker">Restricted Subject Chamber // Septicarium Internal Access</div>
         <h1 class="boot-title">Mortivus Classarion</h1>
-        <p class="boot-copy">
-          This chamber does not open by password. It opens by pressure. The archive does not ask whether the subject is safe to study. It asks how long the seal can survive the study.
-        </p>
-
+        <p class="boot-copy">This chamber does not open by password. It opens by pressure. The archive does not ask whether the subject is safe to study. It asks how long the seal can survive the study.</p>
         <div class="boot-litany" id="bootLitany">
           <div class="boot-line">Name recognized. Classification withheld.</div>
           <div class="boot-line">Portrait cage warming beneath witness pressure.</div>
@@ -1357,9 +394,7 @@
           <div class="boot-line">Seal courtesy withdrawn from the subject.</div>
           <div class="boot-line">Containment open. Proceed under watched conditions.</div>
         </div>
-
         <div class="boot-progress"><span id="bootBar"></span></div>
-
         <div class="boot-actions">
           <div class="boot-note">The file may be entered early. The unsealing will continue beneath you.</div>
           <button class="small-btn primary" id="skipBoot" type="button">Enter Chamber</button>
@@ -1370,18 +405,14 @@
 
   <main class="page" id="main">
     <header class="topbar">
-      <a class="brand" href="plaguebound-dossier.html" aria-label="Return to Plaguebound Dossier">
+      <a class="brand" href="plaguebound-dossier.html" data-descend="dossier" aria-label="Return to Plaguebound Dossier">
         <div class="brand-mark" aria-hidden="true"></div>
-        <span>
-          <strong>Mortivus Classarion</strong>
-          <span>The Septicarium / Restricted Subject Chamber / Classification Refused</span>
-        </span>
+        <span><strong>Mortivus Classarion</strong><span>The Septicarium / Restricted Subject Chamber / Classification Refused</span></span>
       </a>
-
       <nav class="nav" aria-label="Subject chamber navigation">
-        <a href="index.html">Command Deck</a>
-        <a href="plaguebound-annals.html">Annals</a>
-        <a href="plaguebound-dossier.html">Dossier</a>
+        <a href="index.html" data-descend="command">Command Deck</a>
+        <a href="plaguebound-annals.html" data-descend="annals">Annals</a>
+        <a href="plaguebound-dossier.html" data-descend="dossier">Dossier</a>
         <a href="#reliquary">Reliquary</a>
         <a href="#method">Method</a>
         <a href="#naming">Naming</a>
@@ -1390,26 +421,18 @@
     </header>
 
     <section class="hero watch-section" data-vox="The subject is not advised of full record. That courtesy has been withheld from him." aria-labelledby="heroTitle">
+      <div class="hero-rust" aria-hidden="true"></div>
       <div class="hero-copy">
         <div class="tag-row">
           <span class="tag">Internal Observation File</span>
           <span class="tag">Subject Not Advised</span>
           <span class="tag">Seal Integrity Unstable</span>
         </div>
-
-        <h1 id="heroTitle">Mortivus Classarion</h1>
+        <h1 id="heroTitle">Mortivus Classarion<span class="witness-mark" title="Appears 7 times across the Annals">✠</span></h1>
         <div class="subtitle">Blessed by Nurgle. Unfinished by design.</div>
-
-        <p class="hook">
-          The Septicarium does not preserve Mortivus because he is known. It preserves him because every name placed upon him has begun to rot.
-        </p>
-        <p class="hook">
-          He commands <strong>The Rotfather’s Vanguard</strong> as a plaguebound war-master of uncertain station: champion, contagion-lord, shrine-armored butcher, omen-bearer, and perhaps the unfinished outline of a more terrible title.
-        </p>
-        <p class="hook">
-          This chamber is not public recital. It is internal plague-intelligence, loyal in purpose, unstable in implication, and increasingly difficult to keep sealed.
-        </p>
-
+        <p class="hook">The Septicarium does not preserve Mortivus because he is known. It preserves him because every name placed upon him has begun to rot.</p>
+        <p class="hook">He commands <strong>The Rotfather's Vanguard</strong> as a plaguebound war-master of uncertain station: champion, contagion-lord, shrine-armored butcher, omen-bearer, and perhaps the unfinished outline of a more terrible title.</p>
+        <p class="hook">This chamber is not public recital. It is internal plague-intelligence, loyal in purpose, unstable in implication, and increasingly difficult to keep sealed.</p>
         <div class="hero-actions">
           <a class="btn primary" href="#reliquary">Open Reliquary Slate</a>
           <a class="btn" href="#contradictions">Read Contradictions</a>
@@ -1418,25 +441,26 @@
       </div>
 
       <aside class="subject-slate" aria-label="Subject identity slate">
-        <div class="portrait" aria-hidden="true"></div>
-
+        <div class="portrait" id="portrait" aria-hidden="true"></div>
         <div class="slate-grid">
-          <div class="readout"><div class="label">Warhost</div><div class="value">The Rotfather’s Vanguard</div></div>
+          <div class="readout"><div class="label">Warhost</div><div class="value">The Rotfather's Vanguard</div></div>
           <div class="readout"><div class="label">Patron</div><div class="value">Grandfather Nurgle</div></div>
           <div class="readout"><div class="label">Station</div><div class="value">Classification Refused</div></div>
           <div class="readout"><div class="label">Temperament</div><div class="value">Patient. Ritual. Exacting.</div></div>
-
           <div class="seal-box">
             <div class="seal-top">
               <div class="label">Seal Integrity</div>
               <div class="seal-number" id="sealValue">100%</div>
             </div>
-            <div class="seal-bar"><div class="seal-fill" id="sealFill"></div></div>
-            <div class="seal-warning" id="sealWarning">Observation remains contained. The subject has not yet turned toward the file.</div>
+            <div class="seal-bar" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Seal integrity"><div class="seal-fill" id="sealFill"></div></div>
+            <div class="seal-warning" id="sealWarning" aria-live="polite">Observation remains contained. The subject has not yet turned toward the file.</div>
+            <button class="btn danger reapply-btn" type="button" id="reapplyBtn">Reapply Seal at Cost</button>
           </div>
         </div>
       </aside>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L700 21 M820 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="760" cy="21" r="12" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="760" cy="21" r="3" fill="currentColor"/></svg></div>
 
     <section class="section watch-section" id="identity" data-vox="Every rank placed upon him behaves like a bandage over a wound that keeps expanding." aria-labelledby="identityTitle">
       <div class="section-head">
@@ -1447,19 +471,16 @@
         </div>
         <div class="section-chip">Patron-Center Record</div>
       </div>
-
       <div class="identity-grid">
         <div class="image-stage">
-          <img src="Assets/Mortivus/mortivus-dossier-wall.jpeg" alt="Dossier wall fragment of Mortivus Classarion">
+          <img src="Assets/Mortivus/mortivus-dossier-wall.jpeg" alt="Dossier wall fragment of Mortivus Classarion" loading="lazy">
           <div class="image-label">Dossier-wall fragment // titles present as symptoms // final station withheld</div>
         </div>
-
         <div class="panel-stack">
           <article class="panel-card">
             <div class="label">Classification Pressure</div>
             <h3>The Names Competing Over Him</h3>
             <p>Mortivus remains useful because no single station can hold him without remainder. The Septicarium therefore preserves several truths at once.</p>
-
             <div class="pressure-grid">
               <div class="pressure-row"><div class="pressure-name">Plague Champion</div><div class="pressure-bar"><div class="pressure-fill" style="--w:72%"></div></div><div class="pressure-num">72%</div></div>
               <div class="pressure-row"><div class="pressure-name">Lord of Contagion</div><div class="pressure-bar"><div class="pressure-fill" style="--w:81%"></div></div><div class="pressure-num">81%</div></div>
@@ -1469,7 +490,6 @@
               <div class="pressure-row"><div class="pressure-name">Final Classification</div><div class="pressure-bar"><div class="pressure-fill" style="--w:100%"></div></div><div class="pressure-num">REFUSED</div></div>
             </div>
           </article>
-
           <article class="panel-card">
             <div class="label">Archive Premise</div>
             <h3>Why He Is Watched</h3>
@@ -1478,6 +498,8 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L740 21 M780 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none"/><path d="M750 12 L770 30 M750 30 L770 12" stroke="currentColor" stroke-width="1.4"/></svg></div>
 
     <section class="section watch-section" id="reliquary" data-vox="The armor has outlived several explanations. It is not worn. It is accumulated." aria-labelledby="reliquaryTitleMain">
       <div class="section-head">
@@ -1488,51 +510,43 @@
         </div>
         <div class="section-chip">Interactive Examination</div>
       </div>
-
       <div class="reliquary-grid">
-        <div class="reliquary-stage">
-          <img src="Assets/Mortivus/mortivus-full-reliquary.jpeg" alt="Reliquary containment image of Mortivus Classarion">
-
+        <div class="reliquary-stage" id="reliquaryStage">
+          <img src="Assets/Mortivus/mortivus-full-reliquary.jpeg" alt="Reliquary containment image of Mortivus Classarion" loading="lazy">
           <button class="hotspot active" style="left:52%;top:18%;" data-key="helm" aria-label="Helm iconography"></button>
           <div class="hotspot-label" style="left:57%;top:18%;">Helm Iconography</div>
-
           <button class="hotspot" style="left:67%;top:38%;" data-key="pauldrons" aria-label="Rot-layered pauldrons"></button>
           <div class="hotspot-label" style="left:72%;top:38%;">Rot-Layered Pauldrons</div>
-
           <button class="hotspot" style="left:58%;top:58%;" data-key="plate" aria-label="Shrine plate mass"></button>
           <div class="hotspot-label" style="left:63%;top:58%;">Shrine-Plate Mass</div>
-
           <button class="hotspot" style="left:36%;top:54%;" data-key="mercy" aria-label="Mercy-Sickle reach"></button>
           <div class="hotspot-label" style="left:13%;top:54%;">Mercy-Sickle Reach</div>
-
           <button class="hotspot" style="left:69%;top:65%;" data-key="chain" aria-label="Censer and tally chains"></button>
           <div class="hotspot-label" style="left:74%;top:65%;">Censer &amp; Tally-Chains</div>
-
           <button class="hotspot" style="left:49%;top:77%;" data-key="greaves" aria-label="Greaves of close advance"></button>
           <div class="hotspot-label" style="left:32%;top:77%;">Greaves of Close Advance</div>
         </div>
-
         <aside class="hotspot-panel">
           <div>
             <div class="kicker" id="reliquarySub">Reliquary Examination</div>
             <h3 id="reliquaryTitle">Helm Iconography</h3>
             <p id="reliquaryBody">The helm is not a straightforward line-piece. Witnesses describe a shrine-mask silhouette whose faceplate is less visor than proclamation. Almost all records preserve the same impression: a sealed countenance built not to protect identity, but to deny the enemy the comfort of reading one.</p>
           </div>
-
           <div class="mini-grid">
             <div class="mini-card"><strong>Battlefield Function</strong><span id="reliquaryFunction">Suppresses personality into office. Mortivus is encountered first as role, then as presence.</span></div>
             <div class="mini-card"><strong>Spiritual Interpretation</strong><span id="reliquarySpirit">The helm does not conceal Mortivus. It turns him into verdict.</span></div>
             <div class="mini-card"><strong>Archive Suspicion</strong><span id="reliquaryRisk">Several servitor transcripts report recurring dreams after prolonged study.</span></div>
             <div class="mini-card"><strong>Witness Effect</strong><span id="reliquaryFear">Targets describe the sensation that judgment has arrived before violence.</span></div>
           </div>
-
           <div class="panel-card">
             <div class="label">Internal Note</div>
-            <p id="reliquaryNote">Mortivus’ equipment behaves as theology made metal. Each retained surface communicates doctrine: inevitability, patience, and the collapse of false distinctions between body, temple, and siege-engine.</p>
+            <p id="reliquaryNote">Mortivus' equipment behaves as theology made metal. Each retained surface communicates doctrine: inevitability, patience, and the collapse of false distinctions between body, temple, and siege-engine.</p>
           </div>
         </aside>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="6 8"/></svg></div>
 
     <section class="section watch-section" id="contradictions" data-vox="The contradictions are not errors. They are ribs around the thing trying to be born." aria-labelledby="contradictionsTitle">
       <div class="section-head">
@@ -1543,19 +557,35 @@
         </div>
         <div class="section-chip">Contradiction Preserved</div>
       </div>
-
-      <div class="contradictions">
-        <article class="contradiction"><div class="num">I</div><h3>Champion / Lord</h3><p>He is called champion, yet commands as lord.</p></article>
-        <article class="contradiction"><div class="num">II</div><h3>Relic / Strategist</h3><p>He moves like a relic, yet thinks like a siege-cogitator.</p></article>
-        <article class="contradiction"><div class="num">III</div><h3>Mercy / No Salvation</h3><p>He offers mercy, yet leaves no salvation inside it.</p></article>
-        <article class="contradiction"><div class="num">IV</div><h3>Defeat / Refinement</h3><p>He lost the Pallid Reversal, yet became more dangerous after defeat.</p></article>
-        <article class="contradiction"><div class="num">V</div><h3>Blessed / Unfinished</h3><p>He is blessed by Nurgle, yet still appears unfinished.</p></article>
-        <article class="contradiction"><div class="num">VI</div><h3>Memory / Forgetting</h3><p>He preserves memory, yet weaponizes what the enemy forgets to question.</p></article>
-        <article class="contradiction"><div class="num">VII</div><h3>Recorded / Recording</h3><p>He is recorded by the archive, yet may be shaping the record himself.</p></article>
+      <div class="contradictions-wrap">
+        <svg class="rib-svg" viewBox="0 0 1400 320" preserveAspectRatio="none" aria-hidden="true">
+          <defs><linearGradient id="ribGrad" x1="0" x2="1"><stop offset="0" stop-color="rgba(198,216,112,.55)"/><stop offset=".5" stop-color="rgba(155,99,57,.5)"/><stop offset="1" stop-color="rgba(198,216,112,.55)"/></linearGradient></defs>
+          <line x1="50" y1="160" x2="1350" y2="160" stroke="url(#ribGrad)" stroke-width="2"/>
+          <path d="M100 160 Q140 60 180 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <path d="M286 160 Q326 50 366 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <path d="M472 160 Q512 40 552 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <path d="M658 160 Q698 30 738 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <path d="M844 160 Q884 40 924 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <path d="M1030 160 Q1070 50 1110 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <path d="M1216 160 Q1256 60 1296 160" fill="none" stroke="rgba(198,216,112,.45)" stroke-width="1.4"/>
+          <circle cx="50" cy="160" r="6" fill="rgba(198,216,112,.6)"/>
+          <circle cx="1350" cy="160" r="6" fill="rgba(198,216,112,.6)"/>
+        </svg>
+        <div class="contradictions">
+          <article class="contradiction" tabindex="0"><div class="num">I</div><h3>Champion / Lord</h3><p>He is called champion, yet commands as lord.</p></article>
+          <article class="contradiction" tabindex="0"><div class="num">II</div><h3>Relic / Strategist</h3><p>He moves like a relic, yet thinks like a siege-cogitator.</p></article>
+          <article class="contradiction" tabindex="0"><div class="num">III</div><h3>Mercy / No Salvation</h3><p>He offers mercy, yet leaves no salvation inside it.</p></article>
+          <article class="contradiction" tabindex="0"><div class="num">IV</div><h3>Defeat / Refinement</h3><p>He lost the Pallid Reversal, yet became more dangerous after defeat.</p></article>
+          <article class="contradiction" tabindex="0"><div class="num">V</div><h3>Blessed / Unfinished</h3><p>He is blessed by Nurgle, yet still appears unfinished.</p></article>
+          <article class="contradiction" tabindex="0"><div class="num">VI</div><h3>Memory / Forgetting</h3><p>He preserves memory, yet weaponizes what the enemy forgets to question.</p></article>
+          <article class="contradiction" tabindex="0"><div class="num">VII</div><h3>Recorded / Recording</h3><p>He is recorded by the archive, yet may be shaping the record himself.</p></article>
+        </div>
       </div>
     </section>
 
-    <section class="section watch-section" id="method" data-vox="The blade is not the first weapon. The first weapon is the enemy’s need to believe its walls still mean something." aria-labelledby="methodTitle">
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L730 21 M790 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none"/><rect x="745" y="11" width="30" height="20" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="760" y1="11" x2="760" y2="31" stroke="currentColor" stroke-width="1.1"/></svg></div>
+
+    <section class="section watch-section" id="method" data-vox="The blade is not the first weapon. The first weapon is the enemy's need to believe its walls still mean something." aria-labelledby="methodTitle">
       <div class="section-head">
         <div>
           <div class="kicker">The Classarion Method</div>
@@ -1564,13 +594,11 @@
         </div>
         <div class="section-chip">Command Doctrine</div>
       </div>
-
       <div class="method-grid">
         <div class="image-stage">
-          <img src="Assets/Mortivus/mortivus-command-throne.jpeg" alt="Mortivus Classarion command sanctum">
+          <img src="Assets/Mortivus/mortivus-command-throne.jpeg" alt="Mortivus Classarion command sanctum" loading="lazy">
           <div class="image-label">Command sanctum // silence as pressure // decision before violence</div>
         </div>
-
         <div class="method-list">
           <article class="method-step"><div class="step-num">I</div><div><div class="label">Method</div><h3>Let the Enemy Keep Its Walls</h3><p>Immediate breach is often vulgar. A fortress that still stands can be made to betray itself more thoroughly.</p></div></article>
           <article class="method-step"><div class="step-num">II</div><div><div class="label">Method</div><h3>Corrupt What the Walls Mean</h3><p>Sanctity, chain of command, oath, prayer, and discipline are turned into infection routes.</p></div></article>
@@ -1581,29 +609,28 @@
       </div>
     </section>
 
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="2 8"/></svg></div>
+
     <section class="section watch-section" id="panoply" data-vox="The plate is a shrine that chose locomotion. Its wounds are curated." aria-labelledby="panoplyTitle">
       <div class="section-head">
         <div>
           <div class="kicker">Panoply // Armor Anatomy</div>
           <h2 id="panoplyTitle">The Burdened Panoply</h2>
-          <p>Mortivus’ armor is not maintained as equipment. It is allowed to become a record.</p>
+          <p>Mortivus' armor is not maintained as equipment. It is allowed to become a record.</p>
         </div>
         <div class="section-chip">Relic-Warplate</div>
       </div>
-
       <div class="panoply-grid">
         <div class="image-stage">
-          <img src="Assets/Mortivus/mortivus-armor-closeup.jpeg" alt="Close study of Mortivus Classarion armor">
+          <img src="Assets/Mortivus/mortivus-armor-closeup.jpeg" alt="Close study of Mortivus Classarion armor" loading="lazy">
           <div class="image-label">Close study // shrine-mask optics // rust as curation // plate as sermon</div>
         </div>
-
         <div class="panel-stack">
           <article class="panel-card">
             <div class="label">Close Study</div>
             <h3>Ruin Is Selection</h3>
             <p>The war-plate is marked by corrosion not as neglect, but as ornament. Brass trim buckles outward like infected architecture. Chains carry censers, seals, finger-bones, cracked tags, and oath-plates cut from the dead.</p>
           </article>
-
           <div class="ability-grid">
             <article class="panel-card"><div class="label">I</div><h3>Spiritual Decay</h3><p>He attacks the meaning-structures that allow resistance to hold.</p></article>
             <article class="panel-card"><div class="label">II</div><h3>Attritional Resilience</h3><p>He survives punishment that should have ended lesser commanders.</p></article>
@@ -1612,6 +639,8 @@
         </div>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L740 21 M780 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none"/><path d="M745 14 L775 14 M745 28 L775 28 M760 8 L760 34" stroke="currentColor" stroke-width="1.2"/></svg></div>
 
     <section class="section watch-section" id="weapons" data-vox="The blade is only the visible part of the judgement." aria-labelledby="weaponsTitle">
       <div class="section-head">
@@ -1622,39 +651,25 @@
         </div>
         <div class="section-chip">Interactive Weapon Reliquary</div>
       </div>
-
       <div class="weapons-grid">
         <div class="instrument-list">
-          <button class="instrument-btn active" type="button" data-instrument="mercy">
-            <span class="label">First Instrument</span>
-            <strong>The Mercy-Sickle</strong>
-            <span>The argument that ends the body.</span>
-          </button>
-
-          <button class="instrument-btn" type="button" data-instrument="rite">
-            <span class="label">Second Instrument</span>
-            <strong>The Rite-Spitter</strong>
-            <span>The sermon that enters through wound and breath.</span>
-          </button>
-
-          <button class="instrument-btn" type="button" data-instrument="tally">
-            <span class="label">Third Instrument</span>
-            <strong>The Tally-Chain</strong>
-            <span>The count by which the archive decides who mattered.</span>
-          </button>
+          <button class="instrument-btn active" type="button" data-instrument="mercy"><span class="label">First Instrument</span><strong>The Mercy-Sickle<span class="witness-mark" title="Dedicated relic chamber preserved">✠</span></strong><span>The argument that ends the body.</span></button>
+          <button class="instrument-btn" type="button" data-instrument="rite"><span class="label">Second Instrument</span><strong>The Rite-Spitter</strong><span>The sermon that enters through wound and breath.</span></button>
+          <button class="instrument-btn" type="button" data-instrument="tally"><span class="label">Third Instrument</span><strong>The Tally-Chain</strong><span>The count by which the archive decides who mattered.</span></button>
         </div>
-
         <article class="instrument-shell">
-          <img src="Assets/Mortivus/mortivus-weapons.jpeg" alt="Mortivus Classarion weapon reliquary">
+          <img src="Assets/Mortivus/mortivus-weapons.jpeg" alt="Mortivus Classarion weapon reliquary" loading="lazy">
           <div class="instrument-copy">
             <div class="kicker" id="instrumentKicker">First Instrument</div>
             <h3 id="instrumentTitle">The Mercy-Sickle</h3>
             <p id="instrumentText">Mortivus does not swing the Mercy-Sickle like a berserker. He uses it like a final argument. The blade appears once resistance has already been spiritually softened and the chosen target has begun to understand that death is not the only thing being harvested.</p>
-            <a class="btn" id="instrumentLink" href="the-mercy-sickle.html">Open Dedicated Relic Chamber</a>
+            <a class="btn" id="instrumentLink" href="the-mercy-sickle.html" data-descend="relic">Open Dedicated Relic Chamber</a>
           </div>
         </article>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="760" cy="21" r="8" fill="currentColor" opacity=".4"/></svg></div>
 
     <section class="section watch-section" id="campaigns" data-vox="Defeat did not humble him. It refined him." aria-labelledby="campaignsTitle">
       <div class="section-head">
@@ -1665,28 +680,24 @@
         </div>
         <div class="section-chip">War-Record Pressure</div>
       </div>
-
       <div class="campaign-grid">
         <div class="image-stage">
-          <img src="Assets/Mortivus/mortivus-campaign-record.jpeg" alt="Mortivus campaign record image">
+          <img src="Assets/Mortivus/mortivus-campaign-record.jpeg" alt="Mortivus campaign record image" loading="lazy">
           <div class="image-label">Campaign record // battle-memory cross-stitched with plague-intelligence</div>
         </div>
-
         <div class="campaign-cards">
-          <article class="wound-card">
+          <article class="wound-card victory">
             <div class="label">Greatest Victory</div>
             <h3>The Weeping Redoubt of Solkhar IX</h3>
             <p>Mortivus did not simply break the fortress-shrine. He poisoned prayer circulation, burial procedure, and chapel rotation until defenders continued functioning in obedience to corrupted ritual timings rather than sane command cadence.</p>
           </article>
-
           <article class="wound-card tragedy">
             <div class="label">Greatest Tragedy</div>
-            <h3>The Pallid Reversal</h3>
+            <h3>The Pallid Reversal<span class="witness-mark" title="Dedicated battle chronicle preserved">✠</span></h3>
             <p>Mortivus mistook Ork withdrawal for spiritual collapse rather than tactical lure. The killing ground closed, his inner circle bled, and he survived colder than before.</p>
-            <a class="btn" href="the-pallid-reversal.html">Open Battle Fragment</a>
+            <a class="btn" href="the-pallid-reversal.html" data-descend="battle">Open Battle Fragment</a>
           </article>
-
-          <article class="wound-card">
+          <article class="wound-card pyrrhic">
             <div class="label">Pyrrhic Victory</div>
             <h3>The Ashen Pilgrimage of Oltane Spire</h3>
             <p>The spire fell, but the lesson was purchased in veteran blood, lost reliquaries, and specialists reduced beyond immediate usefulness. The result was victory made bitter enough to teach.</p>
@@ -1704,13 +715,14 @@
         </div>
         <div class="section-chip">Sealed Lesson</div>
       </div>
-
       <div class="testimony-grid">
         <article class="vox-card"><div class="label">Before</div><h3>Movement Misread</h3><p>Before the Reversal, Mortivus believed retreat could mean collapse.</p></article>
         <article class="vox-card"><div class="label">After</div><h3>Meaning Waited Upon</h3><p>After the Reversal, he learned that movement is not surrender.</p></article>
         <article class="vox-card"><div class="label">Now</div><h3>The New Law</h3><p>Since then, he waits for meaning to fail before he moves.</p></article>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L740 21 M780 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none"/><polygon points="745,21 760,11 775,21 760,31" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></div>
 
     <section class="section watch-section" id="naming" data-vox="Every title placed upon him begins to decay." aria-labelledby="namingTitle">
       <div class="section-head">
@@ -1721,7 +733,6 @@
         </div>
         <div class="section-chip">Final Classification Refused</div>
       </div>
-
       <div class="naming-grid">
         <div class="class-buttons">
           <button class="class-btn active" type="button" data-class="refuse">Refuse Resolution</button>
@@ -1731,15 +742,15 @@
           <button class="class-btn" type="button" data-class="prophet">Plague-Prophet</button>
           <button class="class-btn" type="button" data-class="daemon">Daemon Prince Becoming</button>
         </div>
-
         <article class="class-shell">
-          <img src="Assets/Mortivus/mortivus-dossier-wall.jpeg" alt="Internal dossier wall concerning Mortivus">
+          <img src="Assets/Mortivus/mortivus-dossier-wall.jpeg" alt="Internal dossier wall concerning Mortivus" loading="lazy">
           <div class="class-copy">
             <div class="kicker">Classification Output</div>
             <div class="class-title" id="classTitle">Classification Refused</div>
             <p id="classText">This is the cleanest answer the archive can safely offer. Mortivus is most useful as a contradiction held under observation. To settle him too quickly would be an Imperial habit.</p>
             <div class="seal-bar"><div class="seal-fill" id="classFill" style="width:94%"></div></div>
             <div class="label" id="classPct">Ascension Pressure: 94%</div>
+            <div class="stamp" id="classStamp">Stamp<br>Rejected</div>
           </div>
         </article>
       </div>
@@ -1754,13 +765,14 @@
         </div>
         <div class="section-chip">Recovered Speech</div>
       </div>
-
       <div class="testimony-grid">
-        <article class="vox-card"><div class="label">Imperial Sergeant</div><p>“He did not charge. He arrived. There is a difference. We understood it too late.”</p></article>
-        <article class="vox-card"><div class="label">Plaguebound Scribe</div><p>“The master does not count the dead first. He counts the moment they understood.”</p></article>
-        <article class="vox-card"><div class="label">Ork Survivor</div><p>“Big rust boss learned after dat one. Came back quieter. Worse.”</p></article>
+        <article class="vox-card"><div class="label">Imperial Sergeant</div><p>"He did not charge. He arrived. There is a difference. We understood it too late."</p></article>
+        <article class="vox-card"><div class="label">Plaguebound Scribe</div><p>"The master does not count the dead first. He counts the moment they understood."</p></article>
+        <article class="vox-card"><div class="label">Ork Survivor</div><p>"Big rust boss learned after dat one. Came back quieter. Worse."</p></article>
       </div>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1520 42" preserveAspectRatio="none"><path d="M0 21 L1520 21" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="3 12"/></svg></div>
 
     <section class="section watch-section" id="suspicion" data-vox="The archive has begun to suspect the file is not merely watching him." aria-labelledby="suspicionTitle">
       <div class="section-head">
@@ -1771,16 +783,13 @@
         </div>
         <div class="section-chip">Not For Subject Disclosure</div>
       </div>
-
       <div class="notes-grid">
         <article class="note"><div class="label">Internal Note I</div><h3>War as Future Witness</h3><p>Mortivus increasingly behaves as though battlefields are arguments being staged for a future witness rather than simple theaters of victory.</p></article>
         <article class="note"><div class="label">Internal Note II</div><h3>Omen-Density</h3><p>Several officers imitate his doctrine effectively, but none reproduce the same omen-density. This suggests singular intuition, extraordinary patronage, or the possibility that Mortivus is arranging conditions to keep certain signs appearing.</p></article>
         <article class="note"><div class="label">Internal Note III</div><h3>Interpretive Cruelty</h3><p>The mercy he practices is not softness. It is interpretive cruelty. He prefers endings that reveal structure.</p></article>
-
         <button class="btn primary" type="button" id="revealSuspicion">Reveal Deeper Suspicion</button>
-
         <article class="note hidden" id="hiddenSuspicion"><div class="label">Internal Note IV // Deeper Suspicion</div><h3>The File May Be Useful to Him</h3><p>The archive cannot dismiss the possibility that Mortivus is not merely being recorded by the Septicarium. The archive cannot dismiss the possibility that Mortivus is using the Septicarium to become recordable.</p></article>
-
+        <article class="note hidden" id="reapplyReward"><div class="label">Internal Note V // Recovered Beneath the Reseal</div><h3>The Witness Is Already Accounted For</h3><p>Beneath the reapplied seal, a margin note is recovered: the archivist who first opened this chamber is suspected to have become a minor character inside it. The witness is no longer external to the file. The witness is now a footnote being read by the subject.</p></article>
         <div class="terminal-failure" id="terminalFailure"><strong>SEAL FAILURE:</strong> THE SUBJECT MAY KNOW THIS FILE EXISTS.</div>
       </div>
     </section>
@@ -1794,65 +803,101 @@
         </div>
         <div class="section-chip">Attached Fragments</div>
       </div>
-
       <div class="records-grid">
         <article class="record-card">
           <div class="label">Open Sub-Crypt</div>
           <h3>The Mercy He Gave</h3>
           <p>A recovered atrocity record where oath, memory, and preservation become instruments of rot.</p>
-          <a class="btn" href="the-mercy-he-gave.html">Open Sub-Crypt</a>
+          <a class="btn" href="the-mercy-he-gave.html" data-descend="blackbox">Open Sub-Crypt</a>
         </article>
-
         <article class="record-card">
           <div class="label">Open Relic Chamber</div>
           <h3>The Mercy-Sickle</h3>
-          <p>The dedicated reliquary record of Mortivus’ signature blade.</p>
-          <a class="btn" href="the-mercy-sickle.html">Open Relic Chamber</a>
+          <p>The dedicated reliquary record of Mortivus' signature blade.</p>
+          <a class="btn" href="the-mercy-sickle.html" data-descend="relic">Open Relic Chamber</a>
         </article>
-
         <article class="record-card">
           <div class="label">Open Battle Fragment</div>
           <h3>The Pallid Reversal</h3>
-          <p>The greatest known wound in Mortivus’ history, and the defeat that sharpened him.</p>
-          <a class="btn" href="the-pallid-reversal.html">Open Battle Fragment</a>
+          <p>The greatest known wound in Mortivus' history, and the defeat that sharpened him.</p>
+          <a class="btn" href="the-pallid-reversal.html" data-descend="battle">Open Battle Fragment</a>
         </article>
       </div>
-
       <div class="footer-note">
         <div class="kicker">Final Dossier Statement</div>
         <h3>The Name Has Not Finished Becoming</h3>
         <p>Mortivus Classarion matters not because his rank is impressive, but because rank has ceased to be the best instrument with which to measure him. Closure is for finished things. Mortivus is not finished. Mortivus is still being weighed.</p>
-
         <div class="footer-actions">
-          <a class="btn primary" href="plaguebound-dossier.html">Return to Plaguebound Dossier</a>
-          <a class="btn" href="plaguebound-annals.html">Open Plaguebound Annals</a>
-          <a class="btn" href="index.html">Return to Command Deck</a>
+          <a class="btn primary" href="plaguebound-dossier.html" data-descend="dossier">Return to Plaguebound Dossier</a>
+          <a class="btn" href="plaguebound-annals.html" data-descend="annals">Open Plaguebound Annals</a>
+          <a class="btn" href="index.html" data-descend="command">Return to Command Deck</a>
         </div>
       </div>
     </section>
   </main>
 
   <aside class="vox-panel" id="voxPanel">
-    <div class="vox-head">
-      <span>Vox Marginalia</span>
-      <button class="vox-close" id="voxClose" aria-label="Close vox panel">✕</button>
-    </div>
-    <div class="vox-body" id="voxBody">
-      Archive whisper received: Mortivus is not easiest to understand when he is speaking. He is easiest to understand by observing what the battlefield has become after he has gone quiet.
-    </div>
+    <div class="vox-head"><span class="live">Vox Marginalia // Transmission Active</span><button class="vox-close" id="voxClose" aria-label="Close vox panel">✕</button></div>
+    <div class="vox-body" id="voxBody" aria-live="polite">Archive whisper received: Mortivus is not easiest to understand when he is speaking. He is easiest to understand by observing what the battlefield has become after he has gone quiet.</div>
   </aside>
 
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-frame" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="label" id="modalLabel">Dossier Annotation</div>
+      <h3 id="modalTitle">Record</h3>
+      <p id="modalText">The archive responds.</p>
+      <div class="modal-actions"><button class="btn" id="closeModal" type="button">Reseal</button></div>
+    </div>
+  </div>
+
   <script>
-    /* =========================
-       BOOT / UNSEALING
-    ========================= */
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const state = {
+      booted: false,
+      seal: 100,
+      read: new Set(),
+      keyBuffer: '',
+      idle: false,
+      activity: 0,
+      lastInteract: Date.now()
+    };
+
+    function applyState(){
+      document.documentElement.style.setProperty('--seal', (state.seal / 100).toFixed(2));
+      sealValue.textContent = Math.round(state.seal) + "%";
+      sealFill.style.width = state.seal + "%";
+      sealFill.parentElement.setAttribute('aria-valuenow', Math.round(state.seal));
+      document.body.classList.toggle('subject-aware', state.seal < 28);
+      document.body.classList.toggle('seal-low', state.seal < 45);
+      document.body.classList.toggle('seal-canvas-on', state.activity > 0 && state.seal < 92);
+
+      if (state.seal > 74) sealWarning.textContent = "Observation remains contained. The subject has not yet turned toward the file.";
+      else if (state.seal > 52) sealWarning.textContent = "Seal friction detected. Marginalia beginning to answer without request.";
+      else if (state.seal > 28) sealWarning.textContent = "Containment courtesy failing. The chamber is aware of the witness.";
+      else sealWarning.textContent = "The subject may know this file exists.";
+
+      if (state.seal <= 20) terminalFailure.classList.add('show');
+      else terminalFailure.classList.remove('show');
+    }
+
+    /* BOOT */
     const boot = document.getElementById("boot");
     const bootBar = document.getElementById("bootBar");
     const bootLines = [...document.querySelectorAll(".boot-line")];
     const bootNodes = [...document.querySelectorAll(".seal-node")];
     const skipBoot = document.getElementById("skipBoot");
-
     let bootIndex = 0;
+
+    function finishBoot(){
+      boot.classList.add("hide");
+      document.body.classList.remove("locked");
+      state.booted = true;
+      restoreRead();
+      applyState();
+      setTimeout(() => boot.remove(), 900);
+    }
+
     const bootTimer = setInterval(() => {
       if (bootIndex < bootLines.length) {
         bootLines[bootIndex].classList.add("live");
@@ -1865,12 +910,6 @@
       }
     }, 440);
 
-    function finishBoot(){
-      boot.classList.add("hide");
-      document.body.classList.remove("locked");
-      setTimeout(() => boot.remove(), 900);
-    }
-
     skipBoot.addEventListener("click", () => {
       clearInterval(bootTimer);
       bootLines.forEach(line => line.classList.add("live"));
@@ -1879,133 +918,105 @@
       finishBoot();
     });
 
-    /* =========================
-       SEAL INTEGRITY
-    ========================= */
-    let sealIntegrity = 100;
+    /* SEAL */
     const sealValue = document.getElementById("sealValue");
     const sealFill = document.getElementById("sealFill");
     const sealWarning = document.getElementById("sealWarning");
     const terminalFailure = document.getElementById("terminalFailure");
 
     function degradeSeal(amount){
-      sealIntegrity = Math.max(13, sealIntegrity - amount);
-      sealValue.textContent = sealIntegrity + "%";
-      sealFill.style.width = sealIntegrity + "%";
-
-      if (sealIntegrity > 74) {
-        sealWarning.textContent = "Observation remains contained. The subject has not yet turned toward the file.";
-      } else if (sealIntegrity > 52) {
-        sealWarning.textContent = "Seal friction detected. Marginalia beginning to answer without request.";
-      } else if (sealIntegrity > 28) {
-        sealWarning.textContent = "Containment courtesy failing. The chamber is aware of the witness.";
-      } else {
-        sealWarning.textContent = "The subject may know this file exists.";
-        document.body.classList.add("subject-aware");
-      }
-
-      if (sealIntegrity <= 20) {
-        terminalFailure.classList.add("show");
-      }
+      state.seal = Math.max(13, state.seal - amount);
+      state.activity = Math.min(100, state.activity + amount * 2);
+      applyState();
+    }
+    function restoreSeal(amount){
+      state.seal = Math.min(100, state.seal + amount);
+      applyState();
     }
 
-    /* =========================
-       VOX / SECTION WATCH
-    ========================= */
+    document.getElementById("reapplyBtn").addEventListener("click", () => {
+      state.seal = Math.max(state.seal, 78);
+      document.getElementById("reapplyReward").classList.remove("hidden");
+      document.getElementById("reapplyReward").classList.add("open");
+      voxSpeak("The seal has been re-pressed. The cost of resealing is preserved in the margin notes beneath it.");
+      applyState();
+    });
+
+    /* TYPED VOX */
     const voxBody = document.getElementById("voxBody");
     const voxPanel = document.getElementById("voxPanel");
     const whisperButton = document.getElementById("whisperButton");
     const voxClose = document.getElementById("voxClose");
+    let typeTimer = null;
+
+    function voxSpeak(text){
+      if (typeTimer) clearInterval(typeTimer);
+      voxBody.classList.remove('no-caret');
+      voxBody.textContent = '';
+      let i = 0;
+      typeTimer = setInterval(() => {
+        if (i >= text.length) {
+          clearInterval(typeTimer);
+          typeTimer = null;
+          setTimeout(() => voxBody.classList.add('no-caret'), 1500);
+          return;
+        }
+        voxBody.textContent = text.slice(0, i + 2);
+        i += 2;
+      }, 22);
+    }
 
     whisperButton.addEventListener("click", () => {
-      voxPanel.style.display = "block";
-      voxBody.textContent = "Archive whisper received: the name is less dangerous when spoken than when categorized.";
+      voxPanel.classList.remove("hidden");
+      voxSpeak("Archive whisper received: the name is less dangerous when spoken than when categorized.");
     });
+    voxClose.addEventListener("click", () => voxPanel.classList.add("hidden"));
 
-    voxClose.addEventListener("click", () => {
-      voxPanel.style.display = "none";
-    });
-
+    /* SECTION WATCH */
     const watched = new Set();
-    const watchSections = document.querySelectorAll(".watch-section");
-
     const watcher = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const vox = entry.target.dataset.vox;
-          if (vox) voxBody.textContent = vox;
-
+          if (vox) voxSpeak(vox);
           if (!watched.has(entry.target.id)) {
             watched.add(entry.target.id);
+            state.read.add(entry.target.id);
+            saveRead();
+            entry.target.classList.add('read');
             degradeSeal(4);
           }
         }
       });
     }, { threshold: 0.35 });
+    document.querySelectorAll(".watch-section").forEach(s => watcher.observe(s));
 
-    watchSections.forEach(section => watcher.observe(section));
+    function saveRead(){
+      try { sessionStorage.setItem('mortivus.read', JSON.stringify([...state.read])); } catch(_){}
+    }
+    function restoreRead(){
+      try {
+        const raw = sessionStorage.getItem('mortivus.read');
+        if (!raw) return;
+        JSON.parse(raw).forEach(id => {
+          state.read.add(id);
+          const sec = document.getElementById(id);
+          if (sec) sec.classList.add('read');
+        });
+      } catch(_){}
+    }
 
-    /* =========================
-       RELIQUARY HOTSPOTS
-    ========================= */
+    /* RELIQUARY HOTSPOTS */
     const reliquaryLore = {
-      helm:{
-        title:"Helm Iconography",
-        body:"The helm is not a straightforward line-piece. Witnesses describe a shrine-mask silhouette whose faceplate is less visor than proclamation. Almost all records preserve the same impression: a sealed countenance built not to protect identity, but to deny the enemy the comfort of reading one.",
-        func:"Suppresses personality into office. Mortivus is encountered first as role, then as presence.",
-        spirit:"The helm does not conceal Mortivus. It turns him into verdict.",
-        risk:"Several servitor transcripts report recurring dreams after prolonged study.",
-        fear:"Targets describe the sensation that judgment has arrived before violence.",
-        note:"Mortivus’ equipment behaves as theology made metal. Each retained surface communicates doctrine: inevitability, patience, and the collapse of false distinctions between body, temple, and siege-engine."
-      },
-      pauldrons:{
-        title:"Rot-Layered Pauldrons",
-        body:"The shoulder masses read less like armor refinement and more like the stonework of a diseased shrine. Brass trim and corroded plate turn his upper silhouette into architecture.",
-        func:"Converts bulk into authority. His outline becomes instantly ceremonial and oppressive.",
-        spirit:"He brings his own chapel of ruin into the battle.",
-        risk:"Witnesses overestimate simple mass and underestimate close-range speed.",
-        fear:"They imply he is too heavy with meaning to be moved by ordinary force.",
-        note:"Several recitations compare the pauldrons to infected apses or plague-bloated reliquary domes. The metaphor recurs too often to dismiss."
-      },
-      plate:{
-        title:"Shrine-Plate Mass",
-        body:"The torso assembly is where the war-plate ceases to seem personal and begins to resemble a moving reliquary wall. It is thick, patient, and difficult to read quickly.",
-        func:"Turns defense into proclamation. Damage taken becomes further testimony rather than weakness.",
-        spirit:"The plate insists that body and shrine are no longer separate categories.",
-        risk:"Prolonged engagement worsens morale out of proportion to casualties inflicted.",
-        fear:"Opponents feel less as though they are facing a man and more as though a fortified doctrine is advancing.",
-        note:"The archive classifies the torso as the visual center of Mortivus’ battlefield theology."
-      },
-      mercy:{
-        title:"Mercy-Sickle Reach",
-        body:"The Mercy-Sickle appears less as a tool of haste than a terminal instrument of selection. Mortivus introduces it once the chosen target has begun to understand its own isolation.",
-        func:"Harvests position, certainty, and witness-value before it harvests flesh.",
-        spirit:"The blade is the visible curve of a judgment already made.",
-        risk:"Contact survivors are rare and frequently remain compromised by memory of the pause before the strike.",
-        fear:"The pause before the strike is cited as more terrible than the strike itself.",
-        note:"A dedicated relic chamber preserves the fuller record. This slate shows why the blade is central to any reading of Mortivus."
-      },
-      chain:{
-        title:"Censer & Tally-Chains",
-        body:"Chains, censers, seals, brass tags, and relic-fragments form a moving perimeter of judgment. Some serve liturgical function. Others appear to function as mobile archive matter.",
-        func:"Extends his presence beyond the body and into the air around him.",
-        spirit:"He does not merely carry wargear. He carries evidence.",
-        risk:"Witnesses frequently mistake these details for ornament and miss their doctrinal significance.",
-        fear:"Targets report the sense that the dead are already being inventoried.",
-        note:"The Septicarium suspects that the chain-work is part intimidation, part ritual bookkeeping, part battlefield theology."
-      },
-      greaves:{
-        title:"Greaves of Close Advance",
-        body:"The lower silhouette is heavy, deliberate, and built for inevitability rather than speed. These are not running limbs. They are closing arguments.",
-        func:"They make every approach feel final, because each step suggests that retreat has already become too late.",
-        spirit:"His movement is sermonized through weight.",
-        risk:"Observers often mistake deliberate advance for slowness, then discover how poorly their assumptions survive contact.",
-        fear:"The sound of his advance often registers before the full form does.",
-        note:"The archive concludes that Mortivus’ lower silhouette contributes substantially to his aura of judicial inevitability."
-      }
+      helm:{title:"Helm Iconography",body:"The helm is not a straightforward line-piece. Witnesses describe a shrine-mask silhouette whose faceplate is less visor than proclamation. Almost all records preserve the same impression: a sealed countenance built not to protect identity, but to deny the enemy the comfort of reading one.",func:"Suppresses personality into office. Mortivus is encountered first as role, then as presence.",spirit:"The helm does not conceal Mortivus. It turns him into verdict.",risk:"Several servitor transcripts report recurring dreams after prolonged study.",fear:"Targets describe the sensation that judgment has arrived before violence.",note:"Mortivus' equipment behaves as theology made metal. Each retained surface communicates doctrine: inevitability, patience, and the collapse of false distinctions between body, temple, and siege-engine."},
+      pauldrons:{title:"Rot-Layered Pauldrons",body:"The shoulder masses read less like armor refinement and more like the stonework of a diseased shrine. Brass trim and corroded plate turn his upper silhouette into architecture.",func:"Converts bulk into authority. His outline becomes instantly ceremonial and oppressive.",spirit:"He brings his own chapel of ruin into the battle.",risk:"Witnesses overestimate simple mass and underestimate close-range speed.",fear:"They imply he is too heavy with meaning to be moved by ordinary force.",note:"Several recitations compare the pauldrons to infected apses or plague-bloated reliquary domes. The metaphor recurs too often to dismiss."},
+      plate:{title:"Shrine-Plate Mass",body:"The torso assembly is where the war-plate ceases to seem personal and begins to resemble a moving reliquary wall. It is thick, patient, and difficult to read quickly.",func:"Turns defense into proclamation. Damage taken becomes further testimony rather than weakness.",spirit:"The plate insists that body and shrine are no longer separate categories.",risk:"Prolonged engagement worsens morale out of proportion to casualties inflicted.",fear:"Opponents feel less as though they are facing a man and more as though a fortified doctrine is advancing.",note:"The archive classifies the torso as the visual center of Mortivus' battlefield theology."},
+      mercy:{title:"Mercy-Sickle Reach",body:"The Mercy-Sickle appears less as a tool of haste than a terminal instrument of selection. Mortivus introduces it once the chosen target has begun to understand its own isolation.",func:"Harvests position, certainty, and witness-value before it harvests flesh.",spirit:"The blade is the visible curve of a judgment already made.",risk:"Contact survivors are rare and frequently remain compromised by memory of the pause before the strike.",fear:"The pause before the strike is cited as more terrible than the strike itself.",note:"A dedicated relic chamber preserves the fuller record. This slate shows why the blade is central to any reading of Mortivus."},
+      chain:{title:"Censer & Tally-Chains",body:"Chains, censers, seals, brass tags, and relic-fragments form a moving perimeter of judgment. Some serve liturgical function. Others appear to function as mobile archive matter.",func:"Extends his presence beyond the body and into the air around him.",spirit:"He does not merely carry wargear. He carries evidence.",risk:"Witnesses frequently mistake these details for ornament and miss their doctrinal significance.",fear:"Targets report the sense that the dead are already being inventoried.",note:"The Septicarium suspects that the chain-work is part intimidation, part ritual bookkeeping, part battlefield theology."},
+      greaves:{title:"Greaves of Close Advance",body:"The lower silhouette is heavy, deliberate, and built for inevitability rather than speed. These are not running limbs. They are closing arguments.",func:"They make every approach feel final, because each step suggests that retreat has already become too late.",spirit:"His movement is sermonized through weight.",risk:"Observers often mistake deliberate advance for slowness, then discover how poorly their assumptions survive contact.",fear:"The sound of his advance often registers before the full form does.",note:"The archive concludes that Mortivus' lower silhouette contributes substantially to his aura of judicial inevitability."}
     };
-
     const hotspotButtons = [...document.querySelectorAll(".hotspot")];
+    const reliquaryStage = document.getElementById("reliquaryStage");
     const reliquaryTitle = document.getElementById("reliquaryTitle");
     const reliquaryBody = document.getElementById("reliquaryBody");
     const reliquaryFunction = document.getElementById("reliquaryFunction");
@@ -2013,12 +1024,12 @@
     const reliquaryRisk = document.getElementById("reliquaryRisk");
     const reliquaryFear = document.getElementById("reliquaryFear");
     const reliquaryNote = document.getElementById("reliquaryNote");
-
     hotspotButtons.forEach(button => {
       button.addEventListener("click", () => {
         hotspotButtons.forEach(b => b.classList.remove("active"));
         button.classList.add("active");
-
+        reliquaryStage.classList.add("focused");
+        setTimeout(() => reliquaryStage.classList.remove("focused"), 1400);
         const entry = reliquaryLore[button.dataset.key];
         reliquaryTitle.textContent = entry.title;
         reliquaryBody.textContent = entry.body;
@@ -2027,171 +1038,225 @@
         reliquaryRisk.textContent = entry.risk;
         reliquaryFear.textContent = entry.fear;
         reliquaryNote.textContent = entry.note;
-
         degradeSeal(2);
       });
     });
 
-    /* =========================
-       METHOD / CONTRADICTIONS REVEAL
-    ========================= */
-    const contradictionCards = document.querySelectorAll(".contradiction");
-    const methodSteps = document.querySelectorAll(".method-step");
-
+    /* REVEAL */
     const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("reveal");
-      });
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("reveal"); });
     }, { threshold: 0.18 });
+    document.querySelectorAll(".contradiction, .method-step").forEach(el => revealObserver.observe(el));
 
-    contradictionCards.forEach(card => revealObserver.observe(card));
-    methodSteps.forEach(step => revealObserver.observe(step));
-
-    /* =========================
-       WEAPON SWITCHER
-    ========================= */
+    /* WEAPON SWITCHER */
     const instrumentData = {
-      mercy:{
-        kicker:"First Instrument",
-        title:"The Mercy-Sickle",
-        text:"Mortivus does not swing the Mercy-Sickle like a berserker. He uses it like a final argument. The blade appears once resistance has already been spiritually softened and the chosen target has begun to understand that death is not the only thing being harvested.",
-        link:"the-mercy-sickle.html",
-        label:"Open Dedicated Relic Chamber"
-      },
-      rite:{
-        kicker:"Second Instrument",
-        title:"The Rite-Spitter",
-        text:"The Rite-Spitter is less firearm than contamination sermon. It enters through wound, vapor, spray, and atmosphere, weakening not merely the body but the certainty with which resistance inhabits the body.",
-        link:"#weapons",
-        label:"Remain in Weapon Reliquary"
-      },
-      tally:{
-        kicker:"Third Instrument",
-        title:"The Tally-Chain",
-        text:"The Tally-Chain is not simple decoration. It is part archive, part liturgical count, part judgment instrument. What it tallies is not always death. Sometimes it tallies meaning, witness-value, or the order in which understanding collapses.",
-        link:"#records",
-        label:"Proceed to Bound Sub-Crypts"
-      }
+      mercy:{kicker:"First Instrument",title:"The Mercy-Sickle",text:"Mortivus does not swing the Mercy-Sickle like a berserker. He uses it like a final argument. The blade appears once resistance has already been spiritually softened and the chosen target has begun to understand that death is not the only thing being harvested.",link:"the-mercy-sickle.html",label:"Open Dedicated Relic Chamber",descend:"relic"},
+      rite:{kicker:"Second Instrument",title:"The Rite-Spitter",text:"The Rite-Spitter is less firearm than contamination sermon. It enters through wound, vapor, spray, and atmosphere, weakening not merely the body but the certainty with which resistance inhabits the body.",link:"#weapons",label:"Remain in Weapon Reliquary",descend:""},
+      tally:{kicker:"Third Instrument",title:"The Tally-Chain",text:"The Tally-Chain is not simple decoration. It is part archive, part liturgical count, part judgment instrument. What it tallies is not always death. Sometimes it tallies meaning, witness-value, or the order in which understanding collapses.",link:"#records",label:"Proceed to Bound Sub-Crypts",descend:""}
     };
-
     const instrumentButtons = [...document.querySelectorAll(".instrument-btn")];
     const instrumentKicker = document.getElementById("instrumentKicker");
     const instrumentTitle = document.getElementById("instrumentTitle");
     const instrumentText = document.getElementById("instrumentText");
     const instrumentLink = document.getElementById("instrumentLink");
-
     instrumentButtons.forEach(button => {
       button.addEventListener("click", () => {
         instrumentButtons.forEach(b => b.classList.remove("active"));
         button.classList.add("active");
-
         const data = instrumentData[button.dataset.instrument];
         instrumentKicker.textContent = data.kicker;
         instrumentTitle.textContent = data.title;
         instrumentText.textContent = data.text;
         instrumentLink.href = data.link;
         instrumentLink.textContent = data.label;
-
+        if (data.descend) instrumentLink.dataset.descend = data.descend;
+        else instrumentLink.removeAttribute('data-descend');
         degradeSeal(2);
       });
     });
 
-    /* =========================
-       CLASSIFICATION ENGINE
-    ========================= */
+    /* CLASSIFICATION ENGINE + STAMP */
     const classData = {
-      refuse:{
-        title:"Classification Refused",
-        text:"This is the cleanest answer the archive can safely offer. Mortivus is most useful as a contradiction held under observation. To settle him too quickly would be an Imperial habit.",
-        pct:"Ascension Pressure: 94%",
-        width:"94%"
-      },
-      champion:{
-        title:"Plague Champion",
-        text:"This title fits his martial authority, battlefield centrality, and personal lethality, but it under-describes the scale at which he reshapes doctrine and shrine-logic around him.",
-        pct:"Champion Fit: 72%",
-        width:"72%"
-      },
-      contagion:{
-        title:"Lord of Contagion",
-        text:"This classification better addresses his command gravity and contaminative authority, yet still feels too stable for a subject whose final office has not finished hardening.",
-        pct:"Contagion Fit: 81%",
-        width:"81%"
-      },
-      blightlord:{
-        title:"Blightlord Ascendant",
-        text:"The title captures his armored presence and funereal inevitability, but not the strategic and theological dimension by which he makes battlefields behave like sermons.",
-        pct:"Ascendant Fit: 64%",
-        width:"64%"
-      },
-      prophet:{
-        title:"Plague-Prophet",
-        text:"This reading recognizes his omen-density, patience, and tendency to arrange war like future proof. It still leaves the material violence of his command insufficiently weighted.",
-        pct:"Prophetic Fit: 88%",
-        width:"88%"
-      },
-      daemon:{
-        title:"Daemon Prince Becoming",
-        text:"The archive preserves this as pressure, not conclusion. Mortivus increasingly behaves like a being in whom office, war, and shrine-identity are seeking permanent merger.",
-        pct:"Becoming Pressure: 93%",
-        width:"93%"
-      }
+      refuse:{title:"Classification Refused",text:"This is the cleanest answer the archive can safely offer. Mortivus is most useful as a contradiction held under observation. To settle him too quickly would be an Imperial habit.",pct:"Ascension Pressure: 94%",width:"94%",stamp:"Refused"},
+      champion:{title:"Plague Champion",text:"This title fits his martial authority, battlefield centrality, and personal lethality, but it under-describes the scale at which he reshapes doctrine and shrine-logic around him.",pct:"Champion Fit: 72%",width:"72%",stamp:"Champion"},
+      contagion:{title:"Lord of Contagion",text:"This classification better addresses his command gravity and contaminative authority, yet still feels too stable for a subject whose final office has not finished hardening.",pct:"Contagion Fit: 81%",width:"81%",stamp:"Lord of Contagion"},
+      blightlord:{title:"Blightlord Ascendant",text:"The title captures his armored presence and funereal inevitability, but not the strategic and theological dimension by which he makes battlefields behave like sermons.",pct:"Ascendant Fit: 64%",width:"64%",stamp:"Blightlord"},
+      prophet:{title:"Plague-Prophet",text:"This reading recognizes his omen-density, patience, and tendency to arrange war like future proof. It still leaves the material violence of his command insufficiently weighted.",pct:"Prophetic Fit: 88%",width:"88%",stamp:"Prophet"},
+      daemon:{title:"Daemon Prince Becoming",text:"The archive preserves this as pressure, not conclusion. Mortivus increasingly behaves like a being in whom office, war, and shrine-identity are seeking permanent merger.",pct:"Becoming Pressure: 93%",width:"93%",stamp:"Becoming"}
     };
-
     const classButtons = [...document.querySelectorAll(".class-btn")];
     const classTitle = document.getElementById("classTitle");
     const classText = document.getElementById("classText");
     const classFill = document.getElementById("classFill");
     const classPct = document.getElementById("classPct");
+    const classStamp = document.getElementById("classStamp");
 
+    function applyClass(key){
+      const data = classData[key];
+      classTitle.textContent = data.title;
+      classText.textContent = data.text;
+      classFill.style.width = data.width;
+      classPct.textContent = data.pct;
+      classStamp.innerHTML = data.stamp + '<br>Stamp';
+      classStamp.classList.remove('stamped','rotting');
+      void classStamp.offsetWidth;
+      classStamp.classList.add('stamped');
+      setTimeout(() => classStamp.classList.add('rotting'), 1100);
+      degradeSeal(3);
+    }
     classButtons.forEach(button => {
       button.addEventListener("click", () => {
         classButtons.forEach(b => b.classList.remove("active"));
         button.classList.add("active");
-
-        const data = classData[button.dataset.class];
-        classTitle.textContent = data.title;
-        classText.textContent = data.text;
-        classFill.style.width = data.width;
-        classPct.textContent = data.pct;
-
-        degradeSeal(3);
+        applyClass(button.dataset.class);
       });
     });
 
-    /* =========================
-       SUSPICION REVEAL
-    ========================= */
-    const revealSuspicion = document.getElementById("revealSuspicion");
-    const hiddenSuspicion = document.getElementById("hiddenSuspicion");
-
-    revealSuspicion.addEventListener("click", () => {
-      hiddenSuspicion.classList.toggle("open");
+    /* SUSPICION REVEAL */
+    document.getElementById("revealSuspicion").addEventListener("click", () => {
+      document.getElementById("hiddenSuspicion").classList.toggle("open");
       degradeSeal(10);
-      voxBody.textContent = "Internal breach note: the archive can no longer dismiss the possibility that the subject is using recordability as a weapon.";
+      voxSpeak("Internal breach note: the archive can no longer dismiss the possibility that the subject is using recordability as a weapon.");
+      document.body.style.transition = 'filter .2s ease';
+      document.body.style.filter = 'contrast(1.15) saturate(.85) brightness(.85)';
+      setTimeout(() => document.body.style.filter = '', 380);
     });
 
-    /* =========================
-       SECTION INDEX (OPTIONAL ACTIVE STATE)
-    ========================= */
-    const topLinks = document.querySelectorAll('.nav a[href^="#"]');
-    topLinks.forEach(link => {
-      link.addEventListener("click", () => {
-        degradeSeal(1);
+    /* DESCENT TRANSITION */
+    const descentVeil = document.getElementById('descentVeil');
+    function descend(url, route){
+      descentVeil.classList.add('active');
+      voxSpeak(`The chamber is releasing you toward ${(route || 'the next record').toUpperCase()}.`);
+      setTimeout(() => { window.location.href = url; }, 900);
+    }
+    document.querySelectorAll('[data-descend]').forEach(link => {
+      link.addEventListener('click', e => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        const route = link.dataset.descend;
+        if (document.startViewTransition) {
+          document.startViewTransition(() => descend(href, route));
+        } else {
+          descend(href, route);
+        }
       });
     });
 
-    /* =========================
-       MULTI-CANVAS ATMOSPHERE
-    ========================= */
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    class LayerCanvas {
-      constructor(id){
-        this.canvas = document.getElementById(id);
-        this.ctx = this.canvas.getContext("2d");
-        this.items = [];
+    /* PORTRAIT EYE-TRACK + GLITCH */
+    const portrait = document.getElementById('portrait');
+    if (!prefersReduced) {
+      document.addEventListener('mousemove', e => {
+        if (state.seal > 80) return;
+        const cx = innerWidth / 2;
+        const cy = innerHeight / 2;
+        const intensity = (100 - state.seal) / 100;
+        const dx = (e.clientX - cx) / cx * 12 * intensity;
+        const dy = (e.clientY - cy) / cy * 8 * intensity;
+        portrait.style.setProperty('--track-x', dx + 'px');
+        portrait.style.setProperty('--track-y', dy + 'px');
+      });
+    }
+    function maybeGlitch(){
+      if (state.seal < 35 && Math.random() < .4) {
+        portrait.classList.add('glitch');
+        setTimeout(() => portrait.classList.remove('glitch'), 110);
       }
+    }
+    setInterval(maybeGlitch, 4500);
+
+    /* TEXT-REWRITE AT LOW INTEGRITY */
+    const rewritePool = {
+      'mortivus':'M̷ortivus','mercy':'mercy̕','archive':'archive̸','seal':'sea̷l','witness':'witnes̃s','record':'reco̧rd','file':'fi͝le','name':'n͞ame','rot':'r̕ot','plague':'pla̷gue'
+    };
+    function tryRewrite(){
+      if (state.seal > 38) return;
+      const targets = [...document.querySelectorAll('.hook, .contradiction p, .method-step p, .note p')];
+      if (!targets.length) return;
+      const el = targets[Math.floor(Math.random() * targets.length)];
+      if (el.matches(':hover') || document.activeElement === el) return;
+      let txt = el.textContent;
+      for (const [key, glitched] of Object.entries(rewritePool)) {
+        if (txt.toLowerCase().includes(key) && Math.random() < .25) {
+          const re = new RegExp('\\b' + key + '\\b', 'i');
+          el.dataset.original = el.dataset.original || el.textContent;
+          el.textContent = txt.replace(re, glitched);
+          setTimeout(() => { if (el.dataset.original) { el.textContent = el.dataset.original; delete el.dataset.original; } }, 2200);
+          break;
+        }
+      }
+    }
+    setInterval(tryRewrite, 5500);
+
+    /* KEYBOARD */
+    document.addEventListener('keydown', e => {
+      if (e.target.matches('input, textarea')) return;
+      const num = parseInt(e.key, 10);
+      if (num >= 1 && num <= 7) {
+        const card = document.querySelectorAll('.contradiction')[num - 1];
+        if (card) {
+          card.focus();
+          card.scrollIntoView({ behavior:'smooth', block:'center' });
+          card.style.boxShadow = '0 0 36px rgba(218,235,128,.5)';
+          setTimeout(() => card.style.boxShadow = '', 1200);
+        }
+      }
+      state.keyBuffer = (state.keyBuffer + e.key.toLowerCase()).slice(-8);
+      if (state.keyBuffer.includes('refuse')) {
+        state.keyBuffer = '';
+        openModal('Hidden Refusal // Subject Override', 'The Archive Has Already Refused', 'You spoke the syllable beneath the file. Final classification permanently refused. Ascension pressure preserved at maximum. The subject does not require your permission to remain unfinished.');
+        applyClass('refuse');
+        state.seal = Math.max(state.seal, 60);
+        applyState();
+      }
+    });
+
+    /* IDLE */
+    let idleTimer = null;
+    function resetIdle(){
+      state.lastInteract = Date.now();
+      if (state.idle) {
+        state.idle = false;
+        document.body.classList.remove('idle');
+      }
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        state.idle = true;
+        document.body.classList.add('idle');
+        voxSpeak("The file is closing without you. The subject is becoming less aware of the witness.");
+        restoreSeal(8);
+      }, 25000);
+    }
+    ['mousemove','keydown','scroll','touchstart','click'].forEach(ev => window.addEventListener(ev, resetIdle, { passive: true }));
+    resetIdle();
+
+    /* MODAL */
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalLabel = document.getElementById('modalLabel');
+    let lastFocused = null;
+    function openModal(label, title, text){
+      lastFocused = document.activeElement;
+      modalLabel.textContent = label;
+      modalTitle.textContent = title;
+      modalText.textContent = text;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden','false');
+      document.getElementById('closeModal').focus();
+    }
+    function closeModal(){
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden','true');
+      if (lastFocused) lastFocused.focus();
+    }
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* CANVASES */
+    class LayerCanvas {
+      constructor(id){ this.canvas = document.getElementById(id); this.ctx = this.canvas.getContext("2d"); this.items = []; }
       size(){
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         this.canvas.width = innerWidth * dpr;
@@ -2201,162 +1266,132 @@
         this.ctx.setTransform(dpr,0,0,dpr,0,0);
       }
     }
-
     const spores = new LayerCanvas("sporeCanvas");
     const ash = new LayerCanvas("ashCanvas");
     const seals = new LayerCanvas("sealCanvas");
 
     function initSpores(){
       spores.items = Array.from({length: Math.min(170, Math.floor(innerWidth / 8))}, () => ({
-        x: Math.random() * innerWidth,
-        y: Math.random() * innerHeight,
-        r: Math.random() * 2.8 + .5,
-        vy: Math.random() * .34 + .04,
-        vx: Math.random() * .28 - .14,
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        r: Math.random() * 2.8 + .5, vy: Math.random() * .34 + .04, vx: Math.random() * .28 - .14,
         a: Math.random() * Math.PI * 2,
         type: Math.random() > .74 ? "bright" : Math.random() > .48 ? "rot" : "dust"
       }));
     }
-
     function drawSpores(){
       const ctx = spores.ctx;
       ctx.clearRect(0,0,innerWidth,innerHeight);
-
       spores.items.forEach(p => {
-        p.y -= p.vy;
-        p.x += Math.sin(p.a) * .18 + p.vx;
-        p.a += .012;
-
+        p.y -= p.vy; p.x += Math.sin(p.a) * .18 + p.vx; p.a += .012;
         if (p.y < -20) { p.y = innerHeight + 20; p.x = Math.random() * innerWidth; }
         if (p.x < -20) p.x = innerWidth + 20;
         if (p.x > innerWidth + 20) p.x = -20;
-
-        const color =
-          p.type === "bright" ? "236,255,153" :
-          p.type === "rot" ? "200,220,98" :
-          "166,155,124";
-
+        const color = p.type === "bright" ? "236,255,153" : p.type === "rot" ? "200,220,98" : "166,155,124";
         const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*8);
-        g.addColorStop(0, `rgba(${color}, .16)`);
-        g.addColorStop(.45, `rgba(${color}, .045)`);
-        g.addColorStop(1, `rgba(${color}, 0)`);
+        g.addColorStop(0, `rgba(${color},.16)`); g.addColorStop(.45, `rgba(${color},.045)`); g.addColorStop(1, `rgba(${color},0)`);
         ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r*6,0,Math.PI*2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r*6,0,Math.PI*2); ctx.fill();
       });
     }
-
     function initAsh(){
       ash.items = Array.from({length: Math.min(80, Math.floor(innerWidth / 18))}, () => ({
-        x: Math.random() * innerWidth,
-        y: Math.random() * innerHeight,
-        w: Math.random() * 6 + 2,
-        h: Math.random() * 4 + 1,
-        vy: Math.random() * .22 + .04,
-        vx: Math.random() * .24 - .12,
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        w: Math.random() * 6 + 2, h: Math.random() * 4 + 1,
+        vy: Math.random() * .22 + .04, vx: Math.random() * .24 - .12,
         rot: Math.random() * Math.PI
       }));
     }
-
     function drawAsh(){
       const ctx = ash.ctx;
       ctx.clearRect(0,0,innerWidth,innerHeight);
-
       ash.items.forEach(p => {
-        p.y += p.vy;
-        p.x += p.vx;
-        p.rot += .008;
-
+        p.y += p.vy; p.x += p.vx; p.rot += .008;
         if (p.y > innerHeight + 20) { p.y = -20; p.x = Math.random() * innerWidth; }
         if (p.x < -20) p.x = innerWidth + 20;
         if (p.x > innerWidth + 20) p.x = -20;
-
         ctx.save();
         ctx.translate(p.x,p.y);
         ctx.rotate(p.rot);
-        ctx.fillStyle = "rgba(120,108,88,.10)";
+        const tint = state.seal < 40 ? "150,80,60" : "120,108,88";
+        ctx.fillStyle = `rgba(${tint},.10)`;
         ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
         ctx.restore();
       });
     }
-
     function initSeals(){
       seals.items = Array.from({length: 28}, () => ({
-        x: Math.random() * innerWidth,
-        y: Math.random() * innerHeight,
-        len: Math.random() * 110 + 60,
-        life: Math.random() * 100,
-        speed: Math.random() * 1.15 + .22
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        len: Math.random() * 110 + 60, life: Math.random() * 100, speed: Math.random() * 1.15 + .22
       }));
     }
-
     function drawSeals(){
       const ctx = seals.ctx;
       ctx.clearRect(0,0,innerWidth,innerHeight);
-
       seals.items.forEach(p => {
         p.life += p.speed;
-        if (p.life > 130) {
-          p.life = 0;
-          p.x = Math.random() * innerWidth;
-          p.y = Math.random() * innerHeight;
-        }
-
+        if (p.life > 130) { p.life = 0; p.x = Math.random() * innerWidth; p.y = Math.random() * innerHeight; }
         const pulse = Math.sin((p.life / 130) * Math.PI);
-        const intensity = (sealIntegrity / 100) * pulse;
+        const intensity = (state.seal / 100) * pulse;
         if (intensity <= 0) return;
-
-        ctx.strokeStyle = `rgba(200,220,98,${0.14 * intensity})`;
+        const col = state.seal < 35 ? "155,99,57" : "200,220,98";
+        ctx.strokeStyle = `rgba(${col},${0.14 * intensity})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(p.x + p.len, p.y + Math.sin(p.life * .045) * 18);
         ctx.stroke();
-
         ctx.strokeStyle = `rgba(151,99,57,${0.06 * intensity})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 10 + pulse * 14, 0, Math.PI * 2);
-        ctx.stroke();
+        ctx.beginPath(); ctx.arc(p.x, p.y, 10 + pulse * 14, 0, Math.PI * 2); ctx.stroke();
       });
     }
 
     function resizeAll(){
       [spores, ash, seals].forEach(layer => layer.size());
-      initSpores();
-      initAsh();
-      initSeals();
+      initSpores(); initAsh(); initSeals();
     }
 
-    function animate(){
-      if (!prefersReduced) {
-        drawSpores();
-        drawAsh();
-        drawSeals();
+    let lastFrame = 0;
+    function animate(ts){
+      if (!prefersReduced && state.booted && !document.hidden) {
+        if (ts - lastFrame > 1000 / 45) {
+          drawSpores();
+          drawAsh();
+          if (document.body.classList.contains('seal-canvas-on')) drawSeals();
+          else seals.ctx.clearRect(0,0,innerWidth,innerHeight);
+          lastFrame = ts;
+        }
       }
+      // activity decays slowly
+      state.activity = Math.max(0, state.activity - .25);
       requestAnimationFrame(animate);
     }
-
     resizeAll();
-    animate();
+    requestAnimationFrame(animate);
     addEventListener("resize", resizeAll);
 
-    /* =========================
-       AMBIENT WHISPERS
-    ========================= */
+    /* AMBIENT WHISPERS */
     const ambientWhispers = [
       "Archive whisper received: the name is less dangerous when spoken than when categorized.",
       "Archive whisper received: the subject is easiest to understand by studying what remains after he has gone quiet.",
       "Archive whisper received: every clean explanation offered for Mortivus survives only briefly.",
       "Archive whisper received: the file cannot dismiss the possibility that the subject prefers being misnamed."
     ];
-
+    const subjectAwareWhispers = [
+      "Subject-aware: the page has noticed you reading it.",
+      "Subject-aware: this is no longer observation. This is correspondence.",
+      "Subject-aware: he is using your attention to keep the file warm.",
+      "Subject-aware: he is no longer the only thing being preserved here."
+    ];
     setInterval(() => {
-      if (document.hidden) return;
+      if (document.hidden || state.idle) return;
       if (Math.random() > .58) {
-        voxBody.textContent = ambientWhispers[Math.floor(Math.random() * ambientWhispers.length)];
+        const pool = state.seal < 28 ? subjectAwareWhispers : ambientWhispers;
+        voxSpeak(pool[Math.floor(Math.random() * pool.length)]);
       }
     }, 9000);
+
+    /* INITIAL */
+    applyState();
   </script>
 </body>
 </html>
