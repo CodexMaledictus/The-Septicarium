@@ -5,183 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="The Mercy-Sickle reliquary chamber of The Septicarium, a sealed examination of Mortivus Classarion's spear-hafted plague sickle." />
   <title>The Mercy-Sickle | The Septicarium</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root{
-      --bg:#050705;
-      --bg-2:#090d09;
-      --panel:#0d120d;
-      --panel-2:#121712;
-      --line:rgba(196,168,86,.28);
-      --line-bright:rgba(216,190,102,.62);
-      --text:#e9dfc5;
-      --text-strong:#fff1cf;
-      --muted:#b6ab89;
-      --dim:#786f59;
-      --gold:#c7b06a;
-      --gold-hot:#f0d88d;
-      --plague:#9dc374;
-      --plague-hot:#c9ee86;
-      --plague-2:#6d8e49;
-      --warning:#d4a056;
-      --blood:#7c2d22;
+      --bg:#050705;--bg-2:#090d09;--panel:#0d120d;--panel-2:#121712;
+      --line:rgba(196,168,86,.28);--line-bright:rgba(216,190,102,.62);
+      --text:#e9dfc5;--text-strong:#fff1cf;--muted:#b6ab89;--dim:#786f59;
+      --gold:#c7b06a;--gold-hot:#f0d88d;
+      --plague:#9dc374;--plague-hot:#c9ee86;--plague-2:#6d8e49;
+      --warning:#d4a056;--blood:#7c2d22;--blood-hot:#bf4a37;
       --shadow:0 30px 92px rgba(0,0,0,.58);
-      --radius:30px;
-      --radius-sm:20px;
-      --max:1520px;
+      --radius:30px;--radius-sm:20px;--max:1520px;
       --ease:cubic-bezier(.2,.8,.2,1);
+      --edge:0.18;
+      --lens-color:var(--gold-hot);
     }
-
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      min-height:100vh;
-      overflow-x:hidden;
-      color:var(--text);
-      font-family:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(117,144,69,.13), transparent 26%),
-        radial-gradient(circle at 80% 12%, rgba(210,157,65,.09), transparent 24%),
-        radial-gradient(circle at 50% 72%, rgba(105,141,76,.09), transparent 34%),
-        linear-gradient(180deg,#050705 0%,#090d09 46%,#040604 100%);
-      transition:background .65s var(--ease), filter .65s var(--ease);
-    }
-
+    body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--text);font-family:"JetBrains Mono",ui-monospace,monospace;background:radial-gradient(circle at 20% 10%,rgba(117,144,69,.13),transparent 26%),radial-gradient(circle at 80% 12%,rgba(210,157,65,.09),transparent 24%),radial-gradient(circle at 50% 72%,rgba(105,141,76,.09),transparent 34%),linear-gradient(180deg,#050705 0%,#090d09 46%,#040604 100%);transition:background .65s var(--ease),filter .65s var(--ease)}
     body.locked{overflow:hidden}
+    body.idle{filter:saturate(.84) brightness(.92)}
+    body[data-risk="sealed"]{background:radial-gradient(circle at 20% 10%,rgba(117,144,69,.13),transparent 26%),radial-gradient(circle at 80% 12%,rgba(210,157,65,.09),transparent 24%),linear-gradient(180deg,#050705 0%,#090d09 46%,#040604 100%)}
+    body[data-risk="stirring"]{background:radial-gradient(circle at 16% 8%,rgba(117,144,69,.16),transparent 26%),radial-gradient(circle at 80% 12%,rgba(210,157,65,.11),transparent 25%),radial-gradient(circle at 54% 76%,rgba(157,195,116,.10),transparent 36%),linear-gradient(180deg,#040704 0%,#0a1008 48%,#030503 100%)}
+    body[data-risk="hazard"]{background:radial-gradient(circle at 16% 8%,rgba(157,195,116,.21),transparent 27%),radial-gradient(circle at 82% 12%,rgba(210,157,65,.08),transparent 25%),radial-gradient(circle at 50% 82%,rgba(124,45,34,.12),transparent 38%),linear-gradient(180deg,#030503 0%,#071105 50%,#020402 100%)}
+    body[data-risk="critical"]{background:radial-gradient(circle at 14% 8%,rgba(157,195,116,.28),transparent 29%),radial-gradient(circle at 82% 12%,rgba(240,216,141,.08),transparent 25%),radial-gradient(circle at 50% 82%,rgba(124,45,34,.18),transparent 40%),linear-gradient(180deg,#020302 0%,#061504 52%,#010201 100%)}
 
-    body[data-risk="sealed"]{
-      background:
-        radial-gradient(circle at 20% 10%, rgba(117,144,69,.13), transparent 26%),
-        radial-gradient(circle at 80% 12%, rgba(210,157,65,.09), transparent 24%),
-        linear-gradient(180deg,#050705 0%,#090d09 46%,#040604 100%);
-    }
+    body.ring-witness::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:3;background:radial-gradient(ellipse at center,transparent 40%,rgba(124,45,34,.07) 70%,rgba(124,45,34,.16));animation:heartbeat 1.6s ease-in-out infinite}
+    @keyframes heartbeat{0%,100%{opacity:.7}30%{opacity:1}50%{opacity:.8}65%{opacity:1}}
+    body.chamber-selecting::after{content:"THE CHAMBER HAS BEGUN SELECTING";position:fixed;left:50%;bottom:6px;transform:translateX(-50%);color:rgba(191,74,55,.78);font-family:"Inter",sans-serif;font-size:.55rem;letter-spacing:.36em;font-weight:900;z-index:80;pointer-events:none;text-shadow:0 0 12px rgba(124,45,34,.5);animation:selectingPulse 3.2s ease-in-out infinite}
+    @keyframes selectingPulse{0%,100%{opacity:.4}50%{opacity:.85}}
 
-    body[data-risk="stirring"]{
-      background:
-        radial-gradient(circle at 16% 8%, rgba(117,144,69,.16), transparent 26%),
-        radial-gradient(circle at 80% 12%, rgba(210,157,65,.11), transparent 25%),
-        radial-gradient(circle at 54% 76%, rgba(157,195,116,.10), transparent 36%),
-        linear-gradient(180deg,#040704 0%,#0a1008 48%,#030503 100%);
-    }
-
-    body[data-risk="hazard"]{
-      background:
-        radial-gradient(circle at 16% 8%, rgba(157,195,116,.21), transparent 27%),
-        radial-gradient(circle at 82% 12%, rgba(210,157,65,.08), transparent 25%),
-        radial-gradient(circle at 50% 82%, rgba(124,45,34,.12), transparent 38%),
-        linear-gradient(180deg,#030503 0%,#071105 50%,#020402 100%);
-    }
-
-    body[data-risk="critical"]{
-      background:
-        radial-gradient(circle at 14% 8%, rgba(157,195,116,.28), transparent 29%),
-        radial-gradient(circle at 82% 12%, rgba(240,216,141,.08), transparent 25%),
-        radial-gradient(circle at 50% 82%, rgba(124,45,34,.18), transparent 40%),
-        linear-gradient(180deg,#020302 0%,#061504 52%,#010201 100%);
-    }
-
-    a{color:inherit}
-    button{font:inherit}
+    a{color:inherit}button{font:inherit}
     ::selection{background:rgba(240,216,141,.28);color:var(--text-strong)}
+    h1,h2,h3,h4{font-family:"Cinzel",Georgia,serif}
+    .label,.kicker,.chip,.btn,.nav a,.nav button,.readout-label,.small-note,.node-label,.ledger-key{font-family:"Inter",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
 
-    h1,h2,h3,h4{font-family:"Cinzel", Georgia, serif}
+    #sporeCanvas,#bladeAuraCanvas,#edgeMemoryCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+    #sporeCanvas{z-index:0;opacity:.84}
+    #bladeAuraCanvas{z-index:0;opacity:0;mix-blend-mode:screen;transition:opacity .8s var(--ease)}
+    #edgeMemoryCanvas{z-index:2;opacity:0;mix-blend-mode:screen;transition:opacity .8s var(--ease)}
+    body.aura-active #bladeAuraCanvas{opacity:.38}
+    body.edge-active #edgeMemoryCanvas{opacity:.32}
 
-    .label,.kicker,.chip,.btn,.nav a,.nav button,.readout-label,.small-note,.node-label,.ledger-key{
-      font-family:"Inter",system-ui,sans-serif;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-weight:900;
-    }
+    .grain,.scanline{position:fixed;inset:0;pointer-events:none;z-index:1}
+    .grain{opacity:.07;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.55) 0 1px,transparent 1px),radial-gradient(circle at 70% 80%,rgba(255,255,255,.38) 0 1px,transparent 1px),radial-gradient(circle at 80% 10%,rgba(255,255,255,.48) 0 1px,transparent 1px),radial-gradient(circle at 10% 90%,rgba(255,255,255,.30) 0 1px,transparent 1px);background-size:190px 190px,230px 230px,260px 260px,300px 300px;mix-blend-mode:screen}
+    .scanline{opacity:.14;background:repeating-linear-gradient(to bottom,rgba(240,216,141,.033) 0px,rgba(240,216,141,.033) 1px,transparent 2px,transparent 6px);mix-blend-mode:screen}
 
-    #sporeCanvas{
-      position:fixed;
-      inset:0;
-      width:100%;
-      height:100%;
-      z-index:0;
-      opacity:.84;
-      pointer-events:none;
-    }
-
-    .grain,.scanline{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:1;
-    }
-
-    .grain{
-      opacity:.07;
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,.55) 0 1px, transparent 1px),
-        radial-gradient(circle at 70% 80%, rgba(255,255,255,.38) 0 1px, transparent 1px),
-        radial-gradient(circle at 80% 10%, rgba(255,255,255,.48) 0 1px, transparent 1px),
-        radial-gradient(circle at 10% 90%, rgba(255,255,255,.30) 0 1px, transparent 1px);
-      background-size:190px 190px,230px 230px,260px 260px,300px 300px;
-      mix-blend-mode:screen;
-    }
-
-    .scanline{
-      opacity:.14;
-      background:
-        repeating-linear-gradient(to bottom, rgba(240,216,141,.033) 0px, rgba(240,216,141,.033) 1px, transparent 2px, transparent 6px);
-      mix-blend-mode:screen;
-    }
-
-    .skip-link{
-      position:absolute;
-      top:-80px;
-      left:16px;
-      z-index:300;
-      padding:12px 16px;
-      border-radius:999px;
-      background:var(--gold-hot);
-      color:#151007;
-      font-weight:900;
-      text-decoration:none;
-      transition:.2s ease;
-    }
+    .skip-link{position:absolute;top:-80px;left:16px;z-index:300;padding:12px 16px;border-radius:999px;background:var(--gold-hot);color:#151007;font-weight:900;text-decoration:none;transition:.2s ease}
     .skip-link:focus{top:16px}
 
-    .boot-overlay{
-      position:fixed;
-      inset:0;
-      z-index:200;
-      display:grid;
-      place-items:center;
-      padding:22px;
-      background:
-        radial-gradient(circle at center, rgba(25,32,25,.76), rgba(3,5,3,.96)),
-        linear-gradient(180deg, rgba(92,113,57,.08), rgba(0,0,0,.82));
-      transition:opacity .75s var(--ease), visibility .75s var(--ease);
-    }
+    .descent-veil{position:fixed;inset:0;z-index:290;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(196,168,86,.18),rgba(0,0,0,.4) 40%,rgba(0,0,0,.98));opacity:0;transition:opacity .55s var(--ease)}
+    .descent-veil.active{opacity:1;pointer-events:auto}
+    .descent-veil::after{content:"DESCENDING";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Cinzel",serif;font-size:clamp(1.6rem,4vw,3.4rem);letter-spacing:.4em;color:rgba(240,216,141,.92);text-shadow:0 0 40px rgba(196,168,86,.6);opacity:0;transition:opacity .35s ease .2s}
+    .descent-veil.active::after{opacity:1}
+    .descent-veil[data-direction="up"]::after{content:"ASCENDING"}
+    .descent-veil::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,transparent,rgba(240,216,141,.8),transparent);transform:translateY(-50%) scaleX(0);transform-origin:center;transition:transform .65s var(--ease) .15s}
+    .descent-veil.active::before{transform:translateY(-50%) scaleX(1)}
+
+    .boot-overlay{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at center,rgba(25,32,25,.76),rgba(3,5,3,.96)),linear-gradient(180deg,rgba(92,113,57,.08),rgba(0,0,0,.82));transition:opacity .75s var(--ease),visibility .75s var(--ease)}
     .boot-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
-
-    .boot-shell{
-      width:min(900px,100%);
-      border:1px solid var(--line-bright);
-      border-radius:30px;
-      background:linear-gradient(180deg,rgba(11,16,11,.96),rgba(6,9,6,.98));
-      box-shadow:0 0 0 1px rgba(197,168,84,.12) inset,var(--shadow);
-      padding:28px;
-      position:relative;
-      overflow:hidden;
-    }
-    .boot-shell::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(90deg,transparent 0,rgba(194,173,90,.08) 50%,transparent 100%);
-      animation:scanSweep 2.4s linear infinite;
-      pointer-events:none;
-    }
+    .boot-shell{width:min(900px,100%);border:1px solid var(--line-bright);border-radius:30px;background:linear-gradient(180deg,rgba(11,16,11,.96),rgba(6,9,6,.98));box-shadow:0 0 0 1px rgba(197,168,84,.12) inset,var(--shadow);padding:28px;position:relative;overflow:hidden}
+    .boot-shell::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0,rgba(194,173,90,.08) 50%,transparent 100%);animation:scanSweep 2.4s linear infinite;pointer-events:none}
     @keyframes scanSweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
-
     .boot-inner{position:relative;z-index:2}
     .boot-kicker{color:var(--gold-hot);font-size:.76rem;margin-bottom:18px}
     .boot-title{font-size:clamp(2.4rem,6vw,5.6rem);line-height:.88;margin:0 0 18px;color:#efe7cf;letter-spacing:.045em}
@@ -191,24 +78,20 @@
     .boot-cell .label{color:var(--gold-hot);font-size:.56rem;margin-bottom:8px}
     .boot-cell strong{display:block;color:#d9d0b3;font-size:.9rem;line-height:1.45;font-weight:600}
     .boot-cell.rot .label,.boot-cell.rot strong{color:var(--plague-hot)}
-    .boot-log{border:1px solid var(--line);border-radius:18px;background:rgba(8,11,8,.82);padding:14px 16px;min-height:104px;display:grid;gap:8px;margin-bottom:16px;color:#d9d0b3;font-size:.92rem}
+    .boot-log{border:1px solid var(--line);border-radius:18px;background:rgba(8,11,8,.82);padding:14px 16px;min-height:140px;display:grid;gap:8px;margin-bottom:16px;color:#d9d0b3;font-size:.92rem}
     .boot-log-line{display:flex;gap:10px;align-items:flex-start;opacity:0;transform:translateY(8px);animation:rise .28s var(--ease) forwards}
     .boot-log-line::before{content:"⟐";color:var(--plague);flex:0 0 auto;margin-top:1px}
     @keyframes rise{to{opacity:1;transform:none}}
     .boot-progress{height:10px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.45);overflow:hidden;margin-bottom:12px}
-    .boot-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--plague-2),var(--gold-hot),var(--plague-hot));box-shadow:0 0 22px rgba(183,171,93,.28);transition:width .25s ease}
+    .boot-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--plague-2),var(--gold-hot),var(--plague-hot));box-shadow:0 0 22px rgba(183,171,93,.28);transition:width .35s ease}
     .boot-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.78rem}
+    .boot-reenter{color:var(--gold-hot);font-size:.92rem;line-height:1.5;border:1px solid rgba(196,168,86,.32);border-radius:14px;background:rgba(20,16,8,.6);padding:9px 12px;margin-top:14px;display:none}
+    body.re-entering .boot-reenter{display:block}
 
-    .site-shell{width:min(var(--max),calc(100% - 28px));margin:0 auto;position:relative;z-index:5;padding:16px 0 74px}
+    .site-shell{width:min(var(--max),calc(100% - 28px));margin:0 auto;position:relative;z-index:10;padding:16px 0 74px}
 
     .top-shell{position:sticky;top:10px;z-index:70;display:grid;gap:8px;margin-bottom:16px}
-    .topbar,.relic-meter{
-      border:1px solid rgba(196,168,86,.24);
-      border-radius:24px;
-      background:rgba(8,11,8,.78);
-      backdrop-filter:blur(14px);
-      box-shadow:0 14px 40px rgba(0,0,0,.34);
-    }
+    .topbar,.relic-meter,.lens-bar{border:1px solid rgba(196,168,86,.24);border-radius:24px;background:rgba(8,11,8,.78);backdrop-filter:blur(14px);box-shadow:0 14px 40px rgba(0,0,0,.34)}
     .topbar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:12px 14px}
     .crumbs{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.68rem;color:var(--muted);line-height:1.65}
     .crumbs a{color:#d7cca9;text-decoration:none;border-bottom:1px solid transparent}
@@ -218,7 +101,8 @@
     .nav a,.nav button{font-size:.60rem;color:#e9e0c6;text-decoration:none;border:1px solid rgba(196,168,86,.25);border-radius:999px;background:rgba(14,17,10,.72);padding:9px 10px;cursor:pointer;transition:.2s var(--ease)}
     .nav a:hover,.nav button:hover{transform:translateY(-2px);border-color:var(--line-bright);background:rgba(42,33,16,.82)}
 
-    .relic-meter{padding:10px 12px;display:grid;grid-template-columns:160px 1fr 160px;gap:12px;align-items:center}
+    .relic-meter{padding:10px 12px;display:grid;grid-template-columns:160px 1fr 160px;gap:12px;align-items:center;position:relative;overflow:hidden}
+    .relic-meter::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--plague),var(--blood-hot));transform:scaleX(var(--edge));transform-origin:left;transition:transform .55s var(--ease);box-shadow:0 0 18px rgba(157,195,116,.5)}
     .readout-label{color:var(--gold-hot);font-size:.58rem;margin-bottom:5px}
     .readout-value{color:#e8d7af;font-size:.86rem;line-height:1.35}
     .meter-bars{display:grid;gap:7px}
@@ -230,33 +114,22 @@
     .bar-row.rot .bar-fill{background:linear-gradient(90deg,var(--plague-2),var(--plague),var(--plague-hot))}
     .bar-num{color:#d8c8a3;font-size:.72rem;text-align:right}
 
-    .hero{
-      position:relative;
-      min-height:84vh;
-      border:1px solid var(--line);
-      border-radius:34px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      isolation:isolate;
-      display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:24px;
-      padding:clamp(20px,3.4vw,48px);
-      background:#050605;
-    }
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:-2;
-      background:
-        linear-gradient(100deg, rgba(4,6,4,.96) 0%, rgba(6,8,6,.82) 42%, rgba(6,8,6,.35) 76%, rgba(4,6,4,.88) 100%),
-        url("Assets/Mercy-Sickle/mercy-sickle-hero.jpeg") center/cover no-repeat;
-      transform:scale(1.035);
-      filter:contrast(1.06) saturate(.96);
-      transition:transform .8s var(--ease),filter .8s var(--ease);
-    }
-    .hero:hover::before{transform:scale(1.065);filter:contrast(1.08) saturate(1.04)}
+    .lens-bar{padding:9px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+    .lens-bar .label{color:var(--gold-hot);font-size:.58rem}
+    .lens-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+    .lens-pill{border:1px solid rgba(196,168,86,.25);border-radius:999px;background:rgba(14,17,10,.66);color:#d8c8a3;font-family:"Inter",sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.58rem;font-weight:900;padding:8px 14px;cursor:pointer;transition:.2s var(--ease)}
+    .lens-pill:hover{transform:translateY(-1px);border-color:var(--line-bright)}
+    .lens-pill.active[data-lens="surgical"]{background:linear-gradient(180deg,rgba(240,216,141,.22),rgba(20,16,8,.92));color:var(--gold-hot);border-color:rgba(240,216,141,.5)}
+    .lens-pill.active[data-lens="liturgical"]{background:linear-gradient(180deg,rgba(157,195,116,.22),rgba(8,18,7,.92));color:var(--plague-hot);border-color:rgba(157,195,116,.5)}
+    .lens-pill.active[data-lens="battlefield"]{background:linear-gradient(180deg,rgba(191,74,55,.22),rgba(20,8,6,.92));color:var(--blood-hot);border-color:rgba(191,74,55,.5)}
+    .lens-mark{color:var(--lens-color);font-family:"Cinzel",serif;font-size:.84rem;letter-spacing:.18em}
+    body[data-lens="surgical"]{--lens-color:var(--gold-hot)}
+    body[data-lens="liturgical"]{--lens-color:var(--plague-hot)}
+    body[data-lens="battlefield"]{--lens-color:var(--blood-hot)}
+
+    .hero{position:relative;min-height:84vh;border:1px solid var(--line);border-radius:34px;overflow:hidden;box-shadow:var(--shadow);isolation:isolate;display:grid;grid-template-columns:1.05fr .95fr;gap:24px;padding:clamp(20px,3.4vw,48px);background:#050605}
+    .hero::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(100deg,rgba(4,6,4,.96) 0%,rgba(6,8,6,.82) 42%,rgba(6,8,6,.35) 76%,rgba(4,6,4,.88) 100%),url("Assets/Mercy-Sickle/mercy-sickle-hero.jpeg") center/cover no-repeat;transform:scale(1.035) translate(var(--hero-px,0),var(--hero-py,0));filter:contrast(1.06) saturate(.96);transition:transform .8s var(--ease),filter .8s var(--ease)}
+    .hero:hover::before{transform:scale(1.065) translate(var(--hero-px,0),var(--hero-py,0));filter:contrast(1.08) saturate(1.04)}
     .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 20% 42%,rgba(199,176,106,.22),transparent 25%),radial-gradient(circle at 80% 38%,rgba(157,195,116,.16),transparent 30%),linear-gradient(180deg,transparent 25%,rgba(0,0,0,.76));pointer-events:none}
     .hero-left,.hero-right{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(84vh - 96px)}
     .eyebrow,.kicker{color:var(--gold-hot);font-size:.74rem;line-height:1.65;margin-bottom:14px}
@@ -267,30 +140,12 @@
     .btn{border:1px solid rgba(196,168,86,.38);border-radius:999px;color:#f3dfba;background:linear-gradient(180deg,rgba(196,168,86,.14),rgba(9,12,8,.86));text-decoration:none;padding:13px 15px;font-size:.67rem;cursor:pointer;transition:.22s var(--ease);display:inline-flex;align-items:center;justify-content:center;gap:8px}
     .btn:hover{transform:translateY(-2px);border-color:var(--line-bright);background:linear-gradient(180deg,rgba(196,168,86,.22),rgba(27,31,16,.92));box-shadow:0 18px 40px rgba(0,0,0,.34)}
     .btn.rot{border-color:rgba(157,195,116,.44);background:linear-gradient(180deg,rgba(157,195,116,.16),rgba(9,20,7,.86))}
+    .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
     .hero-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .card,.info-card,.image-frame,.panel,.part-card,.lore-card,.effect-card,.quote,.stage-card,.motion-card,.origin-choice,.witness-card,.status-row,.modal-frame{
-      border:1px solid var(--line);
-      border-radius:24px;
-      background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-    .card::before,.info-card::before,.panel::before,.part-card::before,.lore-card::before,.effect-card::before,.quote::before,.stage-card::before,.motion-card::before,.origin-choice::before,.witness-card::before,.status-row::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:linear-gradient(90deg,transparent,rgba(240,216,141,.055),transparent);
-      transform:translateX(-105%);
-      animation:sweep 10s linear infinite;
-      opacity:.55;
-    }
-    @keyframes sweep{to{transform:translateX(105%)}}
-
+    .card,.info-card,.image-frame,.panel,.part-card,.lore-card,.effect-card,.quote,.stage-card,.motion-card,.origin-choice,.witness-card,.status-row,.modal-frame,.reliquary-slab,.custody-step,.protocol-console,.ritual-output,.ritual-wheel{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));box-shadow:var(--shadow);position:relative;overflow:hidden}
     .info-card{padding:16px;min-height:128px;cursor:pointer;transition:.24s var(--ease)}
-    .info-card:hover,.card:hover,.lore-card:hover,.effect-card:hover,.witness-card:hover,.stage-card:hover{transform:translateY(-4px);border-color:var(--line-bright)}
+    .info-card:hover,.card:hover,.lore-card:hover,.effect-card:hover,.witness-card:hover,.stage-card:hover,.reliquary-slab:hover,.custody-step:hover{transform:translateY(-4px);border-color:var(--line-bright)}
     .info-card .label{font-size:.62rem;color:var(--gold-hot);margin-bottom:10px}
     .info-card strong{display:block;font-family:"Cinzel",Georgia,serif;font-size:1.14rem;line-height:1.12;color:#efe6ce;margin-bottom:8px}
     .info-card p{margin:0;color:var(--muted);line-height:1.58;font-size:.94rem}
@@ -306,7 +161,7 @@
     .mini-strip .image-frame{height:170px}
 
     .section{padding-top:36px}
-    .section-block{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(9,12,9,.78),rgba(7,9,7,.92));box-shadow:var(--shadow);overflow:hidden}
+    .section-block{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(9,12,9,.78),rgba(7,9,7,.92));box-shadow:var(--shadow);overflow:hidden;position:relative}
     .section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;padding:26px 26px 0;margin-bottom:18px}
     .section-title{margin:0;color:#efe6ce;font-size:clamp(2.1rem,5vw,4.2rem);line-height:.94;letter-spacing:.035em}
     .section-desc{margin:11px 0 0;max-width:86ch;color:#bdb08d;font-family:"Cinzel",Georgia,serif;line-height:1.84;font-size:1.03rem}
@@ -318,34 +173,46 @@
     .readout-card h3{font-size:1.5rem;margin:8px 0 10px;color:#efe6ce;line-height:1.05}
     .readout-card p{font-family:"Cinzel",Georgia,serif;color:#d8ceb2;line-height:1.72;margin:0}
     .revealed-line{max-height:0;overflow:hidden;opacity:0;transition:.45s var(--ease);border-top:1px dotted rgba(196,168,86,.20);padding-top:0;margin-top:0;color:#d7c8a4;font-family:"Cinzel",Georgia,serif;line-height:1.75}
-    .open .revealed-line{max-height:180px;opacity:1;padding-top:12px;margin-top:12px}
+    .open .revealed-line{max-height:240px;opacity:1;padding-top:12px;margin-top:12px}
 
     .exam-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;padding:24px 26px 28px}
-    .relic-stage{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:28px;background:#050705;min-height:720px;box-shadow:var(--shadow)}
-    .relic-stage img{display:block;width:100%;height:100%;object-fit:cover;filter:contrast(1.05) saturate(.98)}
+    .relic-stage{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:28px;background:#050705;min-height:760px;box-shadow:var(--shadow)}
+    .relic-stage img{display:block;width:100%;height:100%;object-fit:cover;filter:contrast(1.05) saturate(.98);transition:filter .55s var(--ease)}
+    body[data-lens="surgical"] .relic-stage img{filter:contrast(1.08) saturate(.92) brightness(1.04)}
+    body[data-lens="liturgical"] .relic-stage img{filter:contrast(1.04) saturate(1.06) sepia(.08) hue-rotate(8deg)}
+    body[data-lens="battlefield"] .relic-stage img{filter:contrast(1.12) saturate(1.1) brightness(.92)}
     .relic-overlay{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,transparent 0 26%,rgba(7,10,7,.1) 55%,rgba(2,4,2,.55) 100%);pointer-events:none}
-    .hotspot{position:absolute;width:26px;height:26px;border-radius:50%;border:2px solid #d5cf8a;background:rgba(200,214,110,.28);box-shadow:0 0 0 7px rgba(191,194,88,.10),0 0 18px rgba(219,215,126,.35);cursor:pointer;transition:.2s ease;z-index:3}
+    .pointer-svg{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%}
+    .pointer-svg path{stroke:var(--lens-color);stroke-width:1.2;fill:none;stroke-dasharray:500;stroke-dashoffset:500;opacity:0;transition:stroke-dashoffset .9s var(--ease),opacity .35s ease,stroke .35s ease;filter:drop-shadow(0 0 4px var(--lens-color))}
+    .pointer-svg.active path{stroke-dashoffset:0;opacity:.65}
+    .hotspot{position:absolute;width:26px;height:26px;border-radius:50%;border:2px solid #d5cf8a;background:rgba(200,214,110,.28);box-shadow:0 0 0 7px rgba(191,194,88,.10),0 0 18px rgba(219,215,126,.35);cursor:pointer;transition:.22s ease;z-index:4}
     .hotspot::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1px solid rgba(221,215,117,.25);animation:pulse 2.4s ease infinite}
     .hotspot:hover,.hotspot.active{transform:scale(1.14);background:rgba(218,226,126,.46);border-color:#f0e2a4}
+    .hotspot.active::before{content:"";position:absolute;inset:-16px;border-radius:50%;border:1.5px solid var(--lens-color);box-shadow:0 0 24px var(--lens-color);animation:targetLock 2.6s ease-out forwards}
+    body[data-lens="battlefield"] .hotspot.active::before{animation:targetLockFast 1.4s ease-out infinite}
     @keyframes pulse{0%{transform:scale(.7);opacity:.85}70%{transform:scale(1.3);opacity:0}100%{opacity:0}}
-    .hotspot.blade-head{left:29%;top:33%}.hotspot.inner-bite{left:34%;top:43%}.hotspot.collar{left:43%;top:40%}.hotspot.spear-haft{left:57%;top:52%}.hotspot.haft-wrap{left:68%;top:56%}.hotspot.chain-ring{left:79%;top:60%}.hotspot.relic-tags{left:57%;top:36%}
-    .node-label{position:absolute;transform:translateY(-50%);white-space:nowrap;padding:7px 10px;border-radius:999px;background:rgba(6,9,7,.84);border:1px solid rgba(205,222,112,.20);font-size:.62rem;color:#e4ddc3;pointer-events:none;z-index:2}
+    @keyframes targetLock{0%{transform:scale(.4);opacity:0}50%{opacity:.6}100%{transform:scale(1.1);opacity:.5}}
+    @keyframes targetLockFast{0%,100%{transform:scale(.8);opacity:.4}50%{transform:scale(1.15);opacity:.8}}
+    .node-label{position:absolute;transform:translateY(-50%);white-space:nowrap;padding:7px 10px;border-radius:999px;background:rgba(6,9,7,.84);border:1px solid rgba(205,222,112,.20);font-size:.62rem;color:#e4ddc3;pointer-events:none;z-index:3}
 
     .exam-panel{display:grid;gap:14px}
-    .part-card{padding:20px;min-height:420px;display:grid;gap:14px}
-    .part-kicker{color:var(--gold-hot);font-size:.70rem}
+    .part-card{padding:20px;min-height:420px;display:grid;gap:14px;border-color:var(--lens-color);transition:border-color .4s var(--ease)}
+    body[data-lens="surgical"] .part-card{box-shadow:var(--shadow),0 0 0 1px rgba(240,216,141,.18) inset}
+    body[data-lens="surgical"] .part-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(240,216,141,.03) 0 1px,transparent 2px 10px);opacity:.4}
+    body[data-lens="liturgical"] .part-card{box-shadow:var(--shadow),0 0 0 1px rgba(157,195,116,.18) inset}
+    body[data-lens="battlefield"] .part-card{box-shadow:var(--shadow),0 0 0 1px rgba(191,74,55,.18) inset}
+    body[data-lens="battlefield"] .part-card::before{content:"";position:absolute;top:8px;left:8px;width:18px;height:18px;border-top:2px solid var(--blood-hot);border-left:2px solid var(--blood-hot);opacity:.7;pointer-events:none;z-index:5}
+    body[data-lens="battlefield"] .part-card::after{content:"";position:absolute;bottom:8px;right:8px;width:18px;height:18px;border-bottom:2px solid var(--blood-hot);border-right:2px solid var(--blood-hot);opacity:.7;pointer-events:none;z-index:5}
+    .part-kicker{color:var(--lens-color);font-size:.70rem;transition:color .4s var(--ease)}
     .part-card h3{margin:0;font-size:1.72rem;color:#efe6ce;line-height:1.08}
     .part-lead{margin:0;color:#d8cfb2;line-height:1.74;font-size:1rem;font-family:"Cinzel",Georgia,serif}
-    .tab-pills{display:flex;gap:8px;flex-wrap:wrap}
-    .tab-pills button{background:#0f140f;color:#e5dcbc;border:1px solid var(--line);border-radius:999px;padding:10px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:.16em;font-size:.68rem;font-weight:900;transition:.2s var(--ease)}
-    .tab-pills button:hover,.tab-pills button.active{transform:translateY(-2px);background:#182016;border-color:var(--line-bright);color:#f0e7cc}
     .mode-pane{border:1px solid rgba(188,165,87,.28);border-radius:20px;background:rgba(15,18,15,.76);padding:16px}
     .mode-pane strong{display:block;color:#efe5ca;font-family:"Cinzel",Georgia,serif;font-size:1.16rem;margin-bottom:10px}
     .mode-pane p{margin:0 0 10px;color:#d2c7aa;font-family:"Cinzel",Georgia,serif;line-height:1.72}
     .mode-meta{display:grid;gap:10px;margin-top:14px}
     .mode-meta div{border-top:1px solid rgba(188,165,87,.18);padding-top:10px;color:#d3c8ac;line-height:1.65;font-size:.95rem}
-    .mode-meta span{display:block;color:var(--gold-hot);text-transform:uppercase;font-size:.64rem;letter-spacing:.18em;margin-bottom:4px;font-family:"Inter",system-ui,sans-serif;font-weight:900}
-    .edge-card{display:grid;grid-template-rows:260px auto;cursor:pointer}
+    .mode-meta span{display:block;color:var(--lens-color);text-transform:uppercase;font-size:.64rem;letter-spacing:.18em;margin-bottom:4px;font-family:"Inter",system-ui,sans-serif;font-weight:900;transition:color .4s var(--ease)}
+    .edge-card{display:grid;grid-template-rows:260px auto;cursor:pointer;border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));box-shadow:var(--shadow);overflow:hidden}
     .edge-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s var(--ease)}
     .edge-card:hover img{transform:scale(1.04)}
     .edge-copy{padding:16px}
@@ -353,7 +220,6 @@
     .origin-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;padding:24px 26px 28px;align-items:stretch}
     .origin-board{display:grid;grid-template-rows:1fr auto;min-height:650px}
     .origin-board img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.05) saturate(.98)}
-    .origin-copy{padding:18px;border-top:1px solid var(--line);background:rgba(7,10,7,.80)}
     .origin-side{display:grid;gap:12px;align-content:start}
     .origin-choice{padding:16px;text-align:left;color:var(--text);cursor:pointer;transition:.24s var(--ease)}
     .origin-choice:hover,.origin-choice.active{transform:translateY(-3px);border-color:var(--line-bright);background:rgba(25,29,15,.88)}
@@ -393,9 +259,12 @@
     .witness-stack{display:grid;gap:12px;align-content:start}
     .witness-card{padding:18px;cursor:pointer;min-height:130px;transition:.24s var(--ease)}
     .witness-card h3{font-size:1.18rem;color:#efe6ce;margin:8px 0 10px}
-    .witness-card p{font-family:"Cinzel",Georgia,serif;color:#d8ceb2;line-height:1.7;margin:0;font-style:italic}
-    .witness-card.locked p{filter:blur(3px);user-select:none}
-    .witness-card.locked:hover p{filter:blur(2px)}
+    .witness-card p{font-family:"Cinzel",Georgia,serif;color:#d8ceb2;line-height:1.7;margin:0;font-style:italic;min-height:1.7em}
+    .witness-card.locked p{color:#766a48;letter-spacing:.06em;font-style:normal}
+    .witness-card.sealed{border-color:rgba(124,45,34,.42);background:linear-gradient(180deg,rgba(20,8,6,.7),rgba(8,5,4,.92));cursor:not-allowed}
+    .witness-card.sealed h3{color:#bf9c8a}
+    .witness-card.sealed p{color:#a17b6e;font-style:italic;text-shadow:0 0 8px rgba(124,45,34,.3)}
+    .witness-card.sealed .label{color:var(--blood-hot)}
 
     .battle-layout{display:grid;grid-template-columns:1.03fr .97fr;gap:18px;padding:24px 26px 28px;align-items:start}
     .battle-stage{border:1px solid var(--line);border-radius:28px;background:#060806;overflow:hidden;position:relative;box-shadow:var(--shadow)}
@@ -409,8 +278,23 @@
     .battle-readout{border:1px solid rgba(196,168,86,.20);border-radius:16px;background:rgba(8,11,8,.70);padding:12px}
     .battle-readout .label{font-size:.55rem;color:var(--gold-hot)}
     .battle-readout strong{display:block;color:#efe6ce;font-size:.98rem;line-height:1.3;margin-top:6px}
-    .battle-thumbs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .thumb-btn{border:1px solid var(--line);border-radius:20px;background:#0b0e0b;color:#e6ddc0;padding:0;cursor:pointer;overflow:hidden;text-align:left;transition:.22s var(--ease)}
+
+    .integrity-strip{margin-top:14px;border:1px solid rgba(191,74,55,.32);border-radius:18px;background:rgba(12,7,6,.62);padding:14px;display:grid;gap:10px}
+    .integrity-strip-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+    .integrity-strip-head .label{color:var(--blood-hot);font-size:.58rem;margin:0}
+    .integrity-num{font-family:"Cinzel",serif;color:#f1d8c8;font-size:1.4rem;line-height:1;text-shadow:0 0 14px rgba(191,74,55,.3)}
+    .integrity-track{position:relative;height:50px;border:1px solid rgba(191,74,55,.28);border-radius:12px;background:rgba(20,10,8,.5);overflow:hidden}
+    .integrity-track svg{width:100%;height:100%;display:block}
+    .integrity-line{stroke:var(--blood-hot);stroke-width:1.6;fill:none;filter:drop-shadow(0 0 6px rgba(191,74,55,.5));stroke-dasharray:800;stroke-dashoffset:800;transition:stroke-dashoffset 1.2s var(--ease)}
+    .integrity-line.drawn{stroke-dashoffset:0}
+    .integrity-dot{fill:var(--blood-hot);filter:drop-shadow(0 0 6px rgba(191,74,55,.7));transition:transform .55s var(--ease);transform-origin:center}
+    .integrity-marks{display:grid;grid-template-columns:repeat(6,1fr);gap:0;font-family:"Inter",sans-serif;font-size:.5rem;color:#967464;text-transform:uppercase;letter-spacing:.16em;font-weight:900;padding:0 6px}
+    .integrity-marks span{text-align:center}
+    .integrity-marks span.crash{color:var(--blood-hot)}
+    .integrity-marks span.active-phase{color:var(--gold-hot)}
+
+    .battle-thumbs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;position:relative}
+    .thumb-btn{position:relative;border:1px solid var(--line);border-radius:20px;background:#0b0e0b;color:#e6ddc0;padding:0;cursor:pointer;overflow:hidden;text-align:left;transition:.22s var(--ease)}
     .thumb-btn img{width:100%;height:145px;object-fit:cover;display:block;transition:transform .55s var(--ease)}
     .thumb-body{padding:12px}
     .thumb-body span{display:block;color:var(--gold-hot);text-transform:uppercase;letter-spacing:.16em;font-size:.62rem;margin-bottom:6px;font-family:"Inter",system-ui,sans-serif;font-weight:900}
@@ -418,6 +302,7 @@
     .thumb-body p{margin:0;color:#bfb495;font-family:"Cinzel",Georgia,serif;font-size:.9rem;line-height:1.55}
     .thumb-btn.active,.thumb-btn:hover{transform:translateY(-3px);border-color:var(--line-bright);box-shadow:0 12px 25px rgba(0,0,0,.3)}
     .thumb-btn:hover img{transform:scale(1.05)}
+    .thumb-btn.witnessed::after{content:"WITNESSED";position:absolute;top:8px;right:8px;background:rgba(157,195,116,.18);color:var(--plague-hot);border:1px solid rgba(157,195,116,.5);border-radius:6px;padding:3px 7px;font-family:"Inter",sans-serif;font-size:.5rem;letter-spacing:.18em;font-weight:900;text-transform:uppercase;backdrop-filter:blur(4px)}
 
     .verdict-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:18px;padding:24px 26px 28px;align-items:stretch}
     .verdict-image{min-height:520px;display:grid;grid-template-rows:1fr auto}
@@ -432,548 +317,154 @@
     .status-row strong{color:#eee5ca;font-size:.95rem;text-transform:uppercase;letter-spacing:.06em}
     .footer-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 
-    .whisper-box{position:fixed;right:16px;bottom:16px;width:min(390px,calc(100% - 24px));border:1px solid var(--line);border-radius:22px;background:rgba(5,8,5,.92);backdrop-filter:blur(12px);box-shadow:var(--shadow);z-index:90;overflow:hidden}
+    .whisper-box{position:fixed;right:16px;bottom:16px;width:min(390px,calc(100% - 24px));border:1px solid var(--line);border-radius:22px;background:rgba(5,8,5,.92);backdrop-filter:blur(12px);box-shadow:var(--shadow);z-index:90;overflow:hidden;transition:transform .35s var(--ease),opacity .3s var(--ease),border-color .55s var(--ease)}
+    .whisper-box.hidden{transform:translateY(20px);opacity:0;pointer-events:none}
+    body.ring-witness .whisper-box{border-color:rgba(191,74,55,.5)}
     .whisper-head{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--gold-hot);font-size:.62rem;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    body.ring-witness .whisper-head{color:var(--blood-hot);border-bottom-color:rgba(191,74,55,.32)}
     .whisper-head button{background:none;border:none;color:#dbcfae;font-size:1.15rem;cursor:pointer}
-    .whisper-body{padding:14px;color:#e3d9bc;font-family:"Cinzel",Georgia,serif;line-height:1.72;font-size:.96rem}
+    .whisper-body{padding:14px;color:#e3d9bc;font-family:"Cinzel",Georgia,serif;line-height:1.72;font-size:.96rem;min-height:3em}
+    .whisper-body::after{content:"▮";color:var(--gold);margin-left:2px;animation:caret 1s steps(2,end) infinite}
+    .whisper-body.no-caret::after{content:""}
+    body.ring-witness .whisper-body::after{color:var(--blood-hot)}
+    @keyframes caret{0%,50%{opacity:1}51%,100%{opacity:0}}
+    .whisper-foot{display:none;border-top:1px solid rgba(191,74,55,.32);padding:10px 14px;color:rgba(191,74,55,.78);font-family:"Cinzel",serif;font-style:italic;font-size:.78rem;text-align:center}
+    body.chamber-selecting .whisper-foot{display:block}
 
-    .modal{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:18px;background:rgba(2,4,2,.74);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}
+    .modal{position:fixed;inset:0;z-index:180;display:grid;place-items:center;padding:18px;background:rgba(2,4,2,.74);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s ease}
     .modal.show{opacity:1;visibility:visible;pointer-events:auto}
     .modal-frame{width:min(720px,100%);border-color:var(--line-bright);background:linear-gradient(180deg,rgba(18,20,12,.98),rgba(6,8,5,.99));padding:24px;display:grid;gap:12px}
     .modal-frame h3{font-size:2rem;margin:0;color:#f3e3bf}
     .modal-frame p{font-family:"Cinzel",Georgia,serif;color:#d3c5a2;line-height:1.78;margin:0}
     .modal-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:8px}
 
+    .seam{display:block;width:100%;height:38px;margin:14px 0 0;color:rgba(196,168,86,.42);overflow:visible}
+    .seam svg{width:100%;height:100%;display:block}
 
-/* =========================================================
-   ELITE EXPANSION LAYER — VISIBILITY-SAFE RELIQUARY SYSTEM
-   Added to deepen the Mercy-Sickle page without hiding content
-   behind overlays. All atmospheric layers stay behind content.
-========================================================= */
-#bladeAuraCanvas,
-#edgeMemoryCanvas{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-}
-#bladeAuraCanvas{z-index:0;opacity:.38;mix-blend-mode:screen}
-#edgeMemoryCanvas{z-index:2;opacity:.32;mix-blend-mode:screen}
-.site-shell,
-.boot-overlay,
-.whisper-box,
-.modal{
-  position:relative;
-}
-.site-shell{z-index:10}
-.boot-overlay{z-index:220}
-.whisper-box{z-index:120}
-.modal{z-index:180}
-.hero,
-.section-block,
-.topbar,
-.relic-meter{
-  position:relative;
-  z-index:11;
-}
-.hero::before,
-.hero::after{
-  pointer-events:none;
-}
-.visibility-note{
-  border:1px solid rgba(157,195,116,.28);
-  border-radius:18px;
-  background:rgba(7,12,6,.72);
-  padding:14px 16px;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.72;
-}
-.expansion-section{
-  padding-top:36px;
-}
-.relic-theater{
-  border:1px solid var(--line);
-  border-radius:32px;
-  background:linear-gradient(180deg,rgba(9,12,9,.78),rgba(7,9,7,.92));
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.theater-hero{
-  min-height:72vh;
-  position:relative;
-  overflow:hidden;
-  background:#050605;
-  display:grid;
-  align-items:end;
-}
-.theater-hero img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  filter:contrast(1.08) saturate(.98);
-  transition:transform .8s var(--ease),filter .8s var(--ease);
-}
-.relic-theater:hover .theater-hero img{
-  transform:scale(1.035);
-  filter:contrast(1.12) saturate(1.04);
-}
-.theater-hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.48) 58%,rgba(0,0,0,.88)),
-             radial-gradient(circle at 15% 80%,rgba(157,195,116,.14),transparent 28%),
-             radial-gradient(circle at 82% 20%,rgba(240,216,141,.10),transparent 24%);
-  pointer-events:none;
-}
-.theater-copy{
-  position:relative;
-  z-index:2;
-  padding:clamp(24px,4vw,56px);
-  max-width:1080px;
-}
-.theater-copy h2{
-  margin:0;
-  color:#f3ebd4;
-  font-size:clamp(2.7rem,7vw,7rem);
-  line-height:.85;
-  letter-spacing:.035em;
-  text-shadow:0 16px 44px rgba(0,0,0,.72);
-}
-.theater-copy p{
-  max-width:88ch;
-  color:#ded3b8;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.84;
-  font-size:1.08rem;
-}
-.reliquary-row{
-  padding:24px 26px 28px;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-.reliquary-slab{
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-  padding:18px;
-  min-height:260px;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.25s var(--ease);
-}
-.reliquary-slab::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(90deg,transparent,rgba(240,216,141,.055),transparent);
-  transform:translateX(-105%);
-  animation:sweep 10s linear infinite;
-  pointer-events:none;
-}
-.reliquary-slab:hover,
-.reliquary-slab.active{
-  transform:translateY(-5px);
-  border-color:var(--line-bright);
-  box-shadow:0 18px 44px rgba(0,0,0,.34),0 0 48px rgba(157,195,116,.13);
-}
-.reliquary-slab h3{
-  margin:8px 0 10px;
-  color:#efe6ce;
-  font-size:1.5rem;
-  line-height:1.07;
-}
-.reliquary-slab p{
-  margin:0;
-  color:#d6ccb0;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.74;
-}
-.reliquary-slab .revealed-line{
-  max-height:0;
-}
-.reliquary-slab.open .revealed-line{
-  max-height:220px;
-  opacity:1;
-  padding-top:12px;
-  margin-top:12px;
-}
-.custody-grid{
-  padding:24px 26px 28px;
-  display:grid;
-  grid-template-columns:.86fr 1.14fr;
-  gap:18px;
-  align-items:stretch;
-}
-.custody-image{
-  border:1px solid var(--line);
-  border-radius:28px;
-  background:#050605;
-  overflow:hidden;
-  min-height:640px;
-  display:grid;
-  grid-template-rows:1fr auto;
-  box-shadow:var(--shadow);
-}
-.custody-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  filter:contrast(1.08) saturate(.96);
-  transition:.65s var(--ease);
-}
-.custody-image:hover img{transform:scale(1.04);filter:contrast(1.12) saturate(1.04)}
-.custody-stack{
-  display:grid;
-  gap:12px;
-  align-content:start;
-}
-.custody-step{
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-  padding:18px;
-  min-height:140px;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.24s var(--ease);
-}
-.custody-step:hover,
-.custody-step.active{
-  transform:translateY(-4px);
-  border-color:var(--line-bright);
-}
-.custody-step h3{
-  margin:8px 0 10px;
-  color:#efe6ce;
-  font-size:1.34rem;
-  line-height:1.08;
-}
-.custody-step p{
-  margin:0;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.72;
-}
-.protocol-console{
-  border:1px solid rgba(157,195,116,.28);
-  border-radius:24px;
-  background:radial-gradient(circle at 100% 0%,rgba(157,195,116,.11),transparent 34%),rgba(6,10,6,.82);
-  padding:20px;
-  box-shadow:var(--shadow);
-}
-.protocol-console h3{
-  margin:8px 0 10px;
-  color:var(--plague-hot);
-  font-size:1.9rem;
-  line-height:1.06;
-}
-.protocol-console p{
-  margin:0;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.8;
-}
-.protocol-list{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  margin-top:14px;
-}
-.protocol-item{
-  border:1px solid rgba(196,168,86,.18);
-  border-radius:16px;
-  background:rgba(8,11,8,.62);
-  padding:12px;
-}
-.protocol-item strong{
-  display:block;
-  color:var(--gold-hot);
-  font-family:"Inter",system-ui,sans-serif;
-  font-size:.58rem;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  margin-bottom:6px;
-}
-.protocol-item span{
-  display:block;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.55;
-}
-.ritual-map{
-  padding:24px 26px 28px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-.ritual-wheel{
-  border:1px solid var(--line);
-  border-radius:28px;
-  background:radial-gradient(circle at 50% 50%,rgba(157,195,116,.10),transparent 45%),linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-  min-height:600px;
-  position:relative;
-  overflow:hidden;
-  display:grid;
-  place-items:center;
-}
-.ritual-wheel::before,
-.ritual-wheel::after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  border:1px dashed rgba(240,216,141,.20);
-  inset:12%;
-  animation:spin 55s linear infinite;
-}
-.ritual-wheel::after{
-  inset:27%;
-  border-style:solid;
-  border-color:rgba(157,195,116,.18);
-  animation-duration:34s;
-  animation-direction:reverse;
-}
-.ritual-core{
-  position:relative;
-  z-index:2;
-  width:min(290px,60%);
-  aspect-ratio:1/1;
-  border-radius:50%;
-  border:1px solid var(--line-bright);
-  background:linear-gradient(180deg,rgba(5,8,5,.08),rgba(5,8,5,.78)),url("Assets/Mercy-Sickle/edge-memory-closeup.jpeg") center/cover no-repeat;
-  box-shadow:0 0 55px rgba(157,195,116,.16);
-  display:grid;
-  place-items:center;
-  text-align:center;
-  padding:20px;
-  color:var(--text-strong);
-}
-.ritual-core span{
-  position:relative;
-  z-index:2;
-  font-family:"Cinzel",Georgia,serif;
-  font-size:1.35rem;
-  line-height:1.1;
-  text-shadow:0 8px 24px rgba(0,0,0,.62);
-}
-.ritual-node{
-  position:absolute;
-  z-index:3;
-  width:150px;
-  border:1px solid rgba(196,168,86,.22);
-  border-radius:999px;
-  background:rgba(7,10,7,.86);
-  color:#e8dec1;
-  padding:10px;
-  text-align:center;
-  font-size:.52rem;
-  transform:
-    translate(-50%,-50%)
-    rotate(var(--a))
-    translateY(-245px)
-    rotate(calc(-1 * var(--a)));
-  cursor:pointer;
-  transition:.24s var(--ease);
-}
-.ritual-node:hover,
-.ritual-node.active{
-  background:linear-gradient(180deg,rgba(157,195,116,.25),rgba(8,20,7,.92));
-  border-color:var(--plague-hot);
-  color:var(--plague-hot);
-  box-shadow:0 0 32px rgba(157,195,116,.18);
-}
-.ritual-output{
-  border:1px solid var(--line);
-  border-radius:28px;
-  background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-  padding:24px;
-  min-height:600px;
-  display:grid;
-  align-content:center;
-  gap:14px;
-  box-shadow:var(--shadow);
-}
-.ritual-output h3{
-  margin:0;
-  color:#efe6ce;
-  font-size:2.1rem;
-  line-height:1.05;
-}
-.ritual-output p{
-  margin:0;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.84;
-  font-size:1.05rem;
-}
-.scar-table{
-  padding:24px 26px 28px;
-  display:grid;
-  gap:14px;
-}
-.scar-row{
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:linear-gradient(90deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-  padding:18px;
-  display:grid;
-  grid-template-columns:220px 1fr 180px;
-  gap:18px;
-  align-items:center;
-  position:relative;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.24s var(--ease);
-}
-.scar-row:hover,
-.scar-row.active{
-  transform:translateX(4px);
-  border-color:var(--line-bright);
-}
-.scar-row .phase-code{
-  color:var(--gold-hot);
-  font-family:"Inter",system-ui,sans-serif;
-  text-transform:uppercase;
-  letter-spacing:.16em;
-  font-size:.58rem;
-  font-weight:900;
-}
-.scar-row h3{
-  margin:0;
-  color:#efe6ce;
-  font-size:1.3rem;
-  line-height:1.08;
-}
-.scar-row p{
-  margin:0;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.65;
-}
-.scar-row strong{
-  color:var(--plague-hot);
-  font-family:"Cinzel",Georgia,serif;
-  font-size:1.1rem;
-  text-align:right;
-}
-.cross-ref-grid{
-  padding:24px 26px 28px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px;
-}
-.cross-ref{
-  min-height:240px;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));
-  text-decoration:none;
-  padding:18px;
-  position:relative;
-  overflow:hidden;
-  display:grid;
-  align-content:end;
-  transition:.24s var(--ease);
-}
-.cross-ref::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.14),rgba(0,0,0,.86)),var(--ref-img) center/cover no-repeat;
-  filter:brightness(.62) contrast(1.08);
-  z-index:0;
-  transition:.55s var(--ease);
-}
-.cross-ref:hover{transform:translateY(-6px);border-color:var(--line-bright);box-shadow:var(--shadow)}
-.cross-ref:hover::before{transform:scale(1.06);filter:brightness(.8) contrast(1.12)}
-.cross-ref>*{position:relative;z-index:2}
-.cross-ref h3{
-  margin:8px 0 8px;
-  color:#efe6ce;
-  font-size:1.35rem;
-  line-height:1.08;
-}
-.cross-ref p{
-  margin:0;
-  color:#d8ceb2;
-  font-family:"Cinzel",Georgia,serif;
-  line-height:1.56;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media (max-width:1200px){
-  .reliquary-row,
-  .custody-grid,
-  .ritual-map,
-  .cross-ref-grid{
-    grid-template-columns:1fr;
-  }
-  .scar-row{
-    grid-template-columns:1fr;
-  }
-  .scar-row strong{text-align:left}
-  .ritual-wheel{min-height:520px}
-}
-@media (max-width:780px){
-  .protocol-list{
-    grid-template-columns:1fr;
-  }
-  .ritual-node{
-    display:none;
-  }
-  .ritual-wheel{
-    min-height:380px;
-  }
-  .theater-hero{
-    min-height:520px;
-  }
-  .theater-copy h2{
-    font-size:clamp(2.6rem,13vw,4.4rem);
-  }
-}
+    .expansion-section{padding-top:36px}
+    .relic-theater{border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(9,12,9,.78),rgba(7,9,7,.92));box-shadow:var(--shadow);overflow:hidden}
+    .theater-hero{min-height:72vh;position:relative;overflow:hidden;background:#050605;display:grid;align-items:end}
+    .theater-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.08) saturate(.98);transition:transform .8s var(--ease),filter .8s var(--ease)}
+    .relic-theater:hover .theater-hero img{transform:scale(1.035);filter:contrast(1.12) saturate(1.04)}
+    .theater-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.48) 58%,rgba(0,0,0,.88)),radial-gradient(circle at 15% 80%,rgba(157,195,116,.14),transparent 28%),radial-gradient(circle at 82% 20%,rgba(240,216,141,.10),transparent 24%);pointer-events:none}
+    .theater-copy{position:relative;z-index:2;padding:clamp(24px,4vw,56px);max-width:1080px}
+    .theater-copy h2{margin:0;color:#f3ebd4;font-size:clamp(2.7rem,7vw,7rem);line-height:.85;letter-spacing:.035em;text-shadow:0 16px 44px rgba(0,0,0,.72)}
+    .theater-copy p{max-width:88ch;color:#ded3b8;font-family:"Cinzel",Georgia,serif;line-height:1.84;font-size:1.08rem}
+
+    .reliquary-row{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .reliquary-slab{padding:18px;min-height:260px;cursor:pointer;transition:.25s var(--ease)}
+    .reliquary-slab:hover,.reliquary-slab.active{transform:translateY(-5px);border-color:var(--line-bright);box-shadow:0 18px 44px rgba(0,0,0,.34),0 0 48px rgba(157,195,116,.13)}
+    .reliquary-slab h3{margin:8px 0 10px;color:#efe6ce;font-size:1.5rem;line-height:1.07}
+    .reliquary-slab p{margin:0;color:#d6ccb0;font-family:"Cinzel",Georgia,serif;line-height:1.74}
+
+    .custody-grid{padding:24px 26px 28px;display:grid;grid-template-columns:.86fr 1.14fr;gap:18px;align-items:stretch}
+    .custody-image{border:1px solid var(--line);border-radius:28px;background:#050605;overflow:hidden;min-height:640px;display:grid;grid-template-rows:1fr auto;box-shadow:var(--shadow);cursor:pointer}
+    .custody-image img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(1.08) saturate(.96);transition:.65s var(--ease)}
+    .custody-image:hover img{transform:scale(1.04);filter:contrast(1.12) saturate(1.04)}
+    .custody-stack{display:grid;gap:12px;align-content:start}
+    .custody-step{padding:18px;min-height:140px;cursor:pointer;transition:.24s var(--ease)}
+    .custody-step:hover,.custody-step.active{transform:translateY(-4px);border-color:var(--line-bright)}
+    .custody-step h3{margin:8px 0 10px;color:#efe6ce;font-size:1.34rem;line-height:1.08}
+    .custody-step p{margin:0;color:#d8ceb2;font-family:"Cinzel",Georgia,serif;line-height:1.72}
+    .protocol-console{border-color:rgba(157,195,116,.28);background:radial-gradient(circle at 100% 0%,rgba(157,195,116,.11),transparent 34%),rgba(6,10,6,.82);padding:20px}
+    .protocol-console h3{margin:8px 0 10px;color:var(--plague-hot);font-size:1.9rem;line-height:1.06}
+    .protocol-console p{margin:0;color:#d8ceb2;font-family:"Cinzel",Georgia,serif;line-height:1.8}
+    .protocol-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+    .protocol-item{border:1px solid rgba(196,168,86,.18);border-radius:16px;background:rgba(8,11,8,.62);padding:12px}
+    .protocol-item strong{display:block;color:var(--gold-hot);font-family:"Inter",system-ui,sans-serif;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px}
+    .protocol-item span{display:block;color:#d8ceb2;font-family:"Cinzel",Georgia,serif;line-height:1.55}
+
+    .ritual-map{padding:24px 26px 28px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .ritual-wheel{background:radial-gradient(circle at 50% 50%,rgba(157,195,116,.10),transparent 45%),linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));min-height:600px;display:grid;place-items:center}
+    .ritual-wheel::before,.ritual-wheel::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(240,216,141,.20);inset:12%;animation:spin 55s linear infinite;transition:border-color .8s var(--ease),border-style .8s var(--ease)}
+    .ritual-wheel::after{inset:27%;border-style:solid;border-color:rgba(157,195,116,.18);animation-duration:34s;animation-direction:reverse}
+    .ritual-wheel.complete::before{border-color:rgba(240,216,141,.62);border-style:solid;animation-duration:18s}
+    .ritual-wheel.complete::after{border-color:rgba(157,195,116,.5)}
+    .rite-trail{position:absolute;inset:0;pointer-events:none;z-index:2}
+    .rite-trail path{stroke:rgba(240,216,141,.4);stroke-width:1;fill:none;stroke-dasharray:200;stroke-dashoffset:200;animation:traceArc 1.4s ease-out forwards;filter:drop-shadow(0 0 4px rgba(240,216,141,.4))}
+    @keyframes traceArc{from{stroke-dashoffset:200;opacity:.9}to{stroke-dashoffset:0;opacity:0}}
+    .ritual-core{position:relative;z-index:2;width:min(290px,60%);aspect-ratio:1/1;border-radius:50%;border:1px solid var(--line-bright);background:linear-gradient(180deg,rgba(5,8,5,.08),rgba(5,8,5,.78)),url("Assets/Mercy-Sickle/edge-memory-closeup.jpeg") center/cover no-repeat;box-shadow:0 0 55px rgba(157,195,116,.16);display:grid;place-items:center;text-align:center;padding:20px;color:var(--text-strong);transition:box-shadow .8s var(--ease)}
+    .ritual-wheel.complete .ritual-core{box-shadow:0 0 80px rgba(240,216,141,.4),0 0 120px rgba(157,195,116,.2);animation:coreFlash .8s ease-out}
+    @keyframes coreFlash{0%{box-shadow:0 0 200px rgba(240,216,141,.9)}100%{box-shadow:0 0 80px rgba(240,216,141,.4),0 0 120px rgba(157,195,116,.2)}}
+    .ritual-core span{position:relative;z-index:2;font-family:"Cinzel",Georgia,serif;font-size:1.35rem;line-height:1.1;text-shadow:0 8px 24px rgba(0,0,0,.62)}
+    .ritual-node{position:absolute;z-index:3;width:150px;border:1px solid rgba(196,168,86,.22);border-radius:999px;background:rgba(7,10,7,.86);color:#e8dec1;padding:10px;text-align:center;font-size:.52rem;transform:translate(-50%,-50%) rotate(var(--a)) translateY(-245px) rotate(calc(-1 * var(--a)));cursor:pointer;transition:.24s var(--ease)}
+    .ritual-node:hover,.ritual-node.active{background:linear-gradient(180deg,rgba(157,195,116,.25),rgba(8,20,7,.92));border-color:var(--plague-hot);color:var(--plague-hot);box-shadow:0 0 32px rgba(157,195,116,.18)}
+    .ritual-node.touched{border-color:rgba(240,216,141,.5);color:var(--gold-hot)}
+    .ritual-node.touched::before{content:"◆";position:absolute;top:-4px;right:6px;color:var(--gold-hot);font-size:.55rem;text-shadow:0 0 6px var(--gold-hot)}
+    .ritual-output{padding:24px;min-height:600px;display:grid;align-content:center;gap:14px}
+    .ritual-output h3{margin:0;color:#efe6ce;font-size:2.1rem;line-height:1.05}
+    .ritual-output p{margin:0;color:#d8ceb2;font-family:"Cinzel",Georgia,serif;line-height:1.84;font-size:1.05rem}
+    .rite-progress{display:flex;gap:6px;margin-top:auto}
+    .rite-progress span{flex:1;height:3px;background:rgba(196,168,86,.18);border-radius:2px;transition:.4s var(--ease)}
+    .rite-progress span.touched{background:var(--gold-hot);box-shadow:0 0 8px var(--gold-hot)}
+    .rite-stanza{display:none;border-top:1px solid rgba(240,216,141,.32);padding-top:18px;margin-top:8px;color:var(--gold-hot);font-family:"Cinzel",Georgia,serif;font-style:italic;line-height:1.86;font-size:1.04rem;text-shadow:0 0 12px rgba(240,216,141,.18)}
+    .rite-stanza.revealed{display:block;animation:stanzaFade 1.2s ease-out}
+    @keyframes stanzaFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    .scar-table{padding:24px 26px 28px;display:grid;gap:14px}
+    .scar-row{border:1px solid var(--line);border-radius:22px;background:linear-gradient(90deg,rgba(13,17,13,.86),rgba(6,9,6,.92));padding:18px;display:grid;grid-template-columns:220px 1fr 200px;gap:18px;align-items:center;position:relative;overflow:hidden;cursor:pointer;transition:.24s var(--ease)}
+    .scar-row:hover,.scar-row.active{transform:translateX(4px);border-color:var(--line-bright)}
+    .scar-row .phase-code{color:var(--gold-hot);font-family:"Inter",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.58rem;font-weight:900}
+    .scar-row h3{margin:0;color:#efe6ce;font-size:1.3rem;line-height:1.08}
+    .scar-row p{margin:0;color:#d8ceb2;font-family:"Cinzel",Georgia,serif;line-height:1.65}
+    .scar-mark{color:var(--plague-hot);font-family:"Cinzel",Georgia,serif;font-size:1.1rem;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:10px;min-height:40px}
+    .scar-row[data-scar="priest"] .scar-mark strong{font-family:"Cinzel",serif;font-style:italic;color:var(--gold-hot);letter-spacing:.06em;text-shadow:3px 0 8px rgba(157,195,116,.45),-2px 0 6px rgba(240,216,141,.3)}
+    .scar-row[data-scar="duelist"] .scar-mark svg{flex:0 0 auto;transform:rotate(-8deg)}
+    .scar-row[data-scar="survivor"] .scar-mark{color:var(--dim);font-style:italic;font-size:1.6rem;letter-spacing:.3em}
+    .scar-row[data-scar="survivor"]{border-color:rgba(124,45,34,.32)}
+
+    .cross-ref-grid{padding:24px 26px 28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .cross-ref{min-height:240px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(13,17,13,.86),rgba(6,9,6,.92));text-decoration:none;padding:18px;position:relative;overflow:hidden;display:grid;align-content:end;transition:.24s var(--ease)}
+    .cross-ref::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.14),rgba(0,0,0,.86)),var(--ref-img) center/cover no-repeat;filter:brightness(.62) contrast(1.08);z-index:0;transition:.55s var(--ease)}
+    .cross-ref:hover{transform:translateY(-6px);border-color:var(--line-bright);box-shadow:var(--shadow)}
+    .cross-ref:hover::before{transform:scale(1.06);filter:brightness(.8) contrast(1.12)}
+    .cross-ref>*{position:relative;z-index:2}
+    .cross-ref h3{margin:8px 0 8px;color:#efe6ce;font-size:1.35rem;line-height:1.08}
+    .cross-ref p{margin:0;color:#d8ceb2;font-family:"Cinzel",Georgia,serif;line-height:1.56}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
     @media (max-width:1200px){
-      .topbar,.relic-meter,.hero,.exam-grid,.origin-grid,.motions-grid,.effects-layout,.witness-grid,.battle-layout,.verdict-grid{grid-template-columns:1fr}
+      .topbar,.relic-meter,.lens-bar,.hero,.exam-grid,.origin-grid,.motions-grid,.effects-layout,.witness-grid,.battle-layout,.verdict-grid,.reliquary-row,.custody-grid,.ritual-map,.cross-ref-grid{grid-template-columns:1fr}
       .readout-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .effect-grid,.battle-thumbs{grid-template-columns:1fr}
       .hero-left,.hero-right{min-height:auto}
       .hero-media{height:auto}
       .hero-main-img,.relic-stage,.motion-image,.effects-image,.witness-image,.verdict-image{min-height:440px}
       .battle-stage img{height:460px}
+      .scar-row{grid-template-columns:1fr}
+      .scar-mark{text-align:left;justify-content:flex-start}
+      .ritual-wheel{min-height:520px}
     }
 
     @media (max-width:780px){
       .site-shell{width:min(var(--max),calc(100% - 16px));padding-top:10px}
-      .boot-grid,.hero-grid,.mini-strip,.readout-grid,.battle-readouts{grid-template-columns:1fr}
+      .boot-grid,.hero-grid,.mini-strip,.readout-grid,.battle-readouts,.protocol-list{grid-template-columns:1fr}
       .hero,.section-block{border-radius:26px}
       h1{font-size:clamp(2.8rem,15vw,4.8rem)}
-      .section-header,.wide-pad,.exam-grid,.origin-grid,.motions-grid,.effects-layout,.witness-grid,.battle-layout,.verdict-grid,.readout-grid{padding-left:18px;padding-right:18px}
+      .section-header,.wide-pad,.exam-grid,.origin-grid,.motions-grid,.effects-layout,.witness-grid,.battle-layout,.verdict-grid,.readout-grid,.reliquary-row,.custody-grid,.ritual-map,.cross-ref-grid,.scar-table{padding-left:18px;padding-right:18px}
       .bar-row{grid-template-columns:1fr;gap:6px}
-      .relic-stage{min-height:420px}
+      .relic-stage{min-height:520px}
       .battle-stage img{height:320px}
       .node-label{display:none}
       .whisper-box{left:8px;right:8px;width:auto}
       .top-shell{top:6px}
+      .ritual-node{display:none}
+      .ritual-wheel{min-height:380px}
+      .theater-hero{min-height:520px}
+      .theater-copy h2{font-size:clamp(2.6rem,13vw,4.4rem)}
     }
   </style>
 </head>
-<body class="locked" data-risk="sealed">
+<body class="locked" data-risk="sealed" data-lens="surgical">
   <a class="skip-link" href="#main">Skip to reliquary chamber</a>
   <canvas id="sporeCanvas" aria-hidden="true"></canvas>
   <canvas id="bladeAuraCanvas" aria-hidden="true"></canvas>
   <canvas id="edgeMemoryCanvas" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
+  <div class="descent-veil" id="descentVeil" aria-hidden="true"></div>
 
   <div class="boot-overlay" id="bootOverlay" role="dialog" aria-modal="true" aria-label="Reliquary unsealing sequence">
     <div class="boot-shell">
@@ -990,6 +481,7 @@
         <div class="boot-log" id="bootLog"></div>
         <div class="boot-progress"><span id="bootBar"></span></div>
         <div class="boot-foot label"><span>Edge-memory purge engaged</span><span>Sentence mass verified</span><span>Archive copying live</span></div>
+        <div class="boot-reenter" id="bootReenter">RE-ENTERING CHAMBER. Previous witness pressure retained.</div>
         <div style="margin-top:16px"><button class="btn" id="skipBoot" type="button">Open Chamber</button></div>
       </div>
     </div>
@@ -999,9 +491,9 @@
     <header class="top-shell">
       <div class="topbar">
         <div class="crumbs label">
-          <a href="index.html">The Septicarium</a><span class="sep">/</span>
-          <a href="plaguebound-dossier.html">Plaguebound Dossier</a><span class="sep">/</span>
-          <a href="mortivus-classarion.html">Mortivus Classarion</a><span class="sep">/</span>
+          <a href="index.html" data-descend="up">The Septicarium</a><span class="sep">/</span>
+          <a href="plaguebound-dossier.html" data-descend="up">Plaguebound Dossier</a><span class="sep">/</span>
+          <a href="mortivus-classarion.html" data-descend="up">Mortivus Classarion</a><span class="sep">/</span>
           <span>The Mercy-Sickle</span>
         </div>
         <nav class="nav" aria-label="Reliquary navigation">
@@ -1027,6 +519,16 @@
           <div class="readout-label">Witness Safety</div>
           <div class="readout-value" id="witnessSafety">Acceptable distance maintained.</div>
         </div>
+      </div>
+
+      <div class="lens-bar" aria-label="Reading lens selector">
+        <div class="label">Reading Lens</div>
+        <div class="lens-pills" role="tablist">
+          <button class="lens-pill active" data-lens="surgical" role="tab">Surgical</button>
+          <button class="lens-pill" data-lens="liturgical" role="tab">Liturgical</button>
+          <button class="lens-pill" data-lens="battlefield" role="tab">Battlefield</button>
+        </div>
+        <div class="lens-mark" id="lensMark">// Surgical</div>
       </div>
     </header>
 
@@ -1059,6 +561,8 @@
         </div>
       </aside>
     </section>
+
+    <div class="seam" aria-hidden="true"><svg viewBox="0 0 1540 38" preserveAspectRatio="none"><path d="M0 19 L740 19 M800 19 L1540 19" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="770" cy="19" r="10" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="770" cy="19" r="3" fill="currentColor" opacity=".6"/></svg></div>
 
     <section class="section" id="readout" data-risk="24" data-whisper="The chamber begins with shape. Everything worse follows from shape." aria-labelledby="readoutTitle">
       <div class="section-block">
@@ -1107,21 +611,22 @@
     <section class="section" id="anatomy" data-risk="42" data-whisper="Do not wait for the cut. The selection is the first wound." aria-labelledby="anatomyTitle">
       <div class="section-block">
         <div class="section-header">
-          <div><div class="kicker label">Reliquary Dissection Slate</div><h2 class="section-title" id="anatomyTitle">The Object Under Glass</h2><p class="section-desc">Select a node. Each point carries three readings: surgical, liturgical, and battlefield. The chamber integrity will degrade as the edge-memory wakes.</p></div>
-          <div class="chip">Interactive Examination</div>
+          <div><div class="kicker label">Reliquary Dissection Slate</div><h2 class="section-title" id="anatomyTitle">The Object Under Glass</h2><p class="section-desc">Select a node. The active hotspot draws a pointer line to the right panel. Each point carries three readings — choose your lens at the top of the page to change how the chamber speaks.</p></div>
+          <div class="chip">Interactive Examination // Lens-Aware</div>
         </div>
 
         <div class="exam-grid">
           <div class="relic-stage" id="relicStage">
             <img src="Assets/Mercy-Sickle/mercy-sickle-examination.jpeg" alt="Examination plate for the Mercy-Sickle">
             <div class="relic-overlay"></div>
-            <button class="hotspot blade-head active" data-part="bladeHead" aria-label="Inspect thick curved mercy blade"></button><div class="node-label" style="left:34%;top:33%">Blade Head</div>
-            <button class="hotspot inner-bite" data-part="innerBite" aria-label="Inspect inner cutting bite"></button><div class="node-label" style="left:39%;top:43%">Inner Bite</div>
-            <button class="hotspot collar" data-part="collar" aria-label="Inspect blade collar mount"></button><div class="node-label" style="left:48%;top:40%">Collar Mount</div>
-            <button class="hotspot spear-haft" data-part="spearHaft" aria-label="Inspect spear-like haft"></button><div class="node-label" style="left:62%;top:52%">Long Haft</div>
-            <button class="hotspot haft-wrap" data-part="haftWrap" aria-label="Inspect wrapped handling section"></button><div class="node-label" style="left:73%;top:56%">Grip Wrap</div>
-            <button class="hotspot chain-ring" data-part="chainRing" aria-label="Inspect chain ring"></button><div class="node-label" style="left:68%;top:63%">Chain Ring</div>
-            <button class="hotspot relic-tags" data-part="relicTags" aria-label="Inspect relic tags and seals"></button><div class="node-label" style="left:62%;top:36%">Tags & Seals</div>
+            <svg class="pointer-svg active" id="pointerSvg" viewBox="0 0 100 100" preserveAspectRatio="none"><path id="pointerPath" d="M 30 33 L 96 50"/></svg>
+            <button class="hotspot active" style="left:29%;top:33%" data-part="bladeHead" data-pointer="M 30 33 L 96 50" aria-label="Inspect thick curved mercy blade"></button><div class="node-label" style="left:34%;top:33%">Blade Head</div>
+            <button class="hotspot" style="left:34%;top:43%" data-part="innerBite" data-pointer="M 35 43 L 96 50" aria-label="Inspect inner cutting bite"></button><div class="node-label" style="left:39%;top:43%">Inner Bite</div>
+            <button class="hotspot" style="left:43%;top:40%" data-part="collar" data-pointer="M 44 40 L 96 50" aria-label="Inspect blade collar mount"></button><div class="node-label" style="left:48%;top:40%">Collar Mount</div>
+            <button class="hotspot" style="left:57%;top:52%" data-part="spearHaft" data-pointer="M 58 52 L 96 50" aria-label="Inspect spear-like haft"></button><div class="node-label" style="left:62%;top:52%">Long Haft</div>
+            <button class="hotspot" style="left:68%;top:56%" data-part="haftWrap" data-pointer="M 69 56 L 96 50" aria-label="Inspect wrapped handling section"></button><div class="node-label" style="left:73%;top:56%">Grip Wrap</div>
+            <button class="hotspot" style="left:79%;top:60%" data-part="chainRing" data-pointer="M 80 60 L 96 50" aria-label="Inspect chain ring"></button><div class="node-label" style="left:68%;top:63%">Chain Ring</div>
+            <button class="hotspot" style="left:57%;top:36%" data-part="relicTags" data-pointer="M 58 36 L 96 50" aria-label="Inspect relic tags and seals"></button><div class="node-label" style="left:62%;top:36%">Tags & Seals</div>
           </div>
 
           <div class="exam-panel">
@@ -1129,11 +634,6 @@
               <div class="part-kicker label" id="partLabel">Examination Node // Curved Blade Head</div>
               <h3 id="partTitle">The Thick Curved Mercy Blade</h3>
               <p class="part-lead" id="partLead">This is the part that gives the weapon its name: not a thin farming sickle, but a short, heavy curved execution blade mounted to a spear-like haft.</p>
-              <div class="tab-pills">
-                <button class="mode-btn active" data-mode="surgical">Surgical</button>
-                <button class="mode-btn" data-mode="liturgical">Liturgical</button>
-                <button class="mode-btn" data-mode="battlefield">Battlefield</button>
-              </div>
               <div class="mode-pane">
                 <strong id="modeSubtitle">Short Blade, Heavy Sentence</strong>
                 <p id="modeBody">The blade is shorter and thicker than a common scythe or crescent weapon. It is a dense curved killing head fixed near the end of a long haft.</p>
@@ -1145,7 +645,7 @@
               </div>
             </article>
 
-            <article class="edge-card lore-card interactive" data-title="Edge-Memory Close Study" data-text="The blade edge retains witness pressure more readily than the rest of the weapon. The inner curve is remembered before the strike because fear arrives there first.">
+            <article class="edge-card interactive" data-title="Edge-Memory Close Study" data-text="The blade edge retains witness pressure more readily than the rest of the weapon. The inner curve is remembered before the strike because fear arrives there first.">
               <img src="Assets/Mercy-Sickle/edge-memory-closeup.jpeg" alt="Close view of the blade edge and memory residue">
               <div class="edge-copy"><div class="label">Supplementary Plate</div><h3>Close Edge Memory</h3><p>The edge remembers refusal. Attendants report hearing a ring before the chain has moved.</p></div>
             </article>
@@ -1230,19 +730,19 @@
     <section class="section" id="witness" data-risk="70" data-whisper="Witnesses remember the ring more faithfully than the blade." aria-labelledby="witnessTitle">
       <div class="section-block">
         <div class="section-header">
-          <div><div class="kicker label">Enemy Fragments // Survived Contact</div><h2 class="section-title" id="witnessTitle">Witness Fragment Decryption</h2><p class="section-desc">Fragments are locked until touched. Their testimonies differ in detail and agree in dread.</p></div>
-          <div class="chip">Witness Stability: Declining</div>
+          <div><div class="kicker label">Enemy Fragments // Survived Contact</div><h2 class="section-title" id="witnessTitle">Witness Fragment Decryption</h2><p class="section-desc">Fragments are locked until touched. Each survivor's testimony types in at their own cadence. Their testimonies differ in detail and agree in dread.</p></div>
+          <div class="chip" id="witnessChip">Fragments Decrypted: 0 / 4</div>
         </div>
         <div class="witness-grid">
           <figure class="witness-image image-frame">
             <img src="Assets/Mercy-Sickle/survivor-fragment.jpeg" alt="Recovered survivor fragment from a battle involving the Mercy-Sickle">
             <figcaption class="frame-caption label">Recovered Survivor Fragment</figcaption>
           </figure>
-          <div class="witness-stack">
-            <article class="witness-card locked" data-witness="I thought it was a polearm until he turned it. Then I understood the curve was not there for reach. It was there so the wound could keep me after the hit."><div class="label">Imperial Survivor</div><h3>Fragment I</h3><p>████████████████ █████ ██████████ █████████</p></article>
-            <article class="witness-card locked" data-witness="The worst part was not the blade. It was the moment he let us see it clearly. We knew he had chosen one of us as proof and the rest of us as audience."><div class="label">Slaaneshi Attendant</div><h3>Fragment II</h3><p>██████████ ███████ ███████ ██████████████</p></article>
-            <article class="witness-card locked" data-witness="He caught Captain Hel's harness and pulled him half a step forward. After that, the room behaved as though the captain had already died."><div class="label">Servitor Transcription</div><h3>Fragment III</h3><p>████████████ ███████████ █████████ ███████</p></article>
-            <article class="witness-card locked" data-witness="The chain-ring made a sound when he drew it back. I have forgotten the order of the firefight, forgotten the names of my dead, but not that ring."><div class="label">Plaguebound Scribe</div><h3>Fragment IV</h3><p>██████ █████████ ████████ █████ ███████</p></article>
+          <div class="witness-stack" id="witnessStack">
+            <article class="witness-card locked" data-witness-id="1" data-witness="I thought it was a polearm until he turned it. Then I understood the curve was not there for reach. It was there so the wound could keep me after the hit."><div class="label">Imperial Survivor</div><h3>Fragment I</h3><p>████████████████ █████ ██████████ █████████</p></article>
+            <article class="witness-card locked" data-witness-id="2" data-witness="The worst part was not the blade. It was the moment he let us see it clearly. We knew he had chosen one of us as proof and the rest of us as audience."><div class="label">Slaaneshi Attendant</div><h3>Fragment II</h3><p>██████████ ███████ ███████ ██████████████</p></article>
+            <article class="witness-card locked" data-witness-id="3" data-witness="He caught Captain Hel's harness and pulled him half a step forward. After that, the room behaved as though the captain had already died."><div class="label">Servitor Transcription</div><h3>Fragment III</h3><p>████████████ ███████████ █████████ ███████</p></article>
+            <article class="witness-card locked" data-witness-id="4" data-witness="The chain-ring made a sound when he drew it back. I have forgotten the order of the firefight, forgotten the names of my dead, but not that ring."><div class="label">Plaguebound Scribe</div><h3>Fragment IV</h3><p>██████ █████████ ████████ █████ ███████</p></article>
           </div>
         </div>
       </div>
@@ -1266,6 +766,21 @@
                 <div class="battle-readout"><div class="label">Mortivus Condition</div><strong id="battleCondition">Observing failure.</strong></div>
                 <div class="battle-readout"><div class="label">Relic Response</div><strong id="battleRelic">Still chambered.</strong></div>
               </div>
+              <div class="integrity-strip">
+                <div class="integrity-strip-head">
+                  <div class="label">Mortivus Integrity Across the Fragment</div>
+                  <div class="integrity-num" id="integrityNumPhase">100%</div>
+                </div>
+                <div class="integrity-track">
+                  <svg viewBox="0 0 600 50" preserveAspectRatio="none">
+                    <path class="integrity-line drawn" id="integrityLinePath" d="M 50 8 L 150 12 L 250 18 L 350 42 L 450 32 L 550 36"/>
+                    <circle class="integrity-dot" id="integrityDot" cx="50" cy="8" r="5"/>
+                  </svg>
+                </div>
+                <div class="integrity-marks" id="integrityMarks">
+                  <span class="active-phase" data-mark="breach">Breach</span><span data-mark="champion">Champion</span><span data-mark="duel">Duel</span><span class="crash" data-mark="wound">Wound</span><span data-mark="mercy">Mercy</span><span data-mark="aftermath">After</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1281,16 +796,15 @@
       </div>
     </section>
 
-
     <section class="expansion-section" id="custody" data-risk="46" data-whisper="The reliquary does not display the blade. It negotiates with the blade while pretending to display it." aria-labelledby="custodyTitle">
       <div class="relic-theater">
         <div class="section-header">
           <div>
             <div class="kicker label">Reliquary Custody Protocol</div>
             <h2 class="section-title" id="custodyTitle">The Chamber Is Part of the Weapon</h2>
-            <p class="section-desc">The Mercy-Sickle is not simply stored. It is restrained through ritual distance, witness geometry, edge-memory venting, and repeated denial of symbolic comfort. This section stays fully visible: atmospheric layers are behind the page, not above it.</p>
+            <p class="section-desc">The Mercy-Sickle is not simply stored. It is restrained through ritual distance, witness geometry, edge-memory venting, and repeated denial of symbolic comfort.</p>
           </div>
-          <div class="chip">Visibility-Safe Chamber Layer</div>
+          <div class="chip">Custody Chamber Layer</div>
         </div>
 
         <div class="custody-grid">
@@ -1343,7 +857,7 @@
         </div>
 
         <div class="reliquary-row">
-          <article class="reliquary-slab open" data-expansion="shape">
+          <article class="reliquary-slab open active" data-expansion="shape">
             <div class="label">Plate I</div>
             <h3>It Is a Polearm First</h3>
             <p>The length matters because the victim is selected before they are touched.</p>
@@ -1371,25 +885,33 @@
           <div>
             <div class="kicker label">Mercy Rite Wheel</div>
             <h2 class="section-title" id="ritualWheelTitle">The Motions Are Also a Liturgy</h2>
-            <p class="section-desc">The Four Motions already describe combat doctrine. The Rite Wheel preserves the theological version: how Mortivus turns reach, pause, hook, and cut into a recognizable sacrament of ending.</p>
+            <p class="section-desc">The Four Motions already describe combat doctrine. The Rite Wheel preserves the theological version. Touch all five rites in any order to unlock the full liturgy stanza.</p>
           </div>
-          <div class="chip">Rite Wheel // Active</div>
+          <div class="chip" id="riteChip">Rites Touched: 1 / 5</div>
         </div>
 
         <div class="ritual-map">
-          <div class="ritual-wheel">
+          <div class="ritual-wheel" id="ritualWheel">
+            <svg class="rite-trail" id="riteTrail" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet"></svg>
             <div class="ritual-core"><span>The Mercy-Sickle<br>Does Not Hurry</span></div>
-            <button class="ritual-node active" style="left:50%;top:50%;--a:0deg" data-rite="reach">Reach</button>
-            <button class="ritual-node" style="left:50%;top:50%;--a:72deg" data-rite="pause">Pause</button>
-            <button class="ritual-node" style="left:50%;top:50%;--a:144deg" data-rite="hook">Hook</button>
-            <button class="ritual-node" style="left:50%;top:50%;--a:216deg" data-rite="draw">Draw</button>
-            <button class="ritual-node" style="left:50%;top:50%;--a:288deg" data-rite="seal">Seal</button>
+            <button class="ritual-node active touched" style="left:50%;top:50%;--a:0deg" data-rite="reach" data-angle="0">Reach</button>
+            <button class="ritual-node" style="left:50%;top:50%;--a:72deg" data-rite="pause" data-angle="72">Pause</button>
+            <button class="ritual-node" style="left:50%;top:50%;--a:144deg" data-rite="hook" data-angle="144">Hook</button>
+            <button class="ritual-node" style="left:50%;top:50%;--a:216deg" data-rite="draw" data-angle="216">Draw</button>
+            <button class="ritual-node" style="left:50%;top:50%;--a:288deg" data-rite="seal" data-angle="288">Seal</button>
           </div>
           <article class="ritual-output">
             <div class="label" id="riteLabel">Rite I</div>
             <h3 id="riteTitle">Reach</h3>
             <p id="riteText">The haft extends judgment into the space between Mortivus and the chosen target. Before blood moves, the battlefield understands that someone has been selected.</p>
-            <p class="visibility-note">All elements in this chamber remain readable and clickable. The canvas layers are intentionally low-opacity and placed beneath the content stack.</p>
+            <div class="rite-stanza" id="riteStanza">
+              <p style="margin:0 0 10px"><em>Reach. Pause. Hook. Draw. Seal.</em></p>
+              <p style="margin:0 0 10px">The mercy was not given. It was selected, fixed, exposed, drawn close, and sealed into the witnesses.</p>
+              <p style="margin:0">No part of this sentence is recoverable.</p>
+            </div>
+            <div class="rite-progress" id="riteProgress">
+              <span class="touched"></span><span></span><span></span><span></span><span></span>
+            </div>
           </article>
         </div>
       </div>
@@ -1401,31 +923,49 @@
           <div>
             <div class="kicker label">Scar-Ledger // Behavioral Entries</div>
             <h2 class="section-title" id="scarLedgerTitle">What the Blade Records Without Writing</h2>
-            <p class="section-desc">The Mercy-Sickle leaves different kinds of evidence depending on what it was used to end. These entries expand the relic beyond one battle without reducing it to a generic weapon profile.</p>
+            <p class="section-desc">The Mercy-Sickle leaves different kinds of evidence depending on what it was used to end. Each scar carries its own visual signature.</p>
           </div>
-          <div class="chip">Scar Entries // Selectable</div>
+          <div class="chip">Scar Entries // Four Distinct Languages</div>
         </div>
 
         <div class="scar-table">
           <article class="scar-row active" data-scar="command">
             <div><span class="phase-code">Scar I</span><h3>Commanders</h3></div>
             <p>The weapon interrupts leadership by turning authority into spectacle. The death matters because everyone nearby knows what was removed.</p>
-            <strong>Authority Cut</strong>
+            <div class="scar-mark">
+              <svg width="60" height="32" viewBox="0 0 60 32" aria-hidden="true">
+                <circle cx="10" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="22" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <line x1="28" y1="8" x2="38" y2="24" stroke="var(--blood-hot)" stroke-width="1.6"/>
+                <circle cx="44" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".3"/>
+                <circle cx="56" cy="16" r="5" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".2"/>
+              </svg>
+              <strong>Authority Cut</strong>
+            </div>
           </article>
           <article class="scar-row" data-scar="priest">
             <div><span class="phase-code">Scar II</span><h3>Priests and Icons</h3></div>
             <p>The curved blade is used where faith has become structural support. It removes the symbol before the body finishes failing.</p>
-            <strong>Meaning Cut</strong>
+            <div class="scar-mark">
+              <strong>Meaning Cut</strong>
+            </div>
           </article>
           <article class="scar-row" data-scar="duelist">
             <div><span class="phase-code">Scar III</span><h3>Duelists</h3></div>
             <p>Fast enemies are allowed to enter confidence. The inner bite then makes speed cooperate with its own humiliation.</p>
-            <strong>Pride Cut</strong>
+            <div class="scar-mark">
+              <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true">
+                <line x1="6" y1="6" x2="36" y2="36" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <line x1="6" y1="36" x2="36" y2="6" stroke="var(--blood-hot)" stroke-width="1.6" stroke-linecap="round" transform="rotate(8 21 21)"/>
+                <circle cx="36" cy="36" r="2" fill="currentColor"/>
+              </svg>
+              <strong>Pride Cut</strong>
+            </div>
           </article>
           <article class="scar-row" data-scar="survivor">
             <div><span class="phase-code">Scar IV</span><h3>Survivors</h3></div>
             <p>Sometimes the weapon is shown, not used. The visible possibility of ending becomes more useful than the ending itself.</p>
-            <strong>Mercy Withheld</strong>
+            <div class="scar-mark">—</div>
           </article>
         </div>
       </div>
@@ -1437,28 +977,27 @@
           <div>
             <div class="kicker label">Septicarium Cross-References</div>
             <h2 class="section-title" id="crossRefTitle">Records Bound to the Blade</h2>
-            <p class="section-desc">The Mercy-Sickle page should not stand alone. It should route cleanly back into Mortivus, the Dossier, the Annals, and the atrocity record where mercy becomes its most horrific language.</p>
+            <p class="section-desc">The Mercy-Sickle page does not stand alone. It routes back into Mortivus, the Dossier, the Annals, and the atrocity record where mercy becomes its most horrific language.</p>
           </div>
           <div class="chip">Navigation Preserved</div>
         </div>
 
         <div class="cross-ref-grid">
-          <a class="cross-ref" href="mortivus-classarion.html" style="--ref-img:url('Assets/Mercy-Sickle/mortivus-weapon-use.jpeg')">
+          <a class="cross-ref" href="mortivus-classarion.html" data-descend="up" style="--ref-img:url('Assets/Mercy-Sickle/mortivus-weapon-use.jpeg')">
             <div class="label">Primary Subject</div><h3>Mortivus Classarion</h3><p>The hand that makes the weapon doctrinal.</p>
           </a>
-          <a class="cross-ref" href="the-mercy-he-gave.html" style="--ref-img:url('Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg')">
+          <a class="cross-ref" href="the-mercy-he-gave.html" data-descend="down" style="--ref-img:url('Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg')">
             <div class="label">Mercy Record</div><h3>The Mercy He Gave</h3><p>Where mercy becomes preservation of pain.</p>
           </a>
-          <a class="cross-ref" href="plaguebound-dossier.html" style="--ref-img:url('Assets/Mercy-Sickle/mercy-sickle-provenance.jpeg')">
+          <a class="cross-ref" href="plaguebound-dossier.html" data-descend="up" style="--ref-img:url('Assets/Mercy-Sickle/mercy-sickle-provenance.jpeg')">
             <div class="label">Subject Registry</div><h3>Plaguebound Dossier</h3><p>The name-custody system that binds the relic to its bearer.</p>
           </a>
-          <a class="cross-ref" href="plaguebound-annals.html" style="--ref-img:url('Assets/Mercy-Sickle/reliquary-unsealing.jpeg')">
+          <a class="cross-ref" href="plaguebound-annals.html" data-descend="up" style="--ref-img:url('Assets/Mercy-Sickle/reliquary-unsealing.jpeg')">
             <div class="label">Master Archive</div><h3>Plaguebound Annals</h3><p>The broader archive where relics, units, and war records descend.</p>
           </a>
         </div>
       </div>
     </section>
-
 
     <section class="section" id="verdict" data-risk="58" data-whisper="The blade is not a weapon of killing. It is a weapon of ending interpretation." aria-labelledby="verdictTitle">
       <div class="section-block">
@@ -1482,7 +1021,7 @@
               <div class="status-row interactive" data-title="Battle Record" data-text="The Perfumed Refusal preserved the weapon's strongest lesson: performance can be stripped before life is taken."><span class="label">Battle Record</span><strong>Perfumed Refusal // Fragment Preserved</strong></div>
               <div class="status-row interactive" data-title="Handling Note" data-text="Do not reduce it to a hook. Do not prettify it into a scythe. It is uglier in purpose and more intimate in use."><span class="label">Handling Note</span><strong>Do Not Mislabel As Hand Sickle</strong></div>
             </div>
-            <div class="footer-actions"><a class="btn rot" href="mortivus-classarion.html">Return to Mortivus</a><a class="btn" href="the-mercy-he-gave.html">Open The Mercy He Gave</a><a class="btn" href="plaguebound-dossier.html">Return to Dossier</a><a class="btn" href="index.html">Command Deck</a></div>
+            <div class="footer-actions"><a class="btn rot" href="mortivus-classarion.html" data-descend="up">Return to Mortivus</a><a class="btn" href="the-mercy-he-gave.html" data-descend="down">Open The Mercy He Gave</a><a class="btn" href="plaguebound-dossier.html" data-descend="up">Return to Dossier</a><a class="btn" href="index.html" data-descend="up">Command Deck</a></div>
           </div>
         </div>
       </div>
@@ -1490,8 +1029,9 @@
   </div>
 
   <aside class="whisper-box" id="whisperBox">
-    <div class="whisper-head label"><span>Reliquary Whisper</span><button id="whisperClose" aria-label="Close whisper box">×</button></div>
+    <div class="whisper-head label"><span id="whisperHeadLabel">Reliquary Whisper</span><button id="whisperClose" aria-label="Close whisper box">×</button></div>
     <div class="whisper-body" id="whisperText">The haft brings mercy close. The curved blade makes it personal.</div>
+    <div class="whisper-foot">The chamber has begun selecting.</div>
   </aside>
 
   <div class="modal" id="modal" aria-hidden="true">
@@ -1502,17 +1042,60 @@
       <div class="modal-actions"><button class="btn" type="button" id="modalClose">Close</button></div>
     </div>
   </div>
-
   <script>
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const state = {
+      booted:false, edge:18, idle:false,
+      activePart:'bladeHead', activeMode:'surgical',
+      witnessedPhases:new Set(), decryptedFragments:new Set(),
+      touchedRites:new Set(['reach']), riteComplete:false,
+      ringWitnessTriggered:false, chamberSelecting:false,
+      highWaterEdge:18, fragmentVRevealed:false
+    };
+
+    /* RESTORE SESSION */
+    try {
+      const raw = sessionStorage.getItem('sickle.state');
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved.witnessedPhases) saved.witnessedPhases.forEach(k => state.witnessedPhases.add(k));
+        if (saved.decryptedFragments) saved.decryptedFragments.forEach(k => state.decryptedFragments.add(Number(k)));
+        if (saved.touchedRites) saved.touchedRites.forEach(k => state.touchedRites.add(k));
+        if (saved.riteComplete) state.riteComplete = true;
+        if (saved.activeMode) state.activeMode = saved.activeMode;
+        if (saved.highWaterEdge) state.highWaterEdge = Math.max(state.highWaterEdge, saved.highWaterEdge);
+        if (state.witnessedPhases.size || state.decryptedFragments.size || state.touchedRites.size > 1) {
+          document.body.classList.add('re-entering');
+        }
+      }
+    } catch(_){}
+
+    function saveState(){
+      try {
+        sessionStorage.setItem('sickle.state', JSON.stringify({
+          witnessedPhases:[...state.witnessedPhases],
+          decryptedFragments:[...state.decryptedFragments],
+          touchedRites:[...state.touchedRites],
+          riteComplete:state.riteComplete,
+          activeMode:state.activeMode,
+          highWaterEdge:state.highWaterEdge
+        }));
+      } catch(_){}
+    }
+
+    /* BOOT — 9 messages, ~5s */
     const bootMessages = [
       "Breaking wax seals on chamber-nine.",
+      "Witness-line drawn at sixteen paces.",
       "Polearm silhouette confirmed under residue shroud.",
-      "Sentence mass within acceptable corruption tolerance.",
+      "Chain-ring counted: still.",
+      "Sentence mass verified: heavier than expected.",
       "Edge-memory particulates vented into archive capture.",
       "Chain-ring resonance translated as non-hostile.",
+      "Symbolic denial protocols engaged. Geometry before metaphor.",
       "Reliquary open. Stand behind the line."
     ];
-
     const bootLog = document.getElementById("bootLog");
     const bootBar = document.getElementById("bootBar");
     const bootOverlay = document.getElementById("bootOverlay");
@@ -1522,6 +1105,11 @@
     function finishBoot(){
       bootOverlay.classList.add("hidden");
       document.body.classList.remove("locked");
+      state.booted = true;
+      applyRestoredState();
+      if (document.body.classList.contains('re-entering')) {
+        setEdge(state.highWaterEdge);
+      }
       setTimeout(() => bootOverlay.remove(), 820);
     }
 
@@ -1535,9 +1123,9 @@
         bootIndex++;
       } else {
         clearInterval(bootTimer);
-        setTimeout(finishBoot, 600);
+        setTimeout(finishBoot, 700);
       }
-    }, 320);
+    }, 560);
 
     skipBoot.addEventListener("click", () => {
       clearInterval(bootTimer);
@@ -1545,6 +1133,7 @@
       finishBoot();
     });
 
+    /* CORE READOUTS */
     const integrityFill = document.getElementById("integrityFill");
     const edgeFill = document.getElementById("edgeFill");
     const integrityNum = document.getElementById("integrityNum");
@@ -1552,14 +1141,19 @@
     const chamberState = document.getElementById("chamberState");
     const witnessSafety = document.getElementById("witnessSafety");
     const whisperText = document.getElementById("whisperText");
+    const whisperHeadLabel = document.getElementById("whisperHeadLabel");
 
-    function setRisk(edge){
+    function setEdge(edge){
       const e = Math.max(0, Math.min(100, Number(edge)));
+      state.edge = e;
+      if (e > state.highWaterEdge) { state.highWaterEdge = e; saveState(); }
+      document.documentElement.style.setProperty('--edge', (e/100).toFixed(2));
       const integrity = Math.max(6, 100 - Math.floor(e * .72));
       edgeFill.style.width = e + "%";
       integrityFill.style.width = integrity + "%";
       edgeNum.textContent = e + "%";
       integrityNum.textContent = integrity + "%";
+
       if(e < 35){
         document.body.dataset.risk = "sealed";
         chamberState.textContent = "Sealed under witness.";
@@ -1577,26 +1171,107 @@
         chamberState.textContent = "Relic interpreting witness.";
         witnessSafety.textContent = "Retreat from the ring.";
       }
+
+      // Chain-ring witness state at ≥75
+      const wasRing = state.ringWitnessTriggered;
+      state.ringWitnessTriggered = e >= 75;
+      document.body.classList.toggle('ring-witness', state.ringWitnessTriggered);
+      if (state.ringWitnessTriggered && !wasRing) {
+        whisperHeadLabel.textContent = "Chain-Ring Witness";
+      } else if (!state.ringWitnessTriggered && wasRing) {
+        whisperHeadLabel.textContent = "Reliquary Whisper";
+      }
+
+      // Chamber selecting at ≥90
+      state.chamberSelecting = e >= 90;
+      document.body.classList.toggle('chamber-selecting', state.chamberSelecting);
+
+      // Canvas gates
+      document.body.classList.toggle('aura-active', e >= 35);
+      document.body.classList.toggle('edge-active', e >= 60);
     }
 
+    /* WHISPER — typed cadence */
+    let whisperTypeTimer = null;
+    function speak(text){
+      if (!whisperText || !text) return;
+      if (whisperTypeTimer) clearInterval(whisperTypeTimer);
+      whisperText.classList.remove('no-caret');
+      whisperText.textContent = '';
+      let i = 0;
+      whisperTypeTimer = setInterval(() => {
+        if (i >= text.length) {
+          clearInterval(whisperTypeTimer);
+          whisperTypeTimer = null;
+          setTimeout(() => whisperText.classList.add('no-caret'), 2000);
+          return;
+        }
+        whisperText.textContent = text.slice(0, i + 2);
+        i += 2;
+      }, 26);
+    }
+
+    const ringWhispers = [
+      "The ring is approaching.",
+      "The ring has not finished sounding.",
+      "You are between two rings now.",
+      "If the ring sounds twice, the second one is for you.",
+      "Witnesses remember the ring more faithfully than the blade.",
+      "The chain-ring made a sound when he drew it back."
+    ];
+    const standardWhispers = [
+      "The haft brings mercy close. The curved blade makes it personal.",
+      "Do not wait for the cut. The selection is the first wound.",
+      "Witnesses remember the ring more faithfully than the blade.",
+      "A short blade on a long haft is how distance learns intimacy.",
+      "The tags apologize. The blade does not."
+    ];
+    let whisperIndex = 0;
+    setInterval(() => {
+      if (document.hidden || state.idle || !state.booted) return;
+      const pool = state.ringWitnessTriggered ? ringWhispers : standardWhispers;
+      whisperIndex = (whisperIndex + 1) % pool.length;
+      if (Math.random() > 0.4) speak(pool[whisperIndex]);
+    }, 6200);
+
+    document.getElementById("whisperClose").addEventListener("click", () => document.getElementById("whisperBox").classList.add('hidden'));
+    document.getElementById("whisperButton").addEventListener("click", () => {
+      document.getElementById("whisperBox").classList.remove('hidden');
+      speak("The reliquary is not silent. It is choosing a safer sentence.");
+    });
+
+    /* SECTION OBSERVER */
     const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if(entry.isIntersecting){
-          if(entry.target.dataset.risk) setRisk(entry.target.dataset.risk);
-          if(entry.target.dataset.whisper) whisperText.textContent = entry.target.dataset.whisper;
-        }
+        if(!entry.isIntersecting) return;
+        if(entry.target.dataset.risk) setEdge(entry.target.dataset.risk);
+        if(entry.target.dataset.whisper) speak(entry.target.dataset.whisper);
       });
     }, {threshold:.35});
     document.querySelectorAll("section[data-risk]").forEach(section => sectionObserver.observe(section));
 
+    /* READING LENS */
+    const lensMark = document.getElementById("lensMark");
+    const lensNames = {surgical:"// Surgical",liturgical:"// Liturgical",battlefield:"// Battlefield"};
+    function setLens(mode){
+      state.activeMode = mode;
+      document.body.dataset.lens = mode;
+      document.querySelectorAll('.lens-pill').forEach(p => p.classList.toggle('active', p.dataset.lens === mode));
+      lensMark.textContent = lensNames[mode];
+      renderPart();
+      saveState();
+    }
+    document.querySelectorAll('.lens-pill').forEach(p => p.addEventListener('click', () => setLens(p.dataset.lens)));
+
+    /* EXAMINATION DATA */
     const relicParts = {
-      bladeHead:{label:"Examination Node // Curved Blade Head",title:"The Thick Curved Mercy Blade",lead:"This is the part that gives the weapon its name: not a thin farming sickle, but a short, heavy curved execution blade mounted to a spear-like haft.",risk:46,whisper:"The blade is not elegant. It is compact judgment.",surgical:{subtitle:"Short Blade, Heavy Sentence",body:"The blade is shorter and thicker than a common scythe or crescent weapon. It is a dense curved killing head fixed near the end of a long haft, built to bite, catch, and lever armored targets.",use:"Used at close-to-mid reach to catch armor, punish forward movement, and drag selected enemies out of formation.",effect:"The target feels the weapon's mass before the edge completes the wound.",warning:"Do not describe the blade as elegant. It is compact, brutal, and deliberately heavy."},liturgical:{subtitle:"The Weight of the Word Mercy",body:"The curved blade is mercy made material: shortened, thickened, and denied grace. It does not promise release through beauty. It promises recognition through weight.",use:"Turns the chosen target into instruction.",effect:"The victim understands that the end has been brought close enough to be personal.",warning:"The blade is not a crescent. It is a verdict bent into metal."},battlefield:{subtitle:"How the Blade Ends Motion",body:"Mortivus uses the curved head after the haft has already created obedience. The blade arrives when the target's movement is committed and therefore vulnerable.",use:"Punishes forward speed and retreat alike.",effect:"Turns momentum into injury.",warning:"A target who thinks they escaped the point may have entered the curve."}},
-      innerBite:{label:"Examination Node // Inner Bite",title:"The Inner Bite",lead:"The inside of the curved blade is where the weapon becomes intimate.",risk:58,whisper:"A retreat becomes a deeper wound.",surgical:{subtitle:"The Catching Edge",body:"The inner curve catches rather than simply cuts. It can hook behind armor rims, limb joints, weapon straps, cables, prayer cords, and exposed biological seams.",use:"Locks onto targets who are moving, resisting, or trying to withdraw.",effect:"A retreat becomes a deeper wound.",warning:"The inner bite makes escape feel like cooperation."},liturgical:{subtitle:"Where Refusal Is Held Still",body:"The inner bite catches the victim's last argument. It does not merely hold flesh. It holds the idea that the target was still free to choose how the end would arrive.",use:"Arrests refusal long enough for Mortivus to answer it.",effect:"Turns motion into confession.",warning:"Once the inner bite has meaning, the wound is already underway."},battlefield:{subtitle:"The Trap Within the Curve",body:"The inner bite changes the weapon from threat into restraint. Once fixed behind a seam, the haft becomes a lever and the enemy becomes the hinge.",use:"Breaks formation by pulling one body out of shared defense.",effect:"Causes the watching line to flinch before the wound completes.",warning:"Do not brace backward. The curve expects it."}},
-      collar:{label:"Examination Node // Collar Mount",title:"The Blade Collar Mount",lead:"The collar is the joint where spear and sickle become one weapon.",risk:50,whisper:"The collar is where reach becomes sentence.",surgical:{subtitle:"The Load-Bearing Throat",body:"The collar binds the thick curved blade to the spear-like haft. It shows reinforcement, clamps, rivets, corrosion, and battlefield repair.",use:"Transfers leverage from the long haft into the hooked blade head.",effect:"Allows the weapon to wrench armored targets without snapping under force.",warning:"The collar carries old strain marks from enemies large enough to matter."},liturgical:{subtitle:"Where Reach Becomes Mercy",body:"The collar is the covenant between distance and judgment. It lets the mercy arrive from farther away than the victim expects, then become close enough to feel personal.",use:"Joins battlefield reach to ritual selection.",effect:"Makes the weapon feel inevitable from outside normal dueling distance.",warning:"The collar is where the spear stops being a spear and becomes sentence."},battlefield:{subtitle:"Stress Point of Doctrine",body:"The collar survives the brutal transitions: point to catch, catch to drag, drag to final cut. It is the object lesson in mechanical patience.",use:"Absorbs the moment where a target's strength is turned against them.",effect:"Converts resistance into extra force for the wound.",warning:"Cracking noises near the collar are not always damage."}},
-      spearHaft:{label:"Examination Node // Spear Haft",title:"The Spear-Like Haft",lead:"The Mercy-Sickle is not a small hand weapon. Its reach comes from the long haft beneath the blade head.",risk:44,whisper:"The haft is the silence before the hook speaks.",surgical:{subtitle:"Reach, Leverage, Control",body:"The long haft gives Mortivus control before contact and leverage after contact. The weapon behaves more like a plague polearm than a handheld sickle.",use:"Controls space, checks charges, drags targets, and converts small openings into decisive wounds.",effect:"The enemy is forced to fight the weapon's reach before reaching Mortivus himself.",warning:"Without the haft, the Mercy-Sickle loses its doctrine of distance."},liturgical:{subtitle:"The Distance Before Understanding",body:"The haft is the long approach of mercy. It lets judgment arrive before intimacy. The condemned first meets distance, then control, then the curve, then recognition.",use:"Extends Mortivus' will across the battlefield.",effect:"Makes the target feel selected before they are touched.",warning:"The haft is the silence before the hook speaks."},battlefield:{subtitle:"Control of the Killing Lane",body:"The haft denies the enemy the comfort of honest close combat. It turns their approach into a sequence of corrected errors.",use:"Checks charges and forces awkward angles before the blade commits.",effect:"Allows Mortivus to win the fight before the wound is visible.",warning:"Fast enemies often mistake distance for opportunity."}},
-      haftWrap:{label:"Examination Node // Wrapped Haft",title:"The Wrapped Handling Section",lead:"The grip area is built for control, not flourish.",risk:52,whisper:"The hand translates patience into motion.",surgical:{subtitle:"Controlled Violence",body:"The wrapped section gives Mortivus leverage for short pulls, sudden arrests, and downward pressure. Wear patterns suggest repeated bracing rather than wide swinging.",use:"Used for bracing, dragging, pinning, and rotating the blade head into weak points.",effect:"Turns the wielder's strength into slow, controlled inevitability.",warning:"The wrapping is stained with old residues that do not match one battlefield."},liturgical:{subtitle:"Where Doctrine Takes Hold",body:"The wrap is where Mortivus' hand becomes the weapon's grammar. He does not merely hold the Mercy-Sickle. He translates its patience into motion.",use:"Binds intent to execution.",effect:"Every movement feels chosen, not reactive.",warning:"The grip is warmer after witness fragments are read aloud."},battlefield:{subtitle:"The Short Pull",body:"The grip supports the small brutal movements that finish a fight after the dramatic motion is over.",use:"Controls the final inches of leverage.",effect:"Turns a hooked target into a fixed demonstration.",warning:"Most deaths occur after the grand motion has already ended."}},
-      chainRing:{label:"Examination Node // Chain-Ring",title:"The Chain-Ring",lead:"The ring is both practical fixture and ritual sound-marker.",risk:66,whisper:"Witnesses remember the ring more faithfully than the blade.",surgical:{subtitle:"Retention and Drag Point",body:"The chain-ring allows the weapon to be secured, suspended, dragged, or chained during reliquary storage. Wear marks suggest repeated battlefield use.",use:"Supports retention, retrieval, ritual suspension, and chain-assisted dragging.",effect:"Produces the scrape-ring sound survivors repeatedly remember.",warning:"Witnesses often recall the ring before they recall the blade."},liturgical:{subtitle:"The Bell Without Pity",body:"The ring announces that mercy is approaching with patience. It does not ring like celebration. It rings like something being brought back into position for another lesson.",use:"Marks selection through sound.",effect:"Turns battlefield noise into a countdown.",warning:"If the ring sounds behind you, the hook has already passed someone else."},battlefield:{subtitle:"Return Signal",body:"The ring often sounds after the wound, when the weapon is drawn back and the room understands what has happened.",use:"Signals reset, recovery, and renewed selection.",effect:"Causes survivors to anticipate a second mercy event.",warning:"The ring is not aftermath. It is preparation."}},
-      relicTags:{label:"Examination Node // Tags & Seals",title:"Relic Tags, Seals, and Bone Marks",lead:"The hanging tags are not decoration. They are attempts to keep the weapon inside language.",risk:60,whisper:"Some tags appear after battle without being placed there.",surgical:{subtitle:"Archive Layer",body:"The tags, seals, bone charms, and votive scraps appear replaced after major engagements. Some mark battlefield use. Some warn attendants. Some may be kill-records.",use:"Records campaigns, restrictions, witness notes, and possible target categories.",effect:"Makes the weapon carry its own archive in fragments.",warning:"Removing tags has caused chamber pressure drops and nausea in attendants."},liturgical:{subtitle:"Prayers Tied to a Weapon That Does Not Pray",body:"The tags are apologies tied to an instrument that has never asked forgiveness. They do not sanctify the Mercy-Sickle. They help the chamber survive knowing what it is.",use:"Attempts to bind the relic to ritual meaning.",effect:"Transforms battlefield use into litany.",warning:"Some tags appear after battle without being placed there."},battlefield:{subtitle:"Battlefield Memory Flags",body:"The tags move when the weapon turns, giving the enemy a small visible warning that judgment has begun to gather direction.",use:"Adds visual noise before the strike.",effect:"Draws the eye to the weapon before Mortivus moves.",warning:"Do not follow the tags. Follow the haft."}}
+      bladeHead:{label:"Examination Node // Curved Blade Head",title:"The Thick Curved Mercy Blade",lead:"This is the part that gives the weapon its name: not a thin farming sickle, but a short, heavy curved execution blade mounted to a spear-like haft.",edge:46,whisper:"The blade is not elegant. It is compact judgment.",surgical:{subtitle:"Short Blade, Heavy Sentence",body:"The blade is shorter and thicker than a common scythe or crescent weapon. It is a dense curved killing head fixed near the end of a long haft, built to bite, catch, and lever armored targets.",use:"Used at close-to-mid reach to catch armor, punish forward movement, and drag selected enemies out of formation.",effect:"The target feels the weapon's mass before the edge completes the wound.",warning:"Do not describe the blade as elegant. It is compact, brutal, and deliberately heavy."},liturgical:{subtitle:"The Weight of the Word Mercy",body:"The curved blade is mercy made material: shortened, thickened, and denied grace. It does not promise release through beauty. It promises recognition through weight.",use:"Turns the chosen target into instruction.",effect:"The victim understands that the end has been brought close enough to be personal.",warning:"The blade is not a crescent. It is a verdict bent into metal."},battlefield:{subtitle:"How the Blade Ends Motion",body:"Mortivus uses the curved head after the haft has already created obedience. The blade arrives when the target's movement is committed and therefore vulnerable.",use:"Punishes forward speed and retreat alike.",effect:"Turns momentum into injury.",warning:"A target who thinks they escaped the point may have entered the curve."}},
+      innerBite:{label:"Examination Node // Inner Bite",title:"The Inner Bite",lead:"The inside of the curved blade is where the weapon becomes intimate.",edge:58,whisper:"A retreat becomes a deeper wound.",surgical:{subtitle:"The Catching Edge",body:"The inner curve catches rather than simply cuts. It can hook behind armor rims, limb joints, weapon straps, cables, prayer cords, and exposed biological seams.",use:"Locks onto targets who are moving, resisting, or trying to withdraw.",effect:"A retreat becomes a deeper wound.",warning:"The inner bite makes escape feel like cooperation."},liturgical:{subtitle:"Where Refusal Is Held Still",body:"The inner bite catches the victim's last argument. It does not merely hold flesh. It holds the idea that the target was still free to choose how the end would arrive.",use:"Arrests refusal long enough for Mortivus to answer it.",effect:"Turns motion into confession.",warning:"Once the inner bite has meaning, the wound is already underway."},battlefield:{subtitle:"The Trap Within the Curve",body:"The inner bite changes the weapon from threat into restraint. Once fixed behind a seam, the haft becomes a lever and the enemy becomes the hinge.",use:"Breaks formation by pulling one body out of shared defense.",effect:"Causes the watching line to flinch before the wound completes.",warning:"Do not brace backward. The curve expects it."}},
+      collar:{label:"Examination Node // Collar Mount",title:"The Blade Collar Mount",lead:"The collar is the joint where spear and sickle become one weapon.",edge:50,whisper:"The collar is where reach becomes sentence.",surgical:{subtitle:"The Load-Bearing Throat",body:"The collar binds the thick curved blade to the spear-like haft. It shows reinforcement, clamps, rivets, corrosion, and battlefield repair.",use:"Transfers leverage from the long haft into the hooked blade head.",effect:"Allows the weapon to wrench armored targets without snapping under force.",warning:"The collar carries old strain marks from enemies large enough to matter."},liturgical:{subtitle:"Where Reach Becomes Mercy",body:"The collar is the covenant between distance and judgment. It lets the mercy arrive from farther away than the victim expects, then become close enough to feel personal.",use:"Joins battlefield reach to ritual selection.",effect:"Makes the weapon feel inevitable from outside normal dueling distance.",warning:"The collar is where the spear stops being a spear and becomes sentence."},battlefield:{subtitle:"Stress Point of Doctrine",body:"The collar survives the brutal transitions: point to catch, catch to drag, drag to final cut. It is the object lesson in mechanical patience.",use:"Absorbs the moment where a target's strength is turned against them.",effect:"Converts resistance into extra force for the wound.",warning:"Cracking noises near the collar are not always damage."}},
+      spearHaft:{label:"Examination Node // Spear Haft",title:"The Spear-Like Haft",lead:"The Mercy-Sickle is not a small hand weapon. Its reach comes from the long haft beneath the blade head.",edge:44,whisper:"The haft is the silence before the hook speaks.",surgical:{subtitle:"Reach, Leverage, Control",body:"The long haft gives Mortivus control before contact and leverage after contact. The weapon behaves more like a plague polearm than a handheld sickle.",use:"Controls space, checks charges, drags targets, and converts small openings into decisive wounds.",effect:"The enemy is forced to fight the weapon's reach before reaching Mortivus himself.",warning:"Without the haft, the Mercy-Sickle loses its doctrine of distance."},liturgical:{subtitle:"The Distance Before Understanding",body:"The haft is the long approach of mercy. It lets judgment arrive before intimacy. The condemned first meets distance, then control, then the curve, then recognition.",use:"Extends Mortivus' will across the battlefield.",effect:"Makes the target feel selected before they are touched.",warning:"The haft is the silence before the hook speaks."},battlefield:{subtitle:"Control of the Killing Lane",body:"The haft denies the enemy the comfort of honest close combat. It turns their approach into a sequence of corrected errors.",use:"Checks charges and forces awkward angles before the blade commits.",effect:"Allows Mortivus to win the fight before the wound is visible.",warning:"Fast enemies often mistake distance for opportunity."}},
+      haftWrap:{label:"Examination Node // Wrapped Haft",title:"The Wrapped Handling Section",lead:"The grip area is built for control, not flourish.",edge:52,whisper:"The hand translates patience into motion.",surgical:{subtitle:"Controlled Violence",body:"The wrapped section gives Mortivus leverage for short pulls, sudden arrests, and downward pressure. Wear patterns suggest repeated bracing rather than wide swinging.",use:"Used for bracing, dragging, pinning, and rotating the blade head into weak points.",effect:"Turns the wielder's strength into slow, controlled inevitability.",warning:"The wrapping is stained with old residues that do not match one battlefield."},liturgical:{subtitle:"Where Doctrine Takes Hold",body:"The wrap is where Mortivus' hand becomes the weapon's grammar. He does not merely hold the Mercy-Sickle. He translates its patience into motion.",use:"Binds intent to execution.",effect:"Every movement feels chosen, not reactive.",warning:"The grip is warmer after witness fragments are read aloud."},battlefield:{subtitle:"The Short Pull",body:"The grip supports the small brutal movements that finish a fight after the dramatic motion is over.",use:"Controls the final inches of leverage.",effect:"Turns a hooked target into a fixed demonstration.",warning:"Most deaths occur after the grand motion has already ended."}},
+      chainRing:{label:"Examination Node // Chain-Ring",title:"The Chain-Ring",lead:"The ring is both practical fixture and ritual sound-marker.",edge:66,whisper:"Witnesses remember the ring more faithfully than the blade.",surgical:{subtitle:"Retention and Drag Point",body:"The chain-ring allows the weapon to be secured, suspended, dragged, or chained during reliquary storage. Wear marks suggest repeated battlefield use.",use:"Supports retention, retrieval, ritual suspension, and chain-assisted dragging.",effect:"Produces the scrape-ring sound survivors repeatedly remember.",warning:"Witnesses often recall the ring before they recall the blade."},liturgical:{subtitle:"The Bell Without Pity",body:"The ring announces that mercy is approaching with patience. It does not ring like celebration. It rings like something being brought back into position for another lesson.",use:"Marks selection through sound.",effect:"Turns battlefield noise into a countdown.",warning:"If the ring sounds behind you, the hook has already passed someone else."},battlefield:{subtitle:"Return Signal",body:"The ring often sounds after the wound, when the weapon is drawn back and the room understands what has happened.",use:"Signals reset, recovery, and renewed selection.",effect:"Causes survivors to anticipate a second mercy event.",warning:"The ring is not aftermath. It is preparation."}},
+      relicTags:{label:"Examination Node // Tags & Seals",title:"Relic Tags, Seals, and Bone Marks",lead:"The hanging tags are not decoration. They are attempts to keep the weapon inside language.",edge:60,whisper:"Some tags appear after battle without being placed there.",surgical:{subtitle:"Archive Layer",body:"The tags, seals, bone charms, and votive scraps appear replaced after major engagements. Some mark battlefield use. Some warn attendants. Some may be kill-records.",use:"Records campaigns, restrictions, witness notes, and possible target categories.",effect:"Makes the weapon carry its own archive in fragments.",warning:"Removing tags has caused chamber pressure drops and nausea in attendants."},liturgical:{subtitle:"Prayers Tied to a Weapon That Does Not Pray",body:"The tags are apologies tied to an instrument that has never asked forgiveness. They do not sanctify the Mercy-Sickle. They help the chamber survive knowing what it is.",use:"Attempts to bind the relic to ritual meaning.",effect:"Transforms battlefield use into litany.",warning:"Some tags appear after battle without being placed there."},battlefield:{subtitle:"Battlefield Memory Flags",body:"The tags move when the weapon turns, giving the enemy a small visible warning that judgment has begun to gather direction.",use:"Adds visual noise before the strike.",effect:"Draws the eye to the weapon before Mortivus moves.",warning:"Do not follow the tags. Follow the haft."}}
     };
 
     const partLabel = document.getElementById("partLabel");
@@ -1607,14 +1282,13 @@
     const modeUse = document.getElementById("modeUse");
     const modeEffect = document.getElementById("modeEffect");
     const modeWarning = document.getElementById("modeWarning");
+    const pointerPath = document.getElementById("pointerPath");
+    const pointerSvg = document.getElementById("pointerSvg");
     const hotspotButtons = document.querySelectorAll(".hotspot");
-    const modeButtons = document.querySelectorAll(".mode-btn");
-    let activePart = "bladeHead";
-    let activeMode = "surgical";
 
     function renderPart(){
-      const entry = relicParts[activePart];
-      const mode = entry[activeMode];
+      const entry = relicParts[state.activePart];
+      const mode = entry[state.activeMode];
       partLabel.textContent = entry.label;
       partTitle.textContent = entry.title;
       partLead.textContent = entry.lead;
@@ -1623,27 +1297,28 @@
       modeUse.textContent = mode.use;
       modeEffect.textContent = mode.effect;
       modeWarning.textContent = mode.warning;
-      whisperText.textContent = entry.whisper;
-      setRisk(entry.risk);
     }
 
     hotspotButtons.forEach(btn => btn.addEventListener("click", () => {
       hotspotButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      activePart = btn.dataset.part;
+      state.activePart = btn.dataset.part;
+      pointerSvg.classList.remove('active');
+      requestAnimationFrame(() => {
+        pointerPath.setAttribute('d', btn.dataset.pointer);
+        requestAnimationFrame(() => pointerSvg.classList.add('active'));
+      });
       renderPart();
-    }));
-    modeButtons.forEach(btn => btn.addEventListener("click", () => {
-      modeButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      activeMode = btn.dataset.mode;
-      renderPart();
+      const entry = relicParts[state.activePart];
+      speak(entry.whisper);
+      setEdge(entry.edge);
     }));
 
+    /* ORIGIN */
     const originData = {
-      harvest:{label:"Contradiction Preserved",title:"The Refusal Harvest",text:"The blade head may have been recast from siege-hooks and execution irons, then mounted to a plague polearm so resistance could be caught before it was cut.",risk:50,whisper:"The first rumor says refusal was harvested before flesh."},
-      chapel:{label:"Contradiction Preserved",title:"The Chapel Conversion",text:"The weapon may have begun as a processional spear aboard a rotting warship chapel. The curved blade was added later, thickened and shortened after too many merciful executions took too long.",risk:54,whisper:"The second rumor says ceremony learned to kill more efficiently."},
-      name:{label:"Contradiction Preserved",title:"The Weapon That Earned Its Name",text:"The minority reading denies formal construction. In that view, the Mercy-Sickle is the latest stable shape assumed by a field-tool rebuilt so many times by ritual need that its identity now survives the metal.",risk:62,whisper:"The third rumor says the name survived the weapon."}
+      harvest:{label:"Contradiction Preserved",title:"The Refusal Harvest",text:"The blade head may have been recast from siege-hooks and execution irons, then mounted to a plague polearm so resistance could be caught before it was cut.",edge:50,whisper:"The first rumor says refusal was harvested before flesh."},
+      chapel:{label:"Contradiction Preserved",title:"The Chapel Conversion",text:"The weapon may have begun as a processional spear aboard a rotting warship chapel. The curved blade was added later, thickened and shortened after too many merciful executions took too long.",edge:54,whisper:"The second rumor says ceremony learned to kill more efficiently."},
+      name:{label:"Contradiction Preserved",title:"The Weapon That Earned Its Name",text:"The minority reading denies formal construction. In that view, the Mercy-Sickle is the latest stable shape assumed by a field-tool rebuilt so many times by ritual need that its identity now survives the metal.",edge:62,whisper:"The third rumor says the name survived the weapon."}
     };
     const originLabel = document.getElementById("originLabel");
     const originTitle = document.getElementById("originTitle");
@@ -1655,15 +1330,16 @@
       originLabel.textContent = data.label;
       originTitle.textContent = data.title;
       originText.textContent = data.text;
-      setRisk(data.risk);
-      whisperText.textContent = data.whisper;
+      setEdge(data.edge);
+      speak(data.whisper);
     }));
 
+    /* MOTIONS */
     const motionData = {
-      select:{title:"Select",caption:"Motion I // Select",text:"The haft extends Mortivus' decision across the killing lane. The victim is chosen at distance, and everyone present is given enough time to understand that choice.",risk:48,whisper:"Selection is the first wound."},
-      arrest:{title:"Arrest",caption:"Motion II // Arrest",text:"The inner bite stops refusal and makes motion betray itself. Escape becomes leverage. Speed becomes a handle.",risk:58,whisper:"The hook turns motion into confession."},
-      expose:{title:"Expose",caption:"Motion III // Expose",text:"The chosen body becomes evidence. Mortivus uses the weapon to make command, beauty, speed, or courage lose its symbolic authority before the blood finishes falling.",risk:66,whisper:"The body becomes a document."},
-      conclude:{title:"Conclude",caption:"Motion IV // Conclude",text:"The final cut is not simply death. It is the end of the target's preferred interpretation of the battle. The Mercy-Sickle closes the argument.",risk:74,whisper:"The cut ends the argument."}
+      select:{title:"Select",caption:"Motion I // Select",text:"The haft extends Mortivus' decision across the killing lane. The victim is chosen at distance, and everyone present is given enough time to understand that choice.",edge:48,whisper:"Selection is the first wound."},
+      arrest:{title:"Arrest",caption:"Motion II // Arrest",text:"The inner bite stops refusal and makes motion betray itself. Escape becomes leverage. Speed becomes a handle.",edge:58,whisper:"The hook turns motion into confession."},
+      expose:{title:"Expose",caption:"Motion III // Expose",text:"The chosen body becomes evidence. Mortivus uses the weapon to make command, beauty, speed, or courage lose its symbolic authority before the blood finishes falling.",edge:66,whisper:"The body becomes a document."},
+      conclude:{title:"Conclude",caption:"Motion IV // Conclude",text:"The final cut is not simply death. It is the end of the target's preferred interpretation of the battle. The Mercy-Sickle closes the argument.",edge:74,whisper:"The cut ends the argument."}
     };
     const motionTitle = document.getElementById("motionTitle");
     const motionText = document.getElementById("motionText");
@@ -1675,36 +1351,116 @@
       motionTitle.textContent = data.title;
       motionText.textContent = data.text;
       motionCaption.textContent = data.caption;
-      setRisk(data.risk);
-      whisperText.textContent = data.whisper;
+      setEdge(data.edge);
+      speak(data.whisper);
     }));
 
-    document.querySelectorAll(".readout-card,.effect-card").forEach(card => {
+    /* READOUT + EFFECT + RELIQUARY SLAB CARDS */
+    document.querySelectorAll(".readout-card,.effect-card,.reliquary-slab").forEach(card => {
       card.addEventListener("click", () => {
         card.classList.toggle("open");
         const reveal = card.querySelector(".revealed-line");
         if(reveal && card.dataset.reveal) reveal.textContent = card.dataset.reveal;
-        setRisk(card.classList.contains("effect-card") ? 70 : 38);
-        whisperText.textContent = reveal ? reveal.textContent : "The chamber note has been opened.";
+        if (card.classList.contains('reliquary-slab')) {
+          document.querySelectorAll('.reliquary-slab').forEach(s => s.classList.remove('active'));
+          card.classList.add('active');
+          setEdge(54);
+          speak("The large plate gives the weapon back its correct scale.");
+          return;
+        }
+        setEdge(card.classList.contains("effect-card") ? 70 : 38);
+        speak(reveal ? reveal.textContent : "The chamber note has been opened.");
       });
     });
+
+    /* WITNESS FRAGMENTS — typing + Fragment V */
+    const witnessChip = document.getElementById("witnessChip");
+    const witnessStack = document.getElementById("witnessStack");
+
+    function typeWitness(card){
+      const text = card.dataset.witness;
+      const p = card.querySelector('p');
+      let i = 0;
+      const blockChars = '█▓▒░'.split('');
+      function step(){
+        if (i >= text.length) { p.textContent = text; p.style.color = '#d8ceb2'; p.style.fontStyle = 'italic'; p.style.letterSpacing = 'normal'; return; }
+        const revealed = text.slice(0, i + 1);
+        const remaining = text.length - i - 1;
+        let redact = '';
+        for (let j = 0; j < remaining; j++) {
+          if (text.charAt(i + 1 + j) === ' ') redact += ' ';
+          else redact += blockChars[Math.floor(Math.random() * blockChars.length)];
+        }
+        p.innerHTML = `<span style="color:#e8d8b4;font-style:italic">${revealed}</span><span style="color:#766a48;letter-spacing:.06em">${redact}</span>`;
+        i++;
+        setTimeout(step, 28 + Math.random() * 35);
+      }
+      step();
+    }
+
+    function tryAddFragmentV(){
+      if (state.decryptedFragments.size < 4) return;
+      if (state.fragmentVRevealed) return;
+      state.fragmentVRevealed = true;
+      const v = document.createElement('article');
+      v.className = 'witness-card sealed';
+      v.dataset.witnessId = '5';
+      v.innerHTML = `
+        <div class="label">Fragment V // Source: Septicarium-Bound</div>
+        <h3>Fragment V</h3>
+        <p>"I am not permitted to describe what I have not been instructed to forget."</p>
+      `;
+      v.style.opacity = '0';
+      v.style.transform = 'translateY(8px)';
+      witnessStack.appendChild(v);
+      requestAnimationFrame(() => {
+        v.style.transition = '.6s var(--ease)';
+        v.style.opacity = '1';
+        v.style.transform = 'none';
+      });
+      v.addEventListener('click', () => {
+        speak("The Septicarium does not decrypt this fragment. The archive itself is afraid of what it would say.");
+        setEdge(96);
+      });
+      speak("A fifth fragment has surfaced. The Septicarium refuses to translate it.");
+    }
 
     document.querySelectorAll(".witness-card").forEach(card => {
       card.addEventListener("click", () => {
+        if (card.classList.contains('sealed')) return;
+        if (!card.classList.contains('locked')) return;
         card.classList.remove("locked");
-        card.querySelector("p").textContent = card.dataset.witness;
-        setRisk(78);
-        whisperText.textContent = "Witness stability reduced. Fragment decrypted.";
+        typeWitness(card);
+        const id = Number(card.dataset.witnessId);
+        state.decryptedFragments.add(id);
+        witnessChip.textContent = `Fragments Decrypted: ${state.decryptedFragments.size} / 4`;
+        setEdge(78);
+        speak("Witness stability reduced. Fragment decrypted.");
+        if (state.decryptedFragments.size === 4) setTimeout(tryAddFragmentV, 1200);
+        saveState();
       });
     });
 
+    /* BATTLE — integrity meter across phases */
+    const phaseIntegrity = {
+      breach:{pct:100,x:50,y:8},
+      champion:{pct:92,x:150,y:12},
+      duel:{pct:84,x:250,y:18},
+      wound:{pct:41,x:350,y:42},
+      mercy:{pct:56,x:450,y:32},
+      aftermath:{pct:49,x:550,y:36}
+    };
+    const integrityDot = document.getElementById("integrityDot");
+    const integrityNumPhase = document.getElementById("integrityNumPhase");
+    const integrityMarks = document.getElementById("integrityMarks");
+
     const battleScenes = {
-      breach:{phase:"Phase I",title:"The Perfumed Refusal // Breach",text:"The first contact occurs in corridors already sweet with ritual corruption. Standard plague-marines are cut down in the early exchange as the enemy's pace, glamour, and shock assault outstrip expectation.",image:"Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg",condition:"Observing failure.",relic:"Still chambered.",risk:70,whisper:"The first line fails beautifully and therefore falsely."},
-      champion:{phase:"Phase II",title:"The Perfumed Refusal // Champion",text:"An elite Slaaneshi champion enters the corridor like a promise of beautiful failure. The surviving line recoils not from size alone, but from the insulting ease with which the enemy occupies the space.",image:"Assets/Mercy-Sickle/perfumed-refusal-champion.jpeg",condition:"Attention fixed.",relic:"Ring beginning response.",risk:76,whisper:"Performance enters before the killing does."},
-      duel:{phase:"Phase III",title:"The Perfumed Refusal // Duel",text:"Mortivus commits. He does not rush. He lets the long haft speak first, measuring pace and angle while the enemy mistakes patience for injury.",image:"Assets/Mercy-Sickle/perfumed-refusal-duel.jpeg",condition:"Committed to lane.",relic:"Haft extended.",risk:82,whisper:"Patience is mistaken for weakness. The mistake is preserved."},
-      wound:{phase:"Phase IV",title:"The Perfumed Refusal // The Wound",text:"The champion lands the deepest recorded wound in Mortivus' preserved battle history. The fragment confirms blood, armor failure, and a brief stagger severe enough to be remembered as omen.",image:"Assets/Mercy-Sickle/perfumed-refusal-wound.jpeg",condition:"Wounded. Corrected.",relic:"Edge-memory surging.",risk:91,whisper:"Mortivus is hurt. The weapon listens."},
-      mercy:{phase:"Phase V",title:"The Perfumed Refusal // Mercy Event",text:"Mortivus recovers by narrowing the exchange. He turns the collar, fixes the inner bite behind the champion's motion, and uses the heavy curved blade to strip performance from the body wearing it.",image:"Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg",condition:"Recovered. Cold.",relic:"Mercy delivered.",risk:96,whisper:"Performance is stripped before life is taken."},
-      aftermath:{phase:"Phase VI",title:"The Perfumed Refusal // Aftermath",text:"Silence returns unequal. Standard units are gone. The champion is no longer a champion. Mortivus remains standing, hardened by the wound and corrected forever against mistaking speed for victory.",image:"Assets/Mercy-Sickle/perfumed-refusal-aftermath.jpeg",condition:"Standing. Altered.",relic:"New name-pressure retained.",risk:72,whisper:"The blade leaves with a stronger name."}
+      breach:{phase:"Phase I",title:"The Perfumed Refusal // Breach",text:"The first contact occurs in corridors already sweet with ritual corruption. Standard plague-marines are cut down in the early exchange as the enemy's pace, glamour, and shock assault outstrip expectation.",image:"Assets/Mercy-Sickle/perfumed-refusal-breach.jpeg",condition:"Observing failure.",relic:"Still chambered.",edge:70,whisper:"The first line fails beautifully and therefore falsely."},
+      champion:{phase:"Phase II",title:"The Perfumed Refusal // Champion",text:"An elite Slaaneshi champion enters the corridor like a promise of beautiful failure. The surviving line recoils not from size alone, but from the insulting ease with which the enemy occupies the space.",image:"Assets/Mercy-Sickle/perfumed-refusal-champion.jpeg",condition:"Attention fixed.",relic:"Ring beginning response.",edge:76,whisper:"Performance enters before the killing does."},
+      duel:{phase:"Phase III",title:"The Perfumed Refusal // Duel",text:"Mortivus commits. He does not rush. He lets the long haft speak first, measuring pace and angle while the enemy mistakes patience for injury.",image:"Assets/Mercy-Sickle/perfumed-refusal-duel.jpeg",condition:"Committed to lane.",relic:"Haft extended.",edge:82,whisper:"Patience is mistaken for weakness. The mistake is preserved."},
+      wound:{phase:"Phase IV",title:"The Perfumed Refusal // The Wound",text:"The champion lands the deepest recorded wound in Mortivus' preserved battle history. The fragment confirms blood, armor failure, and a brief stagger severe enough to be remembered as omen.",image:"Assets/Mercy-Sickle/perfumed-refusal-wound.jpeg",condition:"Wounded. Corrected.",relic:"Edge-memory surging.",edge:91,whisper:"Mortivus is hurt. The weapon listens."},
+      mercy:{phase:"Phase V",title:"The Perfumed Refusal // Mercy Event",text:"Mortivus recovers by narrowing the exchange. He turns the collar, fixes the inner bite behind the champion's motion, and uses the heavy curved blade to strip performance from the body wearing it.",image:"Assets/Mercy-Sickle/perfumed-refusal-mercy.jpeg",condition:"Recovered. Cold.",relic:"Mercy delivered.",edge:96,whisper:"Performance is stripped before life is taken."},
+      aftermath:{phase:"Phase VI",title:"The Perfumed Refusal // Aftermath",text:"Silence returns unequal. Standard units are gone. The champion is no longer a champion. Mortivus remains standing, hardened by the wound and corrected forever against mistaking speed for victory.",image:"Assets/Mercy-Sickle/perfumed-refusal-aftermath.jpeg",condition:"Standing. Altered.",relic:"New name-pressure retained.",edge:72,whisper:"The blade leaves with a stronger name."}
     };
     const battleStageImage = document.getElementById("battleStageImage");
     const battlePhase = document.getElementById("battlePhase");
@@ -1712,79 +1468,329 @@
     const battleText = document.getElementById("battleText");
     const battleCondition = document.getElementById("battleCondition");
     const battleRelic = document.getElementById("battleRelic");
+
     document.querySelectorAll(".thumb-btn").forEach(btn => btn.addEventListener("click", () => {
-      const scene = battleScenes[btn.dataset.scene];
+      const sceneKey = btn.dataset.scene;
+      const scene = battleScenes[sceneKey];
       document.querySelectorAll(".thumb-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+      btn.classList.add("witnessed");
+      state.witnessedPhases.add(sceneKey);
       battleStageImage.src = scene.image;
       battlePhase.textContent = scene.phase;
       battleTitle.textContent = scene.title;
       battleText.textContent = scene.text;
       battleCondition.textContent = scene.condition;
       battleRelic.textContent = scene.relic;
-      setRisk(scene.risk);
-      whisperText.textContent = scene.whisper;
+      setEdge(scene.edge);
+      speak(scene.whisper);
+      // Move integrity dot
+      const pos = phaseIntegrity[sceneKey];
+      integrityDot.setAttribute('cx', pos.x);
+      integrityDot.setAttribute('cy', pos.y);
+      integrityNumPhase.textContent = pos.pct + "%";
+      integrityNumPhase.style.color = pos.pct < 50 ? 'var(--blood-hot)' : '#f1d8c8';
+      // Update phase marks
+      integrityMarks.querySelectorAll('span').forEach(s => {
+        s.classList.toggle('active-phase', s.dataset.mark === sceneKey);
+      });
+      saveState();
     }));
 
-    const whisperMessages = [
-      "The haft brings mercy close. The curved blade makes it personal.",
-      "Do not wait for the cut. The selection is the first wound.",
-      "Witnesses remember the ring more faithfully than the blade.",
-      "A short blade on a long haft is how distance learns intimacy.",
-      "The tags apologize. The blade does not."
-    ];
-    let whisperIndex = 0;
-    const whisperTimer = setInterval(() => {
-      whisperIndex = (whisperIndex + 1) % whisperMessages.length;
-      whisperText.textContent = whisperMessages[whisperIndex];
-    }, 5600);
-    document.getElementById("whisperClose").addEventListener("click", () => {
-      document.getElementById("whisperBox").style.display = "none";
-      clearInterval(whisperTimer);
-    });
-    document.getElementById("whisperButton").addEventListener("click", () => {
-      document.getElementById("whisperBox").style.display = "block";
-      whisperText.textContent = "The reliquary is not silent. It is choosing a safer sentence.";
+    /* CUSTODY */
+    const custodyData = {
+      distance:{title:"Witness Distance",text:"No attendant stands directly in line with the inner bite. The weapon is studied at an angle so that its curve cannot complete a visual selection.",edge:46,whisper:"The glass does not protect the witness. The angle does."},
+      venting:{title:"Edge-Memory Venting",text:"The chamber slowly bleeds particulate memory into archive capture, preventing the cutting edge from accumulating too much witness pressure at once.",edge:58,whisper:"The edge remembers best when the room is too still."},
+      denial:{title:"Symbolic Denial",text:"Scribes are ordered to describe the weapon physically before describing it spiritually. Shape comes first. Metaphor is permitted only after the haft, collar, and blade have been named correctly.",edge:64,whisper:"Do not call it beautiful before calling it accurate."}
+    };
+    const custodyTitleOut = document.getElementById("custodyTitleOut");
+    const custodyTextOut = document.getElementById("custodyTextOut");
+    document.querySelectorAll(".custody-step").forEach(step => {
+      step.addEventListener("click", () => {
+        document.querySelectorAll(".custody-step").forEach(s => s.classList.remove("active"));
+        step.classList.add("active");
+        const data = custodyData[step.dataset.custody];
+        if(data){
+          custodyTitleOut.textContent = data.title;
+          custodyTextOut.textContent = data.text;
+          speak(data.whisper);
+          setEdge(data.edge);
+        }
+      });
     });
 
+    /* RITE WHEEL — completion unlocks liturgy */
+    const riteData = {
+      reach:["Rite I","Reach","The haft extends judgment into the space between Mortivus and the chosen target. Before blood moves, the battlefield understands that someone has been selected.",52],
+      pause:["Rite II","Pause","The weapon waits long enough for refusal to become visible. The pause is not hesitation. It is exposure.",60],
+      hook:["Rite III","Hook","The inner bite catches the place where movement insists it is still free. Resistance becomes leverage.",70],
+      draw:["Rite IV","Draw","Mortivus pulls the target into the lesson. The body follows the argument the weapon has already made.",78],
+      seal:["Rite V","Seal","The cut completes the sentence and returns the blade to witness-position. The ring remembers the ending.",84]
+    };
+    const riteOrder = ['reach','pause','hook','draw','seal'];
+    const riteLabel = document.getElementById("riteLabel");
+    const riteTitle = document.getElementById("riteTitle");
+    const riteText = document.getElementById("riteText");
+    const riteChip = document.getElementById("riteChip");
+    const riteStanza = document.getElementById("riteStanza");
+    const riteProgress = document.getElementById("riteProgress");
+    const ritualWheel = document.getElementById("ritualWheel");
+    const riteTrail = document.getElementById("riteTrail");
+    let lastRiteAngle = 0;
+
+    function updateRiteProgress(){
+      const spans = riteProgress.querySelectorAll('span');
+      spans.forEach((sp, i) => {
+        sp.classList.toggle('touched', state.touchedRites.has(riteOrder[i]));
+      });
+      riteChip.textContent = `Rites Touched: ${state.touchedRites.size} / 5`;
+      if (state.touchedRites.size === 5 && !state.riteComplete) {
+        state.riteComplete = true;
+        ritualWheel.classList.add('complete');
+        riteStanza.classList.add('revealed');
+        speak("The rite is complete. The liturgy stanza is now legible.");
+        setEdge(88);
+        saveState();
+      }
+    }
+
+    function drawRiteArc(fromAngle, toAngle){
+      // Compute SVG arc from one orbit position to another at radius ~245px in 600x600 viewbox
+      const cx = 300, cy = 300, r = 245;
+      const a1 = (fromAngle - 90) * Math.PI / 180;
+      const a2 = (toAngle - 90) * Math.PI / 180;
+      const x1 = cx + r * Math.cos(a1);
+      const y1 = cy + r * Math.sin(a1);
+      const x2 = cx + r * Math.cos(a2);
+      const y2 = cy + r * Math.sin(a2);
+      let diff = ((toAngle - fromAngle) + 360) % 360;
+      const largeArc = diff > 180 ? 1 : 0;
+      const sweep = 1;
+      const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+      path.setAttribute('d', `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} ${sweep} ${x2} ${y2}`);
+      riteTrail.appendChild(path);
+      setTimeout(() => path.remove(), 1500);
+    }
+
+    document.querySelectorAll(".ritual-node").forEach(node => {
+      node.addEventListener("click", () => {
+        document.querySelectorAll(".ritual-node").forEach(n => n.classList.remove("active"));
+        node.classList.add("active");
+        const newAngle = Number(node.dataset.angle);
+        if (state.touchedRites.size > 0 && lastRiteAngle !== newAngle) {
+          drawRiteArc(lastRiteAngle, newAngle);
+        }
+        lastRiteAngle = newAngle;
+        node.classList.add('touched');
+        state.touchedRites.add(node.dataset.rite);
+        const r = riteData[node.dataset.rite];
+        if(r){
+          riteLabel.textContent = r[0];
+          riteTitle.textContent = r[1];
+          riteText.textContent = r[2];
+          setEdge(r[3]);
+          speak(r[2]);
+        }
+        updateRiteProgress();
+        saveState();
+      });
+    });
+
+    /* SCAR LEDGER */
+    const scarWhispers = {
+      command:"A commander cut correctly becomes a message faster than a corpse.",
+      priest:"Faith can be caught behind the ribs if the symbol breaks first.",
+      duelist:"Speed is allowed to become vanity before the hook answers.",
+      survivor:"A visible ending can be more useful than an ending granted."
+    };
+    document.querySelectorAll(".scar-row").forEach(row => {
+      row.addEventListener("click", () => {
+        document.querySelectorAll(".scar-row").forEach(r => r.classList.remove("active"));
+        row.classList.add("active");
+        speak(scarWhispers[row.dataset.scar] || "The scar-ledger updates without ink.");
+        setEdge(76);
+      });
+    });
+
+    /* MODAL */
     const modal = document.getElementById("modal");
     const modalTitle = document.getElementById("modalTitle");
     const modalText = document.getElementById("modalText");
+    let lastFocused = null;
     document.querySelectorAll(".interactive").forEach(item => item.addEventListener("click", () => {
+      lastFocused = document.activeElement;
       modalTitle.textContent = item.dataset.title || "Chamber Annotation";
       modalText.textContent = item.dataset.text || "The reliquary answers.";
       modal.classList.add("show");
       modal.setAttribute("aria-hidden","false");
-      setRisk(58);
+      document.getElementById("modalClose").focus();
+      setEdge(58);
     }));
-    function hideModal(){modal.classList.remove("show");modal.setAttribute("aria-hidden","true")}
+    function hideModal(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+      if (lastFocused) lastFocused.focus();
+    }
     document.getElementById("modalClose").addEventListener("click", hideModal);
     modal.addEventListener("click", event => {if(event.target === modal) hideModal()});
-    document.addEventListener("keydown", event => {if(event.key === "Escape") hideModal()});
 
-    const canvas = document.getElementById("sporeCanvas");
-    const ctx = canvas.getContext("2d");
+    /* APPLY RESTORED STATE */
+    function applyRestoredState(){
+      // Lens
+      setLens(state.activeMode);
+      // Battle witnessed phases
+      document.querySelectorAll('.thumb-btn').forEach(btn => {
+        if (state.witnessedPhases.has(btn.dataset.scene)) btn.classList.add('witnessed');
+      });
+      // Decrypted fragments
+      state.decryptedFragments.forEach(id => {
+        const card = document.querySelector(`[data-witness-id="${id}"]`);
+        if (card) {
+          card.classList.remove('locked');
+          card.querySelector('p').textContent = card.dataset.witness;
+          card.querySelector('p').style.color = '#d8ceb2';
+          card.querySelector('p').style.fontStyle = 'italic';
+        }
+      });
+      witnessChip.textContent = `Fragments Decrypted: ${state.decryptedFragments.size} / 4`;
+      if (state.decryptedFragments.size === 4) tryAddFragmentV();
+      // Touched rites
+      state.touchedRites.forEach(key => {
+        const node = document.querySelector(`.ritual-node[data-rite="${key}"]`);
+        if (node) node.classList.add('touched');
+      });
+      updateRiteProgress();
+      if (state.riteComplete) {
+        ritualWheel.classList.add('complete');
+        riteStanza.classList.add('revealed');
+      }
+    }
+
+    /* DESCENT */
+    const descentVeil = document.getElementById('descentVeil');
+    function descend(url, direction){
+      descentVeil.dataset.direction = direction || 'down';
+      descentVeil.classList.add('active');
+      setTimeout(() => { window.location.href = url; }, 900);
+    }
+    document.querySelectorAll('[data-descend]').forEach(link => {
+      link.addEventListener('click', e => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        const dir = link.dataset.descend;
+        if (document.startViewTransition) {
+          document.startViewTransition(() => descend(href, dir));
+        } else {
+          descend(href, dir);
+        }
+      });
+    });
+
+    /* KEYBOARD */
+    const sectionKeys = {'1':'threshold','2':'anatomy','3':'provenance','4':'motions','5':'effects','6':'witness','7':'battle'};
+    let keyBuffer = '';
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') hideModal();
+      if (e.target.matches('input, textarea, button, [contenteditable]')) return;
+      if (sectionKeys[e.key]) {
+        const target = document.getElementById(sectionKeys[e.key]);
+        if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      keyBuffer = (keyBuffer + e.key.toLowerCase()).slice(-4);
+      if (keyBuffer === 'ring') {
+        keyBuffer = '';
+        // Slam edge to 100, decrypt all fragments, complete rite, reveal Fragment V
+        document.querySelectorAll('.witness-card.locked').forEach(card => {
+          card.classList.remove('locked');
+          card.querySelector('p').textContent = card.dataset.witness;
+          card.querySelector('p').style.color = '#d8ceb2';
+          card.querySelector('p').style.fontStyle = 'italic';
+          state.decryptedFragments.add(Number(card.dataset.witnessId));
+        });
+        witnessChip.textContent = `Fragments Decrypted: ${state.decryptedFragments.size} / 4`;
+        tryAddFragmentV();
+        document.querySelectorAll('.ritual-node').forEach(n => {
+          n.classList.add('touched');
+          state.touchedRites.add(n.dataset.rite);
+        });
+        updateRiteProgress();
+        setEdge(100);
+        speak("The chamber has been given to the witness. Every ring is sounding at once.");
+        saveState();
+      }
+    });
+
+    /* IDLE */
+    let idleTimer = null;
+    function resetIdle(){
+      if (state.idle) { state.idle = false; document.body.classList.remove('idle'); }
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        state.idle = true;
+        document.body.classList.add('idle');
+        speak("The chamber has stopped expecting you. The ring has gone quiet again.");
+      }, 25000);
+    }
+    ['mousemove','keydown','scroll','touchstart','click'].forEach(ev => window.addEventListener(ev, resetIdle, { passive:true }));
+    resetIdle();
+
+    /* HERO PARALLAX via CSS vars */
+    const hero = document.querySelector(".hero");
+    let parallaxRaf = null;
+    document.addEventListener("mousemove", event => {
+      if (parallaxRaf) cancelAnimationFrame(parallaxRaf);
+      parallaxRaf = requestAnimationFrame(() => {
+        const x = (event.clientX / window.innerWidth - .5) * 10;
+        const y = (event.clientY / window.innerHeight - .5) * 10;
+        hero.style.setProperty('--hero-px', `${x * -.8}px`);
+        hero.style.setProperty('--hero-py', `${y * -.8}px`);
+      });
+    });
+
+    /* CANVASES — shared loop, perf gated */
+    const sporeCanvas = document.getElementById("sporeCanvas");
+    const sporeCtx = sporeCanvas.getContext("2d");
     let spores = [];
-    let mouse = {x:window.innerWidth/2,y:window.innerHeight/2};
-    function resizeCanvas(){
-      const ratio = Math.min(window.devicePixelRatio || 1,2);
-      canvas.width = Math.floor(window.innerWidth * ratio);
-      canvas.height = Math.floor(window.innerHeight * ratio);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(ratio,0,0,ratio,0,0);
-      spores = Array.from({length:Math.min(150,Math.floor(window.innerWidth/10))},() => ({
-        x:Math.random()*window.innerWidth,
-        y:Math.random()*window.innerHeight,
-        r:Math.random()*2.3+.55,
-        s:Math.random()*.32+.08,
-        a:Math.random()*Math.PI*2,
-        drift:Math.random()*.3+.08,
+    let mouse = {x:window.innerWidth/2, y:window.innerHeight/2};
+
+    const bladeAuraCanvas = document.getElementById("bladeAuraCanvas");
+    const bladeAuraCtx = bladeAuraCanvas.getContext("2d");
+    const edgeMemoryCanvas = document.getElementById("edgeMemoryCanvas");
+    const edgeMemoryCtx = edgeMemoryCanvas.getContext("2d");
+    let auraMarks = [];
+    let edgeThreads = [];
+
+    function resizeCanvases(){
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      [sporeCanvas, bladeAuraCanvas, edgeMemoryCanvas].forEach(c => {
+        c.width = Math.floor(window.innerWidth * ratio);
+        c.height = Math.floor(window.innerHeight * ratio);
+        c.style.width = window.innerWidth + "px";
+        c.style.height = window.innerHeight + "px";
+      });
+      sporeCtx.setTransform(ratio,0,0,ratio,0,0);
+      bladeAuraCtx.setTransform(ratio,0,0,ratio,0,0);
+      edgeMemoryCtx.setTransform(ratio,0,0,ratio,0,0);
+
+      spores = Array.from({length:Math.min(120, Math.floor(window.innerWidth/12))}, () => ({
+        x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
+        r:Math.random()*2.3+.55, s:Math.random()*.32+.08,
+        a:Math.random()*Math.PI*2, drift:Math.random()*.3+.08,
         type:Math.random()>.72?"rot":"gold"
       }));
+      auraMarks = Array.from({length:Math.min(22, Math.floor(window.innerWidth/72))}, () => ({
+        x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
+        r:Math.random()*150+70, a:Math.random()*Math.PI*2, s:Math.random()*.003+.001
+      }));
+      edgeThreads = Array.from({length:Math.min(36, Math.floor(window.innerWidth/40))}, () => ({
+        x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
+        len:Math.random()*120+50, life:Math.random()*120, spd:Math.random()*.8+.25
+      }));
     }
+
     function drawSpores(){
-      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      sporeCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
       for(const spore of spores){
         const dx = mouse.x - spore.x;
         const dy = mouse.y - spore.y;
@@ -1797,148 +1803,19 @@
         if(spore.x < -15) spore.x = window.innerWidth+15;
         if(spore.x > window.innerWidth+15) spore.x = -15;
         const color = spore.type === "rot" ? "157,195,116" : "240,216,141";
-        const g = ctx.createRadialGradient(spore.x,spore.y,0,spore.x,spore.y,spore.r*7);
+        const g = sporeCtx.createRadialGradient(spore.x,spore.y,0,spore.x,spore.y,spore.r*7);
         g.addColorStop(0,`rgba(${color},${0.10 + spore.r/28})`);
         g.addColorStop(.45,`rgba(${color},.05)`);
         g.addColorStop(1,`rgba(${color},0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(spore.x,spore.y,spore.r*5.2,0,Math.PI*2);
-        ctx.fill();
+        sporeCtx.fillStyle = g;
+        sporeCtx.beginPath();
+        sporeCtx.arc(spore.x,spore.y,spore.r*5.2,0,Math.PI*2);
+        sporeCtx.fill();
       }
-      requestAnimationFrame(drawSpores);
-    }
-    window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("mousemove", event => {mouse.x = event.clientX; mouse.y = event.clientY});
-    resizeCanvas();
-    drawSpores();
-
-    /* =========================================================
-       ELITE EXPANSION JS — visibility-safe interaction layers
-    ========================================================= */
-    const custodyData = {
-      distance:{
-        title:"Witness Distance",
-        text:"No attendant stands directly in line with the inner bite. The weapon is studied at an angle so that its curve cannot complete a visual selection.",
-        risk:46,
-        whisper:"The glass does not protect the witness. The angle does."
-      },
-      venting:{
-        title:"Edge-Memory Venting",
-        text:"The chamber slowly bleeds particulate memory into archive capture, preventing the cutting edge from accumulating too much witness pressure at once.",
-        risk:58,
-        whisper:"The edge remembers best when the room is too still."
-      },
-      denial:{
-        title:"Symbolic Denial",
-        text:"Scribes are ordered to describe the weapon physically before describing it spiritually. Shape comes first. Metaphor is permitted only after the haft, collar, and blade have been named correctly.",
-        risk:64,
-        whisper:"Do not call it beautiful before calling it accurate."
-      }
-    };
-    const custodyTitleOut = document.getElementById("custodyTitleOut");
-    const custodyTextOut = document.getElementById("custodyTextOut");
-    document.querySelectorAll(".custody-step").forEach(step => {
-      step.addEventListener("click", () => {
-        document.querySelectorAll(".custody-step").forEach(s => s.classList.remove("active"));
-        step.classList.add("active");
-        const data = custodyData[step.dataset.custody];
-        if(data){
-          custodyTitleOut.textContent = data.title;
-          custodyTextOut.textContent = data.text;
-          whisperText.textContent = data.whisper;
-          setRisk(data.risk);
-        }
-      });
-    });
-
-    document.querySelectorAll(".reliquary-slab").forEach(slab => {
-      slab.addEventListener("click", () => {
-        slab.classList.toggle("open");
-        document.querySelectorAll(".reliquary-slab").forEach(s => s.classList.remove("active"));
-        slab.classList.add("active");
-        setRisk(54);
-        whisperText.textContent = "The large plate gives the weapon back its correct scale.";
-      });
-    });
-
-    const riteData = {
-      reach:["Rite I","Reach","The haft extends judgment into the space between Mortivus and the chosen target. Before blood moves, the battlefield understands that someone has been selected.",52],
-      pause:["Rite II","Pause","The weapon waits long enough for refusal to become visible. The pause is not hesitation. It is exposure.",60],
-      hook:["Rite III","Hook","The inner bite catches the place where movement insists it is still free. Resistance becomes leverage.",70],
-      draw:["Rite IV","Draw","Mortivus pulls the target into the lesson. The body follows the argument the weapon has already made.",78],
-      seal:["Rite V","Seal","The cut completes the sentence and returns the blade to witness-position. The ring remembers the ending.",84]
-    };
-    const riteLabel = document.getElementById("riteLabel");
-    const riteTitle = document.getElementById("riteTitle");
-    const riteText = document.getElementById("riteText");
-    document.querySelectorAll(".ritual-node").forEach(node => {
-      node.addEventListener("click", () => {
-        document.querySelectorAll(".ritual-node").forEach(n => n.classList.remove("active"));
-        node.classList.add("active");
-        const r = riteData[node.dataset.rite];
-        if(r){
-          riteLabel.textContent = r[0];
-          riteTitle.textContent = r[1];
-          riteText.textContent = r[2];
-          setRisk(r[3]);
-          whisperText.textContent = r[2];
-        }
-      });
-    });
-
-    const scarWhispers = {
-      command:"A commander cut correctly becomes a message faster than a corpse.",
-      priest:"Faith can be caught behind the ribs if the symbol breaks first.",
-      duelist:"Speed is allowed to become vanity before the hook answers.",
-      survivor:"A visible ending can be more useful than an ending granted."
-    };
-    document.querySelectorAll(".scar-row").forEach(row => {
-      row.addEventListener("click", () => {
-        document.querySelectorAll(".scar-row").forEach(r => r.classList.remove("active"));
-        row.classList.add("active");
-        whisperText.textContent = scarWhispers[row.dataset.scar] || "The scar-ledger updates without ink.";
-        setRisk(76);
-      });
-    });
-
-    // Additional background layers stay behind the page and never block content.
-    const bladeAuraCanvas = document.getElementById("bladeAuraCanvas");
-    const edgeMemoryCanvas = document.getElementById("edgeMemoryCanvas");
-    const bladeAuraCtx = bladeAuraCanvas.getContext("2d");
-    const edgeMemoryCtx = edgeMemoryCanvas.getContext("2d");
-    let auraMarks = [];
-    let edgeThreads = [];
-
-    function resizeExpansionCanvases(){
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      for(const c of [bladeAuraCanvas, edgeMemoryCanvas]){
-        c.width = Math.floor(window.innerWidth * ratio);
-        c.height = Math.floor(window.innerHeight * ratio);
-        c.style.width = window.innerWidth + "px";
-        c.style.height = window.innerHeight + "px";
-      }
-      bladeAuraCtx.setTransform(ratio,0,0,ratio,0,0);
-      edgeMemoryCtx.setTransform(ratio,0,0,ratio,0,0);
-      auraMarks = Array.from({length:Math.min(28,Math.floor(window.innerWidth/54))}, () => ({
-        x:Math.random()*window.innerWidth,
-        y:Math.random()*window.innerHeight,
-        r:Math.random()*150+70,
-        a:Math.random()*Math.PI*2,
-        s:Math.random()*.003+.001
-      }));
-      edgeThreads = Array.from({length:Math.min(42,Math.floor(window.innerWidth/34))}, () => ({
-        x:Math.random()*window.innerWidth,
-        y:Math.random()*window.innerHeight,
-        len:Math.random()*120+50,
-        life:Math.random()*120,
-        spd:Math.random()*.8+.25
-      }));
     }
 
-    function drawExpansionCanvases(){
+    function drawAura(){
       bladeAuraCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-      edgeMemoryCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
       for(const mark of auraMarks){
         mark.a += mark.s;
         const x = mark.x + Math.sin(mark.a)*18;
@@ -1952,13 +1829,13 @@
         bladeAuraCtx.arc(x,y,mark.r,0,Math.PI*2);
         bladeAuraCtx.fill();
       }
+    }
+
+    function drawEdge(){
+      edgeMemoryCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
       for(const thread of edgeThreads){
         thread.life += thread.spd;
-        if(thread.life > 140){
-          thread.life = 0;
-          thread.x = Math.random()*window.innerWidth;
-          thread.y = Math.random()*window.innerHeight;
-        }
+        if(thread.life > 140){ thread.life = 0; thread.x = Math.random()*window.innerWidth; thread.y = Math.random()*window.innerHeight; }
         const pulse = Math.sin(thread.life/140*Math.PI);
         if(pulse <= 0) continue;
         edgeMemoryCtx.strokeStyle = `rgba(240,216,141,${0.12*pulse})`;
@@ -1972,13 +1849,26 @@
         edgeMemoryCtx.arc(thread.x,thread.y,8+pulse*13,0,Math.PI*2);
         edgeMemoryCtx.stroke();
       }
-      requestAnimationFrame(drawExpansionCanvases);
     }
 
-    window.addEventListener("resize", resizeExpansionCanvases);
-    resizeExpansionCanvases();
-    drawExpansionCanvases();
-
+    let lastFrame = 0;
+    function animate(ts){
+      if (!prefersReduced && state.booted && !document.hidden) {
+        if (ts - lastFrame > 1000/40) {
+          drawSpores();
+          if (document.body.classList.contains('aura-active')) drawAura();
+          else bladeAuraCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+          if (document.body.classList.contains('edge-active')) drawEdge();
+          else edgeMemoryCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+          lastFrame = ts;
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    window.addEventListener("resize", resizeCanvases);
+    window.addEventListener("mousemove", event => {mouse.x = event.clientX; mouse.y = event.clientY});
+    resizeCanvases();
+    requestAnimationFrame(animate);
   </script>
 </body>
 </html>
