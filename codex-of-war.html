@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex of War — Cogitator Reckoning | RotFather's Vanguard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0e07;
+  --panel:#11140c;
+  --panel-2:#161a0f;
+  --line:#2b331c;
+  --line-soft:#222a16;
+  --green:#7a9a3a;
+  --green-dim:#5a7a30;
+  --green-faint:#3a5220;
+  --amber:#c9a84c;
+  --amber-dim:#9a803a;
+  --text:#c8c0a8;
+  --text-dim:#8f8868;
+  --text-faint:#6b6648;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:"EB Garamond",Georgia,serif;font-size:18px;line-height:1.66;
+  -webkit-font-smoothing:antialiased;
+}
+/* subtle scanline + vignette, very restrained */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0 1px,transparent 1px 4px);
+  opacity:.4;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 26px 120px;}
+
+mono,.mono{font-family:"JetBrains Mono",monospace;}
+
+/* ---- COVER ---- */
+.cover{min-height:94vh;display:flex;flex-direction:column;justify-content:center;
+  border-bottom:1px solid var(--line);padding:60px 0;}
+.tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.34em;
+  color:var(--green);text-transform:uppercase;margin-bottom:26px;display:flex;gap:10px;align-items:center;}
+.tag::before,.tag::after{content:"";height:1px;background:var(--green-faint);flex:1;}
+.cover h1{font-family:"Cinzel",serif;font-weight:900;font-size:clamp(40px,8vw,82px);
+  line-height:.98;color:var(--text);margin:0;letter-spacing:.01em;}
+.cover h1 .gold{color:var(--amber);display:block;}
+.cover .lede{margin-top:28px;max-width:560px;color:var(--text-dim);font-size:19px;}
+.cover .meta{margin-top:40px;font-family:"JetBrains Mono",monospace;font-size:12px;
+  color:var(--text-faint);letter-spacing:.08em;line-height:2;}
+.cover .meta b{color:var(--amber-dim);}
+
+/* ---- SECTIONS ---- */
+section{margin:70px 0;scroll-margin-top:18px;page-break-inside:auto;}
+.sec-head{display:flex;align-items:baseline;gap:18px;border-bottom:1px solid var(--line);
+  padding-bottom:14px;margin-bottom:26px;}
+.sec-num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--green);
+  letter-spacing:.2em;border:1px solid var(--green-faint);padding:4px 10px;flex:0 0 auto;
+  border-radius:3px;background:rgba(122,154,58,.06);}
+h2{font-family:"Cinzel",serif;font-weight:700;font-size:clamp(26px,4.4vw,40px);
+  color:var(--text);margin:0;line-height:1.04;}
+h3{font-family:"Cinzel",serif;font-weight:600;color:var(--amber);
+  font-size:clamp(19px,3vw,24px);margin:1.7em 0 .35em;letter-spacing:.01em;}
+h4{font-family:"JetBrains Mono",monospace;color:var(--green);font-weight:500;
+  text-transform:uppercase;letter-spacing:.14em;font-size:13px;margin:1.4em 0 .3em;}
+p{margin:.55em 0;}
+strong{color:var(--amber);font-weight:600;}
+em.t{color:var(--green);font-style:normal;font-weight:600;}
+
+/* callouts */
+.plain{border-left:2px solid var(--green-dim);background:rgba(122,154,58,.05);
+  padding:12px 18px;margin:16px 0;border-radius:0 4px 4px 0;page-break-inside:avoid;}
+.plain b{font-family:"JetBrains Mono",monospace;color:var(--green);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:3px;}
+.scrawl{border:1px solid var(--line);background:rgba(201,168,76,.04);
+  padding:13px 18px;margin:18px 0;border-radius:4px;font-style:italic;color:var(--text-dim);
+  page-break-inside:avoid;position:relative;}
+.scrawl b{font-style:normal;color:var(--amber-dim);font-family:"JetBrains Mono",monospace;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:4px;}
+
+ul,ol{margin:.4em 0 .9em;padding-left:1.35em;}
+li{margin:.28em 0;}
+ul li::marker{color:var(--green-dim);}
+
+/* tables */
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:16px;page-break-inside:avoid;}
+th,td{border:1px solid var(--line-soft);padding:10px 13px;text-align:left;vertical-align:top;}
+th{background:rgba(122,154,58,.10);font-family:"JetBrains Mono",monospace;
+  text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--green);font-weight:500;}
+tr:nth-child(even) td{background:rgba(255,255,255,.014);}
+code,.ic{font-family:"JetBrains Mono",monospace;color:var(--amber);
+  background:rgba(0,0,0,.35);padding:1px 6px;border-radius:3px;font-size:.84em;}
+
+/* numbered sequence */
+.seq{counter-reset:s;list-style:none;padding-left:0;margin:14px 0;}
+.seq>li{position:relative;padding:8px 0 8px 46px;border-bottom:1px solid var(--line-soft);}
+.seq>li:last-child{border-bottom:none;}
+.seq>li::before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;left:0;top:8px;
+  font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--amber);
+  border:1px solid var(--green-faint);width:30px;height:24px;display:flex;align-items:center;
+  justify-content:center;border-radius:3px;}
+
+.phase-card{border:1px solid var(--line);border-radius:6px;padding:6px 20px 14px;margin:16px 0;
+  background:var(--panel);page-break-inside:avoid;}
+
+/* TOC */
+.toc{border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:10px 8px;
+  columns:2;column-gap:34px;}
+.toc a{display:flex;gap:12px;text-decoration:none;color:var(--text);padding:7px 14px;
+  border-radius:3px;break-inside:avoid;font-size:16px;}
+.toc a:hover{background:rgba(122,154,58,.08);color:var(--amber);}
+.toc .n{font-family:"JetBrains Mono",monospace;color:var(--green);font-size:12px;
+  min-width:26px;}
+
+.quote{font-family:"Cinzel",serif;font-style:italic;text-align:center;color:var(--text-faint);
+  font-size:clamp(15px,2.3vw,18px);margin:32px auto;max-width:640px;letter-spacing:.02em;}
+.quote::before{content:"++ ";color:var(--green-faint);}
+.quote::after{content:" ++";color:var(--green-faint);}
+
+footer{border-top:1px solid var(--line);margin-top:80px;padding-top:30px;text-align:center;
+  color:var(--text-faint);font-size:14px;font-style:italic;}
+footer b{color:var(--amber-dim);font-style:normal;}
+
+@media(max-width:680px){body{font-size:17px;}.toc{columns:1;}.sec-head{gap:12px;}}
+
+@page{margin:14mm 12mm;}
+@media print{
+  body{background:var(--bg);} body::after{opacity:.25;}
+  section{page-break-inside:auto;}
+  .cover{min-height:auto;page-break-after:always;}
+  h2,h3{page-break-after:avoid;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="tag">Septicarium Archive · Restricted</div>
+    <h1>Codex of War<span class="gold">A Cogitator Reckoning</span></h1>
+    <p class="lede">The Core Rules of the 41st Millennium, decoded into plain battle-cant for the warriors of the RotFather's Vanguard. Eleventh-edition doctrine, explained — not merely transcribed.</p>
+    <div class="meta">
+      <span>▸ ORIGIN&nbsp;&nbsp;&nbsp;&nbsp;</span> <b>Mortarion's Hammer, Strike Detachment</b><br>
+      <span>▸ AUTHORITY&nbsp;</span> <b>The Tallyman, by the Grandfather's count</b><br>
+      <span>▸ PURPOSE&nbsp;&nbsp;&nbsp;</span> <b>That none may plead ignorance of the rite of slaughter</b>
+    </div>
+  </div>
+
+  <div class="quote">Three gifts the Grandfather grants: patience, decay, and a clear set of rules</div>
+
+  <!-- HOW TO READ -->
+  <section id="how">
+    <div class="sec-head"><span class="sec-num">PREFACE</span><h2>How to Read This Reckoning</h2></div>
+    <p>Warhammer 40,000 is a battle game of toy soldiers, dice, and a tape measure. Two armies take turns, chase a <em class="t">mission</em> (usually seizing patches of ground and killing the foe), and after a set number of rounds the higher score wins. Everything below is detail laid over that simple spine.</p>
+    <p>To keep it painless, two markers recur through the text:</p>
+    <div class="plain"><b>▸ Plain speak</b>The rule in everyday words — what you actually do at the table.</div>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>A memory-hook or warning, flavoured to the Vanguard.</div>
+    <p>Two symbols you'll meet everywhere: a stat of <span class="ic">"-"</span> means "none / not allowed," and <span class="ic">X+</span> (e.g. 3+) means "roll that number <em class="t">or higher</em> on a D6 to succeed."</p>
+  </section>
+
+  <!-- TOC -->
+  <section id="toc">
+    <div class="sec-head"><span class="sec-num">INDEX</span><h2>Contents</h2></div>
+    <nav class="toc">
+      <a href="#dice"><span class="n">I</span>Dice, Measuring &amp; the Basics</a>
+      <a href="#datasheet"><span class="n">II</span>Reading a Datasheet</a>
+      <a href="#moving"><span class="n">III</span>Moving Models</a>
+      <a href="#round"><span class="n">IV</span>Shape of a Battle Round</a>
+      <a href="#command"><span class="n">V</span>The Command Phase</a>
+      <a href="#movement"><span class="n">VI</span>The Movement Phase</a>
+      <a href="#shooting"><span class="n">VII</span>The Shooting Phase</a>
+      <a href="#attacks"><span class="n">VIII</span>How an Attack Works</a>
+      <a href="#charge"><span class="n">IX</span>The Charge Phase</a>
+      <a href="#fight"><span class="n">X</span>The Fight Phase</a>
+      <a href="#visibility"><span class="n">XI</span>Sight &amp; Mortal Wounds</a>
+      <a href="#terrain"><span class="n">XII</span>Terrain &amp; Cover</a>
+      <a href="#objectives"><span class="n">XIII</span>Objectives</a>
+      <a href="#strats"><span class="n">XIV</span>Command Points &amp; Stratagems</a>
+      <a href="#leaders"><span class="n">XV</span>Leaders &amp; Attached Units</a>
+      <a href="#transports"><span class="n">XVI</span>Transports, Monsters &amp; Vehicles</a>
+      <a href="#reserves"><span class="n">XVII</span>Reserves, Deep Strike &amp; Flying</a>
+      <a href="#keywords"><span class="n">XVIII</span>Weapon &amp; Unit Keywords</a>
+      <a href="#actions"><span class="n">XIX</span>Actions &amp; Odds and Ends</a>
+    </nav>
+  </section>
+
+  <!-- I -->
+  <section id="dice">
+    <div class="sec-head"><span class="sec-num">I</span><h2>Dice, Measuring &amp; the Basics</h2></div>
+    <h3>Army, units, models</h3>
+    <p>You command an <em class="t">army</em> of <em class="t">units</em>. A unit is one or more <em class="t">models</em> (figures) that move and fight as one clump. Anything in your army is <strong>friendly</strong>; the enemy's is <strong>enemy</strong>.</p>
+    <div class="plain"><b>▸ Plain speak</b>Models = figures. Units = squads. You act on a whole unit at a time, never a lone model unless a rule says otherwise.</div>
+
+    <h3>Dice</h3>
+    <ul>
+      <li><span class="ic">3+</span> — roll 3 or higher to pass.</li>
+      <li><span class="ic">2D6</span> — roll two dice, add them. <span class="ic">D6+1</span> — roll one, add 1.</li>
+      <li><span class="ic">D3</span> — roll a D6 and halve it, rounding up (1-2→1, 3-4→2, 5-6→3).</li>
+    </ul>
+
+    <h3>Measuring</h3>
+    <p>All distances are in inches, measurable <strong>whenever you like</strong>. Unless told otherwise, measure to/from the <strong>closest part of a model's base</strong>.</p>
+
+    <h3>Leadership &amp; Battle-shock</h3>
+    <p><em class="t">Leadership (Ld)</em> is nerve, shown like 6+. Test it by rolling <span class="ic">2D6</span> and meeting the value. A <em class="t">battle-shock roll</em> is a Leadership roll with teeth — fail and the unit is <strong>battle-shocked</strong> until it recovers. While shocked it loses Objective Control, can't be targeted by your stratagems, and can't perform actions.</p>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Fear is a clean-flesh affliction — it loosens a man's grip on the soil beneath him. The Grandfather's gifts know no such tremor. Yet even rotbrothers may falter; hold your nerve and the ground stays yours.</div>
+  </section>
+
+  <!-- II -->
+  <section id="datasheet">
+    <div class="sec-head"><span class="sec-num">II</span><h2>Reading a Datasheet</h2></div>
+    <p>Each unit's stat card — its <em class="t">datasheet</em> — says how tough, fast, and deadly it is.</p>
+    <h4>Defence profile</h4>
+    <table>
+      <tr><th>Stat</th><th>Means</th><th>Plain words</th></tr>
+      <tr><td><code>M</code></td><td>Move</td><td>How far it walks. "-" = can't move.</td></tr>
+      <tr><td><code>T</code></td><td>Toughness</td><td>How hard to wound. Higher = tougher.</td></tr>
+      <tr><td><code>Sv</code></td><td>Save</td><td>Roll this+ to shrug a wound with armour.</td></tr>
+      <tr><td><code>InSv</code></td><td>Invulnerable</td><td>Backup save that ignores AP. Not all have one.</td></tr>
+      <tr><td><code>W</code></td><td>Wounds</td><td>Health. 0 = destroyed.</td></tr>
+      <tr><td><code>Ld</code></td><td>Leadership</td><td>Nerve, for morale tests.</td></tr>
+      <tr><td><code>OC</code></td><td>Obj. Control</td><td>Holding power on objectives. "-"/0 = can't hold.</td></tr>
+    </table>
+    <h4>Weapon profile</h4>
+    <table>
+      <tr><th>Stat</th><th>Means</th><th>Plain words</th></tr>
+      <tr><td><code>R</code></td><td>Range</td><td>How far it shoots. "Melee" = close combat.</td></tr>
+      <tr><td><code>A</code></td><td>Attacks</td><td>Dice this weapon throws.</td></tr>
+      <tr><td><code>BS/WS</code></td><td>Skill</td><td>Number needed to hit (BS shoot / WS melee).</td></tr>
+      <tr><td><code>S</code></td><td>Strength</td><td>Weighed against Toughness to wound.</td></tr>
+      <tr><td><code>AP</code></td><td>Armour Pen.</td><td>Worsens enemy save. -2 beats -1.</td></tr>
+      <tr><td><code>D</code></td><td>Damage</td><td>Wounds lost per failed save.</td></tr>
+    </table>
+    <div class="plain"><b>▸ Plain speak</b>Defence card = how hard I die. Weapon card = how I kill. BS/WS — "what I need to hit" — drives most of the game.</div>
+    <h3>Keywords</h3>
+    <p>In CAPITALS at the foot of the card. Many rules only touch units with a given keyword; <strong>faction keywords</strong> decide army-building, the rest are hooks for rules.</p>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Brother Dolor reads HELBRUTE · WALKER · VEHICLE — so every rule that whispers to VEHICLES, and every enemy gun that hunts them, speaks to him. Read keywords before you weep over the dice.</div>
+  </section>
+
+  <!-- III -->
+  <section id="moving">
+    <div class="sec-head"><span class="sec-num">III</span><h2>Moving Models</h2></div>
+    <p>Pick up models and reposition them in straight lines and turns, up to the move's maximum. Constants: pass <strong>through friendly</strong> models but <strong>not enemy</strong> ones; never leave the table edge; turning on the spot is free.</p>
+    <h3>Coherency — stay a clump</h3>
+    <p>After any move, every model in a multi-model unit must be within <strong>2"</strong> of one squadmate <em>and</em> within <strong>9"</strong> of all of them.</p>
+    <div class="plain"><b>▸ Plain speak</b>Don't string the squad out like beads on a wire, or you'll lose the stragglers as casualties at end of turn.</div>
+    <h3>Engagement range — "in combat"</h3>
+    <p>Within <strong>2" horizontally</strong> (5" vertically) of a model is its <em class="t">engagement range</em>. When your model and an enemy's sit inside each other's, those units are <strong>engaged</strong> — locked in melee.</p>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Two inches is the reach of a rusted blade. Cross it and you are committed to the embrace. Plague Marines do not mind the embrace.</div>
+  </section>
+
+  <!-- IV -->
+  <section id="round">
+    <div class="sec-head"><span class="sec-num">IV</span><h2>Shape of a Battle Round</h2></div>
+    <p>A game runs a handful of <em class="t">battle rounds</em> (usually five). Each round, <strong>both</strong> players take a full turn. So one battle round = two turns. Your turn is always these five phases:</p>
+    <div class="phase-card"><ol class="seq">
+      <li><strong>Command</strong> — gain resources, test morale, command-tier tricks.</li>
+      <li><strong>Movement</strong> — reposition; reserves arrive.</li>
+      <li><strong>Shooting</strong> — fire ranged weapons.</li>
+      <li><strong>Charge</strong> — run into melee.</li>
+      <li><strong>Fight</strong> — everyone in melee swings, friend and foe.</li>
+    </ol></div>
+    <div class="plain"><b>▸ Plain speak</b>Remember it as <strong>Plan → Move → Shoot → Charge → Smash.</strong> Fight is the one phase where the enemy also strikes during your turn.</div>
+  </section>
+
+  <!-- V -->
+  <section id="command">
+    <div class="sec-head"><span class="sec-num">V</span><h2>The Command Phase</h2></div>
+    <ol class="seq">
+      <li><strong>Gain 1 Command Point (CP).</strong> Both players do. CP fuels <a href="#strats">stratagems</a>.</li>
+      <li><strong>Battle-shock.</strong> Test each of your units that is shocked or at/below <strong>half-strength</strong>. Fail = battle-shocked.</li>
+      <li><strong>Command abilities.</strong> Use rules that trigger "in the Command phase."</li>
+    </ol>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Count the dead, the living, the points. The Grandfather is, above all, an accountant — the books must balance before slaughter resumes.</div>
+  </section>
+
+  <!-- VI -->
+  <section id="movement">
+    <div class="sec-head"><span class="sec-num">VI</span><h2>The Movement Phase</h2></div>
+    <p>Select units one at a time; choose a move type for each (even "stand still").</p>
+    <table>
+      <tr><th>Move</th><th>Distance</th><th>Cost</th></tr>
+      <tr><td><strong>Remain stationary</strong></td><td>0"</td><td>None — best for heavy guns.</td></tr>
+      <tr><td><strong>Normal</strong></td><td>up to <code>M</code></td><td>Standard walk; still shoot &amp; charge.</td></tr>
+      <tr><td><strong>Advance</strong></td><td><code>M</code> + D6</td><td>Faster, but <strong>no shooting</strong> (most) or charging.</td></tr>
+      <tr><td><strong>Fall back</strong></td><td>up to <code>M</code></td><td>Escape melee; no shoot/charge/act this turn.</td></tr>
+    </table>
+    <div class="plain"><b>▸ Plain speak</b>Stand still to shoot best. Walk to reposition and still shoot. Advance to rush (no shoot/charge). Fall back only to peel a unit out of a losing fight.</div>
+    <p>A battle-shocked unit falling back must make a <strong>Desperate Escape</strong>: a hazard roll per model, then a fresh shock test.</p>
+  </section>
+
+  <!-- VII -->
+  <section id="shooting">
+    <div class="sec-head"><span class="sec-num">VII</span><h2>The Shooting Phase</h2></div>
+    <p>Pick eligible units one at a time and fire (the dice use the universal <a href="#attacks">attack sequence</a>). Four ways to shoot:</p>
+    <table>
+      <tr><th>Type</th><th>When</th></tr>
+      <tr><td><strong>Normal</strong></td><td>Default — unengaged, didn't Advance.</td></tr>
+      <tr><td><strong>Assault</strong></td><td>You Advanced, but the weapon is <code>[ASSAULT]</code>.</td></tr>
+      <tr><td><strong>Close-quarters</strong></td><td>In melee with a <code>[CLOSE-QUARTERS]</code> weapon, or a Monster/Vehicle.</td></tr>
+      <tr><td><strong>Indirect</strong></td><td><code>[INDIRECT FIRE]</code> — shoot unseen targets, with penalties.</td></tr>
+    </table>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>The Gardener loves indirect fire — spitting bile over the wall at men it cannot see. Keep it still, let a brother spot, and the dribble becomes a downpour.</div>
+  </section>
+
+  <!-- VIII -->
+  <section id="attacks">
+    <div class="sec-head"><span class="sec-num">VIII</span><h2>How an Attack Works</h2></div>
+    <p>The heart of the game. <strong>Shooting and melee use the same four steps.</strong> Learn it once, you know both.</p>
+    <h3>First: pick weapons &amp; targets</h3>
+    <p>Shooting targets must be <strong>in range, visible, unengaged</strong>. Melee targets must be a unit you're <strong>engaged with</strong>.</p>
+    <h3>Then resolve the dice</h3>
+    <div class="phase-card"><ol class="seq">
+      <li><strong>Hit roll.</strong> D6 per attack; meet BS/WS. Unmodified 6 = <em class="t">critical hit</em>; 1 always misses.</li>
+      <li><strong>Wound roll.</strong> D6 per hit; use the table below. Unmodified 6 = <em class="t">critical wound</em>.</li>
+      <li><strong>Save roll.</strong> The <em>defender</em> rolls per wound vs their armour (worsened by AP) or invuln. Pass = no harm.</li>
+      <li><strong>Inflict damage.</strong> Each <strong>failed</strong> save costs the target the weapon's Damage. 0 wounds = dead.</li>
+    </ol></div>
+    <h3>The Wound Table</h3>
+    <table>
+      <tr><th>Strength vs Toughness</th><th>Need</th></tr>
+      <tr><td>S is <strong>twice or more</strong> T</td><td><code>2+</code></td></tr>
+      <tr><td>S is <strong>greater than</strong> T</td><td><code>3+</code></td></tr>
+      <tr><td>S <strong>equals</strong> T</td><td><code>4+</code></td></tr>
+      <tr><td>S is <strong>less than</strong> T</td><td><code>5+</code></td></tr>
+      <tr><td>S is <strong>half or less</strong> of T</td><td><code>6+</code></td></tr>
+    </table>
+    <div class="plain"><b>▸ Plain speak</b>Hit → wound → <em>they</em> save → survivors take damage. The defender always rolls their own saves. AP makes saves harder; invuln ignores AP.</div>
+    <h3>Allocating wounds</h3>
+    <p>The defender chooses who takes damage, but: an already-wounded model must finish first, and <strong>CHARACTER</strong> models are shielded — they can't be picked until the rank-and-file fall (unless hit by <code>[PRECISION]</code>).</p>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>This is why Typhus walks behind the Blightlords. Bolts must chew through ten Terminators of rotted ceramite before they may kiss the Herald. Bodies are the Grandfather's truest armour.</div>
+  </section>
+
+  <!-- IX -->
+  <section id="charge">
+    <div class="sec-head"><span class="sec-num">IX</span><h2>The Charge Phase</h2></div>
+    <ol class="seq">
+      <li><strong>Declare.</strong> Within 12" of an enemy, not engaged, didn't Advance/Fall Back.</li>
+      <li><strong>Roll 2D6.</strong> That's the max move distance.</li>
+      <li><strong>Move in.</strong> If you can reach engagement range, charge. End closer to a target, engaged if able.</li>
+    </ol>
+    <p>A successful charge grants <em class="t">Fights First</em> for the turn — you swing before non-chargers.</p>
+    <div class="plain"><b>▸ Plain speak</b>The 2D6 must physically reach within 2" of the foe. A double-1 ("2") can never reach. Charging is a gamble; the prize is striking first.</div>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>We do not run; we trudge, inexorable, and 2D6 is the Grandfather deciding how far His mercy carries us. Re-roll a failed charge with a CP if the prize is worth the prayer.</div>
+  </section>
+
+  <!-- X -->
+  <section id="fight">
+    <div class="sec-head"><span class="sec-num">X</span><h2>The Fight Phase</h2></div>
+    <p>The bloody one — <strong>both players' units fight</strong>, even on one player's turn. Order:</p>
+    <ol class="seq">
+      <li><strong>Pile In.</strong> Each engaged unit shuffles up to 3" to bring more models in.</li>
+      <li><strong>Fight.</strong> Units alternate swinging (see below).</li>
+      <li><strong>Consolidate.</strong> After fighting, move 3" more — stay locked, grab a point, or reach a new foe.</li>
+    </ol>
+    <h3>Who swings first</h3>
+    <p>Chargers and units with <em class="t">Fights First</em> strike before everyone. Players then <strong>alternate</strong> activating one melee unit at a time, starting with the active player. Melee uses the same four-step <a href="#attacks">attack sequence</a> with WS.</p>
+    <div class="plain"><b>▸ Plain speak</b>Charge → strike first. Otherwise you and your opponent take turns activating units. You <em>must</em> fight with everything that can.</div>
+  </section>
+
+  <!-- XI -->
+  <section id="visibility">
+    <div class="sec-head"><span class="sec-num">XI</span><h2>Sight &amp; Mortal Wounds</h2></div>
+    <h3>Visibility</h3>
+    <p>To shoot a target you must see it — draw a thin imaginary line from any part of your model to any part of theirs. "Fully visible" means nothing but the target's own body blocks any part of it.</p>
+    <h3>Mortal wounds</h3>
+    <p><em class="t">Mortal wounds</em> ignore <strong>all saves</strong>. Each removes 1 wound, one at a time. If an attack deals both normal and mortal damage, resolve normal first.</p>
+    <h3>Hazard rolls</h3>
+    <p>The "this might hurt you" die: roll a D6, on a <strong>1-2</strong> the unit takes 1 mortal wound (3 for a Monster/Vehicle).</p>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Mortal wounds slip past the rot the way the Void Dragon's light slipped past the Grandfather's gifts — and left the Scar. There is no ceramite for them. Respect them.</div>
+  </section>
+
+  <!-- XII -->
+  <section id="terrain">
+    <div class="sec-head"><span class="sec-num">XII</span><h2>Terrain &amp; Cover</h2></div>
+    <table>
+      <tr><th>Category</th><th>Effect</th></tr>
+      <tr><td><strong>Exposed</strong></td><td>Craters, debris. No effect — cross freely.</td></tr>
+      <tr><td><strong>Light</strong></td><td>Barricades, low walls. Gives cover, won't block movement.</td></tr>
+      <tr><td><strong>Dense</strong></td><td>Ruins, woods. Blocks sight, slows big models.</td></tr>
+    </table>
+    <h3>The four sight rules</h3>
+    <ul>
+      <li><strong>Benefit of Cover</strong> — a unit in/behind terrain worsens the shooter's hit by 1.</li>
+      <li><strong>Hidden</strong> — infantry in dense terrain that hasn't shot is only seen within 15".</li>
+      <li><strong>Obscuring</strong> — sight crossing obscuring terrain is blocked entirely.</li>
+      <li><strong>Solid</strong> — no sight through ground-floor gaps under 3" (no peeking through windows).</li>
+    </ul>
+    <div class="plain"><b>▸ Plain speak</b>Hiding in/behind a ruin makes you harder or impossible to shoot. Dense terrain actually blocks line of sight — use it.</div>
+    <h3>Plunging Fire</h3>
+    <p>Shoot from high ground (terrain 3"+ tall, or a TOWERING model) at a target on the floor and your hit chance <strong>improves by 1</strong>.</p>
+  </section>
+
+  <!-- XIII -->
+  <section id="objectives">
+    <div class="sec-head"><span class="sec-num">XIII</span><h2>Objectives</h2></div>
+    <p>Most missions are won by holding marked points. Have models with <code>OC</code> 1+ near one; at the end of each phase and turn, add up each side's nearby OC. <strong>Higher total controls it.</strong> Tie = nobody (unless it's been <em class="t">secured</em>, which holds until the foe out-controls you).</p>
+    <div class="plain"><b>▸ Plain speak</b>Bodies on points win games. OC is how loudly a unit shouts "ours." A shocked unit shouts nothing.</div>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Killing satisfies; standing where the foe wished to stand wins. The Vanguard wins by being immovable — plant the brick, hold the soil, let them break on it.</div>
+  </section>
+
+  <!-- XIV -->
+  <section id="strats">
+    <div class="sec-head"><span class="sec-num">XIV</span><h2>Command Points &amp; Stratagems</h2></div>
+    <p>Earn 1 CP each Command phase; spend it on <em class="t">stratagems</em>, one-off tactical tricks. Limits: never the same stratagem twice in a phase, and usually not two stratagems on the same unit per phase.</p>
+    <h3>Core stratagems (1CP unless noted)</h3>
+    <table>
+      <tr><th>Stratagem</th><th>Effect</th></tr>
+      <tr><td><strong>Command Re-roll</strong></td><td>Re-roll one die you just rolled. The workhorse.</td></tr>
+      <tr><td><strong>Epic Challenge</strong></td><td>Give a Character <code>[PRECISION]</code> in melee — snipe their hero.</td></tr>
+      <tr><td><strong>Insane Bravery</strong></td><td>Auto-pass one battle-shock test. Once per game.</td></tr>
+      <tr><td><strong>Explosives</strong></td><td>Grenade unit pelts a foe: 6 dice, each 4+ = a mortal wound.</td></tr>
+      <tr><td><strong>Crushing Impact</strong></td><td>Your charging Monster/Vehicle rams for mortal wounds.</td></tr>
+      <tr><td><strong>Rapid Ingress</strong></td><td>Bring a reserve unit on at end of enemy movement (not T1).</td></tr>
+      <tr><td><strong>Fire Overwatch</strong></td><td>Shoot a moving enemy — but only hit on unmodified 6s.</td></tr>
+      <tr><td><strong>Smokescreen</strong></td><td>Give a SMOKE unit the benefit of cover.</td></tr>
+      <tr><td><strong>Heroic Intervention</strong></td><td>Charge during the enemy's Charge phase.</td></tr>
+      <tr><td><strong>Counter-offensive (2CP)</strong></td><td>Jump the queue — your unit fights next, out of turn.</td></tr>
+    </table>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>CP is hoarded more jealously than disease. Against Guard armour, Command Re-roll on a wound, or Crushing Impact as the Land Raider lumbers in, earns its keep tenfold.</div>
+  </section>
+
+  <!-- XV -->
+  <section id="leaders">
+    <div class="sec-head"><span class="sec-num">XV</span><h2>Leaders &amp; Attached Units</h2></div>
+    <p>A Character with <em class="t">Leader</em> can join a squad pre-battle to form one <em class="t">attached unit</em> — a single unit thereafter.</p>
+    <ul>
+      <li>Shot at, it uses the <strong>bodyguards' Toughness</strong>; wounds hit the rank-and-file first.</li>
+      <li>It carries <strong>all keywords</strong> of everyone in it.</li>
+      <li>The leader's buff lasts until the leader dies; the "unit" only counts destroyed when the last original model falls.</li>
+    </ul>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>The Putrifier rides inside the ten-strong Plague Marine brick aboard Blister. The brick eats the bullets; the Putrifier sweetens their plagues. The Grandfather's arithmetic — one protected, ten emboldened.</div>
+  </section>
+
+  <!-- XVI -->
+  <section id="transports">
+    <div class="sec-head"><span class="sec-num">XVI</span><h2>Transports, Monsters &amp; Vehicles</h2></div>
+    <h3>Transports</h3>
+    <p>Carry a set number of models. <strong>Embark</strong> by ending a move within 3"; <strong>disembark</strong> in your Movement phase (within 3", or 6" for a riskier Combat Disembark). If destroyed, passengers make an <em class="t">emergency disembark</em> with a hazard roll; any that can't fit are lost.</p>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>The Hearse swallows fourteen. Typhus, the Blightlords, and the Lord of Virulence ride together, exactly filling its corroded gut — a rolling reliquary of contagion.</div>
+    <h3>Monsters &amp; Vehicles</h3>
+    <ul>
+      <li>Move <strong>through</strong> other (non-M/V) models on normal/advance moves.</li>
+      <li>Can shoot while engaged (close-quarters), at -1 to hit unless using a pistol-type weapon.</li>
+      <li>Shooting <em>at</em> an engaged M/V is allowed at -1 to hit.</li>
+      <li>Many lack a base (FRAME) — measure to/from the closest point of the model itself.</li>
+    </ul>
+  </section>
+
+  <!-- XVII -->
+  <section id="reserves">
+    <div class="sec-head"><span class="sec-num">XVII</span><h2>Reserves, Deep Strike &amp; Flying</h2></div>
+    <h3>Strategic Reserves</h3>
+    <p>Hold units off-table (up to half your points). They arrive via an <em class="t">ingress move</em> — within 6" of a board edge, 8"+ from enemies, usually from round 2. Anything still in reserve after round 3 is destroyed.</p>
+    <h3>Deep Strike</h3>
+    <p>Arrive anywhere 8"+ from enemies — even behind their lines. Teleporting Terminators thrive on it.</p>
+    <h3>Flying</h3>
+    <p>A FLY unit can "take to the skies" when moving: -2" distance, but floats over models and terrain, ignoring vertical climbs.</p>
+    <div class="plain"><b>▸ Plain speak</b>Reserves = arrive from an edge later. Deep Strike = drop in anywhere 8"+ away. Fly = float over obstacles.</div>
+  </section>
+
+  <!-- XVIII -->
+  <section id="keywords">
+    <div class="sec-head"><span class="sec-num">XVIII</span><h2>Weapon &amp; Unit Keywords</h2></div>
+    <p>Words in <code>[BRACKETS]</code> are special rules. If followed by another keyword (e.g. <code>[ANTI-VEHICLE 4+]</code>), they only apply against that target.</p>
+    <h4>Weapon keywords</h4>
+    <table>
+      <tr><th>Keyword</th><th>Plain meaning</th></tr>
+      <tr><td><code>[ANTI-X Y+]</code></td><td>Vs target X, a wound roll of Y+ is a critical wound.</td></tr>
+      <tr><td><code>[ASSAULT]</code></td><td>Fire even after Advancing.</td></tr>
+      <tr><td><code>[BLAST]</code></td><td>+1 attack per 5 models in the target. Murders blobs.</td></tr>
+      <tr><td><code>[CLOSE-QUARTERS]/[PISTOL]</code></td><td>Fire while in melee.</td></tr>
+      <tr><td><code>[DEVASTATING WOUNDS]</code></td><td>Critical wound becomes mortal wounds — past armour.</td></tr>
+      <tr><td><code>[HAZARDOUS]</code></td><td>Powerful but risky — hazard roll after firing.</td></tr>
+      <tr><td><code>[HEAVY]</code></td><td>+1 to hit if you stayed still.</td></tr>
+      <tr><td><code>[IGNORES COVER]</code></td><td>Target can't claim cover.</td></tr>
+      <tr><td><code>[INDIRECT FIRE]</code></td><td>Shoot unseen targets (with penalties).</td></tr>
+      <tr><td><code>[LANCE]</code></td><td>+1 to wound if the bearer charged.</td></tr>
+      <tr><td><code>[LETHAL HITS]</code></td><td>Critical hit auto-wounds.</td></tr>
+      <tr><td><code>[MELTA X]</code></td><td>+X Damage at half range. Tank-popper.</td></tr>
+      <tr><td><code>[PRECISION]</code></td><td>Put wounds straight onto a Character.</td></tr>
+      <tr><td><code>[RAPID FIRE X]</code></td><td>+X attacks at half range.</td></tr>
+      <tr><td><code>[SUSTAINED HITS X]</code></td><td>Each critical hit scores X extra hits.</td></tr>
+      <tr><td><code>[TORRENT]</code></td><td>Auto-hits — no hit roll (flamers).</td></tr>
+      <tr><td><code>[TWIN-LINKED]</code></td><td>Re-roll the wound roll.</td></tr>
+    </table>
+    <h4>Unit abilities</h4>
+    <table>
+      <tr><th>Ability</th><th>Plain meaning</th></tr>
+      <tr><td><strong>Feel No Pain X+</strong></td><td>Each lost wound, roll D6; X+ ignores it. The Death Guard's bread and butter.</td></tr>
+      <tr><td><strong>Deep Strike</strong></td><td>Arrive 8"+ from enemies.</td></tr>
+      <tr><td><strong>Infiltrators</strong></td><td>Deploy forward, 9"+ from enemies.</td></tr>
+      <tr><td><strong>Scouts X"</strong></td><td>Free move before turn 1.</td></tr>
+      <tr><td><strong>Stealth</strong></td><td>Always counts as in cover when shot.</td></tr>
+      <tr><td><strong>Lone Operative</strong></td><td>Only shootable from within 12".</td></tr>
+      <tr><td><strong>Deadly Demise X</strong></td><td>On a 6 when destroyed, explodes for X mortals within 6".</td></tr>
+    </table>
+    <div class="scrawl"><b>▸ The Tallyman writes</b>Feel No Pain is the Grandfather's truest gift — the wound lands, and we simply do not die. Each die you roll to shrug a mortal wound is a small prayer answered. Duplicate keywords never stack; pick which applies.</div>
+  </section>
+
+  <!-- XIX -->
+  <section id="actions">
+    <div class="sec-head"><span class="sec-num">XIX</span><h2>Actions &amp; Odds and Ends</h2></div>
+    <h3>Actions</h3>
+    <p>Mission tasks. A unit that starts one usually <strong>can't shoot or charge</strong> that turn; being shocked or in melee stops it.</p>
+    <h3>Auras</h3>
+    <p>Buffs (or banes) affecting units within a range of the bearer. A model is always in its own aura; two of the same don't stack.</p>
+    <h3>Half-strength</h3>
+    <p><em class="t">Starting strength</em> = models (or wounds) at the start. "Below half-strength" triggers battle-shock and many army rules — track it.</p>
+    <h3>Destroyed</h3>
+    <p>0 wounds = a model removed; all models gone = unit destroyed. Resolve "when destroyed" rules <em>before</em> removal, after the attacker finishes its attacks.</p>
+    <div class="plain"><b>▸ Plain speak</b>Actions tie a unit down. Auras are buff-bubbles. "Half-strength" is the magic phrase for morale and army rules.</div>
+  </section>
+
+  <div class="quote">When in doubt, the dice decide — and the Grandfather already knows the result</div>
+
+  <footer>
+    <b>Codex of War — A Cogitator Reckoning</b><br>
+    Plain-tongue rendering of the 11th-Edition Core Rules for the RotFather's Vanguard.<br>
+    For tournament-precise wording, consult the official Core Rules. For understanding the game, this serves.<br>
+    The Grandfather provides. The Grandfather abides. The Grandfather keeps the count.
+  </footer>
+
+</div>
+</body>
+</html>
